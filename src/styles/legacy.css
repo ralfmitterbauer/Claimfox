@@ -12,6 +12,9 @@
   --surface: #ffffff;
   --bg: #f7f4ff;
   --card-shadow: 0 22px 45px rgba(32, 13, 74, 0.1);
+  --topbar-hero-image: none;
+  --damage-report-card-image: none;
+  --top-header-height: 64px;
 }
 
 *,
@@ -43,6 +46,7 @@ input {
 .theme-insurfox {
   min-height: 100vh;
   background: linear-gradient(180deg, #fbfaff 0%, #f0ecff 18%, #fefefe 100%);
+  padding-top: var(--top-header-height, 64px);
 }
 
 .app-shell {
@@ -63,7 +67,7 @@ input {
   content: '';
   position: absolute;
   inset: 0;
-  background-image: url('/assets/mockup_engl_new.png');
+  background-image: var(--topbar-hero-image, none);
   background-size: cover;
   background-position: right center;
   opacity: 0.08;
@@ -225,7 +229,10 @@ input {
 
 .damage-report-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)),
-    url('/assets/bild_4.png') right center / cover no-repeat;
+    var(--damage-report-card-image, none);
+  background-position: center, right center;
+  background-size: auto, cover;
+  background-repeat: no-repeat, no-repeat;
   position: relative;
   overflow: hidden;
 }

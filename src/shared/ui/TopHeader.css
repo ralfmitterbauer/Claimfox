@@ -1,0 +1,78 @@
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--top-header-height, 64px);
+  background: var(--blue-middle, #080064);
+  color: var(--gray-1, #ffffff);
+  z-index: 50;
+  box-shadow: 0 10px 30px rgba(0, 7, 23, 0.25);
+}
+
+.top-header__inner {
+  max-width: var(--container-max, 1200px);
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.top-header__logo-image {
+  display: block;
+  height: 32px;
+  width: auto;
+}
+
+.top-header__logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.top-header__lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.top-header__lang-btn {
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.top-header__lang-btn:hover {
+  color: #ffffff;
+}
+
+.top-header__lang-btn.is-active {
+  background: #ffffff;
+  color: var(--blue-middle, #080064);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 600px) {
+  .top-header__inner {
+    padding: 0 16px;
+  }
+
+  .top-header__lang-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
