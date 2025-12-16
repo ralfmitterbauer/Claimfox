@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useAuth } from '@/features/auth/AuthContext'
+import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -50,7 +51,27 @@ export default function LoginPage() {
         alignItems: 'center',
       }}
     >
-      <div style={{ width: '100%', maxWidth: 480 }}>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: 480,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1.5rem',
+        }}
+      >
+        {/* Insurfox Logo */}
+        <img
+          src={InsurfoxLogo}
+          alt="Insurfox"
+          style={{
+            height: 48,
+            objectFit: 'contain',
+            marginBottom: '0.5rem',
+          }}
+        />
+
         <Header title="ClaimFox Portal" />
 
         <Card>
