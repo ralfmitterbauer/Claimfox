@@ -13,20 +13,34 @@ export default function Header({ title, subtitle, actions }: HeaderProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: '0.75rem',
-        paddingBottom: '1.5rem'
+        paddingBottom: '1.5rem',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          flexWrap: 'wrap',
+        }}
+      >
         <div>
-          <p style={{ margin: 0, color: '#616075', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
-            ClaimFox
-          </p>
-          <h1 style={{ margin: '0.35rem 0 0', fontSize: '2.1rem', lineHeight: 1.2, color: '#080064' }}>
+          {/* Removed hardcoded "ClaimFox" label */}
+          <h1
+            style={{
+              margin: 0,
+              fontSize: '2.1rem',
+              lineHeight: 1.2,
+              color: '#080064',
+            }}
+          >
             {title}
           </h1>
         </div>
+
         {actions && <div style={{ alignSelf: 'center' }}>{actions}</div>}
       </div>
+
       {subtitle && (
         <p style={{ margin: 0, color: '#494870', maxWidth: '720px' }}>
           {subtitle}

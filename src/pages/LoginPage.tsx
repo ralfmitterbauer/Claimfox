@@ -15,8 +15,8 @@ export default function LoginPage() {
   const navigate = useNavigate()
   const { login, isAuthenticated } = useAuth()
 
+  // Hard reset against browser autofill
   useEffect(() => {
-    // Extra hard reset gegen Browser-Autofill-Events
     setUsername('')
     setPassword('')
   }, [])
@@ -37,8 +37,11 @@ export default function LoginPage() {
     setIsSubmitting(true)
     try {
       const success = login(username, password)
-      if (success) navigate('/roles', { replace: true })
-      else setError('Ungültige Anmeldedaten.')
+      if (success) {
+        navigate('/roles', { replace: true })
+      } else {
+        setError('Ungültige Anmeldedaten.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -64,12 +67,17 @@ export default function LoginPage() {
           gap: '1.75rem',
         }}
       >
+        {/* Insurfox Logo */}
         <img
           src={InsurfoxLogo}
           alt="Insurfox"
-          style={{ height: 120, objectFit: 'contain' }}
+          style={{
+            height: 120,
+            objectFit: 'contain',
+          }}
         />
 
+        {/* Left-aligned content */}
         <div style={{ width: '100%' }}>
           <Header title="IaaS - Portal" />
 
@@ -77,7 +85,11 @@ export default function LoginPage() {
             <form
               onSubmit={handleSubmit}
               autoComplete="off"
-              style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '1rem',
+              }}
             >
               <label className="form-field">
                 Benutzername
