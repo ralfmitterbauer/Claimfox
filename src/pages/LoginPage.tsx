@@ -16,6 +16,12 @@ export default function LoginPage() {
   const { login, isAuthenticated } = useAuth()
 
   useEffect(() => {
+    // Extra hard reset gegen Browser-Autofill-Events
+    setUsername('')
+    setPassword('')
+  }, [])
+
+  useEffect(() => {
     if (isAuthenticated) navigate('/roles', { replace: true })
   }, [isAuthenticated, navigate])
 
@@ -31,11 +37,8 @@ export default function LoginPage() {
     setIsSubmitting(true)
     try {
       const success = login(username, password)
-      if (success) {
-        navigate('/roles', { replace: true })
-      } else {
-        setError('Ungültige Anmeldedaten.')
-      }
+      if (success) navigate('/roles', { replace: true })
+      else setError('Ungültige Anmeldedaten.')
     } finally {
       setIsSubmitting(false)
     }
@@ -61,30 +64,27 @@ export default function LoginPage() {
           gap: '1.75rem',
         }}
       >
-        {/* Logo bleibt zentriert */}
         <img
           src={InsurfoxLogo}
           alt="Insurfox"
-          style={{
-            height: 120,
-            objectFit: 'contain',
-          }}
+          style={{ height: 120, objectFit: 'contain' }}
         />
 
-        {/* Inhalt linksbündig zum Container */}
         <div style={{ width: '100%' }}>
           <Header title="IaaS - Portal" />
 
           <Card>
             <form
               onSubmit={handleSubmit}
+              autoComplete="off"
               style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}
             >
               <label className="form-field">
                 Benutzername
                 <input
                   className="text-input"
-                  autoComplete="username"
+                  name="cf_username"
+                  autoComplete="off"
                   value={username}
                   onChange={(event) => setUsername(event.target.value)}
                   disabled={isSubmitting}
@@ -97,7 +97,8 @@ export default function LoginPage() {
                 <input
                   className="text-input"
                   type="password"
-                  autoComplete="current-password"
+                  name="cf_password"
+                  autoComplete="new-password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   disabled={isSubmitting}
