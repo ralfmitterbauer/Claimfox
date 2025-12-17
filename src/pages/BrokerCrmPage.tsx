@@ -280,23 +280,23 @@ export default function BrokerCrmPage() {
                       <span
                         style={{
                           borderRadius: '999px',
-                          padding: '0.35rem 0.8rem',
-                          fontSize: '0.85rem',
+                          padding: '0.3rem 0.5rem',
+                          fontSize: '0.8rem',
                           fontWeight: 700,
                           whiteSpace: 'nowrap',
                           display: 'inline-flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          gap: '0.45rem',
-                          minWidth: '108px',
+                          gap: '0.35rem',
+                          width: '58px',
                           ...getPotentialStyles(t(`brokerCrm.table.potentialLabels.${customer.potentialKey}`))
                         }}
                       >
                         <span
                           aria-hidden="true"
                           style={{
-                            width: '0.45rem',
-                            height: '0.45rem',
+                            width: '0.35rem',
+                            height: '0.35rem',
                             borderRadius: '999px',
                             background: '#ffffff'
                           }}
