@@ -58,9 +58,10 @@ export default function LoginPage() {
     <section
       className="page login-page"
       style={{
+        position: 'relative',
         minHeight: '100vh',
         width: '100%',
-        backgroundImage: `url(${LoginBackground})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.35)), url(${LoginBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -72,6 +73,8 @@ export default function LoginPage() {
       {/* Overlay Container */}
       <div
         style={{
+          position: 'relative',
+          zIndex: 1,
           width: '100%',
           maxWidth: 480,
           padding: '2rem 1rem',
