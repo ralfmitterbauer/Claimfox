@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import LoginPage from '@/pages/LoginPage'
 import RegistrationPage from '@/pages/RegistrationPage'
 import RolesPage from '@/pages/RolesPage'
+import BrokerPortalLandingPage from '@/pages/BrokerPortalLandingPage'
 import ProtectedRoute from '@/router/ProtectedRoute'
 import ProtectedLayout from '@/layouts/ProtectedLayout'
 import { useAuth } from '@/features/auth/AuthContext'
@@ -26,6 +27,7 @@ export default function AppRouter() {
       >
         <Route path="/roles" element={<RolesPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/broker-portal" element={<BrokerPortalLandingPage />} />
       </Route>
       <Route path="*" element={<NotFoundRedirect />} />
     </Routes>

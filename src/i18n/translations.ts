@@ -18,6 +18,7 @@ type TranslationTree = {
     startJourney: string
     registrationCardTitle: string
     registrationCardSubtitle: string
+    brokerPortal: string
     cards: Record<string, { title: string; description: string }>
   }
   registration: {
@@ -60,6 +61,9 @@ type TranslationTree = {
       listening: string
     }
   }
+  brokerLanding: {
+    title: string
+  }
 }
 
 export const translations: Record<Lang, TranslationTree> = {
@@ -81,6 +85,7 @@ export const translations: Record<Lang, TranslationTree> = {
       startJourney: 'Journey starten',
       registrationCardTitle: 'Registrierung',
       registrationCardSubtitle: 'Starte die neue, KI-gestützte Journey und melde Partner oder Kund:innen komfortabel an.',
+      brokerPortal: 'Maklerportal',
       cards: {
         claims: {
           title: 'Schadenmanager',
@@ -135,6 +140,9 @@ export const translations: Record<Lang, TranslationTree> = {
         voiceInputNotSupported: 'Ich kann in diesem Browser nicht zuhören. Bitte tippe deine Antwort.',
         listening: '🎙️ Ich höre zu …'
       }
+    },
+    brokerLanding: {
+      title: 'Maklerportal'
     }
   },
   en: {
@@ -155,6 +163,7 @@ export const translations: Record<Lang, TranslationTree> = {
       startJourney: 'Start journey',
       registrationCardTitle: 'Registration',
       registrationCardSubtitle: 'Launch the guided, AI-supported journey to onboard partners or customers with ease.',
+      brokerPortal: 'Broker Portal',
       cards: {
         claims: {
           title: 'Claims Manager',
@@ -209,6 +218,9 @@ export const translations: Record<Lang, TranslationTree> = {
         voiceInputNotSupported: 'Listening is not available in this browser. Please type your response.',
         listening: '🎙️ Listening …'
       }
+    },
+    brokerLanding: {
+      title: 'Broker Portal'
     }
-}
+  }
 }

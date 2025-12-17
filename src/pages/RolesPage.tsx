@@ -63,6 +63,24 @@ export default function RolesPage() {
             {t('roles.startJourney')}
           </Button>
         </Card>
+        <Card
+          title={t('roles.brokerPortal')}
+          interactive
+          onClick={() => navigate('/broker-portal')}
+        >
+          <p style={{ marginTop: 0, color: '#494870', minHeight: '3rem' }}>
+            {t('roles.brokerPortal')}
+          </p>
+          <Button
+            style={{ width: '100%' }}
+            onClick={(event) => {
+              event.stopPropagation()
+              navigate('/broker-portal')
+            }}
+          >
+            {t('roles.view')}
+          </Button>
+        </Card>
       </div>
     </section>
   )
