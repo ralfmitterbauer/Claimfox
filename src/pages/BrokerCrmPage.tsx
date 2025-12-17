@@ -286,7 +286,9 @@ export default function BrokerCrmPage() {
                           whiteSpace: 'nowrap',
                           display: 'inline-flex',
                           alignItems: 'center',
+                          justifyContent: 'center',
                           gap: '0.45rem',
+                          minWidth: '108px',
                           ...getPotentialStyles(t(`brokerCrm.table.potentialLabels.${customer.potentialKey}`))
                         }}
                       >
