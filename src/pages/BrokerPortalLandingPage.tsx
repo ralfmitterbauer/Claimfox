@@ -12,9 +12,10 @@ export default function BrokerPortalLandingPage() {
   return (
     <div
       style={{
-        position: 'relative',
+        position: 'fixed',
+        inset: 0,
         width: '100vw',
-        minHeight: '100vh',
+        height: '100vh',
         overflow: 'hidden'
       }}
     >
@@ -32,45 +33,45 @@ export default function BrokerPortalLandingPage() {
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(180deg, rgba(4, 1, 20, 0.85) 0%, rgba(4, 1, 20, 0.45) 60%, rgba(4, 1, 20, 0.75) 100%)'
+          background: 'linear-gradient(180deg, rgba(4, 1, 20, 0.8) 0%, rgba(4, 1, 20, 0.4) 60%, rgba(4, 1, 20, 0.8) 100%)',
+          zIndex: 0
         }}
       />
-      <div
-        style={{
-          position: 'absolute',
-          top: '2rem',
-          right: '2rem',
-          zIndex: 2
-        }}
-      >
-        <Button
-          variant="secondary"
-          onClick={() => navigate('/broker-crm')}
-          style={{
-            borderColor: '#fff',
-            color: '#040114',
-            background: '#fff',
-            fontWeight: 600
-          }}
-        >
-          {t('brokerLanding.login')}
-        </Button>
-      </div>
       <div
         style={{
           position: 'relative',
           zIndex: 1,
           width: '100%',
-          minHeight: '100vh',
+          height: '100%',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'flex-start',
-          textAlign: 'center',
           color: '#fff',
-          paddingTop: '56px'
+          paddingTop: 'calc(var(--header-height, 64px) + 32px)'
         }}
       >
+        <div
+          style={{
+            position: 'absolute',
+            top: 'calc(var(--header-height, 64px) + 16px)',
+            right: '3vw'
+          }}
+        >
+          <Button
+            variant="secondary"
+            onClick={() => navigate('/broker-crm')}
+            style={{
+              borderColor: '#fff',
+              color: '#040114',
+              background: '#fff',
+              fontWeight: 600,
+              minWidth: '140px'
+            }}
+          >
+            {t('brokerLanding.login')}
+          </Button>
+        </div>
         <img
           src={InsurfoxLogoLight}
           alt="Insurfox"
@@ -79,12 +80,12 @@ export default function BrokerPortalLandingPage() {
             width: 'auto',
             maxWidth: '260px',
             objectFit: 'contain',
-            marginTop: '1rem'
+            marginBottom: '1.25rem'
           }}
         />
         <h1
           style={{
-            margin: '1.5rem 0 0',
+            margin: 0,
             color: '#ffffff',
             fontSize: '1.85rem',
             lineHeight: 1.4,
