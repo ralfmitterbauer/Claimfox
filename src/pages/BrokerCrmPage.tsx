@@ -25,6 +25,9 @@ const leadsData = [
   { key: 'lost', value: 14 }
 ] as const
 
+const aiItemKeys = ['item1', 'item2', 'item3', 'item4'] as const
+const probabilityItemKeys = new Set(['item1', 'item3'])
+
 const customers = [
   { name: 'Müller Versicherungsservice', statusKey: 'prospect', lastContact: '12.02.2025', potentialKey: 'high', nextStepKey: 'proposal' },
   { name: 'Atlas Maklerwerk', statusKey: 'active', lastContact: '11.02.2025', potentialKey: 'medium', nextStepKey: 'meeting' },
@@ -143,6 +146,60 @@ export default function BrokerCrmPage() {
           </div>
         </Card>
       </div>
+
+      <Card title={t('brokerCrm.ai.title')} subtitle={t('brokerCrm.ai.subtitle')}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '1rem'
+          }}
+        >
+          {aiItemKeys.map((key) => (
+            <div
+              key={key}
+              style={{
+                padding: '1rem 1.2rem',
+                borderRadius: '16px',
+                border: '1px solid #eceafd',
+                background: '#fdfdff',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.4rem'
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem' }}>
+                <div>
+                  <p style={{ margin: 0, fontWeight: 600, color: '#080064' }}>{t(`brokerCrm.ai.items.${key}.name`)}</p>
+                  <small style={{ color: '#6f6c99' }}>{t(`brokerCrm.ai.items.${key}.type`)}</small>
+                </div>
+                <span
+                  style={{
+                    padding: '0.25rem 0.65rem',
+                    borderRadius: '999px',
+                    background: '#efe8ff',
+                    color: '#5c30c5',
+                    fontWeight: 600
+                  }}
+                >
+                  <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.08em', marginRight: '0.35rem' }}>
+                    {probabilityItemKeys.has(key) ? t('brokerCrm.ai.labels.probability') : t('brokerCrm.ai.labels.volume')}
+                  </span>
+                  {t(`brokerCrm.ai.items.${key}.value`)}
+                </span>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', color: '#6f6c99' }}>
+                <span style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#a09dbf' }}>
+                  {t('brokerCrm.ai.labels.recommendation')}
+                </span>
+                <strong style={{ color: '#080064', fontSize: '0.95rem' }}>
+                  {t(`brokerCrm.ai.items.${key}.action`)}
+                </strong>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
 
       <div
         style={{

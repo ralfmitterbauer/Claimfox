@@ -114,6 +114,24 @@ type TranslationTree = {
   brokerCrm: {
     title: string
     subtitle: string
+    ai: {
+      title: string
+      subtitle: string
+      labels: {
+        probability: string
+        volume: string
+        recommendation: string
+      }
+      items: Record<
+        string,
+        {
+          name: string
+          type: string
+          value: string
+          action: string
+        }
+      >
+    }
     kpi: {
       activeCustomers: string
       openLeads: string
@@ -296,6 +314,41 @@ export const translations: Record<Lang, TranslationTree> = {
     brokerCrm: {
       title: 'CRM & Reporting',
       subtitle: 'Gewinne Transparenz über Leads, Kund:innen und Aktivitäten in deinem Maklernetzwerk.',
+      ai: {
+        title: 'KI-Auswertung',
+        subtitle: 'Empfohlene Prioritäten basierend auf Abschlusswahrscheinlichkeit und Volumen.',
+        labels: {
+          probability: 'Abschlusswahrscheinlichkeit',
+          volume: 'Volumen',
+          recommendation: 'Empfehlung'
+        },
+        items: {
+          item1: {
+            name: 'Müller Logistik GmbH',
+            type: 'Hohe Abschlusswahrscheinlichkeit',
+            value: '92%',
+            action: 'Heute anrufen'
+          },
+          item2: {
+            name: 'NordCargo AG',
+            type: 'Hohes Volumen',
+            value: '€ 185.000',
+            action: 'Angebot finalisieren'
+          },
+          item3: {
+            name: 'AlpenFleet KG',
+            type: 'Hohe Abschlusswahrscheinlichkeit',
+            value: '88%',
+            action: 'Follow-up E-Mail senden'
+          },
+          item4: {
+            name: 'RheinTech Industrie',
+            type: 'Hohes Volumen',
+            value: '€ 240.000',
+            action: 'Risiko-Check anstoßen'
+          }
+        }
+      },
       kpi: {
         activeCustomers: 'Aktive Kund:innen',
         openLeads: 'Offene Leads',
@@ -476,6 +529,41 @@ export const translations: Record<Lang, TranslationTree> = {
     brokerCrm: {
       title: 'CRM & Reporting',
       subtitle: 'Stay on top of leads, customers, and daily broker activities at a glance.',
+      ai: {
+        title: 'AI insights',
+        subtitle: 'Suggested priorities based on close probability and deal volume.',
+        labels: {
+          probability: 'Close probability',
+          volume: 'Volume',
+          recommendation: 'Recommendation'
+        },
+        items: {
+          item1: {
+            name: 'Miller Logistics GmbH',
+            type: 'High close probability',
+            value: '92%',
+            action: 'Call today'
+          },
+          item2: {
+            name: 'NordCargo AG',
+            type: 'Highest volume',
+            value: '€ 185k',
+            action: 'Finalize proposal'
+          },
+          item3: {
+            name: 'AlpenFleet KG',
+            type: 'High close probability',
+            value: '88%',
+            action: 'Send follow-up email'
+          },
+          item4: {
+            name: 'RheinTech Industries',
+            type: 'Highest volume',
+            value: '€ 240k',
+            action: 'Initiate risk review'
+          }
+        }
+      },
       kpi: {
         activeCustomers: 'Active customers',
         openLeads: 'Open leads',
