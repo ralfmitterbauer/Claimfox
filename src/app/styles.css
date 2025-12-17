@@ -204,3 +204,63 @@ a {
     transform: translateY(0);
   }
 }
+/* =========================
+   GLOBAL BUTTON STYLES (Insurfox Orange)
+   ========================= */
+
+/* Standard-Buttons global */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.btn {
+  background-color: var(--insurfox-orange);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.08s ease;
+}
+
+/* Hover / Active */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover,
+.btn:hover {
+  background-color: #b9300b;
+  box-shadow: 0 10px 22px rgba(212, 56, 13, 0.22);
+}
+
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active,
+.btn:active {
+  transform: translateY(1px);
+  background-color: #a52a09;
+}
+
+/* Focus */
+button:focus-visible,
+input[type="button"]:focus-visible,
+input[type="submit"]:focus-visible,
+input[type="reset"]:focus-visible,
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(212, 56, 13, 0.22), 0 10px 22px rgba(212, 56, 13, 0.18);
+}
+
+/* Disabled */
+button:disabled,
+input[type="button"]:disabled,
+input[type="submit"]:disabled,
+input[type="reset"]:disabled,
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
