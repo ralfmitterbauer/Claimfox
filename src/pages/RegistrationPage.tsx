@@ -9,7 +9,8 @@ import ClaimsfoxIcon from '@/assets/logos/Claimsfox_icon.png'
 const STORAGE_KEY = 'cf_registration_draft'
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-const BOT_BUBBLE_COLOR = '#D3F261'
+const BOT_BUBBLE_COLOR = '#F9F0FF'
+const USER_BUBBLE_COLOR = '#D3F261'
 
 const QUESTION_KEYS = new Set<string>([
   'registration.bot.name',
@@ -811,11 +812,8 @@ export default function RegistrationPage() {
 
               <div
                 style={{
-                  background:
-                    message.author === 'user'
-                      ? 'linear-gradient(135deg, #5b2d8b, #ee6a7c)'
-                      : BOT_BUBBLE_COLOR,
-                  color: message.author === 'user' ? '#fff' : '#0e0d1c',
+                  background: message.author === 'user' ? USER_BUBBLE_COLOR : BOT_BUBBLE_COLOR,
+                  color: '#0e0d1c',
                   padding: '0.85rem 1.1rem',
                   borderRadius:
                     message.author === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',

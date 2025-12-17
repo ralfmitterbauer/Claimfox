@@ -10,7 +10,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 
 // ✅ Hintergrundbild Login
-import LoginBackground from '@/assets/images/background_login.png'
+import LoginBackground from '@/assets/images/background1.jpg'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
