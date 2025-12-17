@@ -53,6 +53,7 @@ type TranslationTree = {
       submit: string
       edit: string
       success: string
+      voiceConfirm: string
       voiceSelect: string
       voiceNotSupported: string
       voiceInputNotSupported: string
@@ -128,6 +129,7 @@ export const translations: Record<Lang, TranslationTree> = {
         submit: 'Registrierung abschicken',
         edit: 'Angaben bearbeiten',
         success: '🎉 Vielen Dank! Deine Registrierung wurde erfasst. Wir melden uns in Kürze bei dir.',
+        voiceConfirm: 'Ist das so richtig?',
         voiceSelect: 'Wähle zuerst die Stimme Deines Claimsfox aus.',
         voiceNotSupported: 'Dein Browser unterstützt leider keine Sprachausgabe. Lass uns schriftlich weitermachen.',
         voiceInputNotSupported: 'Ich kann in diesem Browser nicht zuhören. Bitte tippe deine Antwort.',
@@ -201,6 +203,7 @@ export const translations: Record<Lang, TranslationTree> = {
         submit: 'Submit registration',
         edit: 'Edit information',
         success: '🎉 Thank you! We have received your registration and will get back to you shortly.',
+        voiceConfirm: 'Did I understand that correctly?',
         voiceSelect: 'Please choose the voice for your Claimsfox first.',
         voiceNotSupported: 'Your browser does not support speech output. Let us continue by typing.',
         voiceInputNotSupported: 'Listening is not available in this browser. Please type your response.',
