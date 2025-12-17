@@ -255,6 +255,7 @@ export default function RegistrationPage() {
 
   // Wir merken uns den "echten" Step vor voiceConfirm
   const lastRealStepRef = useRef<Exclude<Step, 'voiceConfirm'>>('name')
+  const lastConfirmSessionRef = useRef<{ step: Exclude<Step, 'voiceConfirm'>; transcript: string } | null>(null)
 
   const navigate = useNavigate()
   const { t } = useI18n()
@@ -331,6 +332,8 @@ export default function RegistrationPage() {
 
   const fallbackToTextInput = useCallback(() => {
     stopVoiceInteraction()
+    setPendingTranscript(null)
+    lastConfirmSessionRef.current = null
     if (state.inputMode !== 'voice') return
     dispatch({ type: 'SET_INPUT_MODE', payload: 'text' })
     queueBotMessages([{ key: 'registration.bot.voiceInputNotSupported' }])
@@ -384,6 +387,12 @@ export default function RegistrationPage() {
       if (result) {
         // ✅ Nicht direkt verarbeiten – erst bestätigen lassen
         stopVoiceInteraction()
+        const realStep = lastRealStepRef.current
+        const lastSession = lastConfirmSessionRef.current
+        if (lastSession && lastSession.step === realStep && lastSession.transcript === result) {
+          return
+        }
+        lastConfirmSessionRef.current = { step: realStep, transcript: result }
         setPendingTranscript(result)
         dispatch({ type: 'SET_STEP', payload: 'voiceConfirm' })
         setInputValue(result)
@@ -455,6 +464,12 @@ export default function RegistrationPage() {
     }
   }, [state.step])
 
+  useEffect(() => {
+    if (state.step !== 'voiceConfirm' && lastConfirmSessionRef.current) {
+      lastConfirmSessionRef.current = null
+    }
+  }, [state.step])
+
   // Auto-Voice: Frage finden und sprechen (aber NICHT im mode/voice/voiceConfirm)
   useEffect(() => {
     if (
@@ -521,11 +536,12 @@ export default function RegistrationPage() {
     }
   }, [queueBotMessages, state.isTyping, state.messages.length])
 
-  function processUserResponse(rawValue: string) {
+  function processUserResponse(rawValue: string, stepOverride?: Step) {
     const trimmed = rawValue.trim()
     const normalized = trimmed.toLowerCase()
+    const activeStep = stepOverride ?? state.step
 
-    switch (state.step) {
+    switch (activeStep) {
       case 'mode': {
         queueBotMessages([{ key: 'registration.bot.mode' }])
         return
@@ -534,10 +550,8 @@ export default function RegistrationPage() {
         queueBotMessages([{ key: speechSupported ? 'registration.bot.voiceSelect' : 'registration.bot.voiceNotSupported' }])
         return
       }
-      case 'voiceConfirm': {
-        queueBotMessages([{ key: 'registration.bot.voiceConfirm' }])
+      case 'voiceConfirm':
         return
-      }
       case 'name': {
         if (trimmed.length < 3) {
           queueBotMessages([{ key: 'registration.bot.name' }])
@@ -702,10 +716,11 @@ export default function RegistrationPage() {
     const realStep = lastRealStepRef.current
 
     setPendingTranscript(null)
+    lastConfirmSessionRef.current = null
     dispatch({ type: 'SET_STEP', payload: realStep })
     dispatch({ type: 'ADD_MESSAGE', payload: createUserMessage(trimmed) })
     setInputValue('')
-    processUserResponse(trimmed)
+    processUserResponse(trimmed, realStep)
   }
 
   function handleVoiceConfirmYes() {
