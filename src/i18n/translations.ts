@@ -346,6 +346,18 @@ export const translations: Record<Lang, TranslationTree> = {
             type: 'Hohes Volumen',
             value: '€ 240.000',
             action: 'Risiko-Check anstoßen'
+          },
+          item5: {
+            name: 'Hansea Spedition GmbH',
+            type: 'Hohe Abschlusswahrscheinlichkeit',
+            value: '84%',
+            action: 'Unterlagen anfordern'
+          },
+          item6: {
+            name: 'Baltic Freight Solutions',
+            type: 'Hohes Volumen',
+            value: '€ 310.000',
+            action: 'Konditionen verhandeln'
           }
         }
       },
@@ -561,6 +573,18 @@ export const translations: Record<Lang, TranslationTree> = {
             type: 'Highest volume',
             value: '€ 240k',
             action: 'Initiate risk review'
+          },
+          item5: {
+            name: 'Hansea Spedition GmbH',
+            type: 'High close probability',
+            value: '84%',
+            action: 'Request documents'
+          },
+          item6: {
+            name: 'Baltic Freight Solutions',
+            type: 'Highest volume',
+            value: '€ 310k',
+            action: 'Negotiate terms'
           }
         }
       },
