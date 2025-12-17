@@ -50,9 +50,6 @@ export default function RolesPage() {
           interactive
           onClick={() => navigate('/registration')}
         >
-          <p style={{ marginTop: 0, color: '#494870', minHeight: '3rem' }}>
-            {t('roles.registrationCardSubtitle')}
-          </p>
           <Button
             style={{ width: '100%' }}
             onClick={(event) => {

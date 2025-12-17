@@ -51,29 +51,29 @@ export default function BrokerCrmPage() {
     const normalized = label.toLowerCase()
     if (['hoch', 'high'].includes(normalized)) {
       return {
-        background: 'rgba(34,197,94,0.18)',
-        color: 'rgb(22,101,52)',
-        border: '1px solid rgba(34,197,94,0.35)'
+        background: '#16A34A',
+        color: '#ffffff',
+        border: '2px solid #15803D'
       }
     }
     if (['mittel', 'medium'].includes(normalized)) {
       return {
-        background: 'rgba(249,115,22,0.18)',
-        color: 'rgb(154,52,18)',
-        border: '1px solid rgba(249,115,22,0.35)'
+        background: '#F97316',
+        color: '#ffffff',
+        border: '2px solid #EA580C'
       }
     }
     if (['gering', 'low'].includes(normalized)) {
       return {
-        background: 'rgba(239,68,68,0.18)',
-        color: 'rgb(153,27,27)',
-        border: '1px solid rgba(239,68,68,0.35)'
+        background: '#DC2626',
+        color: '#ffffff',
+        border: '2px solid #B91C1C'
       }
     }
     return {
-      background: 'rgba(107,114,128,0.15)',
-      color: '#374151',
-      border: '1px solid rgba(107,114,128,0.25)'
+      background: '#64748B',
+      color: '#ffffff',
+      border: '2px solid #475569'
     }
   }
 
@@ -280,13 +280,25 @@ export default function BrokerCrmPage() {
                       <span
                         style={{
                           borderRadius: '999px',
-                          padding: '0.35rem 0.65rem',
+                          padding: '0.35rem 0.8rem',
                           fontSize: '0.85rem',
                           fontWeight: 700,
                           whiteSpace: 'nowrap',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.45rem',
                           ...getPotentialStyles(t(`brokerCrm.table.potentialLabels.${customer.potentialKey}`))
                         }}
                       >
+                        <span
+                          aria-hidden="true"
+                          style={{
+                            width: '0.45rem',
+                            height: '0.45rem',
+                            borderRadius: '999px',
+                            background: '#ffffff'
+                          }}
+                        />
                         {t(`brokerCrm.table.potentialLabels.${customer.potentialKey}`)}
                       </span>
                     </td>
