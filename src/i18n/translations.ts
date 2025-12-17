@@ -27,8 +27,15 @@ type TranslationTree = {
     send: string
     restart: string
     back: string
+    modeWrite: string
+    modeSpeak: string
+    voiceLabel: string
+    voicePlaceholder: string
+    voiceLoading: string
+    voiceStart: string
     bot: {
       welcome: string
+      mode: string
       name: string
       email: string
       emailInvalid: string
@@ -46,6 +53,10 @@ type TranslationTree = {
       submit: string
       edit: string
       success: string
+      voiceSelect: string
+      voiceNotSupported: string
+      voiceInputNotSupported: string
+      listening: string
     }
   }
 }
@@ -91,8 +102,15 @@ export const translations: Record<Lang, TranslationTree> = {
       send: 'Senden',
       restart: 'Neu starten',
       back: 'Zurück zur Übersicht',
+      modeWrite: '✍️ Schreiben',
+      modeSpeak: '🎙️ Sprechen',
+      voiceLabel: 'Stimme auswählen',
+      voicePlaceholder: 'Bitte Stimme wählen',
+      voiceLoading: 'Stimmen werden geladen …',
+      voiceStart: 'Starten',
       bot: {
         welcome: '👋 Willkommen bei Claimfox. Ich begleite dich Schritt für Schritt durch die Registrierung.',
+        mode: 'Möchtest du die Daten selbst eingeben oder mit mir sprechen?',
         name: 'Wie lautet dein vollständiger Name?',
         email: 'Bitte gib deine E-Mail-Adresse ein. Wir verwenden sie nur für Updates zur Registrierung.',
         emailInvalid: 'Diese E-Mail-Adresse sieht nicht korrekt aus. Prüfe sie bitte noch einmal.',
@@ -109,7 +127,11 @@ export const translations: Record<Lang, TranslationTree> = {
         summary: 'Hier ist deine Zusammenfassung:\nName: {{name}}\nE-Mail: {{email}}\nTelefon: {{phone}}\nRolle: {{role}}',
         submit: 'Registrierung abschicken',
         edit: 'Angaben bearbeiten',
-        success: '🎉 Vielen Dank! Deine Registrierung wurde erfasst. Wir melden uns in Kürze bei dir.'
+        success: '🎉 Vielen Dank! Deine Registrierung wurde erfasst. Wir melden uns in Kürze bei dir.',
+        voiceSelect: 'Wähle zuerst die Stimme Deines Claimsfox aus.',
+        voiceNotSupported: 'Dein Browser unterstützt leider keine Sprachausgabe. Lass uns schriftlich weitermachen.',
+        voiceInputNotSupported: 'Ich kann in diesem Browser nicht zuhören. Bitte tippe deine Antwort.',
+        listening: '🎙️ Ich höre zu …'
       }
     }
   },
@@ -153,8 +175,15 @@ export const translations: Record<Lang, TranslationTree> = {
       send: 'Send',
       restart: 'Restart',
       back: 'Back to overview',
+      modeWrite: '✍️ Type',
+      modeSpeak: '🎙️ Speak',
+      voiceLabel: 'Choose a voice',
+      voicePlaceholder: 'Select a voice',
+      voiceLoading: 'Loading available voices …',
+      voiceStart: 'Start',
       bot: {
         welcome: '👋 Welcome to Claimfox. I will guide you through the registration.',
+        mode: 'Would you like to type the answers yourself or talk to me?',
         name: 'What is your full name?',
         email: 'Please enter your email address. We only use it for updates about the registration.',
         emailInvalid: 'That email address looks invalid. Please check it again.',
@@ -171,8 +200,12 @@ export const translations: Record<Lang, TranslationTree> = {
         summary: 'Here is your summary:\nName: {{name}}\nEmail: {{email}}\nPhone: {{phone}}\nRole: {{role}}',
         submit: 'Submit registration',
         edit: 'Edit information',
-        success: '🎉 Thank you! We have received your registration and will get back to you shortly.'
+        success: '🎉 Thank you! We have received your registration and will get back to you shortly.',
+        voiceSelect: 'Please choose the voice for your Claimsfox first.',
+        voiceNotSupported: 'Your browser does not support speech output. Let us continue by typing.',
+        voiceInputNotSupported: 'Listening is not available in this browser. Please type your response.',
+        listening: '🎙️ Listening …'
       }
     }
-  }
+}
 }

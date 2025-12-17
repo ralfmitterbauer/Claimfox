@@ -4,8 +4,13 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useAuth } from '@/features/auth/AuthContext'
-import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
+
+// ✅ Neues Logo (light)
+import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
+
+// ✅ Hintergrundbild Login
+import LoginBackground from '@/assets/images/background_login.png'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -50,28 +55,43 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="page login-page">
+    <section
+      className="page login-page"
+      style={{
+        minHeight: '100vh',
+        width: '100%',
+        backgroundImage: `url(${LoginBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {/* Overlay Container */}
       <div
         style={{
           width: '100%',
           maxWidth: 480,
+          padding: '2rem 1rem',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '1.75rem',
         }}
       >
-        {/* Insurfox Logo */}
+        {/* ✅ Insurfox Logo (light) */}
         <img
-          src={InsurfoxLogo}
+          src={InsurfoxLogoLight}
           alt="Insurfox"
           style={{
-            height: 120,
+            height: 110,
             objectFit: 'contain',
           }}
         />
 
-        {/* Left-aligned content */}
+        {/* Login Content */}
         <div style={{ width: '100%' }}>
           <Header title={t('login.title')} />
 
