@@ -63,6 +63,62 @@ type TranslationTree = {
   }
   brokerLanding: {
     title: string
+    login: string
+  }
+  brokerCrm: {
+    title: string
+    subtitle: string
+    kpi: {
+      activeCustomers: string
+      openLeads: string
+      dealsMonth: string
+      premiumVolume: string
+    }
+    charts: {
+      revenueTitle: string
+      revenueSubtitle: string
+      leadsTitle: string
+      leadsSubtitle: string
+      revenueLegendCurrent: string
+      revenueLegendPrevious: string
+      leadsLegendOpen: string
+      leadsLegendWon: string
+      leadsLegendLost: string
+    }
+    table: {
+      title: string
+      name: string
+      status: string
+      lastContact: string
+      potential: string
+      nextStep: string
+      statusLabels: {
+        prospect: string
+        active: string
+        onboarding: string
+        dormant: string
+      }
+      potentialLabels: {
+        high: string
+        medium: string
+        low: string
+      }
+      nextSteps: {
+        call: string
+        meeting: string
+        proposal: string
+        onboarding: string
+        renewal: string
+      }
+    }
+    activities: {
+      title: string
+      followUp: string
+      proposal: string
+      documents: string
+      audit: string
+      training: string
+    }
   }
 }
 
@@ -142,7 +198,63 @@ export const translations: Record<Lang, TranslationTree> = {
       }
     },
     brokerLanding: {
-      title: 'Maklerportal'
+      title: 'Maklerportal',
+      login: 'Login'
+    },
+    brokerCrm: {
+      title: 'CRM & Reporting',
+      subtitle: 'Gewinne Transparenz über Leads, Kund:innen und Aktivitäten in deinem Maklernetzwerk.',
+      kpi: {
+        activeCustomers: 'Aktive Kund:innen',
+        openLeads: 'Offene Leads',
+        dealsMonth: 'Abschlüsse (Monat)',
+        premiumVolume: 'Prämienvolumen'
+      },
+      charts: {
+        revenueTitle: 'Prämienentwicklung',
+        revenueSubtitle: 'Letzte 6 Monate',
+        leadsTitle: 'Leads nach Status',
+        leadsSubtitle: 'Aktueller Monat',
+        revenueLegendCurrent: 'Aktuelles Jahr',
+        revenueLegendPrevious: 'Vorjahr',
+        leadsLegendOpen: 'Offen',
+        leadsLegendWon: 'Gewonnen',
+        leadsLegendLost: 'Verloren'
+      },
+      table: {
+        title: 'Kunden & Leads',
+        name: 'Name',
+        status: 'Status',
+        lastContact: 'Letzter Kontakt',
+        potential: 'Potenzial',
+        nextStep: 'Nächster Schritt',
+        statusLabels: {
+          prospect: 'Interessent',
+          active: 'Aktiv',
+          onboarding: 'Onboarding',
+          dormant: 'Inaktiv'
+        },
+        potentialLabels: {
+          high: 'Hoch',
+          medium: 'Mittel',
+          low: 'Gering'
+        },
+        nextSteps: {
+          call: 'Telefonat planen',
+          meeting: 'Vor-Ort Termin',
+          proposal: 'Angebot senden',
+          onboarding: 'Onboarding starten',
+          renewal: 'Vertrag verlängern'
+        }
+      },
+      activities: {
+        title: 'Aktivitäten',
+        followUp: 'Follow-up mit Müller Versicherung vorbereiten',
+        proposal: 'Angebot für FleetSecure versenden',
+        documents: 'Unterlagen für Contora prüfen',
+        audit: 'Audit-Termin mit Atlas Maklerwerk vereinbaren',
+        training: 'Digitales Training für neues Partner-Team planen'
+      }
     }
   },
   en: {
@@ -220,7 +332,63 @@ export const translations: Record<Lang, TranslationTree> = {
       }
     },
     brokerLanding: {
-      title: 'Broker Portal'
+      title: 'Broker Portal',
+      login: 'Login'
+    },
+    brokerCrm: {
+      title: 'CRM & Reporting',
+      subtitle: 'Stay on top of leads, customers, and daily broker activities at a glance.',
+      kpi: {
+        activeCustomers: 'Active customers',
+        openLeads: 'Open leads',
+        dealsMonth: 'Deals (month)',
+        premiumVolume: 'Premium volume'
+      },
+      charts: {
+        revenueTitle: 'Premium trend',
+        revenueSubtitle: 'Last 6 months',
+        leadsTitle: 'Leads by status',
+        leadsSubtitle: 'Current month',
+        revenueLegendCurrent: 'Current year',
+        revenueLegendPrevious: 'Previous year',
+        leadsLegendOpen: 'Open',
+        leadsLegendWon: 'Won',
+        leadsLegendLost: 'Lost'
+      },
+      table: {
+        title: 'Customers & leads',
+        name: 'Name',
+        status: 'Status',
+        lastContact: 'Last contact',
+        potential: 'Potential',
+        nextStep: 'Next step',
+        statusLabels: {
+          prospect: 'Prospect',
+          active: 'Active',
+          onboarding: 'Onboarding',
+          dormant: 'Dormant'
+        },
+        potentialLabels: {
+          high: 'High',
+          medium: 'Medium',
+          low: 'Low'
+        },
+        nextSteps: {
+          call: 'Schedule call',
+          meeting: 'On-site meeting',
+          proposal: 'Send proposal',
+          onboarding: 'Kick off onboarding',
+          renewal: 'Renew contract'
+        }
+      },
+      activities: {
+        title: 'Activities',
+        followUp: 'Prepare follow-up for Miller Insurance',
+        proposal: 'Send proposal to FleetSecure',
+        documents: 'Review documents for Contora',
+        audit: 'Schedule audit with Atlas Brokerage',
+        training: 'Plan digital training for new partner team'
+      }
     }
   }
 }
