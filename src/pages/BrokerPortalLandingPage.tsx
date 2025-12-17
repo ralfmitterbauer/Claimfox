@@ -26,6 +26,21 @@ const whyKeys = ['relationship', 'automation', 'compliance'] as const
 export default function BrokerPortalLandingPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
+  const chipStyle: React.CSSProperties = {
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '0.65rem 1rem',
+    borderRadius: '999px',
+    background: '#ffffff',
+    color: '#0e0d1c',
+    border: '1px solid rgba(0,0,0,0.1)',
+    fontSize: '0.95rem',
+    lineHeight: 1,
+    fontWeight: 600,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  }
 
   return (
     <div
@@ -143,31 +158,16 @@ export default function BrokerPortalLandingPage() {
             </div>
             <div
               style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '1rem'
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0.7rem',
+                justifyContent: 'flex-start'
               }}
             >
               {(['coverage', 'automation', 'retention'] as const).map((key) => (
-                <div
-                  key={key}
-                  style={{
-                    padding: '1.25rem',
-                    borderRadius: '18px',
-                    background: '#ffffff',
-                    color: '#0e0d1c',
-                    border: '1px solid rgba(0,0,0,0.08)',
-                    boxShadow: '0 12px 30px rgba(8, 4, 50, 0.1)',
-                    minHeight: '110px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
-                    fontWeight: 600
-                  }}
-                >
+                <span key={key} style={{ ...chipStyle }}>
                   {t(`brokerLanding.heroStats.${key}`)}
-                </div>
+                </span>
               ))}
             </div>
           </div>
@@ -181,30 +181,15 @@ export default function BrokerPortalLandingPage() {
             </header>
             <div
               style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                gap: '1rem'
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '0.7rem'
               }}
             >
               {featureKeys.map((key) => (
-                <div
-                  key={key}
-                  style={{
-                    padding: '1.25rem 1.4rem',
-                    borderRadius: '18px',
-                    background: '#ffffff',
-                    color: '#0e0d1c',
-                    border: '1px solid rgba(0,0,0,0.08)',
-                    boxShadow: '0 12px 30px rgba(8, 4, 50, 0.1)',
-                    minHeight: '110px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    fontWeight: 600,
-                    lineHeight: 1.4
-                  }}
-                >
+                <span key={key} style={{ ...chipStyle }}>
                   {t(`brokerLanding.features.${key}`)}
-                </div>
+                </span>
               ))}
             </div>
           </div>
@@ -221,21 +206,7 @@ export default function BrokerPortalLandingPage() {
               }}
             >
               {sectorKeys.map((key) => (
-                <span
-                  key={key}
-                  style={{
-                    padding: '0.65rem 0.95rem',
-                    borderRadius: '999px',
-                    background: '#ffffff',
-                    border: '1px solid rgba(0,0,0,0.1)',
-                    fontSize: '0.95rem',
-                    color: '#0e0d1c',
-                    lineHeight: 1,
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}
-                >
+                <span key={key} style={{ ...chipStyle }}>
                   {t(`brokerLanding.sectorsList.${key}`)}
                 </span>
               ))}
