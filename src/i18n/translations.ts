@@ -64,6 +64,52 @@ type TranslationTree = {
   brokerLanding: {
     title: string
     login: string
+    heroHeadline: string
+    heroSubline: string
+    valueLine1: string
+    valueLine2: string
+    valueLine3: string
+    heroStats: {
+      coverage: string
+      automation: string
+      retention: string
+    }
+    heroCTAPrimary: string
+    heroCTASecondary: string
+    featureSectionTitle: string
+    featureSectionSubtitle: string
+    features: {
+      crm: string
+      tender: string
+      ai: string
+      insights: string
+      workflows: string
+      compliance: string
+    }
+    sectorsTitle: string
+    sectorsSubtitle: string
+    sectorsList: {
+      carriers: string
+      fleet: string
+      cargo: string
+      logistics: string
+      contents: string
+      liability: string
+      photovoltaic: string
+      cyber: string
+      do: string
+      legal: string
+      electronics: string
+      machinery: string
+      tradeCredit: string
+    }
+    whyTitle: string
+    whySubtitle: string
+    whyItems: {
+      relationship: string
+      automation: string
+      compliance: string
+    }
   }
   brokerCrm: {
     title: string
@@ -199,7 +245,53 @@ export const translations: Record<Lang, TranslationTree> = {
     },
     brokerLanding: {
       title: 'Maklerportal',
-      login: 'Login'
+      login: 'Login',
+      heroHeadline: 'Insurfox IaaS Maklerportal',
+      heroSubline: 'Digitale Front- und Backend-Lösungen für Maklerhäuser, MGAs und Coverholder in Europa.',
+      valueLine1: 'Backoffice & CRM speziell für mittelständische Makler und Industrieversicherungen.',
+      valueLine2: 'Ausschreibungs- und Tenderplattform für komplexe Industrieprogramme.',
+      valueLine3: 'KI-gestützte Tools für Bestand, Portfolio und Kundenkommunikation.',
+      heroStats: {
+        coverage: '12+ Industrie- & Spezialsparten',
+        automation: '80% automatisierte Workflows',
+        retention: '98% Renewal Rate bei Bestandskunden'
+      },
+      heroCTAPrimary: 'Demo ansehen',
+      heroCTASecondary: 'Login',
+      featureSectionTitle: 'Alles, was moderne Makler brauchen',
+      featureSectionSubtitle: 'Ein Plattform-Stack für Vertrieb, Service und Underwriting.',
+      features: {
+        crm: 'Backoffice & CRM',
+        tender: 'Tender & Ausschreibungen',
+        ai: 'KI-Tools für Bestand & Portfolio',
+        insights: 'Portfolio Insights & Reporting',
+        workflows: 'Automatisierte Workflows',
+        compliance: 'Compliance & Dokumentation'
+      },
+      sectorsTitle: 'Sparten & Produkte',
+      sectorsSubtitle: 'Einheitliche Prozesse für europäische Industrie- und Spezialsparten.',
+      sectorsList: {
+        carriers: 'Carrier’s Liability / Verkehrshaftung',
+        fleet: 'Fleet / Flotte',
+        cargo: 'Cargo / Transport & Waren',
+        logistics: 'Logistics Composite / Logistik-Komposit',
+        contents: 'Contents / Inhalt',
+        liability: 'General Liability / Betriebshaftpflicht',
+        photovoltaic: 'Photovoltaic / Photovoltaik',
+        cyber: 'Cyber / Cyber',
+        do: 'D&O / D&O',
+        legal: 'Legal Expenses / Rechtsschutz',
+        electronics: 'Electronics / Elektronik',
+        machinery: 'Machinery / Maschinen',
+        tradeCredit: 'Trade Credit / Warenkredit'
+      },
+      whyTitle: 'Warum Insurfox?',
+      whySubtitle: 'Wir kombinieren Versicherungsexpertise, Technologie und regulatorisches Know-how.',
+      whyItems: {
+        relationship: 'Dedizierte Teams begleiten eure Transformation – von Migration bis Betrieb.',
+        automation: 'Plattform-Übergreifende Prozesse mit KI, Automatisierung und offenen APIs.',
+        compliance: 'Hosting & Datenhaltung in der EU inkl. Audit, Compliance und DORA-Readiness.'
+      }
     },
     brokerCrm: {
       title: 'CRM & Reporting',
@@ -333,7 +425,53 @@ export const translations: Record<Lang, TranslationTree> = {
     },
     brokerLanding: {
       title: 'Broker Portal',
-      login: 'Login'
+      login: 'Login',
+      heroHeadline: 'Insurfox IaaS Broker Portal',
+      heroSubline: 'Digital front- and back-office operations for European brokers, MGAs, and coverholders.',
+      valueLine1: 'Back-office & CRM tailored to mid-sized commercial brokers.',
+      valueLine2: 'Tender and placement platform for complex industrial programs.',
+      valueLine3: 'AI-powered portfolio tools for retention, upsell, and client experience.',
+      heroStats: {
+        coverage: '12+ industrial & specialty lines',
+        automation: '80% automated workflows',
+        retention: '98% renewal rate on core accounts'
+      },
+      heroCTAPrimary: 'View demo',
+      heroCTASecondary: 'Login',
+      featureSectionTitle: 'Everything brokers need to scale',
+      featureSectionSubtitle: 'One platform for sales, service, and underwriting orchestration.',
+      features: {
+        crm: 'Back-office & CRM',
+        tender: 'Tender & placements',
+        ai: 'AI tools for portfolio & renewal',
+        insights: 'Portfolio insights & reporting',
+        workflows: 'Automated workflows',
+        compliance: 'Compliance & documentation'
+      },
+      sectorsTitle: 'Lines & products',
+      sectorsSubtitle: 'Unified processes for industrial and specialty lines across Europe.',
+      sectorsList: {
+        carriers: 'Carrier’s liability',
+        fleet: 'Fleet',
+        cargo: 'Cargo & transport',
+        logistics: 'Logistics composite',
+        contents: 'Contents',
+        liability: 'General liability',
+        photovoltaic: 'Photovoltaic',
+        cyber: 'Cyber',
+        do: 'D&O',
+        legal: 'Legal expenses',
+        electronics: 'Electronics',
+        machinery: 'Machinery',
+        tradeCredit: 'Trade credit'
+      },
+      whyTitle: 'Why Insurfox?',
+      whySubtitle: 'We blend insurance DNA, technology, and regulatory readiness.',
+      whyItems: {
+        relationship: 'Dedicated experts guide your transformation from migration to run mode.',
+        automation: 'Cross-platform processes with AI, automation, and open APIs.',
+        compliance: 'EU hosting, auditing, and compliance for DORA-ready operations.'
+      }
     },
     brokerCrm: {
       title: 'CRM & Reporting',

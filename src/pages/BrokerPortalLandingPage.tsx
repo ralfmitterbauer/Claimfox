@@ -5,6 +5,24 @@ import { useI18n } from '@/i18n/I18nContext'
 import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 import BrokerBackground from '@/assets/images/background_broker.png'
 
+const featureKeys = ['crm', 'tender', 'ai', 'insights', 'workflows', 'compliance'] as const
+const sectorKeys = [
+  'carriers',
+  'fleet',
+  'cargo',
+  'logistics',
+  'contents',
+  'liability',
+  'photovoltaic',
+  'cyber',
+  'do',
+  'legal',
+  'electronics',
+  'machinery',
+  'tradeCredit'
+] as const
+const whyKeys = ['relationship', 'automation', 'compliance'] as const
+
 export default function BrokerPortalLandingPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
@@ -16,7 +34,8 @@ export default function BrokerPortalLandingPage() {
         inset: 0,
         width: '100vw',
         height: '100vh',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        color: '#fff'
       }}
     >
       <div
@@ -39,63 +58,285 @@ export default function BrokerPortalLandingPage() {
       />
       <div
         style={{
+          position: 'absolute',
+          top: 'calc(var(--header-height, 64px) + 16px)',
+          right: '3vw',
+          zIndex: 2
+        }}
+      >
+        <Button
+          variant="secondary"
+          onClick={() => navigate('/broker-crm')}
+          style={{
+            borderColor: '#fff',
+            color: '#040114',
+            background: '#fff',
+            fontWeight: 600,
+            minWidth: '140px'
+          }}
+        >
+          {t('brokerLanding.login')}
+        </Button>
+      </div>
+      <div
+        style={{
           position: 'relative',
           zIndex: 1,
           width: '100%',
           height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-start',
-          color: '#fff',
-          paddingTop: 'calc(var(--header-height, 64px) + 32px)'
+          overflowY: 'auto'
         }}
       >
         <div
           style={{
-            position: 'absolute',
-            top: 'calc(var(--header-height, 64px) + 16px)',
-            right: '3vw'
+            maxWidth: '1280px',
+            margin: '0 auto',
+            padding: 'calc(var(--header-height, 64px) + 48px) clamp(1.5rem, 4vw, 4rem) 64px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '3rem'
           }}
         >
-          <Button
-            variant="secondary"
-            onClick={() => navigate('/broker-crm')}
+          <div style={{ textAlign: 'center' }}>
+            <img
+              src={InsurfoxLogoLight}
+              alt="Insurfox"
+              style={{
+                height: '90px',
+                width: 'auto',
+                maxWidth: '260px',
+                objectFit: 'contain',
+                marginBottom: '1.25rem'
+              }}
+            />
+            <h1
+              style={{
+                margin: 0,
+                color: '#ffffff',
+                fontSize: '2.4rem',
+                lineHeight: 1.3,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                textShadow: '0 10px 30px rgba(0, 0, 0, 0.55)'
+              }}
+            >
+              {t('brokerLanding.heroHeadline')}
+            </h1>
+            <p style={{ marginTop: '0.75rem', maxWidth: '720px', marginInline: 'auto', color: 'rgba(255,255,255,0.82)', fontSize: '1.05rem' }}>
+              {t('brokerLanding.heroSubline')}
+            </p>
+          </div>
+
+          <div
             style={{
-              borderColor: '#fff',
-              color: '#040114',
-              background: '#fff',
-              fontWeight: 600,
-              minWidth: '140px'
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '2rem',
+              alignItems: 'center'
             }}
           >
-            {t('brokerLanding.login')}
-          </Button>
+            <div style={{ textAlign: 'left' }}>
+              {[1, 2, 3].map((line) => (
+                <p key={line} style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.05rem', marginBottom: '0.75rem' }}>
+                  {t(`brokerLanding.valueLine${line}`)}
+                </p>
+              ))}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
+                <Button
+                  onClick={() => navigate('/broker-crm')}
+                  style={{
+                    background: '#D3F261',
+                    color: '#081120',
+                    border: 'none',
+                    paddingInline: '1.75rem',
+                    fontWeight: 700
+                  }}
+                >
+                  {t('brokerLanding.heroCTAPrimary')}
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => navigate('/broker-crm')}
+                  style={{
+                    borderColor: '#ffffff',
+                    color: '#ffffff',
+                    background: 'transparent'
+                  }}
+                >
+                  {t('brokerLanding.heroCTASecondary')}
+                </Button>
+              </div>
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '1rem'
+              }}
+            >
+              {(['coverage', 'automation', 'retention'] as const).map((key) => (
+                <div
+                  key={key}
+                  style={{
+                    padding: '1.5rem',
+                    borderRadius: '20px',
+                    background: 'rgba(0,0,0,0.35)',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    backdropFilter: 'blur(8px)',
+                    minHeight: '120px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    fontWeight: 600
+                  }}
+                >
+                  {t(`brokerLanding.heroStats.${key}`)}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <header style={{ marginBottom: '1rem' }}>
+              <p style={{ textTransform: 'uppercase', letterSpacing: '0.2em', margin: 0, color: '#d0caff' }}>
+                {t('brokerLanding.featureSectionSubtitle')}
+              </p>
+              <h2 style={{ margin: '0.35rem 0 0', fontSize: '1.9rem' }}>{t('brokerLanding.featureSectionTitle')}</h2>
+            </header>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                gap: '1rem'
+              }}
+            >
+              {featureKeys.map((key) => (
+                <div
+                  key={key}
+                  style={{
+                    padding: '1.5rem',
+                    borderRadius: '18px',
+                    background: 'rgba(0,0,0,0.4)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    backdropFilter: 'blur(10px)',
+                    minHeight: '140px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    color: '#fff',
+                    fontWeight: 600
+                  }}
+                >
+                  {t(`brokerLanding.features.${key}`)}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+              gap: '2rem',
+              alignItems: 'start'
+            }}
+          >
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1.7rem' }}>{t('brokerLanding.sectorsTitle')}</h3>
+              <p style={{ marginTop: '0.35rem', color: 'rgba(255,255,255,0.85)' }}>{t('brokerLanding.sectorsSubtitle')}</p>
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '0.75rem'
+              }}
+            >
+              {sectorKeys.map((key) => (
+                <span
+                  key={key}
+                  style={{
+                    padding: '0.65rem 1rem',
+                    borderRadius: '999px',
+                    background: 'rgba(0,0,0,0.45)',
+                    border: '1px solid rgba(255,255,255,0.18)',
+                    fontSize: '0.95rem',
+                    color: '#fff',
+                    textAlign: 'center'
+                  }}
+                >
+                  {t(`brokerLanding.sectorsList.${key}`)}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 style={{ margin: 0, fontSize: '1.75rem' }}>{t('brokerLanding.whyTitle')}</h3>
+            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>{t('brokerLanding.whySubtitle')}</p>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '1rem',
+                marginTop: '1.25rem'
+              }}
+            >
+              {whyKeys.map((key) => (
+                <div
+                  key={key}
+                  style={{
+                    padding: '1.5rem',
+                    borderRadius: '18px',
+                    background: 'rgba(0,0,0,0.4)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    minHeight: '160px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    color: 'rgba(255,255,255,0.95)'
+                  }}
+                >
+                  {t(`brokerLanding.whyItems.${key}`)}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            style={{
+              padding: '2rem',
+              borderRadius: '24px',
+              border: '1px solid rgba(255,255,255,0.18)',
+              background:
+                'linear-gradient(135deg, rgba(211,242,97,0.15), rgba(144,68,255,0.15))',
+              textAlign: 'center'
+            }}
+          >
+            <h3 style={{ marginTop: 0, fontSize: '1.9rem', color: '#ffffff' }}>{t('brokerLanding.heroHeadline')}</h3>
+            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>{t('brokerLanding.valueLine2')}</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', flexWrap: 'wrap', marginTop: '1.25rem' }}>
+              <Button
+                onClick={() => navigate('/broker-crm')}
+                style={{
+                  background: '#D3F261',
+                  color: '#081120',
+                  border: 'none',
+                  paddingInline: '2rem',
+                  fontWeight: 700
+                }}
+              >
+                {t('brokerLanding.heroCTAPrimary')}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => navigate('/broker-crm')}
+                style={{ borderColor: '#ffffff', color: '#ffffff', background: 'transparent', minWidth: '160px' }}
+              >
+                {t('brokerLanding.heroCTASecondary')}
+              </Button>
+            </div>
+          </div>
         </div>
-        <img
-          src={InsurfoxLogoLight}
-          alt="Insurfox"
-          style={{
-            height: '90px',
-            width: 'auto',
-            maxWidth: '260px',
-            objectFit: 'contain',
-            marginBottom: '1.25rem'
-          }}
-        />
-        <h1
-          style={{
-            margin: 0,
-            color: '#ffffff',
-            fontSize: '1.85rem',
-            lineHeight: 1.4,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
-            textShadow: '0 10px 30px rgba(0, 0, 0, 0.45)'
-          }}
-        >
-          {t('brokerLanding.title')}
-        </h1>
       </div>
     </div>
   )
