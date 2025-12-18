@@ -220,7 +220,7 @@ export default function MarketingLandingPage() {
         }}
       >
         <Button
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/fleet-reporting')}
           style={{
             background: '#D4380D',
             borderColor: '#D4380D',
@@ -252,22 +252,14 @@ export default function MarketingLandingPage() {
             gap: '2.5rem'
           }}
         >
-          <section
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '2rem',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}
-          >
-            <div style={{ flex: '1 1 360px', minWidth: '320px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <section style={heroGridStyle}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '680px' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '150px', height: 'auto' }} />
                 <h1 style={{ margin: 0, fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', letterSpacing: '-0.03em' }}>
                   {t('marketingFleet.hero.title')}
                 </h1>
-                <p style={{ margin: 0, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '560px' }}>
+                <p style={{ margin: 0, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '640px' }}>
                   {t('marketingFleet.hero.subtitle')}
                 </p>
               </div>
@@ -298,11 +290,13 @@ export default function MarketingLandingPage() {
                 ))}
               </div>
             </div>
-            <IllustrationPanel
-              title={t('marketingFleet.hero.illustrationTitle')}
-              value={t('marketingFleet.hero.illustrationValue')}
-              description={t('marketingFleet.hero.illustrationDescription')}
-            />
+            <div style={{ justifySelf: 'end', width: '100%', maxWidth: '480px' }}>
+              <IllustrationPanel
+                title={t('marketingFleet.hero.illustrationTitle')}
+                value={t('marketingFleet.hero.illustrationValue')}
+                description={t('marketingFleet.hero.illustrationDescription')}
+              />
+            </div>
           </section>
 
           <section style={glassSectionStyle}>
@@ -548,6 +542,13 @@ const sectionTitleStyle: React.CSSProperties = {
   margin: 0,
   fontSize: '1.5rem',
   letterSpacing: '-0.01em'
+}
+
+const heroGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)',
+  gap: '2.5rem',
+  alignItems: 'start'
 }
 
 const featureCardStyle: React.CSSProperties = {
