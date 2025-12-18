@@ -6,8 +6,8 @@ import { useI18n } from '@/i18n/I18nContext'
 import BackgroundLogin from '@/assets/images/background_login.png'
 
 type KpiItem =
-  | { key: keyof typeof KPI_LABELS; value: string; icon: React.ReactNode; unit?: string }
-  | { key: keyof typeof KPI_LABELS; icon: React.ReactNode; valueKey: string }
+  | { key: keyof typeof KPI_LABELS; value: string; icon: React.ReactNode; unit?: string; valueSize?: 'normal' | 'compact' }
+  | { key: keyof typeof KPI_LABELS; icon: React.ReactNode; valueKey: string; valueSize?: 'normal' | 'compact' }
 
 const KPI_LABELS = {
   totalClaims: 'fleetReporting.kpi.totalClaims',
@@ -28,7 +28,7 @@ const kpis: KpiItem[] = [
   { key: 'coverageRate', value: '86%', icon: <IconShieldCheck /> },
   { key: 'activeVehicles', value: '312', icon: <IconTruck /> },
   { key: 'downtime', value: '3.1', icon: <IconClock /> },
-  { key: 'topCause', icon: <IconStopOctagon />, valueKey: 'fleetReporting.kpiValues.topCause' }
+  { key: 'topCause', icon: <IconStopOctagon />, valueKey: 'fleetReporting.kpiValues.topCause', valueSize: 'compact' }
 ] as const
 
 const monthlyClaims = [
@@ -546,7 +546,17 @@ const CLAIM_AI_OPTIONS: Array<{ value: ClaimRow['aiTag']; labelKey: string }> = 
   { value: 'normal', labelKey: 'fleetReporting.table.aiBadges.normal' }
 ]
 
-function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function KpiCard({
+  icon,
+  label,
+  value,
+  valueSize = 'normal'
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  valueSize?: 'normal' | 'compact'
+}) {
   return (
     <Card
       variant="glass"
@@ -560,12 +570,12 @@ function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string;
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</div>
-        <div>
+        <div style={{ minWidth: 0 }}>
           <p style={{ margin: 0, color: 'rgba(255,255,255,0.78)', fontSize: '0.9rem' }}>{label}</p>
           <div
             style={{
               marginTop: '0.3rem',
-              fontSize: '2rem',
+              fontSize: valueSize === 'compact' ? '1.4rem' : '2rem',
               fontWeight: 700,
               color: '#ffffff',
               maxWidth: '100%',
@@ -859,7 +869,7 @@ export default function FleetReportingPage() {
             {kpis.map((item) => {
               const label = t(`fleetReporting.kpi.${item.key}`)
               const value = 'valueKey' in item ? t(item.valueKey) : item.value
-              return <KpiCard key={item.key} icon={item.icon} label={label} value={value} />
+              return <KpiCard key={item.key} icon={item.icon} label={label} value={value} valueSize={item.valueSize} />
             })}
           </div>
 
