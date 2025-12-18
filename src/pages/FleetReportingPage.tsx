@@ -206,10 +206,19 @@ type ClaimRow = {
   note: string
 }
 
+const isoDate = (date: Date) => date.toISOString().slice(0, 10)
+const daysAgo = (days: number) => {
+  const d = new Date()
+  d.setDate(d.getDate() - days)
+  return isoDate(d)
+}
+
+const toStartOfDay = (value: string) => new Date(`${value}T00:00:00`)
+
 const INITIAL_CLAIMS: ClaimRow[] = [
   {
     id: 'c1',
-    date: '2025-02-12',
+    date: daysAgo(10),
     vehicle: 'DE-789-XY',
     vin: 'WVWZZZ1KZ5W113456',
     route: 'Berlin → Leipzig (A9)',
@@ -222,7 +231,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c2',
-    date: '2025-02-08',
+    date: daysAgo(18),
     vehicle: 'HH-CARGO-12',
     vin: 'WDB9510231K556789',
     route: 'Hamburg port logistics',
@@ -235,7 +244,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c3',
-    date: '2025-02-02',
+    date: daysAgo(32),
     vehicle: 'M-FL-2045',
     vin: 'WMWZZZ3CZ4P112233',
     route: 'Munich → Salzburg',
@@ -248,7 +257,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c4',
-    date: '2025-01-28',
+    date: daysAgo(60),
     vehicle: 'K-TR-330',
     vin: 'YS2P4X20002156789',
     route: 'Cologne inner city',
@@ -261,7 +270,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c5',
-    date: '2025-01-22',
+    date: daysAgo(90),
     vehicle: 'FRA-LOG-71',
     vin: '1FTFW1E57KFA12345',
     route: 'Frankfurt air cargo hub',
@@ -274,7 +283,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c6',
-    date: '2025-01-18',
+    date: daysAgo(120),
     vehicle: 'B-DEL-901',
     vin: '1FTSW21R08EC46991',
     route: 'Berlin delivery district',
@@ -287,7 +296,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c7',
-    date: '2025-01-11',
+    date: daysAgo(160),
     vehicle: 'HH-DEL-72',
     vin: 'WDDGF8ABXEA939585',
     route: 'Hamburg Innenstadt',
@@ -300,7 +309,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c8',
-    date: '2024-12-28',
+    date: daysAgo(200),
     vehicle: 'FRA-LOG-71',
     vin: '1FTFW1E57KFA12345',
     route: 'Frankfurt air cargo hub',
@@ -313,7 +322,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c9',
-    date: '2024-12-05',
+    date: daysAgo(240),
     vehicle: 'DE-789-XY',
     vin: 'WVWZZZ1KZ5W113456',
     route: 'Berlin ring road',
@@ -326,7 +335,7 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   },
   {
     id: 'c10',
-    date: '2024-11-22',
+    date: daysAgo(280),
     vehicle: 'M-FL-2045',
     vin: 'WMWZZZ3CZ4P112233',
     route: 'Munich urban delivery',
@@ -336,6 +345,32 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     cost: 1760,
     aiHint: 'flag',
     note: 'Third-party damage claim pending.'
+  },
+  {
+    id: 'c11',
+    date: daysAgo(320),
+    vehicle: 'K-TR-330',
+    vin: 'YS2P4X20002156789',
+    route: 'Cologne inner city',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'closed',
+    cost: 3980,
+    aiHint: 'normal',
+    note: 'Completed repair with OEM parts.'
+  },
+  {
+    id: 'c12',
+    date: daysAgo(350),
+    vehicle: 'HH-CARGO-12',
+    vin: 'WDB9510231K556789',
+    route: 'Hamburg port logistics',
+    claimType: 'cargo',
+    coverage: 'covered',
+    status: 'open',
+    cost: 2875,
+    aiHint: 'watch',
+    note: 'Awaiting cargo inspection report.'
   }
 ]
 
@@ -682,7 +717,7 @@ export default function FleetReportingPage() {
   const [vehicleStatus, setVehicleStatus] = useState<VehicleStatusFilter>('all')
   const [vehicleSearch, setVehicleSearch] = useState('')
   const [damageType, setDamageType] = useState<'all' | 'motor' | 'liability' | 'cargo'>('all')
-  const [rangeFilter, setRangeFilter] = useState<'30d' | '12m'>('30d')
+  const [rangeFilter, setRangeFilter] = useState<'30d' | '12m'>('12m')
   const [query, setQuery] = useState('')
   const tableScrollRef = useRef<HTMLDivElement | null>(null)
   const [showScrollControls, setShowScrollControls] = useState(false)
@@ -706,16 +741,16 @@ export default function FleetReportingPage() {
 
   const filteredClaims = useMemo(() => {
     const q = query.trim().toLowerCase()
-    const now = new Date()
-    const threshold = new Date()
-    threshold.setDate(threshold.getDate() - (rangeFilter === '30d' ? 30 : 365))
+    const rangeDays = rangeFilter === '30d' ? 30 : 365
+    const minTimestamp = Date.now() - rangeDays * 24 * 60 * 60 * 1000
 
     return claims.filter((row) => {
       if (damageType !== 'all' && row.claimType !== damageType) {
         return false
       }
-      const rowDate = new Date(row.date)
-      if (!Number.isNaN(rowDate.getTime()) && rowDate < threshold) {
+      const rowDate = toStartOfDay(row.date)
+      const rowTime = rowDate.getTime()
+      if (!Number.isNaN(rowTime) && rowTime < minTimestamp) {
         return false
       }
       if (q && !row.vehicle.toLowerCase().includes(q) && !row.vin.toLowerCase().includes(q)) {
