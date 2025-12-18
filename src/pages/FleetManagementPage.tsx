@@ -600,14 +600,9 @@ export default function FleetManagementPage() {
                     </div>
                     <div style={detailRowStyle}>
                       <p style={detailLabelStyle}>{t('fleetManagement.filters.statusLabel')}</p>
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', alignItems: 'center' }}>
-                        <p style={{ ...detailValueStyle, margin: 0 }}>
-                          {t(`fleetManagement.list.statusBadges.${selectedVehicle.status}`)}
-                        </p>
-                        <span style={getStatusBadgeStyles(selectedVehicle.status)}>
-                          {t(`fleetManagement.list.statusBadges.${selectedVehicle.status}`)}
-                        </span>
-                      </div>
+                      <span style={getStatusBadgeStyles(selectedVehicle.status)}>
+                        {t(`fleetManagement.list.statusBadges.${selectedVehicle.status}`)}
+                      </span>
                     </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
