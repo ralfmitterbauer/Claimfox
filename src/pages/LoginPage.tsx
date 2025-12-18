@@ -9,8 +9,8 @@ import { useI18n } from '@/i18n/I18nContext'
 // ✅ Neues Logo (light)
 import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 
-// ✅ Hintergrundbild Login
-import LoginBackground from '@/assets/images/background1.jpg'
+// ✅ Hintergrundbild Login (shared with /home)
+import LoginBackground from '@/assets/images/background_login.png'
 
 export default function LoginPage() {
   const [username, setUsername] = useState('')
@@ -61,7 +61,7 @@ export default function LoginPage() {
         position: 'relative',
         minHeight: '100vh',
         width: '100%',
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.35)), url(${LoginBackground})`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url(${LoginBackground})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
