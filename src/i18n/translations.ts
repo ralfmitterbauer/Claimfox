@@ -258,6 +258,7 @@ export const translations: Record<Lang, TranslationTree> = {
     marketing: {
       title: 'Insurfox Plattform',
       subtitle: 'Digitale Front- und Backend-Lösungen für Makler, MGAs und Flotten.',
+      login: 'Login',
       highlights: {
         title: 'Highlights',
         ai: 'KI-gestützte Prozesse',
@@ -775,6 +776,7 @@ export const translations: Record<Lang, TranslationTree> = {
     marketing: {
       title: 'Insurfox Platform',
       subtitle: 'Digital front- and back-office solutions for brokers, MGAs, and fleets.',
+      login: 'Login',
       highlights: {
         title: 'Highlights',
         ai: 'AI-powered processes',

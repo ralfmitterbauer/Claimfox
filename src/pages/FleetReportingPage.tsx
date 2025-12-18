@@ -575,13 +575,23 @@ function KpiCard({
           <div
             style={{
               marginTop: '0.3rem',
-              fontSize: valueSize === 'compact' ? '1.4rem' : '2rem',
+              fontSize: valueSize === 'compact' ? '1rem' : '2rem',
               fontWeight: 700,
               color: '#ffffff',
               maxWidth: '100%',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap'
+              ...(valueSize === 'compact'
+                ? {
+                    lineHeight: 1.15,
+                    wordBreak: 'break-word',
+                    overflowWrap: 'anywhere',
+                    whiteSpace: 'normal',
+                    overflow: 'hidden'
+                  }
+                : {
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  })
             }}
             title={value}
           >

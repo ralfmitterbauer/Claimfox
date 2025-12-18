@@ -103,6 +103,27 @@ export default function MarketingLandingPage() {
           zIndex: 1
         }}
       />
+      <div
+        style={{
+          position: 'fixed',
+          top: 'calc(var(--header-height, 72px) + 12px)',
+          right: '3vw',
+          zIndex: 3
+        }}
+      >
+        <Button
+          onClick={() => navigate('/home')}
+          style={{
+            background: '#D4380D',
+            borderColor: '#D4380D',
+            borderRadius: '999px',
+            padding: '0.65rem 1.4rem',
+            boxShadow: '0 14px 36px rgba(0,0,0,0.35)'
+          }}
+        >
+          {t('marketing.login')}
+        </Button>
+      </div>
       <section
         className="page"
         style={{
