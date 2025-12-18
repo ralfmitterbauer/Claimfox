@@ -8,6 +8,29 @@ import BackgroundLogin from '@/assets/images/background_login.png'
 const GLASS_TEXT = 'rgba(255,255,255,0.85)'
 const GLASS_SUBTLE = 'rgba(255,255,255,0.65)'
 
+const TRAFFIC_COLORS = {
+  green: '#16A34A',
+  orange: '#F97316',
+  red: '#DC2626',
+  blue: '#2563EB'
+} as const
+
+const BADGE_BASE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minWidth: '100px',
+  height: '34px',
+  borderRadius: '999px',
+  fontSize: '0.85rem',
+  fontWeight: 700,
+  whiteSpace: 'nowrap',
+  textAlign: 'center',
+  color: '#ffffff',
+  border: '1px solid transparent',
+  transition: 'transform 0.15s ease, filter 0.15s ease'
+}
+
 type VehicleType = 'car' | 'truck' | 'trailer' | 'delivery'
 type VehicleStatus = 'active' | 'maintenance' | 'down'
 type InspectionStatus = 'ok' | 'dueSoon' | 'overdue'
@@ -216,6 +239,13 @@ const STATUS_FILTERS: Array<{ value: 'all' | VehicleStatus; labelKey: string }> 
   { value: 'down', labelKey: 'fleetManagement.filters.statusOptions.down' }
 ]
 
+const STATUS_FILTER_VARIANTS: Record<'all' | VehicleStatus, keyof typeof TRAFFIC_COLORS> = {
+  all: 'blue',
+  active: 'green',
+  maintenance: 'orange',
+  down: 'red'
+}
+
 export default function FleetManagementPage() {
   const { t } = useI18n()
   const [vehicles, setVehicles] = useState<VehicleRecord[]>(INITIAL_VEHICLES)
@@ -258,20 +288,39 @@ export default function FleetManagementPage() {
     setShowDriverPicker(false)
   }
 
+  function trafficBadgeStyles(
+    variant: keyof typeof TRAFFIC_COLORS,
+    overrides?: React.CSSProperties
+  ): React.CSSProperties {
+    const color = TRAFFIC_COLORS[variant]
+    return {
+      ...BADGE_BASE,
+      background: color,
+      borderColor: color,
+      ...overrides
+    }
+  }
+
   function getLicenseBadgeStyles(status: 'valid' | 'expiring' | 'expired') {
     if (status === 'valid') {
-      return { background: '#16A34A', border: '2px solid #15803D' }
+      return trafficBadgeStyles('green', { minWidth: '80px', height: '30px' })
     }
     if (status === 'expiring') {
-      return { background: '#F97316', border: '2px solid #EA580C' }
+      return trafficBadgeStyles('orange', { minWidth: '80px', height: '30px' })
     }
-    return { background: '#DC2626', border: '2px solid #B91C1C' }
+    return trafficBadgeStyles('red', { minWidth: '80px', height: '30px' })
   }
 
   function getStatusBadgeStyles(status: VehicleStatus) {
-    if (status === 'active') return { background: 'rgba(34,197,94,0.22)', border: '1px solid rgba(34,197,94,0.45)' }
-    if (status === 'maintenance') return { background: 'rgba(249,115,22,0.22)', border: '1px solid rgba(249,115,22,0.45)' }
-    return { background: 'rgba(248,113,113,0.22)', border: '1px solid rgba(248,113,113,0.45)' }
+    if (status === 'active') return trafficBadgeStyles('green')
+    if (status === 'maintenance') return trafficBadgeStyles('orange')
+    return trafficBadgeStyles('red')
+  }
+
+  function getInspectionBadgeStyles(status: InspectionStatus) {
+    if (status === 'ok') return trafficBadgeStyles('green')
+    if (status === 'dueSoon') return trafficBadgeStyles('orange')
+    return trafficBadgeStyles('red')
   }
 
   return (
@@ -374,12 +423,19 @@ export default function FleetManagementPage() {
                     type="button"
                     onClick={() => setStatusFilter(filter.value)}
                     style={{
-                      borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: statusFilter === filter.value ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
-                      padding: '0.35rem 0.9rem',
-                      cursor: 'pointer'
+                      ...trafficBadgeStyles(STATUS_FILTER_VARIANTS[filter.value], {
+                        minWidth: '110px',
+                        height: '34px',
+                        cursor: 'pointer',
+                        transform: statusFilter === filter.value ? 'translateY(-1px)' : undefined
+                      })
+                    }}
+                    onMouseEnter={(event) => {
+                      event.currentTarget.style.filter = 'brightness(1.05)'
+                    }}
+                    onMouseLeave={(event) => {
+                      event.currentTarget.style.filter = 'none'
+                      event.currentTarget.style.transform = statusFilter === filter.value ? 'translateY(-1px)' : 'none'
                     }}
                   >
                     {t(filter.labelKey)}
@@ -444,18 +500,7 @@ export default function FleetManagementPage() {
                     </span>
                   </div>
                   <span style={{ color: GLASS_SUBTLE }}>{vehicle.location}</span>
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: '999px',
-                      padding: '0.25rem 0.6rem',
-                      color: '#ffffff',
-                      fontSize: '0.8rem',
-                      ...getStatusBadgeStyles(vehicle.status)
-                    }}
-                  >
+                  <span style={getStatusBadgeStyles(vehicle.status)}>
                     {t(`fleetManagement.list.statusBadges.${vehicle.status}`)}
                   </span>
                   <span style={{ color: GLASS_SUBTLE }}>
@@ -506,7 +551,7 @@ export default function FleetManagementPage() {
                     <span>
                       {t('fleetReporting.vehicles.cards.inspection')}: {selectedVehicle.inspectionDate}
                     </span>
-                    <span>
+                    <span style={getInspectionBadgeStyles(selectedVehicle.inspectionStatus)}>
                       {t('fleetManagement.detail.inspectionStatus.' + selectedVehicle.inspectionStatus)}
                     </span>
                   </div>
@@ -517,15 +562,7 @@ export default function FleetManagementPage() {
                   <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: GLASS_TEXT, display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
                     <li>
                       {t('fleetManagement.detail.inspection')}: {selectedVehicle.inspectionDate}{' '}
-                      <span
-                        style={{
-                          marginLeft: '0.4rem',
-                          borderRadius: '999px',
-                          padding: '0.1rem 0.6rem',
-                          fontSize: '0.7rem',
-                          background: 'rgba(0,0,0,0.3)'
-                        }}
-                      >
+                      <span style={getInspectionBadgeStyles(selectedVehicle.inspectionStatus)}>
                         {t(`fleetManagement.detail.inspectionStatus.${selectedVehicle.inspectionStatus}`)}
                       </span>
                     </li>
@@ -594,13 +631,10 @@ export default function FleetManagementPage() {
                           <td>{policy.term}</td>
                           <td>
                             <span
-                              style={{
-                                padding: '0.25rem 0.6rem',
-                                borderRadius: '999px',
-                                fontSize: '0.75rem',
-                                background: policy.status === 'active' ? '#16A34A' : '#F97316',
-                                border: `2px solid ${policy.status === 'active' ? '#15803D' : '#EA580C'}`
-                              }}
+                              style={trafficBadgeStyles(
+                                policy.status === 'active' ? 'green' : 'orange',
+                                { minWidth: '90px', height: '32px', fontSize: '0.8rem' }
+                              )}
                             >
                               {t(`fleetManagement.detail.policyStatus.${policy.status}`)}
                             </span>
