@@ -50,10 +50,13 @@ type BotMessage = {
   timestamp: number
 }
 
+type MessageSource = 'text' | 'voice' | 'quick'
+
 type UserMessage = {
   id: string
   author: 'user'
   text: string
+  source: MessageSource
   timestamp: number
 }
 
@@ -114,11 +117,12 @@ function createBotMessage(key: string, vars?: Record<string, string>): BotMessag
   }
 }
 
-function createUserMessage(text: string): UserMessage {
+function createUserMessage(text: string, source: MessageSource = 'text'): UserMessage {
   return {
     id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
     author: 'user',
     text,
+    source,
     timestamp: Date.now()
   }
 }
@@ -174,6 +178,62 @@ function splitForSpeech(text: string): string[] {
     .filter(Boolean)
 }
 
+const ACCENT_GREEN = '#D3F261'
+const SR_ONLY: React.CSSProperties = {
+  position: 'absolute',
+  width: '1px',
+  height: '1px',
+  padding: 0,
+  margin: '-1px',
+  overflow: 'hidden',
+  clip: 'rect(0, 0, 0, 0)',
+  whiteSpace: 'nowrap',
+  border: 0
+}
+const ICON_STROKE = '#0e0d1c'
+
+type IconProps = { size?: number }
+
+function MicIcon({ size = 20 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={ICON_STROKE}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+      <path d="M5 10a7 7 0 0 0 14 0" />
+      <line x1="12" y1="17" x2="12" y2="22" />
+      <line x1="8" y1="22" x2="16" y2="22" />
+    </svg>
+  )
+}
+
+function SendIcon({ size = 20 }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={ICON_STROKE}
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m22 2-7 20-4-9-9-4 20-7Z" />
+      <path d="M22 2 11 13" />
+    </svg>
+  )
+}
+
 async function speakChunks(
   text: string,
   voice: SpeechSynthesisVoice,
@@ -190,7 +250,7 @@ async function speakChunks(
       u.voice = voice
       u.lang = voice.lang
       u.rate = opts?.rate ?? 0.9
-      u.pitch = opts?.pitch ?? 1.05
+      u.pitch = opts?.pitch ?? 1
       u.volume = opts?.volume ?? 1
 
       u.onend = () => resolve()
@@ -200,9 +260,31 @@ async function speakChunks(
 
     const lastChar = chunk.slice(-1)
     const pause =
-      lastChar === ',' ? 180 : lastChar === '.' || lastChar === '!' || lastChar === '?' ? 280 : 220
+      lastChar === ',' ? 170 : lastChar === '.' || lastChar === '!' || lastChar === '?' ? 230 : 200
     await new Promise((r) => setTimeout(r, pause))
   }
+}
+
+function normalizeSpokenEmail(raw: string, currentLang: string) {
+  if (!raw) return raw
+  let normalized = raw.toLowerCase()
+  const replacementMap: Record<string, string[]> = {
+    '@': ['klammeraffe', 'ät', 'at', 'atzeichen', 'at-zeichen', 'commercial at'],
+    '.': ['punkt', 'dot'],
+    '-': ['minus', 'hyphen', 'bindestrich', 'dash'],
+    _: ['unterstrich', 'underscore']
+  }
+
+  Object.entries(replacementMap).forEach(([symbol, variants]) => {
+    const pattern = new RegExp(`\\b(${variants.join('|')})\\b`, 'gi')
+    normalized = normalized.replace(pattern, ` ${symbol} `)
+  })
+
+  normalized = normalized.replace(/\s+/g, '')
+  if (currentLang === 'de') {
+    normalized = normalized.replace(/ae/g, 'ä').replace(/oe/g, 'ö').replace(/ue/g, 'ü')
+  }
+  return normalized
 }
 
 type VoiceChoiceId = string
@@ -247,7 +329,7 @@ export default function RegistrationPage() {
   )
 
   const navigate = useNavigate()
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
 
   // ✅ FIX: diese Flags müssen VOR ihrer Verwendung deklariert sein
   const waitingForModeSelection = state.step === 'mode'
@@ -262,10 +344,7 @@ export default function RegistrationPage() {
   )
 
   const speechSupported = isBrowser() && 'speechSynthesis' in window
-  const recognitionSupported = useMemo(
-    () => (isBrowser() ? Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) : false),
-    []
-  )
+  const recognitionSupported = isBrowser() && Boolean(window.SpeechRecognition || window.webkitSpeechRecognition)
 
   const voiceChoices: VoiceChoice[] = useMemo(() => {
     if (!voices.length) return []
@@ -295,8 +374,17 @@ export default function RegistrationPage() {
   useEffect(() => {
     if (!voiceChoices.length) return
     if (state.voiceChoiceId && voiceChoices.some((choice) => choice.id === state.voiceChoiceId)) return
-    dispatch({ type: 'SET_VOICE_CHOICE_ID', payload: voiceChoices[0].id })
-  }, [state.voiceChoiceId, voiceChoices])
+    const prefix = lang === 'de' ? 'de' : 'en'
+    const lowerPrefix = prefix.toLowerCase()
+    const googleMatch = voiceChoices.find((choice) => {
+      const choiceLang = (choice.voice.lang || '').toLowerCase()
+      const choiceName = (choice.voice.name || '').toLowerCase()
+      return choiceLang.startsWith(`${lowerPrefix}-`) && choiceName.includes('google')
+    })
+    const langMatch = voiceChoices.find((choice) => (choice.voice.lang || '').toLowerCase().startsWith(lowerPrefix))
+    const fallbackChoice = googleMatch ?? langMatch ?? voiceChoices[0]
+    dispatch({ type: 'SET_VOICE_CHOICE_ID', payload: fallbackChoice.id })
+  }, [lang, state.voiceChoiceId, voiceChoices])
 
   const queueBotMessages = useCallback((items: Array<{ key: string; vars?: Record<string, string> }>) => {
     if (!items.length) return
@@ -348,16 +436,26 @@ export default function RegistrationPage() {
     sendUserInput(inputValue)
   }
 
-  function sendUserInput(value: string) {
+  const normalizeByStep = useCallback(
+    (text: string, step: Step) => {
+      if (step === 'email') return normalizeSpokenEmail(text, lang)
+      return text
+    },
+    [lang]
+  )
+
+  function sendUserInput(value: string, source: MessageSource = 'text') {
     if (state.isTyping || state.blocked || state.completed) return
     const trimmed = value.trim()
     if (!trimmed) return
 
     if (state.inputMode === 'voice') stopVoiceInteraction()
 
-    dispatch({ type: 'ADD_MESSAGE', payload: createUserMessage(trimmed) })
+    const activeStep = state.step
+    const processed = normalizeByStep(trimmed, activeStep)
+    dispatch({ type: 'ADD_MESSAGE', payload: createUserMessage(processed, source) })
     setInputValue('')
-    processUserResponse(trimmed)
+    processUserResponse(processed)
   }
 
   const startRecognition = useCallback(() => {
@@ -373,7 +471,8 @@ export default function RegistrationPage() {
     recognitionRef.current = recognition
 
     const browserLang = typeof navigator !== 'undefined' ? navigator.language : undefined
-    recognition.lang = selectedVoice?.lang ?? browserLang ?? 'de-DE'
+    const uiLang = lang === 'de' ? 'de-DE' : 'en-US'
+    recognition.lang = selectedVoice?.lang ?? browserLang ?? uiLang
     recognition.continuous = false
     recognition.interimResults = false
 
@@ -417,7 +516,7 @@ export default function RegistrationPage() {
     } catch {
       fallbackToTextInput()
     }
-  }, [fallbackToTextInput, queueBotMessages, selectedVoice, stopVoiceInteraction])
+  }, [fallbackToTextInput, lang, queueBotMessages, selectedVoice, stopVoiceInteraction])
 
   const speakQuestion = useCallback(
     async (text: string) => {
@@ -715,13 +814,14 @@ export default function RegistrationPage() {
     if (!trimmed) return
 
     const realStep = lastRealStepRef.current
+    const processed = normalizeByStep(trimmed, realStep)
 
     setPendingTranscript(null)
     lastConfirmSessionRef.current = null
     dispatch({ type: 'SET_STEP', payload: realStep })
-    dispatch({ type: 'ADD_MESSAGE', payload: createUserMessage(trimmed) })
+    dispatch({ type: 'ADD_MESSAGE', payload: createUserMessage(processed, 'voice') })
     setInputValue('')
-    processUserResponse(trimmed, realStep)
+    processUserResponse(processed, realStep)
   }
 
   function handleVoiceConfirmYes() {
@@ -768,6 +868,7 @@ export default function RegistrationPage() {
   const showMicButton = state.inputMode === 'voice'
   const micButtonBlocked =
     !showMicButton ||
+    !recognitionSupported ||
     waitingForModeSelection ||
     waitingForVoiceSetup ||
     state.blocked ||
@@ -788,6 +889,9 @@ export default function RegistrationPage() {
     'registration.voice.noRecognition',
     'Voice input wird auf diesem Gerät nicht unterstützt – bitte tippe Deine Antworten.'
   )
+  const labelSourceVoice = tr('registration.messageSource.voice', 'Sprechen')
+  const labelSourceText = tr('registration.messageSource.text', 'Eingabe')
+  const labelSourceQuick = tr('registration.messageSource.quick', 'Schnellantwort')
 
   const labelConfirmTitle = tr('registration.voiceConfirm.title', 'Ist das so richtig?')
   const labelConfirmYes = tr('registration.voiceConfirm.yes', '✅ Ja')
@@ -798,312 +902,450 @@ export default function RegistrationPage() {
   )
 
   return (
-    <section
-      className="page"
-      style={{
-        minHeight: '100vh',
-        width: '100%',
-        padding: '0',
-        margin: '0',
-        backgroundImage: `linear-gradient(rgba(8, 0, 100, 0.55), rgba(8, 0, 100, 0.55)), url(${BackgroundLogin})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'scroll', // mobile-safe
-        display: 'flex',
-        justifyContent: 'center'
-      }}
-    >
-      <div style={{ width: '100%', maxWidth: 960, padding: 'calc(var(--header-height) + 24px) 16px 32px' }}>
-        <Header
-          title={t('registration.title')}
-          subtitle={t('registration.subtitle')}
-          actions={
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <Button variant="secondary" onClick={() => navigate('/roles')}>
-                {t('registration.back')}
-              </Button>
-              <Button variant="secondary" onClick={handleRestart}>
-                {t('registration.restart')}
-              </Button>
-            </div>
-          }
-        />
+    <div style={{ position: 'relative', minHeight: '100vh' }}>
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: -2,
+          backgroundImage: `url(${BackgroundLogin})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: -1,
+          backgroundImage: 'linear-gradient(180deg, rgba(8,16,64,0.7), rgba(8,16,64,0.45))'
+        }}
+      />
 
-        <Card>
-          <div
-            ref={chatContainerRef}
+      <section
+        className="registration-page"
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          minHeight: '100vh',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: 'calc(var(--header-height) + 32px) 1rem 3rem'
+        }}
+      >
+        <div style={{ width: '100%', maxWidth: 960 }}>
+          <Header
+            title={t('registration.title')}
+            subtitle={t('registration.subtitle')}
+            actions={
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <Button variant="secondary" onClick={() => navigate('/roles')}>
+                  {t('registration.back')}
+                </Button>
+                <Button variant="secondary" onClick={handleRestart}>
+                  {t('registration.restart')}
+                </Button>
+              </div>
+            }
+          />
+
+          <Card
             style={{
-              background: '#f8f8ff',
-              borderRadius: '18px',
-              padding: '1.25rem',
-              minHeight: '420px',
-              maxHeight: '420px',
-              overflowY: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '0.75rem',
-              marginBottom: '1rem'
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.25)',
+              borderRadius: '28px',
+              padding: '1.5rem',
+              backdropFilter: 'blur(26px)',
+              color: '#0e0d1c',
+              boxShadow: '0 30px 80px rgba(8,0,40,0.35)'
             }}
           >
-            {state.messages.map((message) => (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minHeight: '70vh' }}>
               <div
-                key={message.id}
+                ref={chatContainerRef}
                 style={{
+                  flex: 1,
+                  background: 'rgba(255,255,255,0.95)',
+                  borderRadius: '20px',
+                  padding: '1.25rem',
+                  overflowY: 'auto',
                   display: 'flex',
-                  justifyContent: message.author === 'user' ? 'flex-end' : 'flex-start',
-                  gap: '0.5rem'
+                  flexDirection: 'column',
+                  gap: '0.75rem'
                 }}
               >
-                {message.author === 'bot' && (
-                  <img
-                    src={ClaimsfoxIcon}
-                    alt="Claimsfox"
-                    style={{ width: '28px', height: '28px', alignSelf: 'flex-start' }}
-                  />
-                )}
+                {state.messages.map((message) => {
+                  const isUser = message.author === 'user'
+                  const userSource = isUser ? (message.source ?? 'text') : 'text'
+                  const sourceLabel =
+                    userSource === 'voice'
+                      ? labelSourceVoice
+                      : userSource === 'quick'
+                      ? message.text
+                      : labelSourceText
 
-                <div
-                  style={{
-                    background: message.author === 'user' ? USER_BUBBLE_COLOR : BOT_BUBBLE_COLOR,
-                    color: '#0e0d1c',
-                    padding: '0.85rem 1.1rem',
-                    borderRadius: message.author === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    boxShadow: '0 12px 25px rgba(8, 4, 50, 0.08)',
-                    whiteSpace: 'pre-line',
-                    maxWidth: '80%'
-                  }}
-                >
-                  {message.author === 'bot' ? t(message.key, message.vars) : message.text}
-                </div>
-              </div>
-            ))}
-
-            {state.isTyping && (
-              <div
-                style={{
-                  alignSelf: 'flex-start',
-                  background: BOT_BUBBLE_COLOR,
-                  color: '#0e0d1c',
-                  padding: '0.85rem 1.1rem',
-                  borderRadius: '18px 18px 18px 4px',
-                  boxShadow: '0 12px 25px rgba(8, 4, 50, 0.08)',
-                  display: 'flex',
-                  gap: '0.35rem'
-                }}
-              >
-                <span style={{ animation: 'chatPulse 1.2s infinite', opacity: 0.8 }}>•</span>
-                <span style={{ animation: 'chatPulse 1.2s infinite 0.2s', opacity: 0.8 }}>•</span>
-                <span style={{ animation: 'chatPulse 1.2s infinite 0.4s', opacity: 0.8 }}>•</span>
-              </div>
-            )}
-          </div>
-
-          {state.step === 'mode' && (
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
-              <Button variant="secondary" type="button" onClick={() => handleModeSelection('text')}>
-                {labelWrite}
-              </Button>
-              <Button type="button" onClick={() => handleModeSelection('voice')}>
-                {labelSpeak}
-              </Button>
-            </div>
-          )}
-
-          {state.step === 'voice' && (
-            <div
-              style={{
-                background: '#f0f0ff',
-                borderRadius: '16px',
-                padding: '1rem',
-                marginBottom: '1rem',
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '0.75rem',
-                alignItems: 'center'
-              }}
-            >
-              {speechSupported ? (
-                voiceChoices.length ? (
-                  <>
-                    <label htmlFor="voiceSelect" style={{ fontWeight: 600 }}>
-                      {labelVoiceLabel}
-                    </label>
-
-                    <select
-                      id="voiceSelect"
-                      value={state.voiceChoiceId ?? ''}
-                      onChange={(event) =>
-                        dispatch({
-                          type: 'SET_VOICE_CHOICE_ID',
-                          payload: (event.target.value || undefined) as VoiceChoiceId | undefined
-                        })
-                      }
+                  return (
+                    <div
+                      key={message.id}
                       style={{
-                        flex: 1,
-                        minWidth: '240px',
-                        borderRadius: '12px',
-                        border: '1px solid #d6d6f2',
-                        padding: '0.65rem 0.9rem',
-                        fontSize: '1rem'
+                        display: 'flex',
+                        justifyContent: isUser ? 'flex-end' : 'flex-start',
+                        gap: '0.5rem'
                       }}
                     >
-                      <option value="">{labelVoicePlaceholder}</option>
-                      {voiceChoices.map((opt) => (
-                        <option key={opt.id} value={opt.id}>
-                          {opt.label}
-                        </option>
-                      ))}
-                    </select>
+                      {!isUser && (
+                        <img
+                          src={ClaimsfoxIcon}
+                          alt="Claimsfox"
+                          style={{ width: '28px', height: '28px', alignSelf: 'flex-start' }}
+                        />
+                      )}
 
-                    <Button type="button" disabled={!state.voiceChoiceId} onClick={handleVoiceStart}>
-                      {labelVoiceStart}
-                    </Button>
-
-                    {selectedChoice && (
-                      <span
+                      <div
                         style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.3rem',
-                          padding: '0.35rem 0.75rem',
-                          borderRadius: '999px',
-                          background: '#e5ddff',
-                          color: '#352b6b',
-                          fontWeight: 600
+                          maxWidth: '80%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: isUser ? 'flex-end' : 'flex-start'
                         }}
                       >
-                        {labelVoiceActive}: <span style={{ fontWeight: 700 }}>{selectedChoice.label}</span>
-                        {selectedChoice.isPreferred && (
-                          <span
-                            style={{
-                              background: '#3f2ae6',
-                              color: '#ffffff',
-                              borderRadius: '999px',
-                              padding: '0.1rem 0.5rem',
-                              fontSize: '0.75rem',
-                              fontWeight: 700
-                            }}
-                          >
-                            {labelVoiceActiveBadge}
+                        <div
+                          style={{
+                            background: isUser ? ACCENT_GREEN : BOT_BUBBLE_COLOR,
+                            color: '#0e0d1c',
+                            padding: '0.85rem 1.1rem',
+                            borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                            boxShadow: '0 12px 25px rgba(8, 4, 50, 0.08)',
+                            whiteSpace: 'pre-line'
+                          }}
+                        >
+                          {message.author === 'bot' ? t(message.key, message.vars) : message.text}
+                        </div>
+                        {isUser && (
+                          <span style={{ fontSize: '0.75rem', color: 'rgba(8,0,40,0.55)', marginTop: '0.25rem' }}>
+                            {sourceLabel}
                           </span>
                         )}
-                      </span>
-                    )}
+                      </div>
+                    </div>
+                  )
+                })}
 
-                    {!recognitionSupported && <div style={{ color: '#4b4a77', fontSize: '0.9rem' }}>{labelMicUnsupported}</div>}
-                  </>
-                ) : (
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <span>{labelVoiceLoading}</span>
+                {state.isTyping && (
+                  <div
+                    style={{
+                      alignSelf: 'flex-start',
+                      background: BOT_BUBBLE_COLOR,
+                      color: '#0e0d1c',
+                      padding: '0.85rem 1.1rem',
+                      borderRadius: '18px 18px 18px 4px',
+                      boxShadow: '0 12px 25px rgba(8, 4, 50, 0.08)',
+                      display: 'flex',
+                      gap: '0.35rem'
+                    }}
+                  >
+                    <span style={{ animation: 'chatPulse 1.2s infinite', opacity: 0.8 }}>•</span>
+                    <span style={{ animation: 'chatPulse 1.2s infinite 0.2s', opacity: 0.8 }}>•</span>
+                    <span style={{ animation: 'chatPulse 1.2s infinite 0.4s', opacity: 0.8 }}>•</span>
+                  </div>
+                )}
+              </div>
+
+              {state.step === 'mode' && (
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => handleModeSelection('text')}
+                    style={{ background: '#ffffffaa', border: '1px solid rgba(8,0,40,0.1)', padding: '0.5rem 1.1rem' }}
+                  >
+                    {labelWrite}
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => handleModeSelection('voice')}
+                    style={{ background: ACCENT_GREEN, color: '#0e0d1c', boxShadow: '0 12px 20px rgba(211, 242, 97, 0.35)', padding: '0.5rem 1.1rem' }}
+                  >
+                    {labelSpeak}
+                  </Button>
+                </div>
+              )}
+
+              {state.step === 'voice' && (
+                <div
+                  style={{
+                    background: 'rgba(255,255,255,0.9)',
+                    borderRadius: '16px',
+                    padding: '1rem',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.75rem',
+                    alignItems: 'center',
+                    border: '1px solid rgba(13, 8, 60, 0.1)'
+                  }}
+                >
+                  {speechSupported ? (
+                    voiceChoices.length ? (
+                      <>
+                        <label htmlFor="voiceSelect" style={{ fontWeight: 600 }}>
+                          {labelVoiceLabel}
+                        </label>
+
+                        <select
+                          id="voiceSelect"
+                          value={state.voiceChoiceId ?? ''}
+                          onChange={(event) =>
+                            dispatch({
+                              type: 'SET_VOICE_CHOICE_ID',
+                              payload: (event.target.value || undefined) as VoiceChoiceId | undefined
+                            })
+                          }
+                          style={{
+                            flex: 1,
+                            minWidth: '240px',
+                            borderRadius: '12px',
+                            border: '1px solid #d6d6f2',
+                            padding: '0.65rem 0.9rem',
+                            fontSize: '1rem'
+                          }}
+                        >
+                          <option value="">{labelVoicePlaceholder}</option>
+                          {voiceChoices.map((opt) => (
+                            <option key={opt.id} value={opt.id}>
+                              {opt.label}
+                            </option>
+                          ))}
+                        </select>
+
+                        <Button type="button" disabled={!state.voiceChoiceId} onClick={handleVoiceStart}>
+                          {labelVoiceStart}
+                        </Button>
+
+                        {selectedChoice && (
+                          <span
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '0.3rem',
+                              padding: '0.35rem 0.75rem',
+                              borderRadius: '999px',
+                              background: '#e5ddff',
+                              color: '#352b6b',
+                              fontWeight: 600
+                            }}
+                          >
+                            {labelVoiceActive}: <span style={{ fontWeight: 700 }}>{selectedChoice.label}</span>
+                            {selectedChoice.isPreferred && (
+                              <span
+                                style={{
+                                  background: '#3f2ae6',
+                                  color: '#ffffff',
+                                  borderRadius: '999px',
+                                  padding: '0.1rem 0.5rem',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 700
+                                }}
+                              >
+                                {labelVoiceActiveBadge}
+                              </span>
+                            )}
+                          </span>
+                        )}
+
+                        {!recognitionSupported && (
+                          <div style={{ color: '#4b4a77', fontSize: '0.9rem' }}>{labelMicUnsupported}</div>
+                        )}
+                      </>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <span>{labelVoiceLoading}</span>
+                        <Button variant="secondary" type="button" onClick={() => handleModeSelection('text')}>
+                          {labelWrite}
+                        </Button>
+                      </div>
+                    )
+                  ) : (
                     <Button variant="secondary" type="button" onClick={() => handleModeSelection('text')}>
                       {labelWrite}
                     </Button>
-                  </div>
-                )
-              ) : (
-                <Button variant="secondary" type="button" onClick={() => handleModeSelection('text')}>
-                  {labelWrite}
-                </Button>
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-          {state.step === 'voiceConfirm' && (
-            <div
-              style={{
-                background: '#f0f0ff',
-                borderRadius: '16px',
-                padding: '1rem',
-                marginBottom: '1rem',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '0.6rem'
-              }}
-            >
-              <div style={{ fontWeight: 700 }}>{labelConfirmTitle}</div>
+              {state.step === 'voiceConfirm' && (
+                <div
+                  style={{
+                    background: 'rgba(255,255,255,0.9)',
+                    borderRadius: '16px',
+                    padding: '1rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.6rem',
+                    border: '1px solid rgba(13, 8, 60, 0.1)'
+                  }}
+                >
+                  <div style={{ fontWeight: 700 }}>{labelConfirmTitle}</div>
+
+                  <div
+                    style={{
+                      background: '#ffffff',
+                      border: '1px solid #d6d6f2',
+                      borderRadius: '12px',
+                      padding: '0.75rem 0.9rem'
+                    }}
+                  >
+                    {pendingTranscript ?? inputValue ?? '—'}
+                  </div>
+
+                  <div style={{ color: '#616075', fontSize: '0.95rem' }}>{labelConfirmHint}</div>
+
+                  <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+                    <Button type="button" onClick={handleVoiceConfirmYes} disabled={!pendingTranscript}>
+                      {labelConfirmYes}
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() => {
+                        setPendingTranscript(null)
+                        window.setTimeout(() => inputRef.current?.focus(), 0)
+                      }}
+                    >
+                      {labelConfirmEdit}
+                    </Button>
+                  </div>
+                </div>
+              )}
 
               <div
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid #d6d6f2',
-                  borderRadius: '12px',
-                  padding: '0.75rem 0.9rem'
+                  position: 'sticky',
+                  bottom: 0,
+                  background: 'rgba(255,255,255,0.4)',
+                  border: '1px solid rgba(255,255,255,0.45)',
+                  borderRadius: '20px',
+                  padding: '0.4rem 0.6rem',
+                  backdropFilter: 'blur(18px)'
                 }}
               >
-                {pendingTranscript ?? inputValue ?? '—'}
-              </div>
-
-              <div style={{ color: '#616075', fontSize: '0.95rem' }}>{labelConfirmHint}</div>
-
-              <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
-                <Button type="button" onClick={handleVoiceConfirmYes} disabled={!pendingTranscript}>
-                  {labelConfirmYes}
-                </Button>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={() => {
-                    // User wants to edit: keep in voiceConfirm, focus textarea
-                    setPendingTranscript(null)
-                    window.setTimeout(() => inputRef.current?.focus(), 0)
-                  }}
+                <form
+                  onSubmit={handleUserSubmit}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}
                 >
-                  {labelConfirmEdit}
-                </Button>
+                  <textarea
+                    ref={inputRef}
+                    value={inputValue}
+                    onChange={(event) => setInputValue(event.target.value)}
+                    onKeyDown={handleTextareaKeyDown}
+                    placeholder={placeholder}
+                    disabled={inputDisabled}
+                    rows={state.step === 'voiceConfirm' ? 3 : 1}
+                    style={{
+                      flex: 1,
+                      minWidth: '200px',
+                      minHeight: '42px',
+                      borderRadius: '14px',
+                      border: 'none',
+                      padding: '0.6rem 0.9rem',
+                      fontSize: '1rem',
+                      resize: 'none',
+                      background: 'rgba(255,255,255,0.85)',
+                      color: '#0e0d1c',
+                      boxShadow: 'inset 0 0 0 1px rgba(8,0,40,0.05)'
+                    }}
+                  />
+
+                  {showMicButton && (
+                    <button
+                      type="button"
+                      onClick={handleMicToggle}
+                      disabled={micButtonBlocked && !isListening}
+                      style={{
+                        width: 44,
+                        height: 44,
+                        borderRadius: '999px',
+                        border: 'none',
+                        background: ACCENT_GREEN,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        cursor: micButtonBlocked && !isListening ? 'not-allowed' : 'pointer',
+                        opacity: micButtonBlocked && !isListening ? 0.5 : 1
+                      }}
+                    >
+                      <MicIcon />
+                      <span style={SR_ONLY}>{isListening ? labelMicStop : labelMicStart}</span>
+                    </button>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={inputDisabled}
+                    style={{
+                      width: 44,
+                      height: 44,
+                      borderRadius: '999px',
+                      border: 'none',
+                      background: ACCENT_GREEN,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      cursor: inputDisabled ? 'not-allowed' : 'pointer',
+                      opacity: inputDisabled ? 0.6 : 1
+                    }}
+                  >
+                    <SendIcon />
+                    <span style={SR_ONLY}>{t('registration.send')}</span>
+                  </button>
+                </form>
               </div>
+
+              {state.step === 'summary' && !state.completed && !state.blocked && (
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => sendUserInput(t('registration.bot.submit'), 'quick')}
+                    style={{
+                      background: ACCENT_GREEN,
+                      border: 'none',
+                      color: '#0e0d1c',
+                      padding: '0.45rem 1.2rem',
+                      boxShadow: '0 10px 18px rgba(211, 242, 97, 0.35)'
+                    }}
+                  >
+                    {t('registration.bot.submit')}
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={() => sendUserInput(t('registration.bot.edit'), 'quick')}
+                    style={{
+                      background: ACCENT_GREEN,
+                      border: 'none',
+                      color: '#0e0d1c',
+                      padding: '0.45rem 1.2rem',
+                      boxShadow: '0 10px 18px rgba(211, 242, 97, 0.35)'
+                    }}
+                  >
+                    {t('registration.bot.edit')}
+                  </Button>
+                </div>
+              )}
+
+              {state.completed && (
+                <div style={{ marginTop: '0.5rem' }}>
+                  <Button onClick={() => navigate('/roles')}>{t('registration.back')}</Button>
+                </div>
+              )}
             </div>
-          )}
-
-          <form onSubmit={handleUserSubmit} style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-            <textarea
-              ref={inputRef}
-              value={inputValue}
-              onChange={(event) => setInputValue(event.target.value)}
-              onKeyDown={handleTextareaKeyDown}
-              placeholder={placeholder}
-              disabled={inputDisabled}
-              rows={state.step === 'voiceConfirm' ? 3 : 2}
-              style={{
-                flex: 1,
-                minWidth: '240px',
-                borderRadius: '18px',
-                border: '1px solid #d6d6f2',
-                padding: '0.85rem 1.1rem',
-                fontSize: '1rem',
-                resize: 'vertical'
-              }}
-            />
-
-            {showMicButton && (
-              <Button type="button" onClick={handleMicToggle} disabled={micButtonBlocked && !isListening}>
-                {isListening ? labelMicStop : labelMicStart}
-              </Button>
-            )}
-
-            <Button type="submit" disabled={inputDisabled}>
-              {t('registration.send')}
-            </Button>
-          </form>
-
-          {state.step === 'summary' && !state.completed && !state.blocked && (
-            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <Button variant="secondary" type="button" onClick={() => sendUserInput(t('registration.bot.submit'))}>
-                {t('registration.bot.submit')}
-              </Button>
-              <Button variant="secondary" type="button" onClick={() => sendUserInput(t('registration.bot.edit'))}>
-                {t('registration.bot.edit')}
-              </Button>
-            </div>
-          )}
-
-          {state.completed && (
-            <div style={{ marginTop: '1rem' }}>
-              <Button onClick={() => navigate('/roles')}>{t('registration.back')}</Button>
-            </div>
-          )}
-        </Card>
-      </div>
-    </section>
+          </Card>
+        </div>
+      </section>
+    </div>
   )
 }

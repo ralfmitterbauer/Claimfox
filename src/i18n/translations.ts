@@ -766,6 +766,16 @@ export const translations: Record<Lang, TranslationTree> = {
       voicePlaceholder: 'Bitte Stimme wählen',
       voiceLoading: 'Stimmen werden geladen …',
       voiceStart: 'Starten',
+      voiceActiveLabel: 'Aktive Stimme',
+      voiceActiveBadge: 'Aktiv',
+      voiceStartListening: '🎙️ Aufnahme starten',
+      voiceStopListening: '⏹️ Aufnahme stoppen',
+      voiceNoRecognition: 'Voice input wird auf diesem Gerät nicht unterstützt – bitte tippe Deine Antworten.',
+      messageSource: {
+        voice: 'Sprechen',
+        text: 'Eingabe',
+        quick: 'Schnellantwort'
+      },
       bot: {
         welcome: '👋 Willkommen bei Claimfox. Ich begleite dich Schritt für Schritt durch die Registrierung.',
         mode: 'Möchtest du die Daten selbst eingeben oder mit mir sprechen?',
@@ -1431,6 +1441,16 @@ export const translations: Record<Lang, TranslationTree> = {
       voicePlaceholder: 'Select a voice',
       voiceLoading: 'Loading available voices …',
       voiceStart: 'Start',
+      voiceActiveLabel: 'Active voice',
+      voiceActiveBadge: 'Preferred',
+      voiceStartListening: '🎙️ Start recording',
+      voiceStopListening: '⏹️ Stop recording',
+      voiceNoRecognition: 'Voice input is not supported on this device – please type your replies.',
+      messageSource: {
+        voice: 'Voice',
+        text: 'Input',
+        quick: 'Quick reply'
+      },
       bot: {
         welcome: '👋 Welcome to Claimfox. I will guide you through the registration.',
         mode: 'Would you like to type the answers yourself or talk to me?',
