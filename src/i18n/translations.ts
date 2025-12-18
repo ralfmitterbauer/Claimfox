@@ -269,6 +269,11 @@ export const translations: Record<Lang, TranslationTree> = {
       valueLine1: 'Backoffice & CRM speziell für mittelständische Makler und Industrieversicherungen.',
       valueLine2: 'Ausschreibungs- und Tenderplattform für komplexe Industrieprogramme.',
       valueLine3: 'KI-gestützte Tools für Bestand, Portfolio und Kundenkommunikation.',
+      trust: {
+        crm: 'CRM-Backoffice',
+        tender: 'Tender-Plattform',
+        ai: 'KI-Tools'
+      },
       heroStats: {
         coverage: '12+ Industrie- & Spezialsparten',
         automation: '80% automatisierte Workflows',
@@ -288,6 +293,7 @@ export const translations: Record<Lang, TranslationTree> = {
       },
       sectorsTitle: 'Sparten & Produkte',
       sectorsSubtitle: 'Einheitliche Prozesse für europäische Industrie- und Spezialsparten.',
+      sectorsBanner: 'Einheitliche Prozesse für Industrie- und Spezialsparten.',
       sectorsList: {
         carriers: 'Verkehrshaftungsversicherung',
         fleet: 'Flottenversicherung',
@@ -496,6 +502,11 @@ export const translations: Record<Lang, TranslationTree> = {
       valueLine1: 'Back-office & CRM tailored to mid-sized commercial brokers.',
       valueLine2: 'Tender and placement platform for complex industrial programs.',
       valueLine3: 'AI-powered portfolio tools for retention, upsell, and client experience.',
+      trust: {
+        crm: 'CRM back office',
+        tender: 'Tender platform',
+        ai: 'AI tools'
+      },
       heroStats: {
         coverage: '12+ industrial & specialty lines',
         automation: '80% automated workflows',
@@ -515,6 +526,7 @@ export const translations: Record<Lang, TranslationTree> = {
       },
       sectorsTitle: 'Lines & products',
       sectorsSubtitle: 'Unified processes for industrial and specialty lines across Europe.',
+      sectorsBanner: 'Unified workflows for industrial and specialty lines.',
       sectorsList: {
         carriers: 'Carrier’s liability insurance',
         fleet: 'Fleet insurance',
