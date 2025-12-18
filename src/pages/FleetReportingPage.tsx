@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import Button from '@/components/ui/Button'
@@ -54,8 +54,20 @@ const severityBreakdown = [
 
 const aiItemKeys = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6'] as const
 
-const filterTypeOptions = ['all', 'motor', 'liability', 'cargo'] as const
-const filterRangeOptions = ['last30', 'last12'] as const
+type DamageTypeFilter = 'all' | 'motor' | 'liability' | 'cargo'
+type RangeFilter = '30d' | '12m'
+
+const DAMAGE_TYPE_OPTIONS: Array<{ value: DamageTypeFilter; labelKey: string }> = [
+  { value: 'all', labelKey: 'fleetReporting.filters.typeOptions.all' },
+  { value: 'motor', labelKey: 'fleetReporting.filters.typeOptions.motor' },
+  { value: 'liability', labelKey: 'fleetReporting.filters.typeOptions.liability' },
+  { value: 'cargo', labelKey: 'fleetReporting.filters.typeOptions.cargo' }
+]
+
+const RANGE_FILTER_OPTIONS: Array<{ value: RangeFilter; labelKey: string }> = [
+  { value: '30d', labelKey: 'fleetReporting.filters.rangeOptions.last30' },
+  { value: '12m', labelKey: 'fleetReporting.filters.rangeOptions.last12' }
+]
 
 const vehicleRecords = [
   {
@@ -186,11 +198,11 @@ type ClaimRow = {
   vehicle: string
   vin: string
   route: string
-  typeKey: 'motor' | 'liability' | 'cargo'
-  coverageKey: 'covered' | 'uncovered'
-  statusKey: 'open' | 'review' | 'closed'
+  claimType: 'motor' | 'liability' | 'cargo'
+  coverage: 'covered' | 'not_covered'
+  status: 'open' | 'in_review' | 'closed'
   cost: number
-  aiTag: 'alert' | 'watch' | 'normal'
+  aiHint: 'flag' | 'watch' | 'normal'
   note: string
 }
 
@@ -201,11 +213,11 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     vehicle: 'DE-789-XY',
     vin: 'WVWZZZ1KZ5W113456',
     route: 'Berlin → Leipzig (A9)',
-    typeKey: 'motor',
-    coverageKey: 'covered',
-    statusKey: 'open',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'open',
     cost: 8450,
-    aiTag: 'alert',
+    aiHint: 'flag',
     note: 'Telematics flagged harsh braking + sensor fault.'
   },
   {
@@ -214,11 +226,11 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     vehicle: 'HH-CARGO-12',
     vin: 'WDB9510231K556789',
     route: 'Hamburg port logistics',
-    typeKey: 'cargo',
-    coverageKey: 'uncovered',
-    statusKey: 'review',
+    claimType: 'cargo',
+    coverage: 'not_covered',
+    status: 'in_review',
     cost: 5870,
-    aiTag: 'watch',
+    aiHint: 'watch',
     note: 'Re-check cargo lashing – recurring damage pattern.'
   },
   {
@@ -227,11 +239,11 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     vehicle: 'M-FL-2045',
     vin: 'WMWZZZ3CZ4P112233',
     route: 'Munich → Salzburg',
-    typeKey: 'liability',
-    coverageKey: 'covered',
-    statusKey: 'open',
+    claimType: 'liability',
+    coverage: 'covered',
+    status: 'open',
     cost: 2180,
-    aiTag: 'normal',
+    aiHint: 'normal',
     note: 'Insurer requested additional photo evidence.'
   },
   {
@@ -240,11 +252,11 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     vehicle: 'K-TR-330',
     vin: 'YS2P4X20002156789',
     route: 'Cologne inner city',
-    typeKey: 'motor',
-    coverageKey: 'covered',
-    statusKey: 'review',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'in_review',
     cost: 1260,
-    aiTag: 'watch',
+    aiHint: 'watch',
     note: 'Incident cluster at same intersection.'
   },
   {
@@ -253,12 +265,77 @@ const INITIAL_CLAIMS: ClaimRow[] = [
     vehicle: 'FRA-LOG-71',
     vin: '1FTFW1E57KFA12345',
     route: 'Frankfurt air cargo hub',
-    typeKey: 'cargo',
-    coverageKey: 'uncovered',
-    statusKey: 'closed',
+    claimType: 'cargo',
+    coverage: 'not_covered',
+    status: 'closed',
     cost: 9640,
-    aiTag: 'alert',
+    aiHint: 'flag',
     note: 'Temperature deviation + delayed notification.'
+  },
+  {
+    id: 'c6',
+    date: '2025-01-18',
+    vehicle: 'B-DEL-901',
+    vin: '1FTSW21R08EC46991',
+    route: 'Berlin delivery district',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'in_review',
+    cost: 3120,
+    aiHint: 'watch',
+    note: 'Last-mile collision with minor body damage.'
+  },
+  {
+    id: 'c7',
+    date: '2025-01-11',
+    vehicle: 'HH-DEL-72',
+    vin: 'WDDGF8ABXEA939585',
+    route: 'Hamburg Innenstadt',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'open',
+    cost: 4280,
+    aiHint: 'normal',
+    note: 'Awaiting adjuster confirmation.'
+  },
+  {
+    id: 'c8',
+    date: '2024-12-28',
+    vehicle: 'FRA-LOG-71',
+    vin: '1FTFW1E57KFA12345',
+    route: 'Frankfurt air cargo hub',
+    claimType: 'cargo',
+    coverage: 'covered',
+    status: 'closed',
+    cost: 5120,
+    aiHint: 'flag',
+    note: 'Cold-chain deviation triggered automatic claim.'
+  },
+  {
+    id: 'c9',
+    date: '2024-12-05',
+    vehicle: 'DE-789-XY',
+    vin: 'WVWZZZ1KZ5W113456',
+    route: 'Berlin ring road',
+    claimType: 'motor',
+    coverage: 'covered',
+    status: 'in_review',
+    cost: 2210,
+    aiHint: 'watch',
+    note: 'Lane assist sensor flagged repeated deviations.'
+  },
+  {
+    id: 'c10',
+    date: '2024-11-22',
+    vehicle: 'M-FL-2045',
+    vin: 'WMWZZZ3CZ4P112233',
+    route: 'Munich urban delivery',
+    claimType: 'liability',
+    coverage: 'not_covered',
+    status: 'open',
+    cost: 1760,
+    aiHint: 'flag',
+    note: 'Third-party damage claim pending.'
   }
 ]
 
@@ -476,37 +553,35 @@ const TABLE_BADGE_BASE: React.CSSProperties = {
   padding: '0 0.75rem'
 }
 
-function coverageBadgeStyles(coverage: ClaimRow['coverageKey']) {
+function coverageBadgeStyles(coverage: ClaimRow['coverage']) {
   return {
     ...TABLE_BADGE_BASE,
     background: coverage === 'covered' ? '#16A34A' : '#DC2626'
   }
 }
 
-function statusBadgeStyles(status: ClaimRow['statusKey']) {
+function statusBadgeStyles(status: ClaimRow['status']) {
   const map = {
     open: '#F97316',
-    review: '#2563EB',
+    in_review: '#2563EB',
     closed: '#16A34A'
   } as const
   return { ...TABLE_BADGE_BASE, background: map[status] }
 }
 
-function aiBadgeStyles(tag: ClaimRow['aiTag']) {
+function aiBadgeStyles(tag: ClaimRow['aiHint']) {
   const map = {
-    alert: '#DC2626',
+    flag: '#DC2626',
     watch: '#F97316',
     normal: '#16A34A'
   } as const
   return { ...TABLE_BADGE_BASE, minWidth: '80px', background: map[tag] }
 }
 
-const currencyFormatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' })
-
 type VehicleTypeFilter = 'all' | 'car' | 'truck' | 'trailer' | 'delivery'
 type VehicleStatusFilter = 'all' | 'active' | 'maintenance' | 'down'
 type ClaimEditableField = 'date' | 'vehicle' | 'vin' | 'route' | 'cost' | 'note'
-type EditableField = ClaimEditableField | 'typeKey' | 'coverageKey' | 'statusKey' | 'aiTag'
+type EditableField = ClaimEditableField | 'claimType' | 'coverage' | 'status'
 
 const VEHICLE_TYPE_VARIANTS: Record<VehicleTypeFilter, Traffic> = {
   all: 'blue',
@@ -523,27 +598,21 @@ const VEHICLE_STATUS_VARIANTS: Record<VehicleStatusFilter, Traffic> = {
   down: 'red'
 }
 
-const CLAIM_TYPE_OPTIONS: Array<{ value: ClaimRow['typeKey']; labelKey: string }> = [
+const CLAIM_TYPE_OPTIONS: Array<{ value: ClaimRow['claimType']; labelKey: string }> = [
   { value: 'motor', labelKey: 'fleetReporting.table.types.motor' },
   { value: 'liability', labelKey: 'fleetReporting.table.types.liability' },
   { value: 'cargo', labelKey: 'fleetReporting.table.types.cargo' }
 ]
 
-const CLAIM_COVERAGE_OPTIONS: Array<{ value: ClaimRow['coverageKey']; labelKey: string }> = [
+const CLAIM_COVERAGE_OPTIONS: Array<{ value: ClaimRow['coverage']; labelKey: string }> = [
   { value: 'covered', labelKey: 'fleetReporting.table.coverageBadges.covered' },
-  { value: 'uncovered', labelKey: 'fleetReporting.table.coverageBadges.uncovered' }
+  { value: 'not_covered', labelKey: 'fleetReporting.table.coverageBadges.uncovered' }
 ]
 
-const CLAIM_STATUS_OPTIONS: Array<{ value: ClaimRow['statusKey']; labelKey: string }> = [
+const CLAIM_STATUS_OPTIONS: Array<{ value: ClaimRow['status']; labelKey: string }> = [
   { value: 'open', labelKey: 'fleetReporting.table.statusBadges.open' },
-  { value: 'review', labelKey: 'fleetReporting.table.statusBadges.review' },
+  { value: 'in_review', labelKey: 'fleetReporting.table.statusBadges.review' },
   { value: 'closed', labelKey: 'fleetReporting.table.statusBadges.closed' }
-]
-
-const CLAIM_AI_OPTIONS: Array<{ value: ClaimRow['aiTag']; labelKey: string }> = [
-  { value: 'alert', labelKey: 'fleetReporting.table.aiBadges.alert' },
-  { value: 'watch', labelKey: 'fleetReporting.table.aiBadges.watch' },
-  { value: 'normal', labelKey: 'fleetReporting.table.aiBadges.normal' }
 ]
 
 function KpiCard({
@@ -604,7 +673,7 @@ function KpiCard({
 }
 
 export default function FleetReportingPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const maxMonthly = Math.max(...monthlyClaims.map((entry) => entry.value))
   const [claims, setClaims] = useState<ClaimRow[]>(INITIAL_CLAIMS)
   const [editingCell, setEditingCell] = useState<{ rowId: string; field: EditableField } | null>(null)
@@ -612,6 +681,15 @@ export default function FleetReportingPage() {
   const [vehicleType, setVehicleType] = useState<VehicleTypeFilter>('all')
   const [vehicleStatus, setVehicleStatus] = useState<VehicleStatusFilter>('all')
   const [vehicleSearch, setVehicleSearch] = useState('')
+  const [damageType, setDamageType] = useState<'all' | 'motor' | 'liability' | 'cargo'>('all')
+  const [rangeFilter, setRangeFilter] = useState<'30d' | '12m'>('30d')
+  const [query, setQuery] = useState('')
+  const tableScrollRef = useRef<HTMLDivElement | null>(null)
+  const [showScrollControls, setShowScrollControls] = useState(false)
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(false)
+
+  const searchPlaceholder = lang === 'de' ? 'Kennzeichen oder VIN suchen …' : 'Search plate or VIN …'
 
   const filteredVehicles = useMemo(() => {
     const search = vehicleSearch.trim().toLowerCase()
@@ -626,12 +704,66 @@ export default function FleetReportingPage() {
     })
   }, [vehicleStatus, vehicleType, vehicleSearch])
 
+  const filteredClaims = useMemo(() => {
+    const q = query.trim().toLowerCase()
+    const now = new Date()
+    const threshold = new Date()
+    threshold.setDate(threshold.getDate() - (rangeFilter === '30d' ? 30 : 365))
+
+    return claims.filter((row) => {
+      if (damageType !== 'all' && row.claimType !== damageType) {
+        return false
+      }
+      const rowDate = new Date(row.date)
+      if (!Number.isNaN(rowDate.getTime()) && rowDate < threshold) {
+        return false
+      }
+      if (q && !row.vehicle.toLowerCase().includes(q) && !row.vin.toLowerCase().includes(q)) {
+        return false
+      }
+      return true
+    })
+  }, [claims, damageType, rangeFilter, query])
+
+  const updateScrollState = useCallback(() => {
+    const el = tableScrollRef.current
+    if (!el) return
+    const show = el.scrollWidth > el.clientWidth + 1
+    setShowScrollControls(show)
+    setCanScrollLeft(el.scrollLeft > 0)
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 1)
+  }, [])
+
+  useEffect(() => {
+    updateScrollState()
+    const el = tableScrollRef.current
+    if (!el) return
+    const handleScroll = () => updateScrollState()
+    el.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', updateScrollState)
+    return () => {
+      el.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', updateScrollState)
+    }
+  }, [updateScrollState])
+
+  useEffect(() => {
+    updateScrollState()
+  }, [filteredClaims, updateScrollState])
+
+  function handleHorizontalScroll(offset: number) {
+    const el = tableScrollRef.current
+    if (!el) return
+    el.scrollBy({ left: offset, behavior: 'smooth' })
+  }
+
   const tableCellStyle: React.CSSProperties = {
     padding: '0.65rem 0.5rem',
     borderBottom: '1px solid rgba(255,255,255,0.12)',
     color: '#ffffff',
     fontSize: '0.95rem',
-    verticalAlign: 'middle'
+    verticalAlign: 'middle',
+    whiteSpace: 'nowrap'
   }
 
   const tableHeaderCellStyle: React.CSSProperties = {
@@ -673,7 +805,11 @@ export default function FleetReportingPage() {
   }
 
   function formatCost(value: number) {
-    return currencyFormatter.format(value)
+    const formatter = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', {
+      style: 'currency',
+      currency: 'EUR'
+    })
+    return formatter.format(value)
   }
 
   function handleStartEdit(rowId: string, field: EditableField, currentValue: string) {
@@ -698,10 +834,9 @@ export default function FleetReportingPage() {
         if (field === 'date' || field === 'vehicle' || field === 'vin' || field === 'route' || field === 'note') {
           return { ...row, [field]: rawValue }
         }
-        if (field === 'typeKey') return { ...row, typeKey: rawValue as ClaimRow['typeKey'] }
-        if (field === 'coverageKey') return { ...row, coverageKey: rawValue as ClaimRow['coverageKey'] }
-        if (field === 'statusKey') return { ...row, statusKey: rawValue as ClaimRow['statusKey'] }
-        if (field === 'aiTag') return { ...row, aiTag: rawValue as ClaimRow['aiTag'] }
+        if (field === 'claimType') return { ...row, claimType: rawValue as ClaimRow['claimType'] }
+        if (field === 'coverage') return { ...row, coverage: rawValue as ClaimRow['coverage'] }
+        if (field === 'status') return { ...row, status: rawValue as ClaimRow['status'] }
         return row
       })
     )
@@ -772,7 +907,7 @@ export default function FleetReportingPage() {
 
   function renderSelectCell(
     row: ClaimRow,
-    field: 'typeKey' | 'coverageKey' | 'statusKey' | 'aiTag',
+    field: 'claimType' | 'coverage' | 'status',
     width: string,
     options: Array<{ value: string; labelKey: string }>,
     displayNode: React.ReactNode
@@ -805,28 +940,31 @@ export default function FleetReportingPage() {
   }
 
   const renderTypeCell = (row: ClaimRow) =>
-    renderSelectCell(row, 'typeKey', '150px', CLAIM_TYPE_OPTIONS, (
-      <span>{t(`fleetReporting.table.types.${row.typeKey}`)}</span>
+    renderSelectCell(row, 'claimType', '150px', CLAIM_TYPE_OPTIONS, (
+      <span>{t(`fleetReporting.table.types.${row.claimType}`)}</span>
     ))
 
   const renderCoverageCell = (row: ClaimRow) =>
-    renderSelectCell(row, 'coverageKey', '150px', CLAIM_COVERAGE_OPTIONS, (
-      <span style={coverageBadgeStyles(row.coverageKey)}>
-        {t(`fleetReporting.table.coverageBadges.${row.coverageKey}`)}
+    renderSelectCell(row, 'coverage', '150px', CLAIM_COVERAGE_OPTIONS, (
+      <span style={coverageBadgeStyles(row.coverage)}>
+        {t(`fleetReporting.table.coverageBadges.${row.coverage === 'not_covered' ? 'uncovered' : 'covered'}`)}
       </span>
     ))
 
   const renderStatusCell = (row: ClaimRow) =>
-    renderSelectCell(row, 'statusKey', '150px', CLAIM_STATUS_OPTIONS, (
-      <span style={statusBadgeStyles(row.statusKey)}>
-        {t(`fleetReporting.table.statusBadges.${row.statusKey}`)}
+    renderSelectCell(row, 'status', '150px', CLAIM_STATUS_OPTIONS, (
+      <span style={statusBadgeStyles(row.status)}>
+        {t(`fleetReporting.table.statusBadges.${row.status === 'in_review' ? 'review' : row.status}`)}
       </span>
     ))
 
-  const renderAiCell = (row: ClaimRow) =>
-    renderSelectCell(row, 'aiTag', '150px', CLAIM_AI_OPTIONS, (
-      <span style={aiBadgeStyles(row.aiTag)}>{t(`fleetReporting.table.aiBadges.${row.aiTag}`)}</span>
-    ))
+  const renderAiCell = (row: ClaimRow) => (
+    <td style={{ ...tableCellStyle, width: '160px', minWidth: '160px' }}>
+      <span style={aiBadgeStyles(row.aiHint)}>
+        {t(`fleetReporting.table.aiBadges.${row.aiHint === 'flag' ? 'alert' : row.aiHint}`)}
+      </span>
+    </td>
+  )
 
   return (
     <>
@@ -1137,102 +1275,128 @@ export default function FleetReportingPage() {
             >
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span style={{ color: GLASS_SUBTLE }}>{t('fleetReporting.filters.typeLabel')}:</span>
-                {filterTypeOptions.map((option) => (
-                  <span
-                    key={option}
+                {DAMAGE_TYPE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setDamageType(option.value)}
                     style={{
-                      padding: '0.35rem 0.9rem',
                       borderRadius: '999px',
-                      background: option === 'all' ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.12)',
                       border: '1px solid rgba(255,255,255,0.35)',
-                      fontSize: '0.9rem'
+                      background: damageType === option.value ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)',
+                      color: '#ffffff',
+                      padding: '0.35rem 0.9rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
                     }}
                   >
-                    {t(`fleetReporting.filters.typeOptions.${option}`)}
-                  </span>
+                    {t(option.labelKey)}
+                  </button>
                 ))}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span style={{ color: GLASS_SUBTLE }}>{t('fleetReporting.filters.rangeLabel')}:</span>
-                {filterRangeOptions.map((option) => (
-                  <span
-                    key={option}
+                {RANGE_FILTER_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => setRangeFilter(option.value)}
                     style={{
-                      padding: '0.35rem 0.9rem',
                       borderRadius: '999px',
-                      background: option === 'last12' ? 'rgba(255,255,255,0.28)' : 'rgba(255,255,255,0.12)',
                       border: '1px solid rgba(255,255,255,0.35)',
-                      fontSize: '0.9rem'
+                      background: rangeFilter === option.value ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)',
+                      color: '#ffffff',
+                      padding: '0.35rem 0.9rem',
+                      fontWeight: 600,
+                      cursor: 'pointer'
                     }}
                   >
-                    {t(`fleetReporting.filters.rangeOptions.${option}`)}
-                  </span>
+                    {t(option.labelKey)}
+                  </button>
                 ))}
+              </div>
+              <div style={{ flex: 1, minWidth: '220px' }}>
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder={searchPlaceholder}
+                  style={{
+                    width: '100%',
+                    padding: '0.55rem 0.85rem',
+                    borderRadius: '999px',
+                    border: '1px solid rgba(255,255,255,0.35)',
+                    background: 'rgba(0,0,0,0.25)',
+                    color: '#ffffff'
+                  }}
+                />
               </div>
             </div>
 
             <div
+              ref={tableScrollRef}
               style={{
-                position: 'relative',
+                overflowX: 'auto',
+                maxWidth: '100%',
+                WebkitOverflowScrolling: 'touch',
                 borderRadius: '22px',
-                border: '1px solid rgba(255,255,255,0.32)',
-                background: 'rgba(0,0,0,0.25)',
-                boxShadow: '0 16px 42px rgba(0,0,0,0.35)',
-                overflow: 'hidden'
+                border: '1px solid rgba(255,255,255,0.25)',
+                background: 'rgba(0,0,0,0.25)'
               }}
             >
-              <div
+              <table
                 style={{
-                  maxHeight: '460px',
-                  overflow: 'auto',
-                  WebkitOverflowScrolling: 'touch'
+                  width: '100%',
+                  minWidth: '1200px',
+                  borderCollapse: 'separate',
+                  borderSpacing: 0,
+                  color: '#ffffff',
+                  tableLayout: 'fixed'
                 }}
               >
-                <table
-                  style={{
-                    width: '100%',
-                    minWidth: '1200px',
-                    borderCollapse: 'collapse',
-                    color: '#ffffff',
-                    tableLayout: 'fixed'
-                  }}
-                >
-                  <thead>
+                <thead>
+                  <tr>
+                    <th style={{ ...tableHeaderCellStyle, width: '120px' }}>
+                      {t('fleetReporting.table.columns.date')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                      {t('fleetReporting.table.columns.vehicle')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '170px' }}>
+                      {t('fleetReporting.table.columns.vin')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
+                      {t('fleetReporting.table.columns.location')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '140px' }}>
+                      {t('fleetReporting.table.columns.type')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                      {t('fleetReporting.table.columns.coverage')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                      {t('fleetReporting.table.columns.status')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '140px', textAlign: 'right' }}>
+                      {t('fleetReporting.table.columns.cost')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '160px' }}>
+                      {t('fleetReporting.table.columns.ai')}
+                    </th>
+                    <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
+                      {t('fleetReporting.table.columns.note')}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredClaims.length === 0 ? (
                     <tr>
-                      <th style={{ ...tableHeaderCellStyle, width: '120px' }}>
-                        {t('fleetReporting.table.columns.date')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
-                        {t('fleetReporting.table.columns.vehicle')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '170px' }}>
-                        {t('fleetReporting.table.columns.vin')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
-                        {t('fleetReporting.table.columns.location')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '140px' }}>
-                        {t('fleetReporting.table.columns.type')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
-                        {t('fleetReporting.table.columns.coverage')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
-                        {t('fleetReporting.table.columns.status')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '140px', textAlign: 'right' }}>
-                        {t('fleetReporting.table.columns.cost')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '160px' }}>
-                        {t('fleetReporting.table.columns.ai')}
-                      </th>
-                      <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
-                        {t('fleetReporting.table.columns.note')}
-                      </th>
+                      <td style={{ ...tableCellStyle, padding: '1rem', textAlign: 'center' }} colSpan={10}>
+                        {lang === 'de' ? 'Keine Einträge gefunden.' : 'No entries found.'}
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {claims.map((row) => (
+                  ) : (
+                    filteredClaims.map((row) => (
                       <tr key={row.id}>
                         {renderEditableTextCell(row, 'date', '120px')}
                         {renderEditableTextCell(row, 'vehicle', '150px')}
@@ -1245,11 +1409,48 @@ export default function FleetReportingPage() {
                         {renderAiCell(row)}
                         {renderEditableTextCell(row, 'note', '220px')}
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
+
+            {showScrollControls && (
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.75rem' }}>
+                <button
+                  type="button"
+                  onClick={() => handleHorizontalScroll(-320)}
+                  disabled={!canScrollLeft}
+                  style={{
+                    borderRadius: '999px',
+                    border: '1px solid rgba(255,255,255,0.35)',
+                    background: 'rgba(255,255,255,0.12)',
+                    color: '#ffffff',
+                    padding: '0.35rem 0.8rem',
+                    cursor: canScrollLeft ? 'pointer' : 'not-allowed',
+                    opacity: canScrollLeft ? 1 : 0.5
+                  }}
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleHorizontalScroll(320)}
+                  disabled={!canScrollRight}
+                  style={{
+                    borderRadius: '999px',
+                    border: '1px solid rgba(255,255,255,0.35)',
+                    background: 'rgba(255,255,255,0.12)',
+                    color: '#ffffff',
+                    padding: '0.35rem 0.8rem',
+                    cursor: canScrollRight ? 'pointer' : 'not-allowed',
+                    opacity: canScrollRight ? 1 : 0.5
+                  }}
+                >
+                  ›
+                </button>
+              </div>
+            )}
           </Card>
         </div>
       </section>
