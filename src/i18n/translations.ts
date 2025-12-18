@@ -330,7 +330,8 @@ export const translations: Record<Lang, TranslationTree> = {
           coverage: 'Deckung',
           status: 'Status',
           cost: 'Kosten',
-          ai: 'AI-Hinweis'
+          ai: 'AI-Hinweis',
+          note: 'Notiz'
         },
         types: {
           motor: 'Motor',
@@ -816,7 +817,8 @@ export const translations: Record<Lang, TranslationTree> = {
           coverage: 'Coverage',
           status: 'Status',
           cost: 'Cost',
-          ai: 'AI note'
+          ai: 'AI note',
+          note: 'Notes'
         },
         types: {
           motor: 'Motor',

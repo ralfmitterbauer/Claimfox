@@ -6,8 +6,8 @@ import { useI18n } from '@/i18n/I18nContext'
 import BackgroundLogin from '@/assets/images/background_login.png'
 
 type KpiItem =
-  | { key: keyof typeof KPI_LABELS; value: string; icon: string; unit?: string }
-  | { key: keyof typeof KPI_LABELS; icon: string; valueKey: string }
+  | { key: keyof typeof KPI_LABELS; value: string; icon: React.ReactNode; unit?: string }
+  | { key: keyof typeof KPI_LABELS; icon: React.ReactNode; valueKey: string }
 
 const KPI_LABELS = {
   totalClaims: 'fleetReporting.kpi.totalClaims',
@@ -21,14 +21,14 @@ const KPI_LABELS = {
 } as const
 
 const kpis: KpiItem[] = [
-  { key: 'totalClaims', value: '248', icon: '📋' },
-  { key: 'openClaims', value: '32', icon: '⚠️' },
-  { key: 'lossRatio', value: '61.4%', icon: '📊' },
-  { key: 'avgCost', value: '€3,420', icon: '💶' },
-  { key: 'coverageRate', value: '86%', icon: '✅' },
-  { key: 'activeVehicles', value: '312', icon: '🚚' },
-  { key: 'downtime', value: '3.1', icon: '⏱️' },
-  { key: 'topCause', icon: '🛑', valueKey: 'fleetReporting.kpiValues.topCause' }
+  { key: 'totalClaims', value: '248', icon: <IconClipboard /> },
+  { key: 'openClaims', value: '32', icon: <IconWarningTriangle /> },
+  { key: 'lossRatio', value: '61.4%', icon: <IconBarChart /> },
+  { key: 'avgCost', value: '€3,420', icon: <IconEuro /> },
+  { key: 'coverageRate', value: '86%', icon: <IconShieldCheck /> },
+  { key: 'activeVehicles', value: '312', icon: <IconTruck /> },
+  { key: 'downtime', value: '3.1', icon: <IconClock /> },
+  { key: 'topCause', icon: <IconStopOctagon />, valueKey: 'fleetReporting.kpiValues.topCause' }
 ] as const
 
 const monthlyClaims = [
@@ -180,76 +180,355 @@ const vehicleRecords = [
   }
 ] as const
 
-const tableRows = [
+type ClaimRow = {
+  id: string
+  date: string
+  vehicle: string
+  vin: string
+  route: string
+  typeKey: 'motor' | 'liability' | 'cargo'
+  coverageKey: 'covered' | 'uncovered'
+  statusKey: 'open' | 'review' | 'closed'
+  cost: number
+  aiTag: 'alert' | 'watch' | 'normal'
+  note: string
+}
+
+const INITIAL_CLAIMS: ClaimRow[] = [
   {
-    key: 'row1',
-    date: '12.02.2025',
+    id: 'c1',
+    date: '2025-02-12',
     vehicle: 'DE-789-XY',
     vin: 'WVWZZZ1KZ5W113456',
-    locationKey: 'row1',
-    type: 'motor',
-    coverage: 'covered',
-    status: 'open',
-    cost: '€ 8.450',
-    aiTag: 'alert'
+    route: 'Berlin → Leipzig (A9)',
+    typeKey: 'motor',
+    coverageKey: 'covered',
+    statusKey: 'open',
+    cost: 8450,
+    aiTag: 'alert',
+    note: 'Telematics flagged harsh braking + sensor fault.'
   },
   {
-    key: 'row2',
-    date: '08.02.2025',
+    id: 'c2',
+    date: '2025-02-08',
     vehicle: 'HH-CARGO-12',
     vin: 'WDB9510231K556789',
-    locationKey: 'row2',
-    type: 'cargo',
-    coverage: 'uncovered',
-    status: 'review',
-    cost: '€ 5.870',
-    aiTag: 'watch'
+    route: 'Hamburg port logistics',
+    typeKey: 'cargo',
+    coverageKey: 'uncovered',
+    statusKey: 'review',
+    cost: 5870,
+    aiTag: 'watch',
+    note: 'Re-check cargo lashing – recurring damage pattern.'
   },
   {
-    key: 'row3',
-    date: '02.02.2025',
+    id: 'c3',
+    date: '2025-02-02',
     vehicle: 'M-FL-2045',
     vin: 'WMWZZZ3CZ4P112233',
-    locationKey: 'row3',
-    type: 'liability',
-    coverage: 'covered',
-    status: 'open',
-    cost: '€ 2.180',
-    aiTag: 'normal'
+    route: 'Munich → Salzburg',
+    typeKey: 'liability',
+    coverageKey: 'covered',
+    statusKey: 'open',
+    cost: 2180,
+    aiTag: 'normal',
+    note: 'Insurer requested additional photo evidence.'
   },
   {
-    key: 'row4',
-    date: '28.01.2025',
+    id: 'c4',
+    date: '2025-01-28',
     vehicle: 'K-TR-330',
     vin: 'YS2P4X20002156789',
-    locationKey: 'row4',
-    type: 'motor',
-    coverage: 'covered',
-    status: 'review',
-    cost: '€ 1.260',
-    aiTag: 'watch'
+    route: 'Cologne inner city',
+    typeKey: 'motor',
+    coverageKey: 'covered',
+    statusKey: 'review',
+    cost: 1260,
+    aiTag: 'watch',
+    note: 'Incident cluster at same intersection.'
   },
   {
-    key: 'row5',
-    date: '22.01.2025',
+    id: 'c5',
+    date: '2025-01-22',
     vehicle: 'FRA-LOG-71',
     vin: '1FTFW1E57KFA12345',
-    locationKey: 'row5',
-    type: 'cargo',
-    coverage: 'uncovered',
-    status: 'closed',
-    cost: '€ 9.640',
-    aiTag: 'alert'
+    route: 'Frankfurt air cargo hub',
+    typeKey: 'cargo',
+    coverageKey: 'uncovered',
+    statusKey: 'closed',
+    cost: 9640,
+    aiTag: 'alert',
+    note: 'Temperature deviation + delayed notification.'
   }
-] as const
+]
 
 const GLASS_TEXT = 'rgba(255,255,255,0.85)'
 const GLASS_SUBTLE = 'rgba(255,255,255,0.65)'
 
+const TRAFFIC_COLORS = {
+  green: '#16A34A',
+  orange: '#F97316',
+  red: '#DC2626',
+  blue: '#2563EB'
+} as const
+
+type Traffic = keyof typeof TRAFFIC_COLORS
+
+function trafficColorForStatus(status: string): Traffic {
+  const normalized = status.toLowerCase()
+  if (normalized.includes('aktiv') || normalized.includes('active') || normalized.includes('ok')) return 'green'
+  if (
+    normalized.includes('werkstatt') ||
+    normalized.includes('workshop') ||
+    normalized.includes('repair') ||
+    normalized.includes('fällig') ||
+    normalized.includes('due')
+  ) {
+    return 'orange'
+  }
+  if (normalized.includes('ausfall') || normalized.includes('down') || normalized.includes('krit')) {
+    return 'red'
+  }
+  return 'blue'
+}
+
+function trafficStyle(variant: Traffic, overrides?: React.CSSProperties): React.CSSProperties {
+  const color = TRAFFIC_COLORS[variant]
+  return {
+    background: color,
+    color: '#ffffff',
+    border: `1px solid ${color}`,
+    borderRadius: '999px',
+    minWidth: '108px',
+    height: '34px',
+    padding: '0 12px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 800,
+    fontSize: '0.9rem',
+    lineHeight: 1,
+    whiteSpace: 'nowrap',
+    textAlign: 'center',
+    transition: 'transform 0.15s ease, filter 0.15s ease, opacity 0.15s ease',
+    ...overrides
+  }
+}
+
+const ICON_COLOR = '#D4380D'
+
+type IconProps = { size?: number }
+
+const svgProps = (size?: number) => ({
+  width: size ?? 26,
+  height: size ?? 26,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  xmlns: 'http://www.w3.org/2000/svg'
+})
+
+function IconClipboard({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path d="M9 4h6" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path
+        d="M9 4a2 2 0 0 0-2 2v1h10V6a2 2 0 0 0-2-2"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M7 7H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function IconWarningTriangle({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path
+        d="M12 4 3 19h18L12 4Z"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path d="M12 9v5" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="17" r="1" fill={ICON_COLOR} />
+    </svg>
+  )
+}
+
+function IconBarChart({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path d="M5 20V11" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path d="M12 20V4" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path d="M19 20v-8" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path d="M3 20h18" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconEuro({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <circle cx="12" cy="12" r="8" stroke={ICON_COLOR} strokeWidth="2" />
+      <path d="M8 10h5" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path d="M8 14h5" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <path d="M11 7s-3 2-3 5 3 5 3 5" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconShieldCheck({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path
+        d="M12 3 5 6v7c0 4.418 3.134 6.84 7 8 3.866-1.16 7-3.582 7-8V6l-7-3Z"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path d="m9 12 2 2 4-4" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+function IconTruck({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path
+        d="M3 7h11v7H3z"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M14 10h3l3 3v4h-3"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      />
+      <circle cx="7" cy="18" r="2" stroke={ICON_COLOR} strokeWidth="2" />
+      <circle cx="16" cy="18" r="2" stroke={ICON_COLOR} strokeWidth="2" />
+    </svg>
+  )
+}
+
+function IconClock({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <circle cx="12" cy="12" r="8" stroke={ICON_COLOR} strokeWidth="2" />
+      <path d="M12 8v4l2.5 1.5" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconStopOctagon({ size }: IconProps) {
+  return (
+    <svg {...svgProps(size)}>
+      <path
+        d="M8.5 2h7l4.5 4.5v7L15.5 18h-7L4 13.5v-7L8.5 2Z"
+        stroke={ICON_COLOR}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      <path d="M12 8v4" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="15.5" r="0.8" fill={ICON_COLOR} />
+    </svg>
+  )
+}
+
+const TABLE_BADGE_BASE: React.CSSProperties = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minWidth: '90px',
+  height: '32px',
+  borderRadius: '999px',
+  fontSize: '0.85rem',
+  fontWeight: 700,
+  color: '#ffffff',
+  padding: '0 0.75rem'
+}
+
+function coverageBadgeStyles(coverage: ClaimRow['coverageKey']) {
+  return {
+    ...TABLE_BADGE_BASE,
+    background: coverage === 'covered' ? '#16A34A' : '#DC2626'
+  }
+}
+
+function statusBadgeStyles(status: ClaimRow['statusKey']) {
+  const map = {
+    open: '#F97316',
+    review: '#2563EB',
+    closed: '#16A34A'
+  } as const
+  return { ...TABLE_BADGE_BASE, background: map[status] }
+}
+
+function aiBadgeStyles(tag: ClaimRow['aiTag']) {
+  const map = {
+    alert: '#DC2626',
+    watch: '#F97316',
+    normal: '#16A34A'
+  } as const
+  return { ...TABLE_BADGE_BASE, minWidth: '80px', background: map[tag] }
+}
+
+const currencyFormatter = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' })
+
 type VehicleTypeFilter = 'all' | 'car' | 'truck' | 'trailer' | 'delivery'
 type VehicleStatusFilter = 'all' | 'active' | 'maintenance' | 'down'
+type ClaimEditableField = 'date' | 'vehicle' | 'vin' | 'route' | 'cost' | 'note'
+type EditableField = ClaimEditableField | 'typeKey' | 'coverageKey' | 'statusKey' | 'aiTag'
 
-function KpiCard({ icon, label, value }: { icon: string; label: string; value: string }) {
+const VEHICLE_TYPE_VARIANTS: Record<VehicleTypeFilter, Traffic> = {
+  all: 'blue',
+  car: 'green',
+  truck: 'orange',
+  trailer: 'red',
+  delivery: 'orange'
+}
+
+const VEHICLE_STATUS_VARIANTS: Record<VehicleStatusFilter, Traffic> = {
+  all: 'blue',
+  active: 'green',
+  maintenance: 'orange',
+  down: 'red'
+}
+
+const CLAIM_TYPE_OPTIONS: Array<{ value: ClaimRow['typeKey']; labelKey: string }> = [
+  { value: 'motor', labelKey: 'fleetReporting.table.types.motor' },
+  { value: 'liability', labelKey: 'fleetReporting.table.types.liability' },
+  { value: 'cargo', labelKey: 'fleetReporting.table.types.cargo' }
+]
+
+const CLAIM_COVERAGE_OPTIONS: Array<{ value: ClaimRow['coverageKey']; labelKey: string }> = [
+  { value: 'covered', labelKey: 'fleetReporting.table.coverageBadges.covered' },
+  { value: 'uncovered', labelKey: 'fleetReporting.table.coverageBadges.uncovered' }
+]
+
+const CLAIM_STATUS_OPTIONS: Array<{ value: ClaimRow['statusKey']; labelKey: string }> = [
+  { value: 'open', labelKey: 'fleetReporting.table.statusBadges.open' },
+  { value: 'review', labelKey: 'fleetReporting.table.statusBadges.review' },
+  { value: 'closed', labelKey: 'fleetReporting.table.statusBadges.closed' }
+]
+
+const CLAIM_AI_OPTIONS: Array<{ value: ClaimRow['aiTag']; labelKey: string }> = [
+  { value: 'alert', labelKey: 'fleetReporting.table.aiBadges.alert' },
+  { value: 'watch', labelKey: 'fleetReporting.table.aiBadges.watch' },
+  { value: 'normal', labelKey: 'fleetReporting.table.aiBadges.normal' }
+]
+
+function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <Card variant="glass">
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
@@ -257,12 +536,12 @@ function KpiCard({ icon, label, value }: { icon: string; label: string; value: s
           style={{
             width: '42px',
             height: '42px',
-            borderRadius: '14px',
-            background: 'rgba(0,0,0,0.2)',
+            borderRadius: '12px',
+            border: '1px solid rgba(212,56,13,0.35)',
+            background: 'rgba(212,56,13,0.12)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.5rem'
+            justifyContent: 'center'
           }}
         >
           {icon}
@@ -276,45 +555,12 @@ function KpiCard({ icon, label, value }: { icon: string; label: string; value: s
   )
 }
 
-function getCoverageBadgeStyles(variant: 'covered' | 'uncovered') {
-  if (variant === 'covered') {
-    return {
-      background: 'rgba(16, 185, 129, 0.25)',
-      border: '1px solid rgba(16,185,129,0.6)',
-      color: '#CFFAEA'
-    }
-  }
-  return {
-    background: 'rgba(248, 113, 113, 0.25)',
-    border: '1px solid rgba(248,113,113,0.6)',
-    color: '#FECACA'
-  }
-}
-
-function getStatusBadgeStyles(status: 'open' | 'review' | 'closed') {
-  switch (status) {
-    case 'open':
-      return { background: 'rgba(250, 202, 21, 0.3)', border: '1px solid rgba(250,202,21,0.6)', color: '#FEF08A' }
-    case 'review':
-      return { background: 'rgba(129, 140, 248, 0.25)', border: '1px solid rgba(129,140,248,0.6)', color: '#E0E7FF' }
-    default:
-      return { background: 'rgba(45, 212, 191, 0.25)', border: '1px solid rgba(45,212,191,0.6)', color: '#99F6E4' }
-  }
-}
-
-function getAiBadgeStyles(tag: 'alert' | 'watch' | 'normal') {
-  if (tag === 'alert') {
-    return { background: 'rgba(248, 113, 113, 0.25)', border: '1px solid rgba(248,113,113,0.6)', color: '#FECACA' }
-  }
-  if (tag === 'watch') {
-    return { background: 'rgba(250, 204, 21, 0.25)', border: '1px solid rgba(250,204,21,0.5)', color: '#FEF9C3' }
-  }
-  return { background: 'rgba(74, 222, 128, 0.25)', border: '1px solid rgba(74,222,128,0.6)', color: '#DCFCE7' }
-}
-
 export default function FleetReportingPage() {
   const { t } = useI18n()
   const maxMonthly = Math.max(...monthlyClaims.map((entry) => entry.value))
+  const [claims, setClaims] = useState<ClaimRow[]>(INITIAL_CLAIMS)
+  const [editingCell, setEditingCell] = useState<{ rowId: string; field: EditableField } | null>(null)
+  const [draftValue, setDraftValue] = useState('')
   const [vehicleType, setVehicleType] = useState<VehicleTypeFilter>('all')
   const [vehicleStatus, setVehicleStatus] = useState<VehicleStatusFilter>('all')
   const [vehicleSearch, setVehicleSearch] = useState('')
@@ -331,6 +577,208 @@ export default function FleetReportingPage() {
       return matchType && matchStatus && matchSearch
     })
   }, [vehicleStatus, vehicleType, vehicleSearch])
+
+  const tableCellStyle: React.CSSProperties = {
+    padding: '0.65rem 0.5rem',
+    borderBottom: '1px solid rgba(255,255,255,0.12)',
+    color: '#ffffff',
+    fontSize: '0.95rem',
+    verticalAlign: 'middle'
+  }
+
+  const tableHeaderCellStyle: React.CSSProperties = {
+    position: 'sticky',
+    top: 0,
+    zIndex: 2,
+    background: 'rgba(15,15,30,0.8)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    textAlign: 'left',
+    padding: '0.55rem 0.5rem',
+    fontSize: '0.85rem',
+    letterSpacing: '0.05em',
+    textTransform: 'uppercase',
+    color: 'rgba(255,255,255,0.78)'
+  }
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%',
+    borderRadius: '10px',
+    border: '1px solid rgba(255,255,255,0.35)',
+    background: 'rgba(0,0,0,0.35)',
+    color: '#ffffff',
+    padding: '0.45rem 0.6rem',
+    fontSize: '0.9rem',
+    outline: 'none'
+  }
+
+  const textareaStyle: React.CSSProperties = {
+    ...inputStyle,
+    minHeight: '60px',
+    resize: 'vertical'
+  }
+
+  const selectStyle: React.CSSProperties = {
+    ...inputStyle,
+    appearance: 'none',
+    WebkitAppearance: 'none'
+  }
+
+  function formatCost(value: number) {
+    return currencyFormatter.format(value)
+  }
+
+  function handleStartEdit(rowId: string, field: EditableField, currentValue: string) {
+    setEditingCell({ rowId, field })
+    setDraftValue(currentValue)
+  }
+
+  function handleEditCancel() {
+    setEditingCell(null)
+    setDraftValue('')
+  }
+
+  function commitFieldChange(rowId: string, field: EditableField, rawValue: string) {
+    setClaims((prev) =>
+      prev.map((row) => {
+        if (row.id !== rowId) return row
+        if (field === 'cost') {
+          const cleaned = rawValue.replace(/[^\d,.-]/g, '').replace(',', '.')
+          const numeric = Number(cleaned)
+          return { ...row, cost: Number.isNaN(numeric) ? row.cost : numeric }
+        }
+        if (field === 'date' || field === 'vehicle' || field === 'vin' || field === 'route' || field === 'note') {
+          return { ...row, [field]: rawValue }
+        }
+        if (field === 'typeKey') return { ...row, typeKey: rawValue as ClaimRow['typeKey'] }
+        if (field === 'coverageKey') return { ...row, coverageKey: rawValue as ClaimRow['coverageKey'] }
+        if (field === 'statusKey') return { ...row, statusKey: rawValue as ClaimRow['statusKey'] }
+        if (field === 'aiTag') return { ...row, aiTag: rawValue as ClaimRow['aiTag'] }
+        return row
+      })
+    )
+    setEditingCell(null)
+    setDraftValue('')
+  }
+
+  function handleInputKeyDown(event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    if (!editingCell) return
+    if (event.key === 'Escape') {
+      event.preventDefault()
+      handleEditCancel()
+      return
+    }
+    if (event.key === 'Enter') {
+      if (editingCell.field === 'note' && event.shiftKey) {
+        return
+      }
+      event.preventDefault()
+      commitFieldChange(editingCell.rowId, editingCell.field, draftValue)
+    }
+  }
+
+  function renderEditableTextCell(row: ClaimRow, field: ClaimEditableField, width: string) {
+    const isEditing = editingCell?.rowId === row.id && editingCell.field === field
+    const displayValue =
+      field === 'cost' ? formatCost(row.cost) : (row[field] as string)
+
+    const fieldSpecificStyle: React.CSSProperties =
+      field === 'cost'
+        ? { textAlign: 'right', fontVariantNumeric: 'tabular-nums' }
+        : field === 'note'
+          ? { whiteSpace: 'pre-wrap' }
+          : {}
+
+    return (
+      <td
+        style={{ ...tableCellStyle, width, minWidth: width, ...fieldSpecificStyle }}
+        onClick={() => !isEditing && handleStartEdit(row.id, field, field === 'cost' ? String(row.cost) : (row[field] as string))}
+      >
+        {isEditing ? (
+          field === 'note' ? (
+            <textarea
+              autoFocus
+              value={draftValue}
+              onChange={(event) => setDraftValue(event.target.value)}
+              onBlur={() => commitFieldChange(row.id, field, draftValue)}
+              onKeyDown={handleInputKeyDown}
+              style={textareaStyle}
+            />
+          ) : (
+            <input
+              autoFocus
+              value={draftValue}
+              onChange={(event) => setDraftValue(event.target.value)}
+              onBlur={() => commitFieldChange(row.id, field, draftValue)}
+              onKeyDown={handleInputKeyDown}
+              style={inputStyle}
+              type={field === 'cost' ? 'number' : 'text'}
+            />
+          )
+        ) : (
+          displayValue
+        )}
+      </td>
+    )
+  }
+
+  function renderSelectCell(
+    row: ClaimRow,
+    field: 'typeKey' | 'coverageKey' | 'statusKey' | 'aiTag',
+    width: string,
+    options: Array<{ value: string; labelKey: string }>,
+    displayNode: React.ReactNode
+  ) {
+    const isEditing = editingCell?.rowId === row.id && editingCell.field === field
+    return (
+      <td
+        style={{ ...tableCellStyle, width, minWidth: width }}
+        onClick={() => !isEditing && handleStartEdit(row.id, field, row[field])}
+      >
+        {isEditing ? (
+          <select
+            autoFocus
+            value={draftValue || (row[field] as string)}
+            onChange={(event) => commitFieldChange(row.id, field, event.target.value)}
+            onBlur={handleEditCancel}
+            style={selectStyle}
+          >
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {t(option.labelKey)}
+              </option>
+            ))}
+          </select>
+        ) : (
+          displayNode
+        )}
+      </td>
+    )
+  }
+
+  const renderTypeCell = (row: ClaimRow) =>
+    renderSelectCell(row, 'typeKey', '150px', CLAIM_TYPE_OPTIONS, (
+      <span>{t(`fleetReporting.table.types.${row.typeKey}`)}</span>
+    ))
+
+  const renderCoverageCell = (row: ClaimRow) =>
+    renderSelectCell(row, 'coverageKey', '150px', CLAIM_COVERAGE_OPTIONS, (
+      <span style={coverageBadgeStyles(row.coverageKey)}>
+        {t(`fleetReporting.table.coverageBadges.${row.coverageKey}`)}
+      </span>
+    ))
+
+  const renderStatusCell = (row: ClaimRow) =>
+    renderSelectCell(row, 'statusKey', '150px', CLAIM_STATUS_OPTIONS, (
+      <span style={statusBadgeStyles(row.statusKey)}>
+        {t(`fleetReporting.table.statusBadges.${row.statusKey}`)}
+      </span>
+    ))
+
+  const renderAiCell = (row: ClaimRow) =>
+    renderSelectCell(row, 'aiTag', '150px', CLAIM_AI_OPTIONS, (
+      <span style={aiBadgeStyles(row.aiTag)}>{t(`fleetReporting.table.aiBadges.${row.aiTag}`)}</span>
+    ))
 
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
@@ -496,43 +944,59 @@ export default function FleetReportingPage() {
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <span style={{ color: GLASS_SUBTLE }}>{t('fleetReporting.vehicles.filters.typeLabel')}:</span>
-                {['all', 'car', 'truck', 'trailer', 'delivery'].map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => setVehicleType(option as VehicleTypeFilter)}
-                    style={{
-                      borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: vehicleType === option ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
-                      padding: '0.35rem 0.9rem',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {t(`fleetReporting.vehicles.filters.typeOptions.${option}`)}
-                  </button>
-                ))}
+                {['all', 'car', 'truck', 'trailer', 'delivery'].map((option) => {
+                  const variant = VEHICLE_TYPE_VARIANTS[option as VehicleTypeFilter]
+                  const isActive = vehicleType === option
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setVehicleType(option as VehicleTypeFilter)}
+                      style={trafficStyle(variant, {
+                        cursor: 'pointer',
+                        minWidth: '110px',
+                        opacity: isActive ? 1 : 0.78,
+                        transform: isActive ? 'translateY(-1px)' : undefined
+                      })}
+                      onMouseEnter={(event) => {
+                        event.currentTarget.style.filter = 'brightness(1.05)'
+                      }}
+                      onMouseLeave={(event) => {
+                        event.currentTarget.style.filter = 'none'
+                      }}
+                    >
+                      {t(`fleetReporting.vehicles.filters.typeOptions.${option}`)}
+                    </button>
+                  )
+                })}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 <span style={{ color: GLASS_SUBTLE }}>{t('fleetReporting.vehicles.filters.statusLabel')}:</span>
-                {['all', 'active', 'maintenance', 'down'].map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => setVehicleStatus(option as VehicleStatusFilter)}
-                    style={{
-                      borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: vehicleStatus === option ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
-                      padding: '0.35rem 0.9rem',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {t(`fleetReporting.vehicles.filters.statusOptions.${option}`)}
-                  </button>
-                ))}
+                {['all', 'active', 'maintenance', 'down'].map((option) => {
+                  const variant = VEHICLE_STATUS_VARIANTS[option as VehicleStatusFilter]
+                  const isActive = vehicleStatus === option
+                  return (
+                    <button
+                      key={option}
+                      type="button"
+                      onClick={() => setVehicleStatus(option as VehicleStatusFilter)}
+                      style={trafficStyle(variant, {
+                        cursor: 'pointer',
+                        minWidth: '110px',
+                        opacity: isActive ? 1 : 0.78,
+                        transform: isActive ? 'translateY(-1px)' : undefined
+                      })}
+                      onMouseEnter={(event) => {
+                        event.currentTarget.style.filter = 'brightness(1.05)'
+                      }}
+                      onMouseLeave={(event) => {
+                        event.currentTarget.style.filter = 'none'
+                      }}
+                    >
+                      {t(`fleetReporting.vehicles.filters.statusOptions.${option}`)}
+                    </button>
+                  )
+                })}
               </div>
               <div style={{ flex: 1, minWidth: '220px' }}>
                 <input
@@ -589,10 +1053,17 @@ export default function FleetReportingPage() {
                     </span>
                   </div>
                   <span style={{ color: GLASS_SUBTLE }}>{vehicle.location}</span>
-                  <span style={{ color: GLASS_SUBTLE }}>
-                    {t('fleetReporting.vehicles.cards.status')}:{' '}
-                    <strong>{t(`fleetReporting.vehicles.statusBadges.${vehicle.status}`)}</strong>
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <span style={{ color: GLASS_SUBTLE }}>{t('fleetReporting.vehicles.cards.status')}:</span>
+                    <span
+                      style={trafficStyle(
+                        trafficColorForStatus(t(`fleetReporting.vehicles.statusBadges.${vehicle.status}`)),
+                        { minWidth: '120px', height: '30px', fontSize: '0.8rem', fontWeight: 700 }
+                      )}
+                    >
+                      {t(`fleetReporting.vehicles.statusBadges.${vehicle.status}`)}
+                    </span>
+                  </div>
                   <span style={{ color: GLASS_SUBTLE }}>
                     {t('fleetReporting.vehicles.cards.inspection')}: {vehicle.inspection}
                   </span>
@@ -656,98 +1127,84 @@ export default function FleetReportingPage() {
               </div>
             </div>
 
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ffffff' }}>
-                <thead>
-                  <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.78)' }}>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.date')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.vehicle')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.vin')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.location')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.type')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.coverage')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.status')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.cost')}</th>
-                    <th style={{ padding: '0.6rem 0.4rem' }}>{t('fleetReporting.table.columns.ai')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {tableRows.map((row, index) => (
-                    <tr key={row.key} style={{ borderTop: index === 0 ? 'none' : '1px solid rgba(255,255,255,0.12)' }}>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>{row.date}</td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>{row.vehicle}</td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>{row.vin}</td>
-                      <td style={{ padding: '0.75rem 0.4rem', color: GLASS_TEXT }}>
-                        {t(`fleetReporting.table.rows.${row.locationKey}.location`)}
-                      </td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>{t(`fleetReporting.table.types.${row.type}`)}</td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '0.25rem 0.7rem',
-                            borderRadius: '999px',
-                            fontWeight: 700,
-                            fontSize: '0.85rem',
-                            minWidth: '90px',
-                            ...getCoverageBadgeStyles(row.coverage as 'covered' | 'uncovered')
-                          }}
-                        >
-                          {t(`fleetReporting.table.coverageBadges.${row.coverage}`)}
-                        </span>
-                      </td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '0.25rem 0.7rem',
-                            borderRadius: '999px',
-                            fontWeight: 700,
-                            fontSize: '0.85rem',
-                            minWidth: '90px',
-                            ...getStatusBadgeStyles(row.status as 'open' | 'review' | 'closed')
-                          }}
-                        >
-                          {t(`fleetReporting.table.statusBadges.${row.status}`)}
-                        </span>
-                      </td>
-                      <td style={{ padding: '0.75rem 0.4rem', fontWeight: 600 }}>{row.cost}</td>
-                      <td style={{ padding: '0.75rem 0.4rem' }}>
-                        <div
-                          style={{
-                            display: 'inline-flex',
-                            flexDirection: 'column',
-                            gap: '0.35rem',
-                            minWidth: '160px'
-                          }}
-                        >
-                          <span
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              padding: '0.2rem 0.6rem',
-                              borderRadius: '999px',
-                              fontWeight: 700,
-                              fontSize: '0.8rem',
-                              ...getAiBadgeStyles(row.aiTag as 'alert' | 'watch' | 'normal')
-                            }}
-                          >
-                            {t(`fleetReporting.table.aiBadges.${row.aiTag}`)}
-                          </span>
-                          <span style={{ fontSize: '0.85rem', color: GLASS_SUBTLE }}>
-                            {t(`fleetReporting.table.rows.${row.locationKey}.ai`)}
-                          </span>
-                        </div>
-                      </td>
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: '22px',
+                border: '1px solid rgba(255,255,255,0.32)',
+                background: 'rgba(0,0,0,0.25)',
+                boxShadow: '0 16px 42px rgba(0,0,0,0.35)',
+                overflow: 'hidden'
+              }}
+            >
+              <div
+                style={{
+                  maxHeight: '460px',
+                  overflow: 'auto',
+                  WebkitOverflowScrolling: 'touch'
+                }}
+              >
+                <table
+                  style={{
+                    width: '100%',
+                    minWidth: '1200px',
+                    borderCollapse: 'collapse',
+                    color: '#ffffff',
+                    tableLayout: 'fixed'
+                  }}
+                >
+                  <thead>
+                    <tr>
+                      <th style={{ ...tableHeaderCellStyle, width: '120px' }}>
+                        {t('fleetReporting.table.columns.date')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                        {t('fleetReporting.table.columns.vehicle')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '170px' }}>
+                        {t('fleetReporting.table.columns.vin')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
+                        {t('fleetReporting.table.columns.location')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '140px' }}>
+                        {t('fleetReporting.table.columns.type')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                        {t('fleetReporting.table.columns.coverage')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '150px' }}>
+                        {t('fleetReporting.table.columns.status')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '140px', textAlign: 'right' }}>
+                        {t('fleetReporting.table.columns.cost')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '160px' }}>
+                        {t('fleetReporting.table.columns.ai')}
+                      </th>
+                      <th style={{ ...tableHeaderCellStyle, width: '220px' }}>
+                        {t('fleetReporting.table.columns.note')}
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {claims.map((row) => (
+                      <tr key={row.id}>
+                        {renderEditableTextCell(row, 'date', '120px')}
+                        {renderEditableTextCell(row, 'vehicle', '150px')}
+                        {renderEditableTextCell(row, 'vin', '170px')}
+                        {renderEditableTextCell(row, 'route', '220px')}
+                        {renderTypeCell(row)}
+                        {renderCoverageCell(row)}
+                        {renderStatusCell(row)}
+                        {renderEditableTextCell(row, 'cost', '140px')}
+                        {renderAiCell(row)}
+                        {renderEditableTextCell(row, 'note', '220px')}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </Card>
         </div>
