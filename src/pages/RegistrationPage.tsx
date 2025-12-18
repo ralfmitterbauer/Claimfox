@@ -204,38 +204,23 @@ async function speakChunks(
   }
 }
 
-/** Nur 4 Voice-Optionen */
-type VoiceChoiceId = 'de-male' | 'de-female' | 'en-male' | 'en-female'
-type VoiceChoice = { id: VoiceChoiceId; label: string; voice: SpeechSynthesisVoice }
+type VoiceChoiceId = string
+type VoiceChoice = { id: string; label: string; voice: SpeechSynthesisVoice; isPreferred?: boolean }
 
-function scoreVoice(v: SpeechSynthesisVoice) {
-  const name = (v.name || '').toLowerCase()
-  let score = 0
-  if (name.includes('natural')) score += 5
-  if (name.includes('enhanced')) score += 4
-  if (name.includes('premium')) score += 4
-  if (name.includes('siri')) score += 3
-  if (name.includes('google')) score += 3
-  if (name.includes('microsoft')) score += 2
-  if (name.includes('apple')) score += 2
-  if (name.includes('espeak')) score -= 10
-  if (name.includes('robot')) score -= 10
-  if (v.localService) score += 1
-  return score
+function getVoicePriority(voice: SpeechSynthesisVoice) {
+  const lang = (voice.lang || '').toLowerCase()
+  const name = (voice.name || '').toLowerCase()
+  if (lang.startsWith('de-de') && name.includes('google')) return 0
+  if (lang.startsWith('de-de')) return 1
+  if (lang.startsWith('de')) return 2
+  if (lang.startsWith('en')) return 3
+  return 4
 }
 
-function pickBestVoice(voices: SpeechSynthesisVoice[], langPrefix: 'de' | 'en', gender: 'male' | 'female') {
-  const langMatches = voices.filter((v) => (v.lang || '').toLowerCase().startsWith(langPrefix))
-  if (!langMatches.length) return undefined
-
-  const femaleHints = /(female|frau|samantha|victoria|karen|zoe|anna|helena|katja|sarah|vicki)/i
-  const maleHints = /(male|mann|alex|daniel|fred|tom|bernd|stefan|markus|thomas)/i
-  const hintRegex = gender === 'female' ? femaleHints : maleHints
-
-  const hinted = langMatches.filter((v) => hintRegex.test(v.name || ''))
-  const candidates = hinted.length ? hinted : langMatches
-
-  return [...candidates].sort((a, b) => scoreVoice(b) - scoreVoice(a))[0]
+function buildVoiceLabel(voice: SpeechSynthesisVoice) {
+  const name = voice.name || 'Voice'
+  const lang = voice.lang || ''
+  return lang ? `${name} (${lang})` : name
 }
 
 export default function RegistrationPage() {
@@ -248,6 +233,7 @@ export default function RegistrationPage() {
   const [pendingTranscript, setPendingTranscript] = useState<string | null>(null)
 
   const chatContainerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement | null>(null)
   const timeoutsRef = useRef<number[]>([])
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   const isListeningRef = useRef(false)
@@ -270,28 +256,40 @@ export default function RegistrationPage() {
   )
 
   const speechSupported = isBrowser() && 'speechSynthesis' in window
+  const recognitionSupported = useMemo(
+    () => (isBrowser() ? Boolean(window.SpeechRecognition || window.webkitSpeechRecognition) : false),
+    []
+  )
 
-  const preferredVoices: VoiceChoice[] = useMemo(() => {
+  const voiceChoices: VoiceChoice[] = useMemo(() => {
     if (!voices.length) return []
+    return [...voices]
+      .sort((a, b) => {
+        const priorityDiff = getVoicePriority(a) - getVoicePriority(b)
+        if (priorityDiff !== 0) return priorityDiff
+        return buildVoiceLabel(a).localeCompare(buildVoiceLabel(b))
+      })
+      .map((voice) => ({
+        id: voice.voiceURI || `${voice.lang}-${voice.name}`,
+        voice,
+        label: buildVoiceLabel(voice),
+        isPreferred:
+          (voice.lang || '').toLowerCase().startsWith('de-de') && (voice.name || '').toLowerCase().includes('google')
+      }))
+  }, [voices])
 
-    const deMale = pickBestVoice(voices, 'de', 'male')
-    const deFemale = pickBestVoice(voices, 'de', 'female')
-    const enMale = pickBestVoice(voices, 'en', 'male')
-    const enFemale = pickBestVoice(voices, 'en', 'female')
+  const selectedChoice = useMemo(
+    () => voiceChoices.find((choice) => choice.id === state.voiceChoiceId),
+    [state.voiceChoiceId, voiceChoices]
+  )
 
-    const out: VoiceChoice[] = []
-    if (deMale) out.push({ id: 'de-male', label: tr('registration.voice.deMale', 'Deutsch – männlich'), voice: deMale })
-    if (deFemale) out.push({ id: 'de-female', label: tr('registration.voice.deFemale', 'Deutsch – weiblich'), voice: deFemale })
-    if (enMale) out.push({ id: 'en-male', label: tr('registration.voice.enMale', 'English – male'), voice: enMale })
-    if (enFemale) out.push({ id: 'en-female', label: tr('registration.voice.enFemale', 'English – female'), voice: enFemale })
+  const selectedVoice = selectedChoice?.voice
 
-    return out
-  }, [tr, voices])
-
-  const selectedVoice = useMemo(() => {
-    if (!state.voiceChoiceId) return undefined
-    return preferredVoices.find((v) => v.id === state.voiceChoiceId)?.voice
-  }, [preferredVoices, state.voiceChoiceId])
+  useEffect(() => {
+    if (!voiceChoices.length) return
+    if (state.voiceChoiceId && voiceChoices.some((choice) => choice.id === state.voiceChoiceId)) return
+    dispatch({ type: 'SET_VOICE_CHOICE_ID', payload: voiceChoices[0].id })
+  }, [dispatch, state.voiceChoiceId, voiceChoices])
 
   const queueBotMessages = useCallback(
     (items: Array<{ key: string; vars?: Record<string, string> }>) => {
@@ -422,14 +420,13 @@ export default function RegistrationPage() {
     }
   }, [fallbackToTextInput, queueBotMessages, selectedVoice, stopVoiceInteraction])
 
-  const speakAndListen = useCallback(
+  const speakQuestion = useCallback(
     async (text: string) => {
       if (!speechSupported || !selectedVoice || !text) return
       if (!isBrowser()) return
       await speakChunks(text, selectedVoice, { rate: 0.9, pitch: 1.05, volume: 1 })
-      startRecognition()
     },
-    [selectedVoice, speechSupported, startRecognition]
+    [selectedVoice, speechSupported]
   )
 
   // Stimmen laden
@@ -495,10 +492,10 @@ export default function RegistrationPage() {
     lastSpokenMessageIdRef.current = questionMessage.id
 
     const text = t(questionMessage.key, questionMessage.vars)
-    void speakAndListen(text)
+    void speakQuestion(text)
   }, [
     selectedVoice,
-    speakAndListen,
+    speakQuestion,
     state.blocked,
     state.completed,
     state.inputMode,
@@ -528,6 +525,13 @@ export default function RegistrationPage() {
   useEffect(() => {
     chatContainerRef.current?.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: 'smooth' })
   }, [state.messages.length, state.isTyping])
+
+  useEffect(() => {
+    if (waitingForModeSelection || waitingForVoiceSetup) return
+    if (state.blocked || state.completed) return
+    if (state.isTyping) return
+    inputRef.current?.focus()
+  }, [state.blocked, state.completed, state.isTyping, state.messages.length, state.step, waitingForModeSelection, waitingForVoiceSetup])
 
   // initial bot prompt
   useEffect(() => {
@@ -709,6 +713,22 @@ export default function RegistrationPage() {
     queueBotMessages([{ key: 'registration.bot.name' }])
   }
 
+  const handleMicToggle = useCallback(() => {
+    if (state.inputMode !== 'voice') return
+    if (!recognitionSupported && !isListeningRef.current) {
+      fallbackToTextInput()
+      return
+    }
+    if (isListeningRef.current) {
+      recognitionRef.current?.stop()
+      return
+    }
+    startRecognition()
+  }, [fallbackToTextInput, recognitionSupported, startRecognition, state.inputMode])
+
+  const waitingForModeSelection = state.step === 'mode'
+  const waitingForVoiceSetup = state.step === 'voice'
+
   function confirmTranscriptAndContinue(finalText: string) {
     const trimmed = finalText.trim()
     if (!trimmed) return
@@ -728,6 +748,17 @@ export default function RegistrationPage() {
     confirmTranscriptAndContinue(pendingTranscript)
   }
 
+  const handleTextareaKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault()
+      if (state.step === 'voiceConfirm') {
+        confirmTranscriptAndContinue(inputValue)
+      } else {
+        sendUserInput(inputValue)
+      }
+    }
+  }
+
   function handleRestart() {
     timeoutsRef.current.forEach((id) => window.clearTimeout(id))
     timeoutsRef.current = []
@@ -739,9 +770,6 @@ export default function RegistrationPage() {
     setInputValue('')
     dispatch({ type: 'RESET', payload: initialState })
   }
-
-  const waitingForModeSelection = state.step === 'mode'
-  const waitingForVoiceSetup = state.step === 'voice'
 
   const inputDisabled =
     state.isTyping ||
@@ -758,6 +786,14 @@ export default function RegistrationPage() {
     : state.step === 'voiceConfirm'
     ? tr('registration.voiceConfirm.placeholder', 'Bitte korrigiere die Antwort im Textfeld und drücke auf absenden.')
     : t('registration.inputPlaceholder')
+  const showMicButton = state.inputMode === 'voice'
+  const micButtonBlocked =
+    !showMicButton ||
+    waitingForModeSelection ||
+    waitingForVoiceSetup ||
+    state.blocked ||
+    state.completed ||
+    state.step === 'voiceConfirm'
 
   // UI Labels
   const labelWrite = tr('registration.modeWrite', '✍️ Schreiben')
@@ -766,6 +802,14 @@ export default function RegistrationPage() {
   const labelVoicePlaceholder = tr('registration.voicePlaceholder', 'Bitte wählen…')
   const labelVoiceStart = tr('registration.voiceStart', 'Starten')
   const labelVoiceLoading = tr('registration.voiceLoading', 'Stimmen werden geladen…')
+  const labelVoiceActive = tr('registration.voice.activeLabel', 'Aktive Stimme')
+  const labelVoiceActiveBadge = tr('registration.voice.activeBadge', 'Aktiv')
+  const labelMicStart = tr('registration.voice.startListening', '🎙️ Aufnahme starten')
+  const labelMicStop = tr('registration.voice.stopListening', '⏹️ Aufnahme stoppen')
+  const labelMicUnsupported = tr(
+    'registration.voice.noRecognition',
+    'Voice input wird auf diesem Gerät nicht unterstützt – bitte tippe Deine Antworten.'
+  )
 
   const labelConfirmTitle = tr('registration.voiceConfirm.title', 'Ist das so richtig?')
   const labelConfirmYes = tr('registration.voiceConfirm.yes', '✅ Ja')
@@ -887,7 +931,7 @@ export default function RegistrationPage() {
             }}
           >
             {speechSupported ? (
-              preferredVoices.length ? (
+              voiceChoices.length ? (
                 <>
                   <label htmlFor="voiceSelect" style={{ fontWeight: 600 }}>
                     {labelVoiceLabel}
@@ -912,7 +956,7 @@ export default function RegistrationPage() {
                     }}
                   >
                     <option value="">{labelVoicePlaceholder}</option>
-                    {preferredVoices.map((opt) => (
+                    {voiceChoices.map((opt) => (
                       <option key={opt.id} value={opt.id}>
                         {opt.label}
                       </option>
@@ -922,6 +966,42 @@ export default function RegistrationPage() {
                   <Button type="button" disabled={!state.voiceChoiceId} onClick={handleVoiceStart}>
                     {labelVoiceStart}
                   </Button>
+                  {selectedChoice && (
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        padding: '0.35rem 0.75rem',
+                        borderRadius: '999px',
+                        background: '#e5ddff',
+                        color: '#352b6b',
+                        fontWeight: 600
+                      }}
+                    >
+                      {labelVoiceActive}:
+                      <span style={{ fontWeight: 700 }}>{selectedChoice.label}</span>
+                      {selectedChoice.isPreferred && (
+                        <span
+                          style={{
+                            background: '#3f2ae6',
+                            color: '#ffffff',
+                            borderRadius: '999px',
+                            padding: '0.1rem 0.5rem',
+                            fontSize: '0.75rem',
+                            fontWeight: 700
+                          }}
+                        >
+                          {labelVoiceActiveBadge}
+                        </span>
+                      )}
+                    </span>
+                  )}
+                  {!recognitionSupported && (
+                    <div style={{ color: '#4b4a77', fontSize: '0.9rem' }}>
+                      {labelMicUnsupported}
+                    </div>
+                  )}
                 </>
               ) : (
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
@@ -981,21 +1061,29 @@ export default function RegistrationPage() {
           onSubmit={handleUserSubmit}
           style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}
         >
-          <input
-            type="text"
+          <textarea
+            ref={inputRef}
             value={inputValue}
             onChange={(event) => setInputValue(event.target.value)}
+            onKeyDown={handleTextareaKeyDown}
             placeholder={placeholder}
             disabled={inputDisabled}
+            rows={state.step === 'voiceConfirm' ? 3 : 2}
             style={{
               flex: 1,
               minWidth: '240px',
-              borderRadius: '999px',
+              borderRadius: '18px',
               border: '1px solid #d6d6f2',
               padding: '0.85rem 1.1rem',
-              fontSize: '1rem'
+              fontSize: '1rem',
+              resize: 'vertical'
             }}
           />
+          {showMicButton && (
+            <Button type="button" onClick={handleMicToggle} disabled={micButtonBlocked && !isListening}>
+              {isListening ? labelMicStop : labelMicStart}
+            </Button>
+          )}
           <Button type="submit" disabled={inputDisabled}>
             {t('registration.send')}
           </Button>
