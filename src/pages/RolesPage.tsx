@@ -7,7 +7,11 @@ import { useAuth } from '@/features/auth/AuthContext'
 import { useI18n } from '@/i18n/I18nContext'
 import BackgroundLogin from '@/assets/images/background_login.png'
 
-const ROLE_KEYS = ['claims', 'partner', 'reporting'] as const
+const ROLE_ITEMS = [
+  { key: 'claims' },
+  { key: 'partner' },
+  { key: 'reporting', route: '/fleet-reporting' }
+] as const
 
 export default function RolesPage() {
   const { logout } = useAuth()
@@ -75,14 +79,35 @@ export default function RolesPage() {
               gap: '1.25rem'
             }}
           >
-            {ROLE_KEYS.map((key) => (
-              <Card key={key} title={t(`roles.cards.${key}.title`)} variant="glass" interactive>
-                <p style={{ marginTop: 0, color: 'rgba(255,255,255,0.85)', minHeight: '3rem' }}>
-                  {t(`roles.cards.${key}.description`)}
-                </p>
-                <Button style={{ width: '100%' }}>{t('roles.view')}</Button>
-              </Card>
-            ))}
+            {ROLE_ITEMS.map((item) => {
+              const hasRoute = Boolean(item.route)
+              return (
+                <Card
+                  key={item.key}
+                  title={t(`roles.cards.${item.key}.title`)}
+                  variant="glass"
+                  interactive={hasRoute}
+                  onClick={hasRoute ? () => navigate(item.route!) : undefined}
+                >
+                  <p style={{ marginTop: 0, color: 'rgba(255,255,255,0.85)', minHeight: '3rem' }}>
+                    {t(`roles.cards.${item.key}.description`)}
+                  </p>
+                  <Button
+                    style={{ width: '100%' }}
+                    onClick={
+                      hasRoute
+                        ? (event) => {
+                            event.stopPropagation()
+                            navigate(item.route!)
+                          }
+                        : undefined
+                    }
+                  >
+                    {t('roles.view')}
+                  </Button>
+                </Card>
+              )
+            })}
             <Card
               title={t('roles.registrationCardTitle')}
               subtitle={t('roles.registrationCardSubtitle')}

@@ -216,8 +216,115 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
         },
         reporting: {
-          title: 'Reporting',
-          description: 'Erstelle Kennzahlen und Auswertungen für das Controlling.'
+          title: 'Fleet Reporting',
+          description: 'Fuhrpark-Kennzahlen, KPIs und Schadenreports bereitstellen.'
+        }
+      }
+    },
+    fleetReporting: {
+      title: 'Fuhrpark-Reporting-Dashboard',
+      subtitle: 'Kennzahlen, Auffälligkeiten und Schadenüberblick für Ihren Fuhrpark',
+      kpi: {
+        totalClaims: 'Schäden gesamt (12 Monate)',
+        openClaims: 'Offene Schäden',
+        lossRatio: 'Schadenquote',
+        avgCost: 'Ø Schadenkosten',
+        coverageRate: 'Deckungsquote'
+      },
+      charts: {
+        monthlyTitle: 'Schäden pro Monat',
+        monthlySubtitle: 'Zwölf Monate Demo-Daten',
+        coverageTitle: 'Deckungsstatus',
+        coverageSubtitle: 'Anteil gedeckt vs. nicht gedeckt',
+        severityTitle: 'Schadenhöhe-Verteilung',
+        severitySubtitle: 'Anteile nach Kategorie'
+      },
+      coverageLabels: {
+        covered: 'Gedeckt',
+        uncovered: 'Nicht gedeckt'
+      },
+      severityLabels: {
+        high: 'Hoch',
+        medium: 'Mittel',
+        low: 'Niedrig'
+      },
+      ai: {
+        title: 'Insurfox AI – Fuhrpark-Auffälligkeiten & Insights',
+        subtitle: 'Automatische Signale aus historischen und Echtzeit-Daten',
+        items: {
+          item1: 'Fahrzeug DE-789-XY zeigt 40 % höhere Schadenfrequenz als der Fuhrpark-Durchschnitt.',
+          item2: 'Region Berlin verzeichnet 25 % mehr Vorfälle in Q4. Wetterkorrelation erkannt.',
+          item3: 'Fahrerschulung für Team Nord empfohlen – wiederkehrende Unfallmuster.',
+          item4: 'Cargo-Schäden steigen im November um 15 %. Routenoptimierung empfohlen.'
+        }
+      },
+      filters: {
+        typeLabel: 'Schadenart',
+        typeOptions: {
+          all: 'Alle',
+          motor: 'Motor',
+          liability: 'Haftpflicht',
+          cargo: 'Cargo'
+        },
+        rangeLabel: 'Zeitraum',
+        rangeOptions: {
+          last30: 'Letzte 30 Tage',
+          last12: 'Letzte 12 Monate'
+        }
+      },
+      table: {
+        title: 'Fuhrpark-Schäden',
+        columns: {
+          date: 'Datum',
+          vehicle: 'Fahrzeug',
+          vin: 'FIN',
+          location: 'Route / Standort',
+          type: 'Typ',
+          coverage: 'Deckung',
+          status: 'Status',
+          cost: 'Kosten',
+          ai: 'AI-Hinweis'
+        },
+        types: {
+          motor: 'Motor',
+          liability: 'Haftpflicht',
+          cargo: 'Cargo'
+        },
+        coverageBadges: {
+          covered: 'Gedeckt',
+          uncovered: 'Nicht gedeckt'
+        },
+        statusBadges: {
+          open: 'Offen',
+          review: 'In Prüfung',
+          closed: 'Geschlossen'
+        },
+        aiBadges: {
+          alert: 'Auffällig',
+          watch: 'Beobachten',
+          normal: 'Normal'
+        },
+        rows: {
+          row1: {
+            location: 'Berlin → Leipzig (A9)',
+            ai: 'Telematik meldet abruptes Bremsen + Sensor-Fehler'
+          },
+          row2: {
+            location: 'Hamburg Hafen',
+            ai: 'Ladungssicherung prüfen – wiederkehrende Schäden'
+          },
+          row3: {
+            location: 'München → Salzburg',
+            ai: 'Versicherung fordert Fotodokumentation nach'
+          },
+          row4: {
+            location: 'Köln Innenstadt',
+            ai: 'Unfallhäufung an gleicher Kreuzung'
+          },
+          row5: {
+            location: 'Frankfurt Air Cargo Hub',
+            ai: 'Temperaturabweichung + verspätete Meldung'
+          }
         }
       }
     },
@@ -452,8 +559,115 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Nurture relationships with assessors, workshops, and service partners.'
         },
         reporting: {
-          title: 'Reporting',
-          description: 'Create KPIs and dashboards for controlling.'
+          title: 'Fleet Reporting',
+          description: 'Deliver fleet KPIs, dashboards, and claims reporting.'
+        }
+      }
+    },
+    fleetReporting: {
+      title: 'Fleet Reporting Dashboard',
+      subtitle: 'KPIs, anomalies and claims overview for your fleet',
+      kpi: {
+        totalClaims: 'Total claims (12 months)',
+        openClaims: 'Open claims',
+        lossRatio: 'Loss ratio',
+        avgCost: 'Avg. claim cost',
+        coverageRate: 'Coverage rate'
+      },
+      charts: {
+        monthlyTitle: 'Claims per month',
+        monthlySubtitle: 'Twelve months of demo data',
+        coverageTitle: 'Coverage status',
+        coverageSubtitle: 'Share of covered vs. uncovered',
+        severityTitle: 'Claim severity distribution',
+        severitySubtitle: 'Share per category'
+      },
+      coverageLabels: {
+        covered: 'Covered',
+        uncovered: 'Not covered'
+      },
+      severityLabels: {
+        high: 'High',
+        medium: 'Medium',
+        low: 'Low'
+      },
+      ai: {
+        title: 'Insurfox AI – Fleet Insights',
+        subtitle: 'Automated signals from historical and real-time data',
+        items: {
+          item1: 'Vehicle DE-789-XY shows a 40% higher claim frequency than the fleet average.',
+          item2: 'Region Berlin reports 25% more incidents in Q4. Weather correlation detected.',
+          item3: 'Driver coaching recommended for Team North based on recurring accident patterns.',
+          item4: 'Cargo claims up 15% in November. Route optimization suggested.'
+        }
+      },
+      filters: {
+        typeLabel: 'Claim type',
+        typeOptions: {
+          all: 'All',
+          motor: 'Motor',
+          liability: 'Liability',
+          cargo: 'Cargo'
+        },
+        rangeLabel: 'Time range',
+        rangeOptions: {
+          last30: 'Last 30 days',
+          last12: 'Last 12 months'
+        }
+      },
+      table: {
+        title: 'Fleet claims',
+        columns: {
+          date: 'Date',
+          vehicle: 'Vehicle',
+          vin: 'VIN',
+          location: 'Route / Location',
+          type: 'Type',
+          coverage: 'Coverage',
+          status: 'Status',
+          cost: 'Cost',
+          ai: 'AI note'
+        },
+        types: {
+          motor: 'Motor',
+          liability: 'Liability',
+          cargo: 'Cargo'
+        },
+        coverageBadges: {
+          covered: 'Covered',
+          uncovered: 'Not covered'
+        },
+        statusBadges: {
+          open: 'Open',
+          review: 'In review',
+          closed: 'Closed'
+        },
+        aiBadges: {
+          alert: 'Anomaly',
+          watch: 'Watch',
+          normal: 'Normal'
+        },
+        rows: {
+          row1: {
+            location: 'Berlin → Leipzig (A9)',
+            ai: 'Telematics flagged harsh braking + sensor fault'
+          },
+          row2: {
+            location: 'Hamburg port',
+            ai: 'Re-check cargo lashing – recurring damage pattern'
+          },
+          row3: {
+            location: 'Munich → Salzburg',
+            ai: 'Insurer requested additional photo evidence'
+          },
+          row4: {
+            location: 'Cologne city center',
+            ai: 'Incident cluster at the same intersection'
+          },
+          row5: {
+            location: 'Frankfurt air cargo hub',
+            ai: 'Temperature deviation + delayed notification'
+          }
         }
       }
     },
