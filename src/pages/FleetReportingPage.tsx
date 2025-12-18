@@ -272,6 +272,24 @@ const TRAFFIC_COLORS = {
   blue: '#2563EB'
 } as const
 
+const KPI_GRID_CSS = `
+  .fleet-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 1200px) {
+    .fleet-kpi-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .fleet-kpi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+`
+
 type Traffic = keyof typeof TRAFFIC_COLORS
 
 function trafficColorForStatus(status: string): Traffic {
@@ -320,8 +338,8 @@ const ICON_COLOR = '#D4380D'
 type IconProps = { size?: number }
 
 const svgProps = (size?: number) => ({
-  width: size ?? 26,
-  height: size ?? 26,
+  width: size ?? 32,
+  height: size ?? 32,
   viewBox: '0 0 24 24',
   fill: 'none',
   xmlns: 'http://www.w3.org/2000/svg'
@@ -440,7 +458,7 @@ function IconStopOctagon({ size }: IconProps) {
         strokeLinejoin="round"
       />
       <path d="M12 8v4" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
-      <circle cx="12" cy="15.5" r="0.8" fill={ICON_COLOR} />
+      <path d="M12 14.5v.2" stroke={ICON_COLOR} strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }
@@ -530,25 +548,21 @@ const CLAIM_AI_OPTIONS: Array<{ value: ClaimRow['aiTag']; labelKey: string }> = 
 
 function KpiCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <Card variant="glass">
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-        <div
-          style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            border: '1px solid rgba(212,56,13,0.35)',
-            background: 'rgba(212,56,13,0.12)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          {icon}
-        </div>
-        <div style={{ flex: 1 }}>
-          <p style={{ margin: 0, color: GLASS_SUBTLE, fontSize: '0.9rem' }}>{label}</p>
-          <div style={{ marginTop: '0.2rem', fontSize: '1.85rem', fontWeight: 700, color: '#ffffff' }}>{value}</div>
+    <Card
+      variant="glass"
+      className="fleet-kpi-card"
+      style={{
+        padding: '1.4rem 1.6rem',
+        minHeight: '150px',
+        display: 'flex',
+        alignItems: 'center'
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</div>
+        <div>
+          <p style={{ margin: 0, color: 'rgba(255,255,255,0.78)', fontSize: '0.9rem' }}>{label}</p>
+          <div style={{ marginTop: '0.3rem', fontSize: '2rem', fontWeight: 700, color: '#ffffff' }}>{value}</div>
         </div>
       </div>
     </Card>
@@ -781,7 +795,9 @@ export default function FleetReportingPage() {
     ))
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh' }}>
+    <>
+      <style>{KPI_GRID_CSS}</style>
+      <div style={{ position: 'relative', minHeight: '100vh' }}>
       <div
         aria-hidden="true"
         style={{
@@ -825,13 +841,7 @@ export default function FleetReportingPage() {
             subtitleColor="rgba(255,255,255,0.82)"
           />
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '1rem'
-            }}
-          >
+          <div className="fleet-kpi-grid">
             {kpis.map((item) => {
               const label = t(`fleetReporting.kpi.${item.key}`)
               const value = 'valueKey' in item ? t(item.valueKey) : item.value
@@ -1210,5 +1220,6 @@ export default function FleetReportingPage() {
         </div>
       </section>
     </div>
+    </>
   )
 }
