@@ -261,6 +261,9 @@ export const translations: Record<Lang, TranslationTree> = {
         listening: '🎙️ Ich höre zu …'
       }
     },
+    brokerPortal: {
+      title: 'IaaS Maklerportal'
+    },
     brokerLanding: {
       title: 'Maklerportal',
       login: 'Login',
@@ -493,6 +496,9 @@ export const translations: Record<Lang, TranslationTree> = {
         voiceInputNotSupported: 'Listening is not available in this browser. Please type your response.',
         listening: '🎙️ Listening …'
       }
+    },
+    brokerPortal: {
+      title: 'IaaS Broker Portal'
     },
     brokerLanding: {
       title: 'Broker Portal',

@@ -255,7 +255,7 @@ export default function BrokerPortalLandingPage() {
                 textShadow: '0 14px 34px rgba(0, 0, 0, 0.6)'
               }}
             >
-              {t('brokerLanding.heroHeadline')}
+              {t('brokerPortal.title')}
             </h1>
             <p
               style={{
