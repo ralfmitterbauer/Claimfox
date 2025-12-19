@@ -8,13 +8,6 @@ import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 const KPI_KEYS = ['liveShipments', 'coverageRate', 'openIncidents', 'etaDeviation'] as const
 const FEATURE_KEYS = ['realtime', 'coverage', 'incidents', 'thirdparty', 'ai', 'routes'] as const
 
-const kpiValues: Record<(typeof KPI_KEYS)[number], string> = {
-  liveShipments: '128',
-  coverageRate: '92%',
-  openIncidents: '7',
-  etaDeviation: '18m'
-}
-
 const featureIcons: Record<(typeof FEATURE_KEYS)[number], React.ReactNode> = {
   realtime: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
@@ -61,6 +54,7 @@ const featureIcons: Record<(typeof FEATURE_KEYS)[number], React.ReactNode> = {
 }
 
 const previewBars = [68, 92, 78, 84, 73, 96]
+const PREVIEW_VALUE_KEYS = ['eta', 'temp', 'customs'] as const
 
 export default function LogisticsLandingPage() {
   const { t } = useI18n()
@@ -87,7 +81,9 @@ export default function LogisticsLandingPage() {
         </div>
 
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.66)' }}>Insurfox IaaS</p>
+          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.66)' }}>
+            {t('logisticsLanding.badge')}
+          </p>
           <h1 style={{ margin: 0, fontSize: 'clamp(2.8rem, 5vw, 3.8rem)', fontWeight: 700 }}>{t('logisticsLanding.title')}</h1>
           <p style={{ margin: 0, maxWidth: '840px', color: 'rgba(255,255,255,0.85)', fontSize: '1.2rem' }}>{t('logisticsLanding.subtitle')}</p>
         </div>
@@ -108,7 +104,7 @@ export default function LogisticsLandingPage() {
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
                 {t(`logisticsLanding.kpi.${key}`)}
               </p>
-              <p style={{ margin: 0, fontSize: '2rem', fontWeight: 700 }}>{kpiValues[key]}</p>
+              <p style={{ margin: 0, fontSize: '2rem', fontWeight: 700 }}>{t(`logisticsLanding.kpiValues.${key}`)}</p>
             </Card>
           ))}
         </div>
@@ -146,13 +142,9 @@ export default function LogisticsLandingPage() {
               {t('logisticsLanding.preview.title')}
             </p>
             <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-              {[
-                { label: t('logisticsLanding.preview.eta'), value: '18m' },
-                { label: t('logisticsLanding.preview.temp'), value: '+2°C' },
-                { label: t('logisticsLanding.preview.customs'), value: t('logisticsLanding.preview.customsStatus.cleared') }
-              ].map((item) => (
+              {PREVIEW_VALUE_KEYS.map((key) => (
                 <div
-                  key={item.label}
+                  key={key}
                   style={{
                     flex: '1 1 100px',
                     background: 'rgba(255,255,255,0.08)',
@@ -161,8 +153,8 @@ export default function LogisticsLandingPage() {
                     border: '1px solid rgba(255,255,255,0.18)'
                   }}
                 >
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{item.label}</p>
-                  <strong style={{ fontSize: '1.4rem' }}>{item.value}</strong>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{t(`logisticsLanding.preview.${key}`)}</p>
+                  <strong style={{ fontSize: '1.4rem' }}>{t(`logisticsLanding.previewValues.${key}`)}</strong>
                 </div>
               ))}
             </div>

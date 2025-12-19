@@ -48,27 +48,45 @@ type TranslationTree = {
     cta: string
   }
   logisticsLanding: {
+    badge: string
     title: string
     subtitle: string
     login: string
     kpi: Record<string, string>
+    kpiValues: Record<string, string>
     cards: Record<string, { title: string; body: string }>
     preview: {
       title: string
       eta: string
       temp: string
       customs: string
-      customsStatus: {
-        cleared: string
-      }
       footer: string
+    }
+    previewValues: {
+      eta: string
+      temp: string
+      customs: string
     }
   }
   logisticsApp: {
     title: string
     subtitle: string
-    sections: Record<string, string>
-    kpi: Record<string, string>
+    sections: {
+      overview: string
+      shipments: string
+      coverage: string
+      incidents: string
+      thirdParty: string
+      documents: string
+    }
+    kpi: {
+      activeShipments: string
+      delayed: string
+      incidents: string
+      coverageOk: string
+      highRisk: string
+      avgEtaDeviation: string
+    }
     filters: {
       search: string
       statusLabel: string
@@ -95,8 +113,22 @@ type TranslationTree = {
         }
         empty: string
       }
-      statusLabels: Record<string, string>
-      coverageLabels: Record<string, string>
+      statusLabels: {
+        inTransit: string
+        delayed: string
+        delivered: string
+        incident: string
+      }
+      coverageLabels: {
+        covered: string
+        partial: string
+        notCovered: string
+      }
+    }
+    shipmentsCopy: {
+      cargo: Record<string, string>
+      notes: Record<string, string>
+      eta: Record<string, string>
     }
     coverage: {
       title: string
@@ -108,7 +140,11 @@ type TranslationTree = {
       covered: string
       partial: string
       notCovered: string
-      statusLabels: Record<string, string>
+      statusLabels: {
+        active: string
+        selective: string
+        inactive: string
+      }
     }
     coverageCards: Record<string, { title: string }>
     incidents: {
@@ -120,8 +156,17 @@ type TranslationTree = {
         cost: string
         documents: string
       }
-      statusLabels: Record<string, string>
-      riskLabels: Record<string, string>
+      statusLabels: {
+        open: string
+        review: string
+        closed: string
+      }
+      riskLabels: {
+        low: string
+        medium: string
+        high: string
+      }
+      types: Record<string, string>
     }
     documents: {
       title: string
@@ -422,6 +467,7 @@ export const translations: Record<Lang, TranslationTree> = {
       }
     },
     logisticsLanding: {
+      badge: 'Insurfox IaaS',
       title: 'IaaS Logistikportal',
       subtitle: 'Echtzeit-Transportstatus, Frachtversicherung und Schadensteuerung – alles in einer Plattform.',
       login: 'Login',
@@ -430,6 +476,12 @@ export const translations: Record<Lang, TranslationTree> = {
         coverageRate: 'Deckungsquote',
         openIncidents: 'Offene Incidents',
         etaDeviation: 'Ø ETA Abweichung'
+      },
+      kpiValues: {
+        liveShipments: '128',
+        coverageRate: '92 %',
+        openIncidents: '7',
+        etaDeviation: '18 Min'
       },
       cards: {
         realtime: {
@@ -462,10 +514,12 @@ export const translations: Record<Lang, TranslationTree> = {
         eta: 'ETA',
         temp: 'Temp',
         customs: 'Zoll',
-        customsStatus: {
-          cleared: 'Freigegeben'
-        },
         footer: 'Demo-Daten mit Live KPI Trend (ETA, Temperatur, Customs).'
+      },
+      previewValues: {
+        eta: '18 Min',
+        temp: '+2 °C',
+        customs: 'Freigegeben'
       }
     },
     logisticsApp: {
@@ -476,7 +530,7 @@ export const translations: Record<Lang, TranslationTree> = {
         shipments: 'Aktuelle Aufträge',
         coverage: 'Versicherung & Deckung',
         incidents: 'Schäden & Incidents',
-        thirdParty: 'Third Party',
+        thirdParty: 'Partner & Dritte',
         documents: 'Dokumente'
       },
       kpi: {
@@ -525,6 +579,34 @@ export const translations: Record<Lang, TranslationTree> = {
           notCovered: 'Nicht gedeckt'
         }
       },
+      shipmentsCopy: {
+        cargo: {
+          electronics: 'Elektronik',
+          pharma: 'Pharma',
+          fashion: 'Mode',
+          chemicals: 'Chemikalien',
+          chilled: 'Lebensmittel (gekühlt)',
+          automotive: 'Automotive',
+          retailMixed: 'Retail (gemischt)',
+          seafood: 'Seafood'
+        },
+        notes: {
+          tempStable: 'Temperatur stabil / SLA OK',
+          customsWait: 'Wartet auf Zollslot',
+          theftInvestigation: 'Incident: Diebstahl in Bearbeitung',
+          podSigned: 'Lieferschein unterschrieben',
+          temp3c: 'Temperatur 3 °C',
+          ferrySlot: 'Wartet auf Fährenslot',
+          borderCrossed: 'Grenze passiert',
+          tempDeviation: 'Temperaturabweichung erkannt'
+        },
+        eta: {
+          delayed45: '+45 Min',
+          delayed25: '+25 Min',
+          investigating: 'In Untersuchung',
+          hold: 'Angehalten'
+        }
+      },
       coverage: {
         title: 'Versicherung & Deckung',
         policyId: 'Police',
@@ -564,18 +646,24 @@ export const translations: Record<Lang, TranslationTree> = {
           low: 'Niedrig',
           medium: 'Mittel',
           high: 'Hoch'
+        },
+        types: {
+          theftParking: 'Diebstahl (Parkplatz A14)',
+          tempDeviation: 'Temperaturabweichung',
+          delay12h: 'Verzögerung > 12h',
+          damageForklift: 'Beschädigung (Gabelstapler)'
         }
       },
       documents: {
         title: 'Dokumente',
-        upload: 'Upload',
-        download: 'Download'
+        upload: 'Hochladen',
+        download: 'Herunterladen'
       },
       thirdParty: {
-        shipper: 'Shipper',
-        consignee: 'Consignee',
-        broker: 'Broker',
-        warehouse: 'Warehouse'
+        shipper: 'Auftraggeber',
+        consignee: 'Empfänger',
+        broker: 'Makler',
+        warehouse: 'Lagerhaus'
       }
     },
     marketing: {
@@ -1471,6 +1559,7 @@ export const translations: Record<Lang, TranslationTree> = {
       }
     },
     logisticsLanding: {
+      badge: 'Insurfox IaaS',
       title: 'IaaS Logistics Portal',
       subtitle: 'Real-time transport status, cargo insurance and incident handling – in one platform.',
       login: 'Login',
@@ -1479,6 +1568,12 @@ export const translations: Record<Lang, TranslationTree> = {
         coverageRate: 'Coverage rate',
         openIncidents: 'Open incidents',
         etaDeviation: 'Avg. ETA deviation'
+      },
+      kpiValues: {
+        liveShipments: '128',
+        coverageRate: '92%',
+        openIncidents: '7',
+        etaDeviation: '18m'
       },
       cards: {
         realtime: {
@@ -1511,10 +1606,12 @@ export const translations: Record<Lang, TranslationTree> = {
         eta: 'ETA',
         temp: 'Temp',
         customs: 'Customs',
-        customsStatus: {
-          cleared: 'Cleared'
-        },
         footer: 'Demo data with live KPI trend (ETA, temperature, customs).'
+      },
+      previewValues: {
+        eta: '18m',
+        temp: '+2°C',
+        customs: 'Cleared'
       }
     },
     logisticsApp: {
@@ -1568,64 +1665,98 @@ export const translations: Record<Lang, TranslationTree> = {
           delivered: 'Delivered',
           incident: 'Incident'
         },
-        coverageLabels: {
-          covered: 'Covered',
-          partial: 'Partial',
-          notCovered: 'Not covered'
-        }
-      },
-      coverage: {
-        title: 'Insurance & coverage',
-        policyId: 'Policy',
-        limit: 'Limit',
-        deductible: 'Deductible',
-        validity: 'Validity',
-        status: 'Status',
+      coverageLabels: {
         covered: 'Covered',
         partial: 'Partial',
-        notCovered: 'Not covered',
-        statusLabels: {
-          active: 'Active',
-          selective: 'Selective',
-          inactive: 'Inactive'
-        }
-      },
-      coverageCards: {
-        liability: { title: 'Carrier’s liability' },
-        cargo: { title: 'Cargo insurance' },
-        addons: { title: 'Add-ons' }
-      },
-      incidents: {
-        title: 'Incidents & claims',
-        subtitle: 'Current incidents & investigations',
-        openIncident: 'Open incident',
-        labels: {
-          status: 'Status',
-          cost: 'Cost',
-          documents: 'Documents'
-        },
-        statusLabels: {
-          open: 'Open',
-          review: 'In review',
-          closed: 'Closed'
-        },
-        riskLabels: {
-          low: 'Low',
-          medium: 'Medium',
-          high: 'High'
-        }
-      },
-      documents: {
-        title: 'Documents',
-        upload: 'Upload',
-        download: 'Download'
-      },
-      thirdParty: {
-        shipper: 'Shipper',
-        consignee: 'Consignee',
-        broker: 'Broker',
-        warehouse: 'Warehouse'
+        notCovered: 'Not covered'
       }
+    },
+    shipmentsCopy: {
+      cargo: {
+        electronics: 'Electronics',
+        pharma: 'Pharma',
+        fashion: 'Fashion',
+        chemicals: 'Chemicals',
+        chilled: 'Food (chilled)',
+        automotive: 'Automotive',
+        retailMixed: 'Retail (mixed)',
+        seafood: 'Seafood'
+      },
+      notes: {
+        tempStable: 'Temp stable / SLA OK',
+        customsWait: 'Waiting for customs slot',
+        theftInvestigation: 'Incident: theft under investigation',
+        podSigned: 'Proof of delivery signed',
+        temp3c: 'Temperature 3 °C',
+        ferrySlot: 'Waiting for ferry slot',
+        borderCrossed: 'Border crossed',
+        tempDeviation: 'Temperature deviation alert'
+      },
+      eta: {
+        delayed45: '+45m',
+        delayed25: '+25m',
+        investigating: 'Investigating',
+        hold: 'On hold'
+      }
+    },
+    coverage: {
+      title: 'Insurance & coverage',
+      policyId: 'Policy',
+      limit: 'Limit',
+      deductible: 'Deductible',
+      validity: 'Validity',
+      status: 'Status',
+      covered: 'Covered',
+      partial: 'Partial',
+      notCovered: 'Not covered',
+      statusLabels: {
+        active: 'Active',
+        selective: 'Selective',
+        inactive: 'Inactive'
+      }
+    },
+    coverageCards: {
+      liability: { title: 'Carrier’s liability' },
+      cargo: { title: 'Cargo insurance' },
+      addons: { title: 'Add-ons' }
+    },
+    incidents: {
+      title: 'Incidents & claims',
+      subtitle: 'Current incidents & investigations',
+      openIncident: 'Open incident',
+      labels: {
+        status: 'Status',
+        cost: 'Cost',
+        documents: 'Documents'
+      },
+      statusLabels: {
+        open: 'Open',
+        review: 'In review',
+        closed: 'Closed'
+      },
+      riskLabels: {
+        low: 'Low',
+        medium: 'Medium',
+        high: 'High'
+      },
+      types: {
+        theftParking: 'Theft (parking A14)',
+        tempDeviation: 'Temperature deviation',
+        delay12h: 'Delay > 12h',
+        damageForklift: 'Damage (forklift)'
+      }
+    },
+    documents: {
+      title: 'Documents',
+      upload: 'Upload',
+      download: 'Download'
+    },
+    thirdParty: {
+      shipper: 'Shipper',
+      consignee: 'Consignee',
+      broker: 'Broker',
+      warehouse: 'Warehouse'
+    }
     },
     marketing: {
       title: 'Insurfox Platform',

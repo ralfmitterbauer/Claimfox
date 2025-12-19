@@ -6,6 +6,18 @@ import { useI18n } from '@/i18n/I18nContext'
 type ShipmentStatus = 'inTransit' | 'delayed' | 'delivered' | 'incident'
 type CoverageStatus = 'covered' | 'partial' | 'notCovered'
 type IncidentRisk = 'low' | 'medium' | 'high'
+type ShipmentCargoKey = 'electronics' | 'pharma' | 'fashion' | 'chemicals' | 'chilled' | 'automotive' | 'retailMixed' | 'seafood'
+type ShipmentNoteKey =
+  | 'tempStable'
+  | 'customsWait'
+  | 'theftInvestigation'
+  | 'podSigned'
+  | 'temp3c'
+  | 'ferrySlot'
+  | 'borderCrossed'
+  | 'tempDeviation'
+type ShipmentEtaLabelKey = 'delayed45' | 'delayed25' | 'investigating' | 'hold'
+type IncidentTypeKey = 'theftParking' | 'tempDeviation' | 'delay12h' | 'damageForklift'
 
 type Shipment = {
   id: string
@@ -13,18 +25,19 @@ type Shipment = {
   customer: string
   route: string
   status: ShipmentStatus
-  eta: string
   coverage: CoverageStatus
-  cargo: string
+  cargoKey: ShipmentCargoKey
   value: string
   contact: string
   phone: string
-  note: string
+  noteKey?: ShipmentNoteKey
+  etaValue?: string
+  etaLabelKey?: ShipmentEtaLabelKey
 }
 
 type Incident = {
   id: string
-  type: string
+  typeKey: IncidentTypeKey
   shipment: string
   status: 'open' | 'review' | 'closed'
   cost: string
@@ -56,13 +69,13 @@ const shipments: Shipment[] = [
     customer: 'NordCargo AG',
     route: 'Hamburg → Munich',
     status: 'inTransit',
-    eta: '12:45',
+    etaValue: '12:45',
     coverage: 'covered',
-    cargo: 'Electronics',
+    cargoKey: 'electronics',
     value: '€ 180k',
     contact: 'Lisa Kramer',
     phone: '+49 40 231 45',
-    note: 'Temp stable / SLA OK'
+    noteKey: 'tempStable'
   },
   {
     id: 'SHP-2025-014',
@@ -70,13 +83,13 @@ const shipments: Shipment[] = [
     customer: 'Metro Logistics',
     route: 'Berlin → Frankfurt',
     status: 'delayed',
-    eta: '+45m',
+    etaLabelKey: 'delayed45',
     coverage: 'partial',
-    cargo: 'Pharma',
+    cargoKey: 'pharma',
     value: '€ 260k',
     contact: 'Hannah Meyer',
     phone: '+49 30 882 12',
-    note: 'Waiting for customs slot'
+    noteKey: 'customsWait'
   },
   {
     id: 'SHP-2025-022',
@@ -84,13 +97,13 @@ const shipments: Shipment[] = [
     customer: 'Global Freight BV',
     route: 'Rotterdam → Cologne',
     status: 'incident',
-    eta: 'Investigating',
+    etaLabelKey: 'investigating',
     coverage: 'covered',
-    cargo: 'Fashion',
+    cargoKey: 'fashion',
     value: '€ 95k',
     contact: 'Paul Sievers',
     phone: '+31 10 442 90',
-    note: 'Incident: theft at parking'
+    noteKey: 'theftInvestigation'
   },
   {
     id: 'SHP-2025-031',
@@ -98,13 +111,13 @@ const shipments: Shipment[] = [
     customer: 'AlpenEco',
     route: 'Prague → Vienna',
     status: 'delivered',
-    eta: '08:10',
+    etaValue: '08:10',
     coverage: 'covered',
-    cargo: 'Chemicals',
+    cargoKey: 'chemicals',
     value: '€ 120k',
     contact: 'Maja Koller',
     phone: '+43 1 778 40',
-    note: 'POD signed'
+    noteKey: 'podSigned'
   },
   {
     id: 'SHP-2025-041',
@@ -112,13 +125,13 @@ const shipments: Shipment[] = [
     customer: 'Nordic Foods',
     route: 'Copenhagen → Hamburg',
     status: 'inTransit',
-    eta: '16:30',
+    etaValue: '16:30',
     coverage: 'covered',
-    cargo: 'Food / chilled',
+    cargoKey: 'chilled',
     value: '€ 60k',
     contact: 'Anne Tobias',
     phone: '+45 33 201 456',
-    note: 'Temp: 3°C'
+    noteKey: 'temp3c'
   },
   {
     id: 'SHP-2025-052',
@@ -126,13 +139,13 @@ const shipments: Shipment[] = [
     customer: 'EuroParts',
     route: 'Madrid → Lyon',
     status: 'delayed',
-    eta: '+25m',
+    etaLabelKey: 'delayed25',
     coverage: 'notCovered',
-    cargo: 'Automotive',
+    cargoKey: 'automotive',
     value: '€ 150k',
     contact: 'Julien Besson',
     phone: '+33 4 889 20',
-    note: 'Awaiting ferry slot'
+    noteKey: 'ferrySlot'
   },
   {
     id: 'SHP-2025-063',
@@ -140,13 +153,13 @@ const shipments: Shipment[] = [
     customer: 'Scandic Retail',
     route: 'Stockholm → Oslo',
     status: 'inTransit',
-    eta: '21:10',
+    etaValue: '21:10',
     coverage: 'covered',
-    cargo: 'Retail mixed',
+    cargoKey: 'retailMixed',
     value: '€ 72k',
     contact: 'Sara Dahlen',
     phone: '+46 8 200 91',
-    note: 'Border crossed'
+    noteKey: 'borderCrossed'
   },
   {
     id: 'SHP-2025-074',
@@ -154,13 +167,13 @@ const shipments: Shipment[] = [
     customer: 'Baltic Fresh',
     route: 'Helsinki → Riga',
     status: 'incident',
-    eta: 'Hold',
+    etaLabelKey: 'hold',
     coverage: 'partial',
-    cargo: 'Seafood',
+    cargoKey: 'seafood',
     value: '€ 58k',
     contact: 'Eeva Paavola',
     phone: '+358 9 120 34',
-    note: 'Temp deviation alert'
+    noteKey: 'tempDeviation'
   }
 ]
 
@@ -192,10 +205,10 @@ const coverageCards = [
 ]
 
 const incidents: Incident[] = [
-  { id: 'INC-01', type: 'Theft (parking A14)', shipment: 'RTM → CGN', status: 'open', cost: '€ 40k', docs: 6, risk: 'high' },
-  { id: 'INC-02', type: 'Temp deviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'medium' },
-  { id: 'INC-03', type: 'Delay > 12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'medium' },
-  { id: 'INC-04', type: 'Damage (forklift)', shipment: 'MAD → LYO', status: 'closed', cost: '€ 6k', docs: 5, risk: 'low' }
+  { id: 'INC-01', typeKey: 'theftParking', shipment: 'RTM → CGN', status: 'open', cost: '€ 40k', docs: 6, risk: 'high' },
+  { id: 'INC-02', typeKey: 'tempDeviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'medium' },
+  { id: 'INC-03', typeKey: 'delay12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'medium' },
+  { id: 'INC-04', typeKey: 'damageForklift', shipment: 'MAD → LYO', status: 'closed', cost: '€ 6k', docs: 5, risk: 'low' }
 ]
 
 const partners: PartnerCard[] = [
@@ -413,17 +426,21 @@ export default function LogisticsAppPage() {
                     <td style={{ padding: '0.6rem 0.35rem' }}>
                       <span style={statusBadge(shipment.status)}>{t(`logisticsApp.table.statusLabels.${shipment.status}`)}</span>
                     </td>
-                    <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.eta}</td>
+                    <td style={{ padding: '0.6rem 0.35rem' }}>
+                      {shipment.etaLabelKey ? t(`logisticsApp.shipmentsCopy.eta.${shipment.etaLabelKey}`) : shipment.etaValue}
+                    </td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>
                       <span style={coverageBadge(shipment.coverage)}>{t(`logisticsApp.table.coverageLabels.${shipment.coverage}`)}</span>
                     </td>
-                    <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.cargo}</td>
+                    <td style={{ padding: '0.6rem 0.35rem' }}>{t(`logisticsApp.shipmentsCopy.cargo.${shipment.cargoKey}`)}</td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.value}</td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>
                       <div style={{ fontWeight: 600 }}>{shipment.contact}</div>
                       <div style={{ color: 'rgba(255,255,255,0.7)' }}>{shipment.phone}</div>
                     </td>
-                    <td style={{ padding: '0.6rem 0.35rem', color: 'rgba(255,255,255,0.8)' }}>{shipment.note}</td>
+                    <td style={{ padding: '0.6rem 0.35rem', color: 'rgba(255,255,255,0.8)' }}>
+                      {shipment.noteKey ? t(`logisticsApp.shipmentsCopy.notes.${shipment.noteKey}`) : ''}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -485,7 +502,7 @@ export default function LogisticsAppPage() {
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
-                  <strong>{incident.type}</strong>
+                  <strong>{t(`logisticsApp.incidents.types.${incident.typeKey}`)}</strong>
                   <span style={badgeStyle(incidentRiskColor(incident.risk))}>{t(incidentRiskKey(incident.risk)).toUpperCase()}</span>
                 </div>
                 <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.75)' }}>{incident.shipment}</p>
