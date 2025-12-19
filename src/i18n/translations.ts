@@ -330,7 +330,112 @@ export const translations: Record<Lang, TranslationTree> = {
         marketing: {
           title: 'Marketing',
           description: 'Präsentiere die Insurfox Plattform für Vertrieb und Stakeholder.'
+        },
+        logistics: {
+          title: 'Spedition / Logistik',
+          description: 'Transporte, Routen, Versicherungen und Schäden zentral steuern – mit Echtzeit-Status und KI-Alerts.',
+          cta: 'Ansehen'
         }
+      }
+    },
+    logisticsLanding: {
+      title: 'IaaS Logistikportal',
+      subtitle: 'Echtzeit-Transportstatus, Frachtversicherung und Schadensteuerung – alles in einer Plattform.',
+      login: 'Login',
+      kpi1: 'Live Sendungen',
+      kpi2: 'Deckungsquote',
+      kpi3: 'Offene Incidents',
+      kpi4: 'Ø ETA Abweichung',
+      feature1: {
+        title: 'Transportstatus in Echtzeit',
+        text: 'ETA, Route, Statuswechsel und Alerts – pro Sendung und pro Kunde.'
+      },
+      feature2: {
+        title: 'Frachtversicherung & Deckung',
+        text: 'Frachtführerhaftpflicht, Cargo und Zusatzdeckungen je Auftrag – transparent und nachvollziehbar.'
+      },
+      feature3: {
+        title: 'Schäden & Incidents',
+        text: 'Diebstahl, Beschädigung, Verzögerung, Temperatur – inkl. Dokumenten, Fotos, Partnern.'
+      },
+      feature4: {
+        title: 'Third Party & Auftraggeber',
+        text: 'Auftraggeber, Ansprechpartner, SLA und Abrechnung – direkt im Transportkontext.'
+      },
+      feature5: {
+        title: 'KI-Empfehlungen & Alerts',
+        text: 'Proaktive Hinweise zu Risiko, Betrug, Kosten, Routen und Deckungsbedarf.'
+      },
+      previewTitle: 'Live Dashboard Preview',
+      previewNote: 'Demo-Daten mit Live KPI Trend (ETA, Temperatur, Customs).'
+    },
+    logisticsApp: {
+      title: 'Logistik Cockpit',
+      subtitle: 'Aufträge, Routen, Versicherungsschutz und Incidents im Überblick',
+      kpis: {
+        active: 'Aktive Aufträge',
+        delayed: 'Verzögert',
+        incidents: 'Incidents',
+        coverage: 'Deckung OK',
+        highRisk: 'High Risk Shipments',
+        etaDeviation: 'Ø ETA Abweichung'
+      },
+      filters: {
+        search: 'Sendungsnummer, Route oder Kunde suchen …',
+        statusAll: 'Alle',
+        statusInTransit: 'In Transit',
+        statusDelayed: 'Verzögert',
+        statusDelivered: 'Zugestellt',
+        statusIncident: 'Incident'
+      },
+      table: {
+        shipment: 'Auftrag',
+        customer: 'Auftraggeber',
+        route: 'Route',
+        status: 'Status',
+        eta: 'ETA',
+        coverage: 'Deckung',
+        cargo: 'Cargo',
+        value: 'Wert',
+        thirdParty: 'Third Party',
+        note: 'Hinweis',
+        statusLabels: {
+          inTransit: 'In Transit',
+          delayed: 'Verzögert',
+          delivered: 'Zugestellt',
+          incident: 'Incident'
+        },
+        coverageLabels: {
+          covered: 'Gedeckt',
+          partial: 'Teilweise',
+          uncovered: 'Keine Deckung'
+        }
+      },
+      sections: {
+        overview: 'Übersicht',
+        shipments: 'Aktuelle Aufträge',
+        coverage: 'Versicherung & Deckung',
+        incidents: 'Schäden & Incidents',
+        thirdParty: 'Third Party',
+        documents: 'Dokumente'
+      },
+      incidents: {
+        subtitle: 'Aktuelle Schäden & Untersuchungen',
+        cta: 'Incident öffnen',
+        status: 'Status',
+        statusLabels: {
+          open: 'Offen',
+          review: 'In Prüfung',
+          closed: 'Geschlossen'
+        },
+        cost: 'Kosten',
+        documents: 'Dokumente'
+      },
+      thirdParty: {
+        shipper: 'Shipper',
+        consignee: 'Consignee',
+        broker: 'Broker',
+        warehouse: 'Warehouse'
       }
     },
     marketing: {
@@ -1217,7 +1322,112 @@ export const translations: Record<Lang, TranslationTree> = {
         marketing: {
           title: 'Marketing',
           description: 'Showcase the Insurfox platform for sales and stakeholders.'
+        },
+        logistics: {
+          title: 'Logistics',
+          description: 'Manage transports, routes, coverage and incidents with real-time status and AI alerts.',
+          cta: 'View'
         }
+      }
+    },
+    logisticsLanding: {
+      title: 'IaaS Logistics Portal',
+      subtitle: 'Real-time transport status, cargo insurance and incident handling – in one platform.',
+      login: 'Login',
+      kpi1: 'Live shipments',
+      kpi2: 'Coverage rate',
+      kpi3: 'Open incidents',
+      kpi4: 'Avg. ETA deviation',
+      feature1: {
+        title: 'Real-time transport tracking',
+        text: 'ETA, route, status changes and alerts per shipment and customer.'
+      },
+      feature2: {
+        title: 'Cargo insurance & coverage',
+        text: 'Carrier’s liability, cargo and add-ons per order – transparent and auditable.'
+      },
+      feature3: {
+        title: 'Claims & incidents',
+        text: 'Theft, damage, delays, temperature breaches – incl. docs, photos and partners.'
+      },
+      feature4: {
+        title: 'Third party & shippers',
+        text: 'Shippers, contacts, SLAs and billing – directly within each transport.'
+      },
+      feature5: {
+        title: 'AI recommendations & alerts',
+        text: 'Proactive signals on risk, fraud, cost, routing and coverage gaps.'
+      },
+      previewTitle: 'Live dashboard preview',
+      previewNote: 'Demo data showing ETA, temperature and customs trends.'
+    },
+    logisticsApp: {
+      title: 'Logistics Cockpit',
+      subtitle: 'Orders, routes, coverage and incidents at a glance',
+      kpis: {
+        active: 'Active shipments',
+        delayed: 'Delayed',
+        incidents: 'Incidents',
+        coverage: 'Coverage OK',
+        highRisk: 'High risk shipments',
+        etaDeviation: 'Avg. ETA deviation'
+      },
+      filters: {
+        search: 'Search shipment, route or customer …',
+        statusAll: 'All',
+        statusInTransit: 'In transit',
+        statusDelayed: 'Delayed',
+        statusDelivered: 'Delivered',
+        statusIncident: 'Incident'
+      },
+      table: {
+        shipment: 'Shipment',
+        customer: 'Customer',
+        route: 'Route',
+        status: 'Status',
+        eta: 'ETA',
+        coverage: 'Coverage',
+        cargo: 'Cargo type',
+        value: 'Value',
+        thirdParty: 'Third party',
+        note: 'AI hint',
+        statusLabels: {
+          inTransit: 'In transit',
+          delayed: 'Delayed',
+          delivered: 'Delivered',
+          incident: 'Incident'
+        },
+        coverageLabels: {
+          covered: 'Covered',
+          partial: 'Partial',
+          uncovered: 'Not covered'
+        }
+      },
+      sections: {
+        overview: 'Overview',
+        shipments: 'Live shipments',
+        coverage: 'Insurance & coverage',
+        incidents: 'Claims & incidents',
+        thirdParty: 'Third party',
+        documents: 'Documents'
+      },
+      incidents: {
+        subtitle: 'Current claims & investigations',
+        cta: 'Open incident',
+        status: 'Status',
+        statusLabels: {
+          open: 'Open',
+          review: 'In review',
+          closed: 'Closed'
+        },
+        cost: 'Cost',
+        documents: 'Documents'
+      },
+      thirdParty: {
+        shipper: 'Shipper',
+        consignee: 'Consignee',
+        broker: 'Broker',
+        warehouse: 'Warehouse'
       }
     },
     marketing: {

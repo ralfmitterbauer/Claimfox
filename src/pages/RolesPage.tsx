@@ -7,7 +7,7 @@ import { useAuth } from '@/features/auth/AuthContext'
 import { useI18n } from '@/i18n/I18nContext'
 
 type RoleItem = {
-  key: 'claims' | 'partner' | 'reporting' | 'fleetManagement'
+  key: 'claims' | 'partner' | 'reporting' | 'fleetManagement' | 'logistics'
   route?: string
   ctaKey?: string
 }
@@ -16,6 +16,7 @@ const ROLE_ITEMS: RoleItem[] = [
   { key: 'claims', route: '/claim-manager', ctaKey: 'roles.cards.claims.cta' },
   { key: 'partner' },
   { key: 'reporting', route: '/marketing' },
+  { key: 'logistics', route: '/logistics', ctaKey: 'roles.cards.logistics.cta' },
   { key: 'fleetManagement', route: '/fleet-management' }
 ] as const
 
