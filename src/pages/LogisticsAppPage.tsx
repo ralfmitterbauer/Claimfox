@@ -5,7 +5,7 @@ import { useI18n } from '@/i18n/I18nContext'
 
 type ShipmentStatus = 'inTransit' | 'delayed' | 'delivered' | 'incident'
 type CoverageStatus = 'covered' | 'partial' | 'notCovered'
-type IncidentRisk = 'low' | 'med' | 'high'
+type IncidentRisk = 'low' | 'medium' | 'high'
 
 type Shipment = {
   id: string
@@ -193,8 +193,8 @@ const coverageCards = [
 
 const incidents: Incident[] = [
   { id: 'INC-01', type: 'Theft (parking A14)', shipment: 'RTM → CGN', status: 'open', cost: '€ 40k', docs: 6, risk: 'high' },
-  { id: 'INC-02', type: 'Temp deviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'med' },
-  { id: 'INC-03', type: 'Delay > 12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'med' },
+  { id: 'INC-02', type: 'Temp deviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'medium' },
+  { id: 'INC-03', type: 'Delay > 12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'medium' },
   { id: 'INC-04', type: 'Damage (forklift)', shipment: 'MAD → LYO', status: 'closed', cost: '€ 6k', docs: 5, risk: 'low' }
 ]
 
@@ -231,17 +231,8 @@ const partners: PartnerCard[] = [
 
 const documents = ['CMR.pdf', 'POD.pdf', 'Photos.zip', 'Police-report.pdf', 'Temperature-log.csv', 'Invoice.pdf']
 
-const incidentStatusLabelKey: Record<Incident['status'], string> = {
-  open: 'logisticsApp.incidents.stateOpen',
-  review: 'logisticsApp.incidents.stateReview',
-  closed: 'logisticsApp.incidents.stateClosed'
-}
-
-const incidentRiskLabelKey: Record<IncidentRisk, string> = {
-  low: 'logisticsApp.incidents.riskLow',
-  med: 'logisticsApp.incidents.riskMed',
-  high: 'logisticsApp.incidents.riskHigh'
-}
+const incidentStatusKey = (status: Incident['status']) => `logisticsApp.incidents.statusLabels.${status}` as const
+const incidentRiskKey = (risk: IncidentRisk) => `logisticsApp.incidents.riskLabels.${risk}` as const
 
 export default function LogisticsAppPage() {
   const { t } = useI18n()
@@ -289,7 +280,7 @@ export default function LogisticsAppPage() {
 
   function incidentRiskColor(risk: IncidentRisk) {
     if (risk === 'high') return '#DC2626'
-    if (risk === 'med') return '#F97316'
+    if (risk === 'medium') return '#F97316'
     return '#16A34A'
   }
 
@@ -479,7 +470,7 @@ export default function LogisticsAppPage() {
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.75)' }}>{t('logisticsApp.incidents.subtitle')}</p>
             </div>
             <Button variant="secondary" style={{ background: '#ffffff', color: '#0B1028', borderRadius: '999px' }}>
-              {t('logisticsApp.incidents.cta')}
+              {t('logisticsApp.incidents.openIncident')}
             </Button>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: '0.85rem' }}>
@@ -495,17 +486,17 @@ export default function LogisticsAppPage() {
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
                   <strong>{incident.type}</strong>
-                  <span style={badgeStyle(incidentRiskColor(incident.risk))}>{t(incidentRiskLabelKey[incident.risk])}</span>
+                  <span style={badgeStyle(incidentRiskColor(incident.risk))}>{t(incidentRiskKey(incident.risk)).toUpperCase()}</span>
                 </div>
                 <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.75)' }}>{incident.shipment}</p>
                 <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
-                  {t('logisticsApp.incidents.state')}: {t(incidentStatusLabelKey[incident.status])}
+                  {t('logisticsApp.incidents.labels.status')}: {t(incidentStatusKey(incident.status))}
                 </p>
                 <p style={{ margin: '0.1rem 0', color: 'rgba(255,255,255,0.75)' }}>
-                  {t('logisticsApp.incidents.cost')}: {incident.cost}
+                  {t('logisticsApp.incidents.labels.cost')}: {incident.cost}
                 </p>
                 <p style={{ margin: 0, color: 'rgba(255,255,255,0.6)' }}>
-                  {incident.docs} {t('logisticsApp.incidents.documents')}
+                  {incident.docs} {t('logisticsApp.incidents.labels.documents')}
                 </p>
               </div>
             ))}

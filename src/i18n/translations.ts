@@ -114,18 +114,14 @@ type TranslationTree = {
     incidents: {
       title: string
       subtitle: string
-      cta: string
-      type: string
-      state: string
-      cost: string
-      documents: string
-      risk: string
-      stateOpen: string
-      stateReview: string
-      stateClosed: string
-      riskLow: string
-      riskMed: string
-      riskHigh: string
+      openIncident: string
+      labels: {
+        status: string
+        cost: string
+        documents: string
+      }
+      statusLabels: Record<string, string>
+      riskLabels: Record<string, string>
     }
     documents: {
       title: string
@@ -553,18 +549,22 @@ export const translations: Record<Lang, TranslationTree> = {
       incidents: {
         title: 'Schäden & Incidents',
         subtitle: 'Aktuelle Schäden & Untersuchungen',
-        cta: 'Incident öffnen',
-        type: 'Typ',
-        state: 'Status',
-        cost: 'Kosten',
-        documents: 'Dokumente',
-        risk: 'Risiko',
-        stateOpen: 'Offen',
-        stateReview: 'In Prüfung',
-        stateClosed: 'Geschlossen',
-        riskLow: 'Niedrig',
-        riskMed: 'Mittel',
-        riskHigh: 'Hoch'
+        openIncident: 'Incident öffnen',
+        labels: {
+          status: 'Status',
+          cost: 'Kosten',
+          documents: 'Dokumente'
+        },
+        statusLabels: {
+          open: 'Offen',
+          review: 'In Prüfung',
+          closed: 'Geschlossen'
+        },
+        riskLabels: {
+          low: 'Niedrig',
+          medium: 'Mittel',
+          high: 'Hoch'
+        }
       },
       documents: {
         title: 'Dokumente',
@@ -1596,20 +1596,24 @@ export const translations: Record<Lang, TranslationTree> = {
         addons: { title: 'Add-ons' }
       },
       incidents: {
-        title: 'Claims & incidents',
-        subtitle: 'Current claims & investigations',
-        cta: 'Open incident',
-        type: 'Type',
-        state: 'Status',
-        cost: 'Cost',
-        documents: 'Documents',
-        risk: 'Risk',
-        stateOpen: 'Open',
-        stateReview: 'In review',
-        stateClosed: 'Closed',
-        riskLow: 'Low',
-        riskMed: 'Medium',
-        riskHigh: 'High'
+        title: 'Incidents & claims',
+        subtitle: 'Current incidents & investigations',
+        openIncident: 'Open incident',
+        labels: {
+          status: 'Status',
+          cost: 'Cost',
+          documents: 'Documents'
+        },
+        statusLabels: {
+          open: 'Open',
+          review: 'In review',
+          closed: 'Closed'
+        },
+        riskLabels: {
+          low: 'Low',
+          medium: 'Medium',
+          high: 'High'
+        }
       },
       documents: {
         title: 'Documents',
