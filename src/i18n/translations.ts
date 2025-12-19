@@ -1027,6 +1027,37 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Dokumente',
           media: 'Bilder & Medien',
           mediaLabel: 'Foto',
+          damage: {
+            title: 'Schadenbilder & KI-Bewertung',
+            modalTitle: 'Schadenbild',
+            riskBadges: {
+              low: '🟢 Geringes Risiko',
+              medium: '🟠 Mittleres Risiko',
+              high: '🔴 Erhöhtes Risiko'
+            },
+            items: {
+              photo1: {
+                title: 'Frontschaden Stoßfänger',
+                ai: 'KI erkennt einen frontalen Aufprall mit mittlerer Geschwindigkeit. Deformation konsistent mit Auffahrunfall.',
+                fraud: 'Schadenbild plausibel zum gemeldeten Unfallhergang.'
+              },
+              photo2: {
+                title: 'Seitenschaden Fahrertür',
+                ai: 'Seitliche Eindrückung mit Lackabrieb. Kontakt mit festem Objekt wahrscheinlich.',
+                fraud: 'Schadenhöhe leicht über Durchschnitt vergleichbarer Fälle.'
+              },
+              photo3: {
+                title: 'Heckschaden',
+                ai: 'Heckaufprall mit klarer Energieübertragung. Keine Anzeichen für Vorschäden.',
+                fraud: 'Kein Fraud-Hinweis erkannt.'
+              },
+              photo4: {
+                title: 'Detailaufnahme Lack & Sensor',
+                ai: 'Sensorbereich betroffen. Kalibrierung nach Reparatur empfohlen.',
+                fraud: 'Unregelmäßige Kratzmuster – manuelle Prüfung empfohlen.'
+              }
+            }
+          },
           list: {
             estimate: 'Kostenvoranschlag.pdf',
             police: 'Polizeibericht.pdf',
@@ -2119,6 +2150,37 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Documents',
           media: 'Media & photos',
           mediaLabel: 'Photo',
+          damage: {
+            title: 'Damage imagery & AI review',
+            modalTitle: 'Damage photo',
+            riskBadges: {
+              low: '🟢 Low risk',
+              medium: '🟠 Medium risk',
+              high: '🔴 Elevated risk'
+            },
+            items: {
+              photo1: {
+                title: 'Front bumper impact',
+                ai: 'AI detects a frontal impact at moderate speed. Deformation consistent with a rear-end scenario.',
+                fraud: 'Visual evidence matches the reported incident.'
+              },
+              photo2: {
+                title: 'Driver-side door damage',
+                ai: 'Side indentation with paint transfer. Contact with a fixed object is likely.',
+                fraud: 'Estimated severity slightly above average for comparable cases.'
+              },
+              photo3: {
+                title: 'Rear damage',
+                ai: 'Clear rear impact energy transfer. No obvious signs of pre-existing damage.',
+                fraud: 'No fraud signal detected.'
+              },
+              photo4: {
+                title: 'Close-up: paint & sensor area',
+                ai: 'Sensor area affected. Post-repair calibration is recommended.',
+                fraud: 'Irregular scratch patterns — manual review recommended.'
+              }
+            }
+          },
           list: {
             estimate: 'Estimate.pdf',
             police: 'Police-report.pdf',

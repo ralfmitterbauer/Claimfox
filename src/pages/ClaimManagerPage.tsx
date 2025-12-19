@@ -1,7 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
+import claimDamage1 from '@/assets/images/claim_damage_1.png'
+import claimDamage2 from '@/assets/images/claim_damage_2.png'
+import claimDamage3 from '@/assets/images/claim_damage_3.png'
+import claimDamage4 from '@/assets/images/claim_damage_4.png'
 
 type CostStatus = 'pending' | 'approved' | 'rejected'
 
@@ -46,7 +50,21 @@ const surveyorOptions: SurveyorOption[] = [
   { id: 's3', nameKey: 'surveyor3', regionKey: 'surveyor3Region', eta: '6h' }
 ]
 
-const mediaPlaceholders = ['media1', 'media2', 'media3', 'media4'] as const
+type FraudRisk = 'low' | 'medium' | 'high'
+
+type DamageImage = {
+  key: 'photo1' | 'photo2' | 'photo3' | 'photo4'
+  src: string
+  fraudRisk: FraudRisk
+}
+
+const DAMAGE_IMAGES: DamageImage[] = [
+  { key: 'photo1', src: claimDamage1, fraudRisk: 'low' },
+  { key: 'photo2', src: claimDamage2, fraudRisk: 'medium' },
+  { key: 'photo3', src: claimDamage3, fraudRisk: 'low' },
+  { key: 'photo4', src: claimDamage4, fraudRisk: 'high' }
+]
+
 const documentKeys = ['estimate', 'police', 'survey', 'invoice'] as const
 const aiHintKeys = ['hint1', 'hint2', 'hint3', 'hint4', 'hint5'] as const
 const timelineSteps = ['intake', 'review', 'approval', 'repair', 'closure'] as const
@@ -89,6 +107,15 @@ function Modal({
   children: React.ReactNode
 }) {
   if (!open) return null
+  useEffect(() => {
+    function handleKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [onClose])
   return (
     <div
       style={{
@@ -160,7 +187,7 @@ export default function ClaimManagerPage() {
   const [policyChecked, setPolicyChecked] = useState(false)
   const [selectedSurveyor, setSelectedSurveyor] = useState<string>(surveyorOptions[0].id)
   const [docPreview, setDocPreview] = useState<string | null>(null)
-  const [mediaPreview, setMediaPreview] = useState<string | null>(null)
+  const [damagePreview, setDamagePreview] = useState<DamageImage | null>(null)
 
   const partner = partnerOptions.find((item) => item.id === selectedPartner) ?? partnerOptions[0]
   const surveyor = surveyorOptions.find((item) => item.id === selectedSurveyor) ?? surveyorOptions[0]
@@ -598,29 +625,72 @@ export default function ClaimManagerPage() {
               </div>
             </div>
             <div>
-              <h2 style={{ marginTop: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.documents.media')}</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: '0.75rem', marginTop: '0.75rem' }}>
-                {mediaPlaceholders.map((key) => (
-                  <button
-                    key={key}
-                    type="button"
-                    onClick={() => setMediaPreview(key)}
-                    style={{ borderRadius: '18px', border: 'none', padding: 0, overflow: 'hidden', cursor: 'pointer' }}
+              <h2 style={{ marginTop: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.documents.damage.title')}</h2>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))',
+                  gap: '1rem',
+                  marginTop: '0.75rem'
+                }}
+              >
+                {DAMAGE_IMAGES.map((image) => (
+                  <div
+                    key={image.key}
+                    style={{
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      borderRadius: '22px',
+                      padding: '0.9rem',
+                      background: 'rgba(255,255,255,0.07)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.7rem'
+                    }}
                   >
-                    <div
+                    <button
+                      type="button"
+                      onClick={() => setDamagePreview(image)}
                       style={{
-                        height: '130px',
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: '#0B1028',
-                        fontWeight: 700
+                        border: 'none',
+                        padding: 0,
+                        margin: 0,
+                        borderRadius: '16px',
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                        background: 'transparent'
                       }}
                     >
-                      {t('claimManager.app.documents.mediaLabel')} {key.slice(-1)}
+                      <img
+                        src={image.src}
+                        alt={t(`claimManager.app.documents.damage.items.${image.key}.title`)}
+                        style={{ width: '100%', height: '165px', objectFit: 'cover', display: 'block' }}
+                      />
+                    </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+                      <h3 style={{ margin: 0, fontSize: '1.05rem' }}>
+                        {t(`claimManager.app.documents.damage.items.${image.key}.title`)}
+                      </h3>
+                      <p style={{ margin: 0, color: TEXT_COLORS.secondary, fontSize: '0.95rem' }}>
+                        {t(`claimManager.app.documents.damage.items.${image.key}.ai`)}
+                      </p>
+                      <span
+                        style={{
+                          alignSelf: 'flex-start',
+                          padding: '0.25rem 0.85rem',
+                          borderRadius: '999px',
+                          fontWeight: 700,
+                          color: '#ffffff',
+                          background:
+                            image.fraudRisk === 'low' ? '#00C853' : image.fraudRisk === 'medium' ? '#FF6D00' : '#D50000'
+                        }}
+                      >
+                        {t(`claimManager.app.documents.damage.riskBadges.${image.fraudRisk}`)}
+                      </span>
+                      <p style={{ margin: 0, color: TEXT_COLORS.secondary, fontSize: '0.9rem' }}>
+                        {t(`claimManager.app.documents.damage.items.${image.key}.fraud`)}
+                      </p>
                     </div>
-                  </button>
+                  </div>
                 ))}
               </div>
             </div>
@@ -741,25 +811,48 @@ export default function ClaimManagerPage() {
         </Button>
       </Modal>
 
-      <Modal open={Boolean(mediaPreview)} onClose={() => setMediaPreview(null)}>
-        <h3 style={{ marginTop: 0 }}>{t('claimManager.app.documents.previewTitle')}</h3>
-        <div
-          style={{
-            width: '100%',
-            height: '260px',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, rgba(8,0,64,0.1), rgba(212,56,13,0.2))',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '1.1rem'
-          }}
-        >
-          {mediaPreview ? `${t('claimManager.app.documents.mediaLabel')} ${mediaPreview.slice(-1)}` : ''}
-        </div>
-        <Button variant="secondary" style={{ marginTop: '1rem' }} onClick={() => setMediaPreview(null)}>
-          {t('claimManager.app.documents.close')}
-        </Button>
+      <Modal open={Boolean(damagePreview)} onClose={() => setDamagePreview(null)}>
+        {damagePreview && (
+          <>
+            <h3 style={{ marginTop: 0 }}>{t('claimManager.app.documents.damage.modalTitle')}</h3>
+            <img
+              src={damagePreview.src}
+              alt={t(`claimManager.app.documents.damage.items.${damagePreview.key}.title`)}
+              style={{ width: '100%', borderRadius: '18px', margin: '1rem 0', objectFit: 'cover' }}
+            />
+            <h4 style={{ margin: '0 0 0.5rem' }}>
+              {t(`claimManager.app.documents.damage.items.${damagePreview.key}.title`)}
+            </h4>
+            <p style={{ margin: '0 0 0.5rem' }}>
+              {t(`claimManager.app.documents.damage.items.${damagePreview.key}.ai`)}
+            </p>
+            <span
+              style={{
+                display: 'inline-flex',
+                padding: '0.25rem 0.85rem',
+                borderRadius: '999px',
+                fontWeight: 700,
+                color: '#ffffff',
+                background:
+                  damagePreview.fraudRisk === 'low'
+                    ? '#00C853'
+                    : damagePreview.fraudRisk === 'medium'
+                    ? '#FF6D00'
+                    : '#D50000'
+              }}
+            >
+              {t(`claimManager.app.documents.damage.riskBadges.${damagePreview.fraudRisk}`)}
+            </span>
+            <p style={{ margin: '0.5rem 0 0' }}>
+              {t(`claimManager.app.documents.damage.items.${damagePreview.key}.fraud`)}
+            </p>
+            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <Button variant="secondary" onClick={() => setDamagePreview(null)}>
+                {t('claimManager.app.documents.close')}
+              </Button>
+            </div>
+          </>
+        )}
       </Modal>
     </>
   )
