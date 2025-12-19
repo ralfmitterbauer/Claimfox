@@ -63,13 +63,22 @@ const KPI_KEYS = [
 ] as const
 
 const CARD_STYLE: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.08)',
-  border: '1px solid rgba(255,255,255,0.18)',
-  borderRadius: '22px',
-  padding: '1.25rem',
-  color: '#0e0d1c',
-  backdropFilter: 'blur(12px)'
+  background: 'rgba(255,255,255,0.1)',
+  border: '1px solid rgba(255,255,255,0.15)',
+  borderRadius: '28px',
+  padding: '1.5rem',
+  color: 'rgba(255,255,255,0.92)',
+  backdropFilter: 'blur(18px)',
+  boxShadow: '0 20px 60px rgba(0,0,0,0.35)'
 }
+
+const TEXT_COLORS = {
+  primary: 'rgba(255,255,255,0.92)',
+  secondary: 'rgba(255,255,255,0.75)',
+  muted: 'rgba(255,255,255,0.55)'
+} as const
+
+const ACCENT_COLOR = '#D4380D'
 
 function Modal({
   open,
@@ -112,6 +121,34 @@ function Modal({
     </div>
   )
 }
+
+const layoutStyles = `
+  .claim-manager-app-stack {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .claim-manager-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .claim-manager-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  @media (min-width: 900px) {
+    .claim-manager-kpi-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 1024px) {
+    .claim-manager-two-col {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+`
 
 export default function ClaimManagerPage() {
   const { t } = useI18n()
@@ -209,269 +246,362 @@ export default function ClaimManagerPage() {
           zIndex: 1,
           minHeight: '100vh',
           width: '100%',
-          padding: 'calc(var(--header-height) + 32px) 1rem 4rem',
-          display: 'flex',
-          justifyContent: 'center',
-          color: '#ffffff'
+          color: '#ffffff',
+          padding: 'calc(var(--header-height) + 32px) 1.25rem 4rem'
         }}
       >
-        <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <Card
-            style={{
-              ...CARD_STYLE,
-              background: 'rgba(255,255,255,0.12)',
-              border: '1px solid rgba(255,255,255,0.25)'
-            }}
-          >
-            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '1rem' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                <p style={{ margin: 0, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>
-                  {t('claimManager.app.header.overline')}
-                </p>
-                <h1 style={{ margin: 0 }}>{t('claimManager.app.header.title')}</h1>
-                <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', color: 'rgba(255,255,255,0.85)' }}>
-                  <span>
-                    {t('claimManager.app.header.claimId')}: <strong>{t('claimManager.app.header.claimIdValue')}</strong>
+        <style>{layoutStyles}</style>
+        <div
+          className="claim-manager-app-stack"
+          style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}
+        >
+          <Card style={{ ...CARD_STYLE, padding: '2rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <span style={{ letterSpacing: '0.4em', fontSize: '0.75rem', color: TEXT_COLORS.muted, textTransform: 'uppercase' }}>
+                {t('claimManager.app.header.overline')}
+              </span>
+              <h1 style={{ margin: 0, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 600, color: '#fff' }}>
+                {t('claimManager.app.header.title')}
+              </h1>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', color: TEXT_COLORS.secondary }}>
+                <span>
+                  {t('claimManager.app.header.claimId')}: <strong>{t('claimManager.app.header.claimIdValue')}</strong>
+                </span>
+                <span>
+                  {t('claimManager.app.header.date')}: <strong>{t('claimManager.app.header.dateValue')}</strong>
+                </span>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.45rem' }}>
+                  {t('claimManager.app.header.status')}:
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      padding: '0.2rem 0.85rem',
+                      borderRadius: '999px',
+                      background: 'rgba(255,255,255,0.15)',
+                      border: '1px solid rgba(255,255,255,0.2)',
+                      fontWeight: 600
+                    }}
+                  >
+                    {t(`claimManager.app.statusOptions.${claimStatus}`)}
                   </span>
-                  <span>
-                    {t('claimManager.app.header.date')}: <strong>{t('claimManager.app.header.dateValue')}</strong>
-                  </span>
-                  <span>
-                    {t('claimManager.app.header.status')}: <strong>{t(`claimManager.app.statusOptions.${claimStatus}`)}</strong>
-                  </span>
-                </div>
-              </div>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <Button onClick={() => setCostModalOpen(true)}>{t('claimManager.app.actions.approveCosts')}</Button>
-                <Button variant="secondary" onClick={() => setSurveyorModalOpen(true)}>
-                  {t('claimManager.app.actions.assignSurveyor')}
-                </Button>
-                <Button variant="secondary" onClick={() => setPartnerModalOpen(true)}>
-                  {t('claimManager.app.actions.changePartner')}
-                </Button>
+                </span>
               </div>
             </div>
-          </Card>
-
-          <Card style={{ ...CARD_STYLE, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '0.75rem' }}>
-            {kpiData.map((kpi) => (
-              <div
-                key={kpi.key}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1rem' }}>
+              <Button
+                onClick={() => setCostModalOpen(true)}
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  borderRadius: '16px',
-                  padding: '0.85rem'
+                  background: ACCENT_COLOR,
+                  color: '#fff',
+                  borderRadius: '999px',
+                  height: '42px',
+                  padding: '0 1.5rem',
+                  fontWeight: 600
                 }}
               >
-                <p style={{ margin: 0, color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem' }}>{t(`claimManager.app.kpis.${kpi.key}`)}</p>
-                <strong style={{ fontSize: '1.4rem' }}>{kpi.value}</strong>
-              </div>
-            ))}
+                {t('claimManager.app.actions.approveCosts')}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setSurveyorModalOpen(true)}
+                style={{
+                  background: 'rgba(255,255,255,0.12)',
+                  color: '#fff',
+                  borderRadius: '999px',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  height: '42px',
+                  padding: '0 1.4rem',
+                  fontWeight: 600
+                }}
+              >
+                {t('claimManager.app.actions.assignSurveyor')}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setPartnerModalOpen(true)}
+                style={{
+                  background: '#ffffff',
+                  color: '#0B1028',
+                    borderRadius: '999px',
+                  height: '42px',
+                  padding: '0 1.4rem',
+                  fontWeight: 600
+                }}
+              >
+                {t('claimManager.app.actions.changePartner')}
+              </Button>
+            </div>
           </Card>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'minmax(0, 7fr) minmax(0, 5fr)',
-              gap: '1.25rem'
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <Card style={CARD_STYLE}>
-                <h2 style={{ marginTop: 0 }}>{t('claimManager.app.details.title')}</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: '0.75rem' }}>
-                  <div>
-                    <p style={{ margin: '0 0 0.25rem', color: 'rgba(255,255,255,0.75)' }}>{t('claimManager.app.details.type')}</p>
-                    <p style={{ margin: 0 }}>{detailValues.type}</p>
-                  </div>
-                  <div>
-                    <p style={{ margin: '0 0 0.25rem', color: 'rgba(255,255,255,0.75)' }}>{t('claimManager.app.details.location')}</p>
-                    <p style={{ margin: 0 }}>{detailValues.location}</p>
-                  </div>
-                  <div>
-                    <p style={{ margin: '0 0 0.25rem', color: 'rgba(255,255,255,0.75)' }}>{t('claimManager.app.details.vehicle')}</p>
-                    <p style={{ margin: 0 }}>{detailValues.vehicle}</p>
-                  </div>
-                  <div>
-                    <p style={{ margin: '0 0 0.25rem', color: 'rgba(255,255,255,0.75)' }}>{t('claimManager.app.details.summary')}</p>
-                    <p style={{ margin: 0 }}>{detailValues.summary}</p>
-                  </div>
-                </div>
-              </Card>
-
-              <Card style={CARD_STYLE}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <h2 style={{ margin: 0 }}>{t('claimManager.app.timeline.title')}</h2>
-                  <select
-                    value={claimStatus}
-                    onChange={(event) => setClaimStatus(event.target.value as (typeof timelineSteps)[number])}
-                    style={{ padding: '0.45rem 0.75rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.3)' }}
-                  >
-                    {timelineSteps.map((step) => (
-                      <option key={step} value={step}>
-                        {t(`claimManager.app.statusOptions.${step}`)}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-                  {timelineSteps.map((step, index) => {
-                    const isActive = timelineSteps.indexOf(claimStatus) >= index
-                    return (
-                      <div key={step} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: isActive ? '#D3F261' : 'rgba(255,255,255,0.5)' }}>
-                        <div
-                          style={{
-                            width: '28px',
-                            height: '28px',
-                            borderRadius: '50%',
-                            border: '2px solid',
-                            borderColor: isActive ? '#D3F261' : 'rgba(255,255,255,0.4)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontWeight: 700
-                          }}
-                        >
-                          {index + 1}
-                        </div>
-                        <span>{t(`claimManager.app.timeline.steps.${step}`)}</span>
-                        {index < timelineSteps.length - 1 && <span style={{ opacity: 0.4 }}>—</span>}
-                      </div>
-                    )
-                  })}
-                </div>
-              </Card>
-
-              <Card style={CARD_STYLE}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <h2 style={{ margin: 0 }}>{t('claimManager.app.costs.title')}</h2>
-                  <Button variant="secondary" onClick={() => setCostModalOpen(true)}>
-                    {t('claimManager.app.costs.confirm')}
-                  </Button>
-                </div>
-                <div style={{ marginTop: '0.75rem', overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '520px', color: '#ffffff' }}>
-                    <thead>
-                      <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.75)' }}>
-                        <th>{t('claimManager.app.costs.table.position')}</th>
-                        <th>{t('claimManager.app.costs.table.amount')}</th>
-                        <th>{t('claimManager.app.costs.table.status')}</th>
-                        <th>{t('claimManager.app.costs.table.note')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {costItems.map((item) => (
-                        <tr key={item.id}>
-                          <td style={{ padding: '0.4rem 0.2rem' }}>{t(`claimManager.app.costs.items.${item.labelKey}`)}</td>
-                          <td style={{ padding: '0.4rem 0.2rem' }}>
-                            <input
-                              type="number"
-                              value={item.amount}
-                              onChange={(event) => handleCostChange(item.id, 'amount', event.target.value)}
-                              style={{ width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.3)', padding: '0.3rem 0.4rem' }}
-                            />
-                          </td>
-                          <td style={{ padding: '0.4rem 0.2rem' }}>
-                            <select
-                              value={item.status}
-                              onChange={(event) => handleCostChange(item.id, 'status', event.target.value)}
-                              style={{ width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.3)', padding: '0.3rem 0.4rem' }}
-                            >
-                              <option value="pending">{t('claimManager.app.costs.status.pending')}</option>
-                              <option value="approved">{t('claimManager.app.costs.status.approved')}</option>
-                              <option value="rejected">{t('claimManager.app.costs.status.rejected')}</option>
-                            </select>
-                          </td>
-                          <td style={{ padding: '0.4rem 0.2rem' }}>
-                            <input
-                              type="text"
-                              value={item.note}
-                              placeholder={t('claimManager.app.costs.notePlaceholder')}
-                              onChange={(event) => handleCostChange(item.id, 'note', event.target.value)}
-                              style={{ width: '100%', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.3)', padding: '0.3rem 0.4rem' }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </Card>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <Card style={CARD_STYLE}>
-                <h2 style={{ marginTop: 0 }}>{t('claimManager.app.coverage.title')}</h2>
-                <p style={{ margin: '0 0 0.4rem' }}>
-                  {t('claimManager.app.coverage.policyNumber')}: <strong>{t('claimManager.app.coverage.policyValue')}</strong>
-                </p>
-                <p style={{ margin: '0 0 0.4rem' }}>
-                  {t('claimManager.app.coverage.term')}: {t('claimManager.app.coverage.termValue')}
-                </p>
-                <p style={{ margin: '0 0 0.4rem' }}>{t('claimManager.app.coverage.limit')}: {t('claimManager.app.coverage.limitValue')}</p>
-                <p style={{ margin: '0 0 0.4rem' }}>
-                  {t('claimManager.app.coverage.exclusion')}: {t('claimManager.app.coverage.exclusionValue')}
-                </p>
+          <Card style={{ ...CARD_STYLE, padding: '1.5rem' }}>
+            <div className="claim-manager-kpi-grid">
+              {kpiData.map((kpi) => (
                 <div
+                  key={kpi.key}
                   style={{
-                    padding: '0.45rem 0.75rem',
-                    borderRadius: '999px',
-                    background: '#16A34A',
-                    display: 'inline-flex',
-                    fontWeight: 700,
-                    marginTop: '0.75rem'
+                    minHeight: '110px',
+                    borderRadius: '20px',
+                    border: '1px solid rgba(255,255,255,0.2)',
+                    padding: '0.85rem'
                   }}
                 >
-                  {t('claimManager.app.coverage.covered')}
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: TEXT_COLORS.muted, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                    {t(`claimManager.app.kpis.${kpi.key}`)}
+                  </p>
+                  <p style={{ margin: '0.35rem 0 0', fontSize: '1.8rem', fontWeight: 600, color: '#fff' }}>{kpi.value}</p>
                 </div>
-                <p style={{ marginTop: '0.75rem', color: 'rgba(255,255,255,0.8)' }}>
-                  {t('claimManager.app.coverage.note')}
-                </p>
-              </Card>
-
-              <Card style={CARD_STYLE}>
-                <h2 style={{ marginTop: 0 }}>{t('claimManager.app.partner.title')}</h2>
-                <p style={{ margin: '0 0 0.4rem' }}>
-                  <strong>{t(`claimManager.app.partner.options.${partner.nameKey}.name`)}</strong>
-                </p>
-                <p style={{ margin: '0 0 0.4rem', color: 'rgba(255,255,255,0.75)' }}>
-                  {t(`claimManager.app.partner.options.${partner.addressKey}`)}
-                </p>
-                <div style={{ display: 'flex', gap: '1rem', color: 'rgba(255,255,255,0.8)' }}>
-                  <span>{partner.distance}</span>
-                  <span>★ {partner.rating}</span>
-                </div>
-                <Button variant="secondary" style={{ marginTop: '0.75rem' }} onClick={() => setPartnerModalOpen(true)}>
-                  {t('claimManager.app.partner.changeButton')}
-                </Button>
-              </Card>
-
-              <Card style={CARD_STYLE}>
-                <h2 style={{ marginTop: 0 }}>{t('claimManager.app.ai.title')}</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-                  {aiHintKeys.map((key) => (
-                    <div
-                      key={key}
-                      style={{
-                        padding: '0.75rem',
-                        borderRadius: '14px',
-                        background: 'rgba(255,255,255,0.08)',
-                        border: '1px solid rgba(255,255,255,0.18)'
-                      }}
-                    >
-                      {t(`claimManager.app.ai.items.${key}`)}
-                    </div>
-                  ))}
-                </div>
-              </Card>
+              ))}
             </div>
+          </Card>
+
+          <div className="claim-manager-two-col">
+            <Card style={CARD_STYLE}>
+              <h2 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.details.title')}</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(210px,1fr))', gap: '0.85rem' }}>
+                <div>
+                  <p style={{ margin: 0, color: TEXT_COLORS.muted, fontSize: '0.85rem' }}>{t('claimManager.app.details.type')}</p>
+                  <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{detailValues.type}</p>
+                </div>
+                <div>
+                  <p style={{ margin: 0, color: TEXT_COLORS.muted, fontSize: '0.85rem' }}>{t('claimManager.app.details.location')}</p>
+                  <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{detailValues.location}</p>
+                </div>
+                <div>
+                  <p style={{ margin: 0, color: TEXT_COLORS.muted, fontSize: '0.85rem' }}>{t('claimManager.app.details.vehicle')}</p>
+                  <p style={{ margin: '0.25rem 0 0', fontWeight: 600 }}>{detailValues.vehicle}</p>
+                </div>
+                <div>
+                  <p style={{ margin: 0, color: TEXT_COLORS.muted, fontSize: '0.85rem' }}>{t('claimManager.app.details.summary')}</p>
+                  <p style={{ margin: '0.25rem 0 0', lineHeight: 1.4 }}>{detailValues.summary}</p>
+                </div>
+              </div>
+            </Card>
+            <Card style={CARD_STYLE}>
+              <h2 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.coverage.title')}</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', color: TEXT_COLORS.secondary }}>
+                <span>
+                  {t('claimManager.app.coverage.policyNumber')}: <strong>{t('claimManager.app.coverage.policyValue')}</strong>
+                </span>
+                <span>
+                  {t('claimManager.app.coverage.term')}: {t('claimManager.app.coverage.termValue')}
+                </span>
+                <span>
+                  {t('claimManager.app.coverage.limit')}: {t('claimManager.app.coverage.limitValue')}
+                </span>
+                <span>
+                  {t('claimManager.app.coverage.exclusion')}: {t('claimManager.app.coverage.exclusionValue')}
+                </span>
+              </div>
+              <div
+                style={{
+                  marginTop: '1rem',
+                  display: 'inline-flex',
+                  padding: '0.35rem 1.25rem',
+                  borderRadius: '999px',
+                  background: '#16A34A',
+                  fontWeight: 700
+                }}
+              >
+                {t('claimManager.app.coverage.covered')}
+              </div>
+              <p style={{ marginTop: '0.85rem', color: TEXT_COLORS.secondary }}>{t('claimManager.app.coverage.note')}</p>
+            </Card>
           </div>
 
-          <Card style={{ ...CARD_STYLE, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '1rem' }}>
+          <Card style={CARD_STYLE}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.timeline.title')}</h2>
+              <select
+                value={claimStatus}
+                onChange={(event) => setClaimStatus(event.target.value as (typeof timelineSteps)[number])}
+                style={{
+                  background: 'rgba(255,255,255,0.08)',
+                  color: '#fff',
+                  borderRadius: '999px',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  padding: '0.45rem 1rem',
+                  minWidth: '180px'
+                }}
+              >
+                {timelineSteps.map((step) => (
+                  <option key={step} value={step}>
+                    {t(`claimManager.app.statusOptions.${step}`)}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div style={{ display: 'flex', gap: '0.85rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+              {timelineSteps.map((step, index) => {
+                const isActive = timelineSteps.indexOf(claimStatus) >= index
+                return (
+                  <div key={step} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: isActive ? '#D3F261' : TEXT_COLORS.muted }}>
+                    <div
+                      style={{
+                        width: '30px',
+                        height: '30px',
+                        borderRadius: '50%',
+                        border: `2px solid ${isActive ? '#D3F261' : 'rgba(255,255,255,0.35)'}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontWeight: 700
+                      }}
+                    >
+                      {index + 1}
+                    </div>
+                    <span>{t(`claimManager.app.timeline.steps.${step}`)}</span>
+                    {index < timelineSteps.length - 1 && <span style={{ opacity: 0.4 }}>—</span>}
+                  </div>
+                )
+              })}
+            </div>
+          </Card>
+
+          <Card style={CARD_STYLE}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.costs.title')}</h2>
+              <Button
+                variant="secondary"
+                onClick={() => setCostModalOpen(true)}
+                style={{
+                  background: 'rgba(255,255,255,0.12)',
+                  color: '#fff',
+                  borderRadius: '999px',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  height: '40px',
+                  padding: '0 1.25rem',
+                  fontWeight: 600
+                }}
+              >
+                {t('claimManager.app.costs.confirm')}
+              </Button>
+            </div>
+            <div style={{ marginTop: '1rem', overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, minWidth: '600px' }}>
+                <thead>
+                  <tr style={{ textAlign: 'left', color: TEXT_COLORS.muted, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                    <th style={{ paddingBottom: '0.6rem' }}>{t('claimManager.app.costs.table.position')}</th>
+                    <th style={{ paddingBottom: '0.6rem' }}>{t('claimManager.app.costs.table.amount')}</th>
+                    <th style={{ paddingBottom: '0.6rem' }}>{t('claimManager.app.costs.table.status')}</th>
+                    <th style={{ paddingBottom: '0.6rem' }}>{t('claimManager.app.costs.table.note')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {costItems.map((item) => (
+                    <tr key={item.id} style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                      <td style={{ padding: '0.6rem 0.4rem', color: TEXT_COLORS.secondary }}>{t(`claimManager.app.costs.items.${item.labelKey}`)}</td>
+                      <td style={{ padding: '0.6rem 0.4rem' }}>
+                        <input
+                          type="number"
+                          value={item.amount}
+                          onChange={(event) => handleCostChange(item.id, 'amount', event.target.value)}
+                          style={{
+                            width: '100%',
+                            borderRadius: '14px',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            background: 'rgba(255,255,255,0.08)',
+                            color: '#fff',
+                            padding: '0.45rem 0.75rem'
+                          }}
+                        />
+                      </td>
+                      <td style={{ padding: '0.6rem 0.4rem' }}>
+                        <select
+                          value={item.status}
+                          onChange={(event) => handleCostChange(item.id, 'status', event.target.value)}
+                          style={{
+                            width: '100%',
+                            borderRadius: '14px',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            background: 'rgba(255,255,255,0.08)',
+                            color: '#fff',
+                            padding: '0.45rem 0.75rem'
+                          }}
+                        >
+                          <option value="pending">{t('claimManager.app.costs.status.pending')}</option>
+                          <option value="approved">{t('claimManager.app.costs.status.approved')}</option>
+                          <option value="rejected">{t('claimManager.app.costs.status.rejected')}</option>
+                        </select>
+                      </td>
+                      <td style={{ padding: '0.6rem 0.4rem' }}>
+                        <input
+                          type="text"
+                          value={item.note}
+                          placeholder={t('claimManager.app.costs.notePlaceholder')}
+                          onChange={(event) => handleCostChange(item.id, 'note', event.target.value)}
+                          style={{
+                            width: '100%',
+                            borderRadius: '14px',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            background: 'rgba(255,255,255,0.08)',
+                            color: '#fff',
+                            padding: '0.45rem 0.75rem'
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Card>
+
+          <Card style={CARD_STYLE}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <div>
+                <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.partner.title')}</h2>
+                <p style={{ margin: '0.35rem 0 0', color: TEXT_COLORS.secondary }}>
+                  <strong style={{ color: '#fff' }}>{t(`claimManager.app.partner.options.${partner.nameKey}.name`)}</strong>
+                  <br />
+                  {t(`claimManager.app.partner.options.${partner.addressKey}`)}
+                </p>
+                <p style={{ margin: '0.4rem 0 0', color: TEXT_COLORS.muted }}>
+                  {partner.distance} • ★ {partner.rating}
+                </p>
+              </div>
+              <Button
+                variant="secondary"
+                onClick={() => setPartnerModalOpen(true)}
+                style={{
+                  background: '#ffffff',
+                  color: '#0B1028',
+                  borderRadius: '999px',
+                  height: '40px',
+                  padding: '0 1.4rem',
+                  fontWeight: 600
+                }}
+              >
+                {t('claimManager.app.partner.changeButton')}
+              </Button>
+            </div>
+          </Card>
+
+          <Card style={CARD_STYLE}>
+            <h2 style={{ marginTop: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.ai.title')}</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginTop: '0.75rem' }}>
+              {aiHintKeys.map((key) => (
+                <div
+                  key={key}
+                  style={{
+                    padding: '0.85rem 1rem',
+                    borderRadius: '18px',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    background: 'rgba(255,255,255,0.08)',
+                    color: TEXT_COLORS.primary
+                  }}
+                >
+                  {t(`claimManager.app.ai.items.${key}`)}
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card style={{ ...CARD_STYLE, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: '1.25rem' }}>
             <div>
-              <h2 style={{ marginTop: 0 }}>{t('claimManager.app.documents.title')}</h2>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+              <h2 style={{ marginTop: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.documents.title')}</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginTop: '0.75rem' }}>
                 {documentKeys.map((key) => (
                   <button
                     key={key}
@@ -479,11 +609,12 @@ export default function ClaimManagerPage() {
                     onClick={() => setDocPreview(key)}
                     style={{
                       textAlign: 'left',
-                      padding: '0.6rem 0.85rem',
-                      borderRadius: '12px',
-                      border: '1px solid rgba(255,255,255,0.25)',
+                      padding: '0.75rem 1rem',
+                      borderRadius: '16px',
+                      border: '1px solid rgba(255,255,255,0.2)',
                       background: 'rgba(255,255,255,0.08)',
-                      color: '#ffffff'
+                      color: '#fff',
+                      fontWeight: 600
                     }}
                   >
                     {t(`claimManager.app.documents.list.${key}`)}
@@ -492,39 +623,27 @@ export default function ClaimManagerPage() {
               </div>
             </div>
             <div>
-              <h2 style={{ marginTop: 0 }}>{t('claimManager.app.documents.media')}</h2>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(2,minmax(0,1fr))',
-                  gap: '0.6rem'
-                }}
-              >
+              <h2 style={{ marginTop: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.documents.media')}</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: '0.75rem', marginTop: '0.75rem' }}>
                 {mediaPlaceholders.map((key) => (
                   <button
                     key={key}
                     type="button"
                     onClick={() => setMediaPreview(key)}
-                    style={{
-                      borderRadius: '16px',
-                      border: 'none',
-                      padding: 0,
-                      overflow: 'hidden',
-                      cursor: 'pointer'
-                    }}
+                    style={{ borderRadius: '18px', border: 'none', padding: 0, overflow: 'hidden', cursor: 'pointer' }}
                   >
                     <div
                       style={{
-                        height: '120px',
-                        background: 'linear-gradient(135deg, rgba(255,255,255,0.45), rgba(255,255,255,0.08))',
+                        height: '130px',
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.35), rgba(255,255,255,0.08))',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: '#0e0d1c',
+                        color: '#0B1028',
                         fontWeight: 700
                       }}
                     >
-                      {t(`claimManager.app.documents.mediaLabel`)} {key.slice(-1)}
+                      {t('claimManager.app.documents.mediaLabel')} {key.slice(-1)}
                     </div>
                   </button>
                 ))}
