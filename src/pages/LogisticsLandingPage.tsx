@@ -5,31 +5,31 @@ import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 
-const KPI_KEYS = ['kpi1', 'kpi2', 'kpi3', 'kpi4'] as const
-const FEATURE_KEYS = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5'] as const
+const KPI_KEYS = ['liveShipments', 'coverageRate', 'openIncidents', 'etaDeviation'] as const
+const FEATURE_KEYS = ['realtime', 'coverage', 'incidents', 'thirdparty', 'ai', 'routes'] as const
 
 const kpiValues: Record<(typeof KPI_KEYS)[number], string> = {
-  kpi1: '128',
-  kpi2: '92%',
-  kpi3: '7',
-  kpi4: '18m'
+  liveShipments: '128',
+  coverageRate: '92%',
+  openIncidents: '7',
+  etaDeviation: '18m'
 }
 
 const featureIcons: Record<(typeof FEATURE_KEYS)[number], React.ReactNode> = {
-  feature1: (
+  realtime: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 17l6-6 4 4 7-7" />
       <path d="M21 7h-4V3" />
       <path d="M3 21h18" />
     </svg>
   ),
-  feature2: (
+  coverage: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2 5 6v7c0 4.5 3.1 6.9 7 8 3.9-1.1 7-3.5 7-8V6l-7-4Z" />
       <path d="m9 12 2 2 4-4" />
     </svg>
   ),
-  feature3: (
+  incidents: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="3" width="18" height="14" rx="2" />
       <path d="M8 21h8" />
@@ -37,7 +37,7 @@ const featureIcons: Record<(typeof FEATURE_KEYS)[number], React.ReactNode> = {
       <path d="M7 8h10M7 12h4" />
     </svg>
   ),
-  feature4: (
+  thirdparty: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="8" cy="7" r="4" />
       <circle cx="16" cy="17" r="4" />
@@ -45,10 +45,17 @@ const featureIcons: Record<(typeof FEATURE_KEYS)[number], React.ReactNode> = {
       <path d="M4 21h8" />
     </svg>
   ),
-  feature5: (
+  ai: (
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="4" />
       <path d="M2 12h2M20 12h2M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41" />
+    </svg>
+  ),
+  routes: (
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#D4380D" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3h1a2 2 0 0 1 2 2v2h6a3 3 0 0 1 3 3 3 3 0 0 1-3 3H8v4a3 3 0 0 1-3 3H4" />
+      <circle cx="6" cy="3" r="2" />
+      <circle cx="6" cy="21" r="2" />
     </svg>
   )
 }
@@ -99,7 +106,7 @@ export default function LogisticsLandingPage() {
               style={{ padding: '1.1rem', minHeight: '120px', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}
             >
               <p style={{ margin: 0, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
-                {t(`logisticsLanding.${key}`)}
+                {t(`logisticsLanding.kpi.${key}`)}
               </p>
               <p style={{ margin: 0, fontSize: '2rem', fontWeight: 700 }}>{kpiValues[key]}</p>
             </Card>
@@ -126,8 +133,8 @@ export default function LogisticsLandingPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {featureIcons[key]}
                   <div>
-                    <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.15rem' }}>{t(`logisticsLanding.${key}.title`)}</h3>
-                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t(`logisticsLanding.${key}.text`)}</p>
+                    <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.15rem' }}>{t(`logisticsLanding.cards.${key}.title`)}</h3>
+                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t(`logisticsLanding.cards.${key}.body`)}</p>
                   </div>
                 </div>
               </Card>
@@ -136,12 +143,16 @@ export default function LogisticsLandingPage() {
 
           <Card variant="glass" style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <p style={{ margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>
-              {t('logisticsLanding.previewTitle')}
+              {t('logisticsLanding.preview.title')}
             </p>
             <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
-              {['ETA', 'Temp', 'Customs'].map((label, index) => (
+              {[
+                { label: t('logisticsLanding.preview.eta'), value: '18m' },
+                { label: t('logisticsLanding.preview.temp'), value: '+2°C' },
+                { label: t('logisticsLanding.preview.customs'), value: t('logisticsLanding.preview.customsStatus.cleared') }
+              ].map((item) => (
                 <div
-                  key={label}
+                  key={item.label}
                   style={{
                     flex: '1 1 100px',
                     background: 'rgba(255,255,255,0.08)',
@@ -150,8 +161,8 @@ export default function LogisticsLandingPage() {
                     border: '1px solid rgba(255,255,255,0.18)'
                   }}
                 >
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{label}</p>
-                  <strong style={{ fontSize: '1.4rem' }}>{['18m', '+2°C', 'Cleared'][index]}</strong>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{item.label}</p>
+                  <strong style={{ fontSize: '1.4rem' }}>{item.value}</strong>
                 </div>
               ))}
             </div>
@@ -170,7 +181,7 @@ export default function LogisticsLandingPage() {
                 </div>
               ))}
             </div>
-            <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t('logisticsLanding.previewNote')}</p>
+            <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t('logisticsLanding.preview.footer')}</p>
           </Card>
         </div>
       </div>

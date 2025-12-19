@@ -47,6 +47,93 @@ type TranslationTree = {
     }
     cta: string
   }
+  logisticsLanding: {
+    title: string
+    subtitle: string
+    login: string
+    kpi: Record<string, string>
+    cards: Record<string, { title: string; body: string }>
+    preview: {
+      title: string
+      eta: string
+      temp: string
+      customs: string
+      customsStatus: {
+        cleared: string
+      }
+      footer: string
+    }
+  }
+  logisticsApp: {
+    title: string
+    subtitle: string
+    sections: Record<string, string>
+    kpi: Record<string, string>
+    filters: {
+      search: string
+      statusLabel: string
+      statusAll: string
+      statusInTransit: string
+      statusDelayed: string
+      statusDelivered: string
+      statusIncident: string
+    }
+    table: {
+      shipments: {
+        title: string
+        col: {
+          shipment: string
+          customer: string
+          route: string
+          status: string
+          eta: string
+          coverage: string
+          cargo: string
+          value: string
+          thirdParty: string
+          aiHint: string
+        }
+        empty: string
+      }
+      statusLabels: Record<string, string>
+      coverageLabels: Record<string, string>
+    }
+    coverage: {
+      title: string
+      policyId: string
+      limit: string
+      deductible: string
+      validity: string
+      status: string
+      covered: string
+      partial: string
+      notCovered: string
+      statusLabels: Record<string, string>
+    }
+    coverageCards: Record<string, { title: string }>
+    incidents: {
+      title: string
+      subtitle: string
+      cta: string
+      type: string
+      state: string
+      cost: string
+      documents: string
+      risk: string
+      stateOpen: string
+      stateReview: string
+      stateClosed: string
+      riskLow: string
+      riskMed: string
+      riskHigh: string
+    }
+    documents: {
+      title: string
+      upload: string
+      download: string
+    }
+    thirdParty: Record<string, string>
+  }
   marketingFleet: {
     hero: {
       title: string
@@ -342,32 +429,48 @@ export const translations: Record<Lang, TranslationTree> = {
       title: 'IaaS Logistikportal',
       subtitle: 'Echtzeit-Transportstatus, Frachtversicherung und Schadensteuerung – alles in einer Plattform.',
       login: 'Login',
-      kpi1: 'Live Sendungen',
-      kpi2: 'Deckungsquote',
-      kpi3: 'Offene Incidents',
-      kpi4: 'Ø ETA Abweichung',
-      feature1: {
-        title: 'Transportstatus in Echtzeit',
-        text: 'ETA, Route, Statuswechsel und Alerts – pro Sendung und pro Kunde.'
+      kpi: {
+        liveShipments: 'Live Sendungen',
+        coverageRate: 'Deckungsquote',
+        openIncidents: 'Offene Incidents',
+        etaDeviation: 'Ø ETA Abweichung'
       },
-      feature2: {
-        title: 'Frachtversicherung & Deckung',
-        text: 'Frachtführerhaftpflicht, Cargo und Zusatzdeckungen je Auftrag – transparent und nachvollziehbar.'
+      cards: {
+        realtime: {
+          title: 'Transportstatus in Echtzeit',
+          body: 'ETA, Route, Statuswechsel und Alerts – pro Sendung und pro Kunde.'
+        },
+        coverage: {
+          title: 'Frachtversicherung & Deckung',
+          body: 'Frachtführerhaftpflicht, Cargo und Zusatzdeckungen je Auftrag – transparent und nachvollziehbar.'
+        },
+        incidents: {
+          title: 'Schäden & Incidents',
+          body: 'Diebstahl, Beschädigung, Verzögerung, Temperatur – inkl. Dokumenten, Fotos, Partnern.'
+        },
+        thirdparty: {
+          title: 'Third Party & Auftraggeber',
+          body: 'Auftraggeber, Ansprechpartner, SLA und Abrechnung – direkt im Transportkontext.'
+        },
+        ai: {
+          title: 'KI-Empfehlungen & Alerts',
+          body: 'Proaktive Hinweise zu Risiko, Betrug, Kosten, Routen und Deckungsbedarf.'
+        },
+        routes: {
+          title: 'Routen & Risiken',
+          body: 'Routenprofil, Risikozonen, Wetter- und Stauindikatoren – inklusive Live-Warnungen pro Strecke.'
+        }
       },
-      feature3: {
-        title: 'Schäden & Incidents',
-        text: 'Diebstahl, Beschädigung, Verzögerung, Temperatur – inkl. Dokumenten, Fotos, Partnern.'
-      },
-      feature4: {
-        title: 'Third Party & Auftraggeber',
-        text: 'Auftraggeber, Ansprechpartner, SLA und Abrechnung – direkt im Transportkontext.'
-      },
-      feature5: {
-        title: 'KI-Empfehlungen & Alerts',
-        text: 'Proaktive Hinweise zu Risiko, Betrug, Kosten, Routen und Deckungsbedarf.'
-      },
-      previewTitle: 'Live Dashboard Preview',
-      previewNote: 'Demo-Daten mit Live KPI Trend (ETA, Temperatur, Customs).'
+      preview: {
+        title: 'Live Dashboard Preview',
+        eta: 'ETA',
+        temp: 'Temp',
+        customs: 'Zoll',
+        customsStatus: {
+          cleared: 'Freigegeben'
+        },
+        footer: 'Demo-Daten mit Live KPI Trend (ETA, Temperatur, Customs).'
+      }
     },
     logisticsApp: {
       title: 'Logistik Cockpit',
@@ -423,7 +526,7 @@ export const translations: Record<Lang, TranslationTree> = {
         coverageLabels: {
           covered: 'Gedeckt',
           partial: 'Teilgedeckt',
-          uncovered: 'Nicht gedeckt'
+          notCovered: 'Nicht gedeckt'
         }
       },
       coverage: {
@@ -1371,32 +1474,48 @@ export const translations: Record<Lang, TranslationTree> = {
       title: 'IaaS Logistics Portal',
       subtitle: 'Real-time transport status, cargo insurance and incident handling – in one platform.',
       login: 'Login',
-      kpi1: 'Live shipments',
-      kpi2: 'Coverage rate',
-      kpi3: 'Open incidents',
-      kpi4: 'Avg. ETA deviation',
-      feature1: {
-        title: 'Real-time transport tracking',
-        text: 'ETA, route, status changes and alerts per shipment and customer.'
+      kpi: {
+        liveShipments: 'Live shipments',
+        coverageRate: 'Coverage rate',
+        openIncidents: 'Open incidents',
+        etaDeviation: 'Avg. ETA deviation'
       },
-      feature2: {
-        title: 'Cargo insurance & coverage',
-        text: 'Carrier’s liability, cargo and add-ons per order – transparent and auditable.'
+      cards: {
+        realtime: {
+          title: 'Real-time transport tracking',
+          body: 'ETA, route, status changes and alerts per shipment and customer.'
+        },
+        coverage: {
+          title: 'Cargo insurance & coverage',
+          body: 'Carrier’s liability, cargo and add-ons per order – transparent and auditable.'
+        },
+        incidents: {
+          title: 'Claims & incidents',
+          body: 'Theft, damage, delays, temperature breaches – incl. docs, photos and partners.'
+        },
+        thirdparty: {
+          title: 'Third party & shippers',
+          body: 'Shippers, contacts, SLAs and billing – directly within each transport.'
+        },
+        ai: {
+          title: 'AI recommendations & alerts',
+          body: 'Proactive signals on risk, fraud, cost, routing and coverage gaps.'
+        },
+        routes: {
+          title: 'Routes & risk',
+          body: 'Route profiles, risk zones, weather and traffic indicators – including live alerts per lane.'
+        }
       },
-      feature3: {
-        title: 'Claims & incidents',
-        text: 'Theft, damage, delays, temperature breaches – incl. docs, photos and partners.'
-      },
-      feature4: {
-        title: 'Third party & shippers',
-        text: 'Shippers, contacts, SLAs and billing – directly within each transport.'
-      },
-      feature5: {
-        title: 'AI recommendations & alerts',
-        text: 'Proactive signals on risk, fraud, cost, routing and coverage gaps.'
-      },
-      previewTitle: 'Live dashboard preview',
-      previewNote: 'Demo data showing ETA, temperature and customs trends.'
+      preview: {
+        title: 'Live Dashboard Preview',
+        eta: 'ETA',
+        temp: 'Temp',
+        customs: 'Customs',
+        customsStatus: {
+          cleared: 'Cleared'
+        },
+        footer: 'Demo data with live KPI trend (ETA, temperature, customs).'
+      }
     },
     logisticsApp: {
       title: 'Logistics Cockpit',
@@ -1452,7 +1571,7 @@ export const translations: Record<Lang, TranslationTree> = {
         coverageLabels: {
           covered: 'Covered',
           partial: 'Partial',
-          uncovered: 'Not covered'
+          notCovered: 'Not covered'
         }
       },
       coverage: {

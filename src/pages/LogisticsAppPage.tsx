@@ -4,7 +4,8 @@ import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 
 type ShipmentStatus = 'inTransit' | 'delayed' | 'delivered' | 'incident'
-type CoverageStatus = 'covered' | 'partial' | 'uncovered'
+type CoverageStatus = 'covered' | 'partial' | 'notCovered'
+type IncidentRisk = 'low' | 'med' | 'high'
 
 type Shipment = {
   id: string
@@ -28,7 +29,7 @@ type Incident = {
   status: 'open' | 'review' | 'closed'
   cost: string
   docs: number
-  risk: 'low' | 'medium' | 'high'
+  risk: IncidentRisk
 }
 
 type PartnerCard = {
@@ -126,7 +127,7 @@ const shipments: Shipment[] = [
     route: 'Madrid → Lyon',
     status: 'delayed',
     eta: '+25m',
-    coverage: 'uncovered',
+    coverage: 'notCovered',
     cargo: 'Automotive',
     value: '€ 150k',
     contact: 'Julien Besson',
@@ -192,8 +193,8 @@ const coverageCards = [
 
 const incidents: Incident[] = [
   { id: 'INC-01', type: 'Theft (parking A14)', shipment: 'RTM → CGN', status: 'open', cost: '€ 40k', docs: 6, risk: 'high' },
-  { id: 'INC-02', type: 'Temp deviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'medium' },
-  { id: 'INC-03', type: 'Delay > 12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'medium' },
+  { id: 'INC-02', type: 'Temp deviation', shipment: 'HEL → RIX', status: 'review', cost: '€ 8k', docs: 4, risk: 'med' },
+  { id: 'INC-03', type: 'Delay > 12h', shipment: 'BER → FRA', status: 'open', cost: '€ 12k', docs: 3, risk: 'med' },
   { id: 'INC-04', type: 'Damage (forklift)', shipment: 'MAD → LYO', status: 'closed', cost: '€ 6k', docs: 5, risk: 'low' }
 ]
 
@@ -229,6 +230,18 @@ const partners: PartnerCard[] = [
 ]
 
 const documents = ['CMR.pdf', 'POD.pdf', 'Photos.zip', 'Police-report.pdf', 'Temperature-log.csv', 'Invoice.pdf']
+
+const incidentStatusLabelKey: Record<Incident['status'], string> = {
+  open: 'logisticsApp.incidents.stateOpen',
+  review: 'logisticsApp.incidents.stateReview',
+  closed: 'logisticsApp.incidents.stateClosed'
+}
+
+const incidentRiskLabelKey: Record<IncidentRisk, string> = {
+  low: 'logisticsApp.incidents.riskLow',
+  med: 'logisticsApp.incidents.riskMed',
+  high: 'logisticsApp.incidents.riskHigh'
+}
 
 export default function LogisticsAppPage() {
   const { t } = useI18n()
@@ -274,9 +287,9 @@ export default function LogisticsAppPage() {
     return badgeStyle('#DC2626')
   }
 
-  function incidentRiskColor(risk: Incident['risk']) {
+  function incidentRiskColor(risk: IncidentRisk) {
     if (risk === 'high') return '#DC2626'
-    if (risk === 'medium') return '#F97316'
+    if (risk === 'med') return '#F97316'
     return '#16A34A'
   }
 
@@ -299,8 +312,11 @@ export default function LogisticsAppPage() {
     >
       <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
-          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)' }}>{t('logisticsApp.title')}</p>
-          <h1 style={{ margin: '0.3rem 0', fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', fontWeight: 700 }}>{t('logisticsApp.subtitle')}</h1>
+          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)' }}>
+            {t('logisticsApp.sections.overview')}
+          </p>
+          <h1 style={{ margin: '0.3rem 0', fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', fontWeight: 700 }}>{t('logisticsApp.title')}</h1>
+          <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)', fontSize: '1.1rem' }}>{t('logisticsApp.subtitle')}</p>
         </div>
 
         <div
@@ -425,7 +441,7 @@ export default function LogisticsAppPage() {
         </Card>
 
         <div>
-          <h2 style={{ margin: '1rem 0 0.5rem' }}>{t('logisticsApp.coverage.title')}</h2>
+          <h2 style={{ margin: '1rem 0 0.5rem' }}>{t('logisticsApp.sections.coverage')}</h2>
           <div
             style={{
               display: 'grid',
@@ -477,13 +493,13 @@ export default function LogisticsAppPage() {
                   background: 'rgba(255,255,255,0.08)'
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
                   <strong>{incident.type}</strong>
-                  <span style={badgeStyle(incidentRiskColor(incident.risk))}>{incident.risk.toUpperCase()}</span>
+                  <span style={badgeStyle(incidentRiskColor(incident.risk))}>{t(incidentRiskLabelKey[incident.risk])}</span>
                 </div>
                 <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.75)' }}>{incident.shipment}</p>
                 <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
-                  {t('logisticsApp.incidents.status')}: {t(`logisticsApp.incidents.statusLabels.${incident.status}`)}
+                  {t('logisticsApp.incidents.state')}: {t(incidentStatusLabelKey[incident.status])}
                 </p>
                 <p style={{ margin: '0.1rem 0', color: 'rgba(255,255,255,0.75)' }}>
                   {t('logisticsApp.incidents.cost')}: {incident.cost}
@@ -518,7 +534,20 @@ export default function LogisticsAppPage() {
         </div>
 
         <Card variant="glass">
-          <h2 style={{ marginTop: 0 }}>{t('logisticsApp.sections.documents')}</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <h2 style={{ margin: 0 }}>{t('logisticsApp.sections.documents')}</h2>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <Button style={{ borderRadius: '999px', padding: '0.45rem 1.2rem', fontWeight: 600 }}>
+                {t('logisticsApp.documents.upload')}
+              </Button>
+              <Button
+                variant="secondary"
+                style={{ borderRadius: '999px', padding: '0.45rem 1.2rem', fontWeight: 600, background: '#ffffff', color: '#0B1028' }}
+              >
+                {t('logisticsApp.documents.download')}
+              </Button>
+            </div>
+          </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.85rem', marginTop: '0.75rem' }}>
             {documents.map((doc) => (
               <button
