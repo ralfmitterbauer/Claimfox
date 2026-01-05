@@ -339,11 +339,6 @@ export default function ClaimProcessPage() {
             subtitle={t('claimProcess.subtitle')}
             titleColor="#ffffff"
             subtitleColor="rgba(255,255,255,0.8)"
-            actions={
-              <Button variant="secondary" onClick={() => navigate('/roles')}>
-                {t('claimProcess.back')}
-              </Button>
-            }
           />
 
           <div className="claim-process-grid">
@@ -353,9 +348,11 @@ export default function ClaimProcessPage() {
                   <div className="claim-process-chat-header">
                     <div>
                       <strong style={{ fontSize: '1.05rem' }}>{t('claimProcess.chatTitle')}</strong>
-                      <p style={{ margin: '0.2rem 0 0', color: 'rgba(8,0,40,0.6)', fontSize: '0.9rem' }}>
-                        {t('claimProcess.chatSubtitle')}
-                      </p>
+                      {t('claimProcess.chatSubtitle') && (
+                        <p style={{ margin: '0.2rem 0 0', color: 'rgba(8,0,40,0.6)', fontSize: '0.9rem' }}>
+                          {t('claimProcess.chatSubtitle')}
+                        </p>
+                      )}
                     </div>
                     <div className="claim-process-pill">{t('claimProcess.chatStatus')}</div>
                   </div>
