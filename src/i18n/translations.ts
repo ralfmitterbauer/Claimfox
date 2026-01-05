@@ -25,6 +25,32 @@ type TranslationTree = {
     brokerPortal: string
     cards: Record<string, { title: string; description: string }>
   }
+  claimProcess: {
+    title: string
+    subtitle: string
+    intro: string
+    timeStampMessage: string
+    askLocation: string
+    locationButton: string
+    locationPending: string
+    locationPendingShort: string
+    locationGranted: string
+    locationDenied: string
+    locationUnknown: string
+    nextPrompt: string
+    botAck: string
+    inputPlaceholder: string
+    send: string
+    back: string
+    infoTitle: string
+    infoSubtitle: string
+    infoLocation: string
+    infoDate: string
+    infoTime: string
+    infoStatus: string
+    statusOpen: string
+    demoHint: string
+  }
   marketing: {
     title: string
     subtitle: string
@@ -451,6 +477,11 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Sachbearbeiter-Cockpit für schnelle Entscheidungen, Freigaben, Partnersteuerung und AI-Hinweise.',
           cta: 'Öffnen'
         },
+        claimProcess: {
+          title: 'Schadenmanagement Prozess',
+          description: 'Demo-Chatbot mit Standortabfrage, automatischem Zeitstempel und strukturierter Erfassung.',
+          cta: 'Starten'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -473,6 +504,32 @@ export const translations: Record<Lang, TranslationTree> = {
           cta: 'Ansehen'
         }
       }
+    },
+    claimProcess: {
+      title: 'Schadenmanagement Prozess',
+      subtitle: 'Demo MVP: Chatbot-Flow mit Standortabfrage, Zeitstempelung und strukturierter Schadenaufnahme.',
+      intro: 'Willkommen im Schadenmanagement. Ich begleite dich Schritt für Schritt.',
+      timeStampMessage: 'Schaden gemeldet am {{date}} um {{time}}.',
+      askLocation: 'Darf ich deinen Standort verwenden, um den Schadenort automatisch zu erfassen?',
+      locationButton: 'Standort freigeben',
+      locationPending: 'Standort wird abgefragt …',
+      locationPendingShort: 'Wird ermittelt …',
+      locationGranted: 'Standort erfasst: {{coords}}',
+      locationDenied: 'Standort nicht verfügbar – bitte Adresse manuell ergänzen.',
+      locationUnknown: 'Nicht erfasst',
+      nextPrompt: 'Beschreibe kurz den Schaden und lade optional Fotos hoch.',
+      botAck: 'Danke! Die Notiz ist in der Schadenakte gespeichert.',
+      inputPlaceholder: 'Kurze Beschreibung eingeben …',
+      send: 'Senden',
+      back: 'Zurück',
+      infoTitle: 'Live-Check',
+      infoSubtitle: 'Automatisch generierte Eckdaten für die Schadenakte.',
+      infoLocation: 'Standort',
+      infoDate: 'Datum',
+      infoTime: 'Uhrzeit',
+      infoStatus: 'Status',
+      statusOpen: 'Offen',
+      demoHint: 'Zeitstempel und Standort werden direkt dem Schadenticket zugeordnet.'
     },
     logisticsLanding: {
       badge: 'Insurfox IaaS',
@@ -1578,6 +1635,11 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Claims handler cockpit for fast decisions, approvals, partner orchestration and AI insights.',
           cta: 'Open'
         },
+        claimProcess: {
+          title: 'Claims Process',
+          description: 'Demo chatbot with location capture, automatic timestamps, and structured intake.',
+          cta: 'Start'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Nurture relationships with assessors, workshops, and service partners.'
@@ -1600,6 +1662,32 @@ export const translations: Record<Lang, TranslationTree> = {
           cta: 'View'
         }
       }
+    },
+    claimProcess: {
+      title: 'Claims Process',
+      subtitle: 'Demo MVP: chatbot flow with location capture, timestamps, and structured claim intake.',
+      intro: 'Welcome to the claims process. I will guide you step by step.',
+      timeStampMessage: 'Claim recorded on {{date}} at {{time}}.',
+      askLocation: 'May I use your location to capture the incident site automatically?',
+      locationButton: 'Share location',
+      locationPending: 'Requesting location …',
+      locationPendingShort: 'Locating …',
+      locationGranted: 'Location captured: {{coords}}',
+      locationDenied: 'Location unavailable — please add the address manually.',
+      locationUnknown: 'Not captured',
+      nextPrompt: 'Briefly describe the incident and upload photos if available.',
+      botAck: 'Thanks! Your note is stored in the claim file.',
+      inputPlaceholder: 'Enter a short description …',
+      send: 'Send',
+      back: 'Back',
+      infoTitle: 'Live check',
+      infoSubtitle: 'Auto-generated data points for the claim file.',
+      infoLocation: 'Location',
+      infoDate: 'Date',
+      infoTime: 'Time',
+      infoStatus: 'Status',
+      statusOpen: 'Open',
+      demoHint: 'Timestamp and location are attached to the claim ticket.'
     },
     logisticsLanding: {
       badge: 'Insurfox IaaS',

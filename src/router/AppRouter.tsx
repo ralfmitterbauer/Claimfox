@@ -14,6 +14,7 @@ import FleetManagementPage from '@/pages/FleetManagementPage'
 import MarketingLandingPage from '@/pages/MarketingLandingPage'
 import ClaimManagerMarketingPage from '@/pages/ClaimManagerMarketingPage'
 import ClaimManagerPage from '@/pages/ClaimManagerPage'
+import ClaimProcessPage from '@/pages/ClaimProcessPage'
 import LogisticsLandingPage from '@/pages/LogisticsLandingPage'
 import LogisticsAppPage from '@/pages/LogisticsAppPage'
 
@@ -46,6 +47,7 @@ export default function AppRouter() {
         <Route path="/fleet-management" element={<FleetManagementPage />} />
         <Route path="/claim-manager" element={<ClaimManagerMarketingPage />} />
         <Route path="/claim-manager-app" element={<ClaimManagerPage />} />
+        <Route path="/claim-process" element={<ClaimProcessPage />} />
         <Route path="/logistics" element={<LogisticsLandingPage />} />
         <Route path="/logistics-app" element={<LogisticsAppPage />} />
       </Route>
