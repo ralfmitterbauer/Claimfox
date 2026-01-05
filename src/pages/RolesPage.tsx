@@ -21,6 +21,18 @@ const ROLE_ITEMS: RoleItem[] = [
   { key: 'fleetManagement', route: '/fleet-management' }
 ] as const
 
+const descriptionStyle: React.CSSProperties = {
+  marginTop: 0,
+  color: 'rgba(255,255,255,0.85)',
+  minHeight: '3rem',
+  fontSize: '0.95rem',
+  lineHeight: 1.45,
+  display: '-webkit-box',
+  WebkitLineClamp: 4,
+  WebkitBoxOrient: 'vertical',
+  overflow: 'hidden'
+}
+
 export default function RolesPage() {
   const { logout } = useAuth()
   const navigate = useNavigate()
@@ -72,9 +84,7 @@ export default function RolesPage() {
                   onClick={hasRoute ? () => navigate(item.route!) : undefined}
                   style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
                 >
-                  <p style={{ marginTop: 0, color: 'rgba(255,255,255,0.85)', minHeight: '3rem' }}>
-                    {t(`roles.cards.${item.key}.description`)}
-                  </p>
+                  <p style={descriptionStyle}>{t(`roles.cards.${item.key}.description`)}</p>
                   <Button
                     style={{ width: '100%', marginTop: 'auto' }}
                     onClick={
@@ -93,12 +103,12 @@ export default function RolesPage() {
             })}
             <Card
               title={t('roles.registrationCardTitle')}
-              subtitle={t('roles.registrationCardSubtitle')}
               interactive
               onClick={() => navigate('/registration')}
               variant="glass"
               style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
             >
+              <p style={descriptionStyle}>{t('roles.registrationCardSubtitle')}</p>
               <Button
                 style={{ width: '100%', marginTop: 'auto' }}
                 onClick={(event) => {
@@ -116,9 +126,7 @@ export default function RolesPage() {
               variant="glass"
               style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
             >
-              <p style={{ marginTop: 0, color: 'rgba(255,255,255,0.85)', minHeight: '3rem' }}>
-                {t('roles.brokerPortal')}
-              </p>
+              <p style={descriptionStyle}>{t('roles.brokerPortal')}</p>
               <Button
                 style={{ width: '100%', marginTop: 'auto' }}
                 onClick={(event) => {
