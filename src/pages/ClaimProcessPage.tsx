@@ -113,12 +113,6 @@ export default function ClaimProcessPage() {
     {
       id: `m-${messageId.current++}`,
       author: 'bot',
-      text: t('claimProcess.timeStampMessage', { date: dateLabel, time: timeLabel }),
-      time: timeLabel
-    },
-    {
-      id: `m-${messageId.current++}`,
-      author: 'bot',
       text: t('claimProcess.askTime'),
       time: timeLabel
     }
@@ -195,7 +189,6 @@ export default function ClaimProcessPage() {
   function handleLocationRequest() {
     if (locationState === 'pending') return
     setLocationState('pending')
-    appendMessage('bot', t('claimProcess.locationPending'))
 
     if (typeof navigator === 'undefined' || !navigator.geolocation) {
       setLocationState('denied')
@@ -378,137 +371,138 @@ export default function ClaimProcessPage() {
                       )
                     })}
                   </div>
-                </div>
-              </div>
+                  <div>
+                    {step === 'timeChoice' && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+                        <Button onClick={() => handleIncidentTime('now')} style={{ padding: '0.6rem 1.3rem' }}>
+                          {t('claimProcess.timeNow')}
+                        </Button>
+                        <Button variant="secondary" onClick={() => handleIncidentTime('other')} style={{ padding: '0.6rem 1.3rem' }}>
+                          {t('claimProcess.timeOther')}
+                        </Button>
+                      </div>
+                    )}
 
-              {step === 'timeChoice' && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                  <Button onClick={() => handleIncidentTime('now')} style={{ padding: '0.6rem 1.3rem' }}>
-                    {t('claimProcess.timeNow')}
-                  </Button>
-                  <Button variant="secondary" onClick={() => handleIncidentTime('other')} style={{ padding: '0.6rem 1.3rem' }}>
-                    {t('claimProcess.timeOther')}
-                  </Button>
-                </div>
-              )}
+                    {step === 'timeOther' && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+                        <input
+                          value={incidentTimeOther}
+                          onChange={(event) => setIncidentTimeOther(event.target.value)}
+                          placeholder={t('claimProcess.timeOtherPlaceholder')}
+                          className="claim-process-input"
+                          style={{ flex: '1 1 240px' }}
+                        />
+                        <Button onClick={handleTimeOtherConfirm} style={{ padding: '0.6rem 1.5rem' }}>
+                          {t('claimProcess.confirmTime')}
+                        </Button>
+                      </div>
+                    )}
 
-              {step === 'timeOther' && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                  <input
-                    value={incidentTimeOther}
-                    onChange={(event) => setIncidentTimeOther(event.target.value)}
-                    placeholder={t('claimProcess.timeOtherPlaceholder')}
-                    className="claim-process-input"
-                    style={{ flex: '1 1 240px' }}
-                  />
-                  <Button onClick={handleTimeOtherConfirm} style={{ padding: '0.6rem 1.5rem' }}>
-                    {t('claimProcess.confirmTime')}
-                  </Button>
-                </div>
-              )}
+                    {step === 'locationChoice' && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+                        <Button onClick={() => handleLocationChoice('current')} style={{ padding: '0.6rem 1.3rem' }}>
+                          {t('claimProcess.locationCurrent')}
+                        </Button>
+                        <Button variant="secondary" onClick={() => handleLocationChoice('other')} style={{ padding: '0.6rem 1.3rem' }}>
+                          {t('claimProcess.locationOther')}
+                        </Button>
+                      </div>
+                    )}
 
-              {step === 'locationChoice' && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                  <Button onClick={() => handleLocationChoice('current')} style={{ padding: '0.6rem 1.3rem' }}>
-                    {t('claimProcess.locationCurrent')}
-                  </Button>
-                  <Button variant="secondary" onClick={() => handleLocationChoice('other')} style={{ padding: '0.6rem 1.3rem' }}>
-                    {t('claimProcess.locationOther')}
-                  </Button>
-                </div>
-              )}
+                    {step === 'address' && (
+                      <div
+                        style={{
+                          marginTop: '0.5rem',
+                          display: 'grid',
+                          gap: '0.75rem',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
+                        }}
+                      >
+                        {[
+                          { label: t('claimProcess.street'), value: street, onChange: setStreet },
+                          { label: t('claimProcess.houseNumber'), value: houseNumber, onChange: setHouseNumber },
+                          { label: t('claimProcess.postalCode'), value: postalCode, onChange: setPostalCode },
+                          { label: t('claimProcess.city'), value: city, onChange: setCity }
+                        ].map((field) => (
+                          <div
+                            key={field.label}
+                            style={{
+                              borderRadius: '16px',
+                              border: '1px solid rgba(255,255,255,0.2)',
+                              background: 'rgba(255,255,255,0.2)',
+                              padding: '0.65rem'
+                            }}
+                          >
+                            <span style={{ color: 'rgba(8,0,40,0.65)', fontSize: '0.75rem' }}>{field.label}</span>
+                            <input
+                              value={field.value}
+                              onChange={(event) => field.onChange(event.target.value)}
+                              placeholder={field.label}
+                              className="claim-process-input"
+                              style={{ width: '100%', marginTop: '0.35rem' }}
+                            />
+                          </div>
+                        ))}
+                        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
+                          <Button onClick={handleConfirmAddress} style={{ padding: '0.55rem 1.4rem' }}>
+                            {t('claimProcess.confirmAddress')}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
 
-              {step === 'address' && (
-                <div
-                  style={{
-                    marginTop: '1rem',
-                    display: 'grid',
-                    gap: '0.75rem',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
-                  }}
-                >
-                  {[ 
-                    { label: t('claimProcess.street'), value: street, onChange: setStreet },
-                    { label: t('claimProcess.houseNumber'), value: houseNumber, onChange: setHouseNumber },
-                    { label: t('claimProcess.postalCode'), value: postalCode, onChange: setPostalCode },
-                    { label: t('claimProcess.city'), value: city, onChange: setCity }
-                  ].map((field) => (
-                    <div
-                      key={field.label}
-                      style={{
-                        borderRadius: '16px',
-                        border: '1px solid rgba(255,255,255,0.2)',
-                        background: 'rgba(255,255,255,0.2)',
-                        padding: '0.65rem'
-                      }}
-                    >
-                      <span style={{ color: 'rgba(8,0,40,0.65)', fontSize: '0.75rem' }}>{field.label}</span>
-                      <input
-                        value={field.value}
-                        onChange={(event) => field.onChange(event.target.value)}
-                        placeholder={field.label}
-                        className="claim-process-input"
-                        style={{ width: '100%', marginTop: '0.35rem' }}
-                      />
-                    </div>
-                  ))}
-                  <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
-                    <Button onClick={handleConfirmAddress} style={{ padding: '0.55rem 1.4rem' }}>
-                      {t('claimProcess.confirmAddress')}
-                    </Button>
+                    {step === 'photos' && (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+                        <label
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.5rem',
+                            background: '#d4380d',
+                            color: '#fff',
+                            padding: '0.6rem 1.2rem',
+                            borderRadius: '999px',
+                            cursor: 'pointer',
+                            fontWeight: 700
+                          }}
+                        >
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handlePhotoSelect}
+                            style={{ display: 'none' }}
+                          />
+                          {t('claimProcess.upload')}
+                        </label>
+                        <span style={{ color: 'rgba(8,0,40,0.6)' }}>{uploadLabel}</span>
+                        <Button
+                          variant="secondary"
+                          onClick={handlePhotoSkip}
+                          style={{ padding: '0.55rem 1.1rem', background: '#ffffffd9' }}
+                        >
+                          {t('claimProcess.skipPhotos')}
+                        </Button>
+                      </div>
+                    )}
+
+                    {step === 'description' && (
+                      <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                        <input
+                          value={draft}
+                          onChange={(event) => setDraft(event.target.value)}
+                          placeholder={t('claimProcess.inputPlaceholder')}
+                          className="claim-process-input"
+                          style={{ flex: '1 1 240px' }}
+                        />
+                        <Button onClick={handleSend} style={{ padding: '0.6rem 1.5rem' }}>
+                          {t('claimProcess.send')}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
-
-              {step === 'photos' && (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                  <label
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      background: '#d4380d',
-                      color: '#fff',
-                      padding: '0.6rem 1.2rem',
-                      borderRadius: '999px',
-                      cursor: 'pointer',
-                      fontWeight: 700
-                    }}
-                  >
-                    <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={handlePhotoSelect}
-                      style={{ display: 'none' }}
-                    />
-                    {t('claimProcess.upload')}
-                  </label>
-                  <span style={{ color: 'rgba(255,255,255,0.8)' }}>{uploadLabel}</span>
-                  <Button
-                    variant="secondary"
-                    onClick={handlePhotoSkip}
-                    style={{ padding: '0.55rem 1.1rem', background: '#ffffffd9' }}
-                  >
-                    {t('claimProcess.skipPhotos')}
-                  </Button>
-                </div>
-              )}
-
-              {step === 'description' && (
-                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-                  <input
-                    value={draft}
-                    onChange={(event) => setDraft(event.target.value)}
-                    placeholder={t('claimProcess.inputPlaceholder')}
-                    className="claim-process-input"
-                    style={{ flex: '1 1 240px' }}
-                  />
-                  <Button onClick={handleSend} style={{ padding: '0.6rem 1.5rem' }}>
-                    {t('claimProcess.send')}
-                  </Button>
-                </div>
-              )}
+              </div>
             </Card>
 
             <Card variant="glass" style={{ padding: '1.5rem', color: '#ffffff' }}>
