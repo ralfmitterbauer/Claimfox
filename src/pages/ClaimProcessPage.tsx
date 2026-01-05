@@ -87,6 +87,21 @@ const layoutStyles = `
       grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.9fr);
     }
   }
+  @media (max-width: 720px) {
+    .claim-process-page {
+      padding: calc(var(--header-height) + 20px) 0.9rem 2.5rem;
+    }
+    .claim-process-chat-surface {
+      padding: 1.1rem;
+    }
+    .claim-process-messages {
+      min-height: 280px;
+      padding: 1rem;
+    }
+    .claim-process-chat-header strong {
+      font-size: 1rem;
+    }
+  }
 `
 
 export default function ClaimProcessPage() {
@@ -297,6 +312,7 @@ export default function ClaimProcessPage() {
     <>
       <style>{layoutStyles}</style>
       <section
+        className="claim-process-page"
         style={{
           minHeight: '100vh',
           width: '100%',
