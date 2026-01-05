@@ -71,7 +71,14 @@ const previewKpis = [
   { key: 'ai', value: '14' }
 ] as const
 
-const previewBars = [60, 90, 75, 88, 70, 95]
+const previewSeries = [
+  { week: 'KW 18', value: 6420 },
+  { week: 'KW 19', value: 7120 },
+  { week: 'KW 20', value: 5840 },
+  { week: 'KW 21', value: 8030 },
+  { week: 'KW 22', value: 6910 },
+  { week: 'KW 23', value: 8670 }
+] as const
 
 const gridStyles = `
   .claim-manager-feature-grid {
@@ -94,16 +101,18 @@ const gridStyles = `
 export default function ClaimManagerMarketingPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
-  const chartMax = Math.max(...previewBars)
+  const chartMax = Math.max(...previewSeries.map((item) => item.value))
+  const chartMin = Math.min(...previewSeries.map((item) => item.value))
   const chartWidth = 320
   const chartHeight = 180
   const chartPadding = { top: 12, right: 12, bottom: 36, left: 28 }
   const chartInnerHeight = chartHeight - chartPadding.top - chartPadding.bottom
   const chartInnerWidth = chartWidth - chartPadding.left - chartPadding.right
-  const chartPoints = previewBars.map((value, index) => {
-    const x = chartPadding.left + (chartInnerWidth / (previewBars.length - 1)) * index
-    const y = chartPadding.top + (1 - value / chartMax) * chartInnerHeight
-    return { x, y }
+  const chartPoints = previewSeries.map((item, index) => {
+    const x = chartPadding.left + (chartInnerWidth / (previewSeries.length - 1)) * index
+    const normalized = chartMax === chartMin ? 0.5 : (item.value - chartMin) / (chartMax - chartMin)
+    const y = chartPadding.top + (1 - normalized) * chartInnerHeight
+    return { x, y, value: item.value }
   })
   const chartLinePath = chartPoints
     .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x},${point.y}`)
@@ -259,10 +268,22 @@ export default function ClaimManagerMarketingPage() {
                         strokeWidth="2"
                       />
                     ))}
+                    {chartPoints.map((point) => (
+                      <text
+                        key={`label-${point.x}`}
+                        x={point.x}
+                        y={Math.max(chartPadding.top + 12, point.y - 8)}
+                        textAnchor="middle"
+                        fontSize="10"
+                        fill="rgba(255,255,255,0.7)"
+                      >
+                        {`€${point.value.toLocaleString('de-DE')}`}
+                      </text>
+                    ))}
                   </svg>
                   <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
-                    {previewBars.map((_, index) => (
-                      <span key={index}>{`KW ${18 + index}`}</span>
+                    {previewSeries.map((item) => (
+                      <span key={item.week}>{item.week}</span>
                     ))}
                   </div>
                 </div>
