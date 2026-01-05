@@ -94,6 +94,21 @@ const gridStyles = `
 export default function ClaimManagerMarketingPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
+  const chartMax = Math.max(...previewBars)
+  const chartWidth = 320
+  const chartHeight = 180
+  const chartPadding = { top: 12, right: 12, bottom: 36, left: 28 }
+  const chartInnerHeight = chartHeight - chartPadding.top - chartPadding.bottom
+  const chartInnerWidth = chartWidth - chartPadding.left - chartPadding.right
+  const chartPoints = previewBars.map((value, index) => {
+    const x = chartPadding.left + (chartInnerWidth / (previewBars.length - 1)) * index
+    const y = chartPadding.top + (1 - value / chartMax) * chartInnerHeight
+    return { x, y }
+  })
+  const chartLinePath = chartPoints
+    .map((point, index) => `${index === 0 ? 'M' : 'L'}${point.x},${point.y}`)
+    .join(' ')
+  const chartAreaPath = `${chartLinePath} L ${chartPadding.left + chartInnerWidth},${chartPadding.top + chartInnerHeight} L ${chartPadding.left},${chartPadding.top + chartInnerHeight} Z`
 
   return (
     <>
@@ -208,20 +223,48 @@ export default function ClaimManagerMarketingPage() {
                 }}
               >
                 <p style={{ margin: '0 0 1rem', fontWeight: 600 }}>{t('claimManager.marketing.preview.chartTitle')}</p>
-                <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end', height: '180px' }}>
-                  {previewBars.map((value, index) => (
-                    <div key={value + index} style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-                      <div
-                        style={{
-                          width: '100%',
-                          height: `${value}%`,
-                          borderRadius: '12px',
-                          background: 'linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.15))',
-                          boxShadow: '0 10px 25px rgba(0,0,0,0.35)'
-                        }}
+                <div style={{ width: '100%', display: 'grid', gap: '0.5rem' }}>
+                  <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} style={{ width: '100%', height: '180px' }}>
+                    <defs>
+                      <linearGradient id="costLine" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="rgba(211,242,97,0.95)" />
+                        <stop offset="100%" stopColor="rgba(211,242,97,0.1)" />
+                      </linearGradient>
+                      <linearGradient id="costArea" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="rgba(211,242,97,0.35)" />
+                        <stop offset="100%" stopColor="rgba(211,242,97,0)" />
+                      </linearGradient>
+                    </defs>
+                    {[0.25, 0.5, 0.75, 1].map((ratio) => (
+                      <line
+                        key={ratio}
+                        x1={chartPadding.left}
+                        x2={chartPadding.left + chartInnerWidth}
+                        y1={chartPadding.top + chartInnerHeight * ratio}
+                        y2={chartPadding.top + chartInnerHeight * ratio}
+                        stroke="rgba(255,255,255,0.12)"
+                        strokeDasharray="4 6"
                       />
-                    </div>
-                  ))}
+                    ))}
+                    <path d={chartAreaPath} fill="url(#costArea)" />
+                    <path d={chartLinePath} fill="none" stroke="url(#costLine)" strokeWidth="3" />
+                    {chartPoints.map((point, index) => (
+                      <circle
+                        key={`${point.x}-${point.y}`}
+                        cx={point.x}
+                        cy={point.y}
+                        r="4"
+                        fill="rgba(211,242,97,0.95)"
+                        stroke="rgba(8,16,64,0.9)"
+                        strokeWidth="2"
+                      />
+                    ))}
+                  </svg>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                    {previewBars.map((_, index) => (
+                      <span key={index}>{`KW ${18 + index}`}</span>
+                    ))}
+                  </div>
                 </div>
                 <p style={{ margin: '1rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
                   {t('claimManager.marketing.preview.notes')}
