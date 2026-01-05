@@ -173,7 +173,11 @@ export default function ClaimProcessPage() {
       photoCount: mediaItems.length,
       mediaItems
     }
-    window.localStorage.setItem('claimfox_claim_assistant', JSON.stringify(payload))
+    try {
+      window.localStorage.setItem('claimfox_claim_assistant', JSON.stringify(payload))
+    } catch {
+      // Ignore storage errors (e.g., quota or blocked storage) to keep the UI responsive.
+    }
   }, [addressValue, claimNumber, description, incidentTime, mediaItems])
 
   function getTimeStamp() {
@@ -618,7 +622,10 @@ export default function ClaimProcessPage() {
                     { label: t('claimProcess.postalCode'), value: postalCode },
                     { label: t('claimProcess.city'), value: city },
                     { label: t('claimProcess.infoIncidentTime'), value: incidentTime },
-                    { label: t('claimProcess.infoPhotos'), value: photoStatus || (files.length ? t('claimProcess.uploadCount', { count: files.length }) : '') },
+                    {
+                      label: t('claimProcess.infoPhotos'),
+                      value: photoStatus || (mediaItems.length ? t('claimProcess.uploadCount', { count: mediaItems.length }) : '')
+                    },
                     { label: t('claimProcess.infoDescription'), value: description },
                     { label: t('claimProcess.infoDate'), value: dateLabel },
                     { label: t('claimProcess.infoTime'), value: timeLabel },
