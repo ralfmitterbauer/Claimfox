@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
@@ -61,6 +61,8 @@ const layoutStyles = `
     flex-direction: column;
     gap: 0.75rem;
     min-height: 360px;
+    max-height: 460px;
+    overflow-y: auto;
     border: 1px solid rgba(8,0,40,0.06);
   }
   .claim-process-bubble {
@@ -97,6 +99,7 @@ const layoutStyles = `
     .claim-process-messages {
       min-height: 280px;
       padding: 1rem;
+      max-height: 360px;
     }
     .claim-process-chat-header strong {
       font-size: 1rem;
@@ -153,6 +156,7 @@ export default function ClaimProcessPage() {
     files.length === 0
       ? t('claimProcess.uploadEmpty')
       : t('claimProcess.uploadCount', { count: files.length })
+  const messagesRef = useRef<HTMLDivElement | null>(null)
 
   function getTimeStamp() {
     return new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
@@ -169,6 +173,15 @@ export default function ClaimProcessPage() {
       }
     ])
   }
+
+  useEffect(() => {
+    const node = messagesRef.current
+    if (!node) return
+    const id = requestAnimationFrame(() => {
+      node.scrollTop = node.scrollHeight
+    })
+    return () => cancelAnimationFrame(id)
+  }, [messages, step])
 
   function handleSend() {
     const trimmed = draft.trim()
@@ -346,7 +359,7 @@ export default function ClaimProcessPage() {
                     </div>
                     <div className="claim-process-pill">{t('claimProcess.chatStatus')}</div>
                   </div>
-                  <div className="claim-process-messages">
+                  <div ref={messagesRef} className="claim-process-messages">
                     {messages.map((message) => {
                       const isUser = message.author === 'user'
                       return (
