@@ -441,7 +441,7 @@ export const translations: Record<Lang, TranslationTree> = {
       subtitle: 'Wähle eine Rolle aus, um die Demo weiterzuführen. Alle Inhalte sind statisch und dienen nur der Illustration.',
       logout: 'Logout',
       view: 'Ansehen',
-      startJourney: 'Journey starten',
+      startJourney: 'Starten',
       registrationCardTitle: 'Registrierung',
       registrationCardSubtitle: 'Starte die neue, KI-gestützte Journey und melde Partner oder Kund:innen komfortabel an.',
       brokerPortal: 'Maklerportal',
