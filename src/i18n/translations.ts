@@ -25,17 +25,24 @@ type TranslationTree = {
     brokerPortal: string
     cards: Record<string, { title: string; description: string }>
   }
-  claimProcess: {
-    title: string
-    subtitle: string
-    chatTitle: string
-    chatSubtitle: string
-    chatStatus: string
-    intro: string
-    timeStampMessage: string
-    askLocation: string
-    askDescription: string
-    locationButton: string
+    claimProcess: {
+      title: string
+      subtitle: string
+      chatTitle: string
+      chatSubtitle: string
+      chatStatus: string
+      intro: string
+      timeStampMessage: string
+      askLocation: string
+      askAddressConfirm: string
+      addressConfirmed: string
+      confirmAddress: string
+      askPhotos: string
+      photosUploaded: string
+      photosSkipped: string
+      skipPhotos: string
+      askDescription: string
+      locationButton: string
     locationPending: string
     locationPendingShort: string
     locationGranted: string
@@ -51,19 +58,22 @@ type TranslationTree = {
     houseNumber: string
     postalCode: string
     city: string
-    upload: string
-    uploadEmpty: string
-    uploadCount: string
+      upload: string
+      uploadEmpty: string
+      uploadCount: string
+      valuePending: string
     infoTitle: string
     infoSubtitle: string
     infoLocation: string
-    infoDate: string
-    infoTime: string
-    infoClaimNumber: string
-    infoStatus: string
-    statusOpen: string
-    demoHint: string
-  }
+      infoDate: string
+      infoTime: string
+      infoClaimNumber: string
+      infoPhotos: string
+      infoDescription: string
+      infoStatus: string
+      statusOpen: string
+      demoHint: string
+    }
   marketing: {
     title: string
     subtitle: string
@@ -524,21 +534,28 @@ export const translations: Record<Lang, TranslationTree> = {
       chatTitle: 'Schadenaufnahme Assistent',
       chatSubtitle: 'Sichere Session mit Protokollierung und Zeitstempel.',
       chatStatus: 'Live',
-      intro: 'Willkommen im Schadenmanagement. Ich begleite dich Schritt für Schritt.',
-      timeStampMessage: 'Schaden gemeldet am {{date}} um {{time}}.',
-      askLocation: 'Darf ich deinen Standort verwenden, um den Schadenort automatisch zu erfassen?',
-      askDescription: 'Beschreibe kurz, was passiert ist.',
+      intro: 'Guten Tag, hier ist Ihre Schadenbearbeitung. Ich begleite Sie strukturiert durch die Meldung.',
+      timeStampMessage: 'Zeitstempel gesetzt: {{date}} · {{time}}.',
+      askLocation: 'Darf ich Ihren Standort verwenden, um die Schadenadresse vorzubelegen?',
+      askAddressConfirm: 'Bitte prüfen Sie die Adresse und bestätigen Sie sie.',
+      addressConfirmed: 'Adresse bestätigt. Vielen Dank.',
+      confirmAddress: 'Adresse bestätigen',
+      askPhotos: 'Bitte laden Sie relevante Fotos zum Schaden hoch.',
+      photosUploaded: '{{count}} Foto(s) hochgeladen.',
+      photosSkipped: 'Keine Fotos übermittelt.',
+      skipPhotos: 'Ohne Fotos fortfahren',
+      askDescription: 'Beschreiben Sie kurz den Schadenhergang.',
       locationButton: 'Standort freigeben',
       locationPending: 'Standort wird abgefragt …',
       locationPendingShort: 'Wird ermittelt …',
       locationGranted: 'Standort erfasst: {{address}}',
       locationDenied: 'Standort nicht verfügbar – bitte Adresse manuell ergänzen.',
       locationUnknown: 'Nicht erfasst',
-      nextPrompt: 'Beschreibe kurz den Schaden und lade optional Fotos hoch.',
-      botAck: 'Danke! Die Notiz ist in der Schadenakte gespeichert.',
-      claimNumberMessage: 'Versicherungsfall eröffnet. Schadennummer: {{claimNumber}}.',
-      inputPlaceholder: 'Kurze Beschreibung eingeben …',
-      send: 'Senden',
+      nextPrompt: 'Wir starten mit der Standortabfrage.',
+      botAck: 'Vielen Dank. Ihre Angaben wurden protokolliert.',
+      claimNumberMessage: 'Schadenmeldung abgeschlossen. Ihre Schadennummer: {{claimNumber}}.',
+      inputPlaceholder: 'Kurzbeschreibung des Schadens …',
+      send: 'Absenden',
       back: 'Zurück',
       street: 'Straße',
       houseNumber: 'Hausnummer',
@@ -547,12 +564,15 @@ export const translations: Record<Lang, TranslationTree> = {
       upload: 'Bilder hochladen',
       uploadEmpty: 'Keine Bilder ausgewählt',
       uploadCount: '{{count}} Bild(er) ausgewählt',
+      valuePending: 'Ausstehend',
       infoTitle: 'Live-Check',
       infoSubtitle: 'Automatisch generierte Eckdaten für die Schadenakte.',
       infoLocation: 'Standort',
       infoDate: 'Datum',
       infoTime: 'Uhrzeit',
       infoClaimNumber: 'Schadennummer',
+      infoPhotos: 'Fotos',
+      infoDescription: 'Schadenhergang',
       infoStatus: 'Status',
       statusOpen: 'Offen',
       demoHint: 'Zeitstempel und Standort werden direkt dem Schadenticket zugeordnet.'
@@ -1695,9 +1715,16 @@ export const translations: Record<Lang, TranslationTree> = {
       chatTitle: 'Claims Intake Assistant',
       chatSubtitle: 'Secure session with audit trail and timestamps.',
       chatStatus: 'Live',
-      intro: 'Welcome to the claims process. I will guide you step by step.',
-      timeStampMessage: 'Claim recorded on {{date}} at {{time}}.',
-      askLocation: 'May I use your location to capture the incident site automatically?',
+      intro: 'Good day. I will guide you through your claim in a structured way.',
+      timeStampMessage: 'Timestamp logged: {{date}} · {{time}}.',
+      askLocation: 'May I use your location to prefill the incident address?',
+      askAddressConfirm: 'Please review the address and confirm.',
+      addressConfirmed: 'Address confirmed. Thank you.',
+      confirmAddress: 'Confirm address',
+      askPhotos: 'Please upload relevant photos of the damage.',
+      photosUploaded: '{{count}} photo(s) uploaded.',
+      photosSkipped: 'No photos provided.',
+      skipPhotos: 'Continue without photos',
       askDescription: 'Briefly describe what happened.',
       locationButton: 'Share location',
       locationPending: 'Requesting location …',
@@ -1705,11 +1732,11 @@ export const translations: Record<Lang, TranslationTree> = {
       locationGranted: 'Location captured: {{address}}',
       locationDenied: 'Location unavailable — please add the address manually.',
       locationUnknown: 'Not captured',
-      nextPrompt: 'Briefly describe the incident and upload photos if available.',
-      botAck: 'Thanks! Your note is stored in the claim file.',
-      claimNumberMessage: 'Insurance case created. Claim number: {{claimNumber}}.',
-      inputPlaceholder: 'Enter a short description …',
-      send: 'Send',
+      nextPrompt: 'We will start with the location check.',
+      botAck: 'Thank you. Your input has been recorded.',
+      claimNumberMessage: 'Claim completed. Your claim number: {{claimNumber}}.',
+      inputPlaceholder: 'Short incident description …',
+      send: 'Submit',
       back: 'Back',
       street: 'Street',
       houseNumber: 'House number',
@@ -1718,12 +1745,15 @@ export const translations: Record<Lang, TranslationTree> = {
       upload: 'Upload photos',
       uploadEmpty: 'No photos selected',
       uploadCount: '{{count}} photo(s) selected',
+      valuePending: 'Pending',
       infoTitle: 'Live check',
       infoSubtitle: 'Auto-generated data points for the claim file.',
       infoLocation: 'Location',
       infoDate: 'Date',
       infoTime: 'Time',
       infoClaimNumber: 'Claim number',
+      infoPhotos: 'Photos',
+      infoDescription: 'Incident summary',
       infoStatus: 'Status',
       statusOpen: 'Open',
       demoHint: 'Timestamp and location are attached to the claim ticket.'

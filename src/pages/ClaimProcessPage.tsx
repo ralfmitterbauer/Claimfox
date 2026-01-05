@@ -121,24 +121,19 @@ export default function ClaimProcessPage() {
       author: 'bot',
       text: t('claimProcess.askLocation'),
       time: timeLabel
-    },
-    {
-      id: `m-${messageId.current++}`,
-      author: 'bot',
-      text: t('claimProcess.askDescription'),
-      time: timeLabel
     }
   ])
   const [draft, setDraft] = useState('')
+  const [description, setDescription] = useState('')
   const [locationState, setLocationState] = useState<'idle' | 'pending' | 'granted' | 'denied'>('idle')
   const [street, setStreet] = useState('')
   const [houseNumber, setHouseNumber] = useState('')
   const [postalCode, setPostalCode] = useState('')
   const [city, setCity] = useState('')
   const [coords, setCoords] = useState<string | null>(null)
-  const [claimNumber] = useState(() => `DE-${Math.floor(100000 + Math.random() * 900000)}`)
+  const [claimNumber, setClaimNumber] = useState<string | null>(null)
   const [files, setFiles] = useState<File[]>([])
-  const [addressConfirmed, setAddressConfirmed] = useState(false)
+  const [step, setStep] = useState<'location' | 'address' | 'photos' | 'description' | 'done'>('location')
 
   const uploadLabel =
     files.length === 0
@@ -165,9 +160,13 @@ export default function ClaimProcessPage() {
     const trimmed = draft.trim()
     if (!trimmed) return
     appendMessage('user', trimmed)
+    setDescription(trimmed)
     setDraft('')
     appendMessage('bot', t('claimProcess.botAck'))
-    appendMessage('bot', t('claimProcess.claimNumberMessage', { claimNumber }))
+    const generatedClaimNumber = `DE-${Math.floor(100000 + Math.random() * 900000)}`
+    setClaimNumber(generatedClaimNumber)
+    appendMessage('bot', t('claimProcess.claimNumberMessage', { claimNumber: generatedClaimNumber }))
+    setStep('done')
   }
 
   async function resolveAddress(lat: number, lon: number) {
@@ -214,18 +213,48 @@ export default function ClaimProcessPage() {
             const resolvedLabel = [streetLine, cityLine].filter(Boolean).join(', ')
             appendMessage('bot', t('claimProcess.locationGranted', { address: resolvedLabel || coordsText }))
             setLocationState('granted')
+            setStep('address')
+            appendMessage('bot', t('claimProcess.askAddressConfirm'))
           })
           .catch(() => {
             setLocationState('denied')
             appendMessage('bot', t('claimProcess.locationDenied'))
+            setStep('address')
+            appendMessage('bot', t('claimProcess.askAddressConfirm'))
           })
       },
       () => {
         setLocationState('denied')
         appendMessage('bot', t('claimProcess.locationDenied'))
+        setStep('address')
+        appendMessage('bot', t('claimProcess.askAddressConfirm'))
       },
       { enableHighAccuracy: true, timeout: 8000 }
     )
+  }
+
+  function handleConfirmAddress() {
+    setStep('photos')
+    appendMessage('bot', t('claimProcess.addressConfirmed'))
+    appendMessage('bot', t('claimProcess.askPhotos'))
+  }
+
+  function handlePhotoSelect(event: React.ChangeEvent<HTMLInputElement>) {
+    const selected = Array.from(event.target.files ?? [])
+    setFiles(selected)
+    if (selected.length > 0) {
+      appendMessage('user', t('claimProcess.photosUploaded', { count: selected.length }))
+    } else {
+      appendMessage('user', t('claimProcess.photosSkipped'))
+    }
+    setStep('description')
+    appendMessage('bot', t('claimProcess.askDescription'))
+  }
+
+  function handlePhotoSkip() {
+    appendMessage('user', t('claimProcess.photosSkipped'))
+    setStep('description')
+    appendMessage('bot', t('claimProcess.askDescription'))
   }
 
   return (
@@ -309,7 +338,7 @@ export default function ClaimProcessPage() {
                 </div>
               </div>
 
-              {locationState === 'idle' && (
+              {step === 'location' && locationState === 'idle' && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
                   <Button onClick={handleLocationRequest} style={{ padding: '0.6rem 1.3rem' }}>
                     {t('claimProcess.locationButton')}
@@ -318,44 +347,97 @@ export default function ClaimProcessPage() {
                 </div>
               )}
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                <label
+              {step === 'address' && (
+                <div
                   style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.5rem',
-                    background: '#d4380d',
-                    color: '#fff',
-                    padding: '0.6rem 1.2rem',
-                    borderRadius: '999px',
-                    cursor: 'pointer',
-                    fontWeight: 700
+                    marginTop: '1rem',
+                    display: 'grid',
+                    gap: '0.75rem',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
                   }}
                 >
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
-                    style={{ display: 'none' }}
-                  />
-                  {t('claimProcess.upload')}
-                </label>
-                <span style={{ color: 'rgba(255,255,255,0.8)' }}>{uploadLabel}</span>
-              </div>
+                  {[ 
+                    { label: t('claimProcess.street'), value: street, onChange: setStreet },
+                    { label: t('claimProcess.houseNumber'), value: houseNumber, onChange: setHouseNumber },
+                    { label: t('claimProcess.postalCode'), value: postalCode, onChange: setPostalCode },
+                    { label: t('claimProcess.city'), value: city, onChange: setCity }
+                  ].map((field) => (
+                    <div
+                      key={field.label}
+                      style={{
+                        borderRadius: '16px',
+                        border: '1px solid rgba(255,255,255,0.2)',
+                        background: 'rgba(255,255,255,0.2)',
+                        padding: '0.65rem'
+                      }}
+                    >
+                      <span style={{ color: 'rgba(8,0,40,0.65)', fontSize: '0.75rem' }}>{field.label}</span>
+                      <input
+                        value={field.value}
+                        onChange={(event) => field.onChange(event.target.value)}
+                        placeholder={field.label}
+                        className="claim-process-input"
+                        style={{ width: '100%', marginTop: '0.35rem' }}
+                      />
+                    </div>
+                  ))}
+                  <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
+                    <Button onClick={handleConfirmAddress} style={{ padding: '0.55rem 1.4rem' }}>
+                      {t('claimProcess.confirmAddress')}
+                    </Button>
+                  </div>
+                </div>
+              )}
 
-              <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-                <input
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  placeholder={t('claimProcess.inputPlaceholder')}
-                  className="claim-process-input"
-                  style={{ flex: '1 1 240px' }}
-                />
-                <Button onClick={handleSend} style={{ padding: '0.6rem 1.5rem' }}>
-                  {t('claimProcess.send')}
-                </Button>
-              </div>
+              {step === 'photos' && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
+                  <label
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      background: '#d4380d',
+                      color: '#fff',
+                      padding: '0.6rem 1.2rem',
+                      borderRadius: '999px',
+                      cursor: 'pointer',
+                      fontWeight: 700
+                    }}
+                  >
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handlePhotoSelect}
+                      style={{ display: 'none' }}
+                    />
+                    {t('claimProcess.upload')}
+                  </label>
+                  <span style={{ color: 'rgba(255,255,255,0.8)' }}>{uploadLabel}</span>
+                  <Button
+                    variant="secondary"
+                    onClick={handlePhotoSkip}
+                    style={{ padding: '0.55rem 1.1rem', background: '#ffffffd9' }}
+                  >
+                    {t('claimProcess.skipPhotos')}
+                  </Button>
+                </div>
+              )}
+
+              {step === 'description' && (
+                <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1rem' }}>
+                  <input
+                    value={draft}
+                    onChange={(event) => setDraft(event.target.value)}
+                    placeholder={t('claimProcess.inputPlaceholder')}
+                    className="claim-process-input"
+                    style={{ flex: '1 1 240px' }}
+                  />
+                  <Button onClick={handleSend} style={{ padding: '0.6rem 1.5rem' }}>
+                    {t('claimProcess.send')}
+                  </Button>
+                </div>
+              )}
             </Card>
 
             <Card variant="glass" style={{ padding: '1.5rem', color: '#ffffff' }}>
@@ -368,55 +450,43 @@ export default function ClaimProcessPage() {
                 </div>
 
                 <div style={{ display: 'grid', gap: '0.75rem' }}>
-                  {!addressConfirmed && (
-                    <>
+                  <div
+                    style={{
+                      display: 'grid',
+                      gap: '0.75rem',
+                      gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
+                    }}
+                  >
+                    {[ 
+                      { label: t('claimProcess.street'), value: street },
+                      { label: t('claimProcess.houseNumber'), value: houseNumber },
+                      { label: t('claimProcess.postalCode'), value: postalCode },
+                      { label: t('claimProcess.city'), value: city }
+                    ].map((field) => (
                       <div
+                        key={field.label}
                         style={{
-                          display: 'grid',
-                          gap: '0.75rem',
-                          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
+                          borderRadius: '16px',
+                          border: '1px solid rgba(255,255,255,0.25)',
+                          background: 'rgba(255,255,255,0.08)',
+                          padding: '0.65rem'
                         }}
                       >
-                        {[ 
-                          { label: t('claimProcess.street'), value: street, onChange: setStreet },
-                          { label: t('claimProcess.houseNumber'), value: houseNumber, onChange: setHouseNumber },
-                          { label: t('claimProcess.postalCode'), value: postalCode, onChange: setPostalCode },
-                          { label: t('claimProcess.city'), value: city, onChange: setCity }
-                        ].map((field) => (
-                          <div
-                            key={field.label}
-                            style={{
-                              borderRadius: '16px',
-                              border: '1px solid rgba(255,255,255,0.25)',
-                              background: 'rgba(255,255,255,0.08)',
-                              padding: '0.65rem'
-                            }}
-                          >
-                            <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem' }}>{field.label}</span>
-                            <input
-                              value={field.value}
-                              onChange={(event) => field.onChange(event.target.value)}
-                              placeholder={field.label}
-                              style={{
-                                width: '100%',
-                                marginTop: '0.35rem',
-                                borderRadius: '12px',
-                                border: '1px solid rgba(255,255,255,0.35)',
-                                padding: '0.45rem 0.6rem',
-                                background: 'rgba(255,255,255,0.9)',
-                                color: '#0e0d1c'
-                              }}
-                            />
-                          </div>
-                        ))}
+                        <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem' }}>{field.label}</span>
+                        <div style={{ marginTop: '0.35rem', fontWeight: 600 }}>
+                          {field.value || t('claimProcess.valuePending')}
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button onClick={() => setAddressConfirmed(true)} style={{ padding: '0.55rem 1.4rem' }}>
-                          {t('claimProcess.send')}
-                        </Button>
-                      </div>
-                    </>
-                  )}
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
+                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoPhotos')}</span>
+                    <strong>{files.length ? t('claimProcess.uploadCount', { count: files.length }) : t('claimProcess.valuePending')}</strong>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
+                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoDescription')}</span>
+                    <strong>{description || t('claimProcess.valuePending')}</strong>
+                  </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
                     <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoDate')}</span>
                     <strong>{dateLabel}</strong>
@@ -427,7 +497,7 @@ export default function ClaimProcessPage() {
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
                     <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoClaimNumber')}</span>
-                    <strong>{claimNumber}</strong>
+                    <strong>{claimNumber ?? t('claimProcess.valuePending')}</strong>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
                     <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoStatus')}</span>
