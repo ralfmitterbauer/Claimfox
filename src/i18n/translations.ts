@@ -1161,6 +1161,8 @@ export const translations: Record<Lang, TranslationTree> = {
           damage: {
             title: 'Schadenbilder & KI-Bewertung',
             modalTitle: 'Schadenbild',
+            prev: 'Zurück',
+            next: 'Weiter',
             riskBadges: {
               low: '🟢 Geringes Risiko',
               medium: '🟠 Mittleres Risiko',
@@ -2352,6 +2354,8 @@ export const translations: Record<Lang, TranslationTree> = {
           damage: {
             title: 'Damage imagery & AI review',
             modalTitle: 'Damage photo',
+            prev: 'Prev',
+            next: 'Next',
             riskBadges: {
               low: '🟢 Low risk',
               medium: '🟠 Medium risk',

@@ -144,7 +144,7 @@ export default function ClaimProcessPage() {
   const [city, setCity] = useState('')
   const [coords, setCoords] = useState<string | null>(null)
   const [claimNumber, setClaimNumber] = useState<string | null>(null)
-  const [files, setFiles] = useState<File[]>([])
+  const [mediaItems, setMediaItems] = useState<Array<{ type: 'image' | 'video'; src: string }>>([])
   const [photoStatus, setPhotoStatus] = useState('')
   const [step, setStep] = useState<
     'timeChoice' | 'timeOther' | 'locationChoice' | 'location' | 'address' | 'photos' | 'description' | 'done'
@@ -153,9 +153,9 @@ export default function ClaimProcessPage() {
   const [incidentTimeOther, setIncidentTimeOther] = useState('')
 
   const uploadLabel =
-    files.length === 0
+    mediaItems.length === 0
       ? t('claimProcess.uploadEmpty')
-      : t('claimProcess.uploadCount', { count: files.length })
+      : t('claimProcess.uploadCount', { count: mediaItems.length })
   const messagesRef = useRef<HTMLDivElement | null>(null)
   const addressValue = useMemo(() => {
     const streetLine = [street, houseNumber].filter(Boolean).join(' ')
@@ -170,10 +170,11 @@ export default function ClaimProcessPage() {
       incidentTime: incidentTime || undefined,
       address: addressValue || undefined,
       description: description || undefined,
-      photoCount: files.length
+      photoCount: mediaItems.length,
+      mediaItems
     }
     window.localStorage.setItem('claimfox_claim_assistant', JSON.stringify(payload))
-  }, [addressValue, claimNumber, description, files.length, incidentTime])
+  }, [addressValue, claimNumber, description, incidentTime, mediaItems])
 
   function getTimeStamp() {
     return new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
@@ -315,22 +316,48 @@ export default function ClaimProcessPage() {
     appendMessage('bot', t('claimProcess.askAddressConfirm'))
   }
 
+  function readMedia(file: File) {
+    return new Promise<{ type: 'image' | 'video'; src: string }>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const src = typeof reader.result === 'string' ? reader.result : ''
+        resolve({ type: file.type.startsWith('video') ? 'video' : 'image', src })
+      }
+      reader.onerror = () => reject(new Error('Failed to read file'))
+      reader.readAsDataURL(file)
+    })
+  }
+
   function handlePhotoSelect(event: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(event.target.files ?? [])
-    setFiles(selected)
-    if (selected.length > 0) {
-      setPhotoStatus(t('claimProcess.uploadCount', { count: selected.length }))
-      appendMessage('user', t('claimProcess.photosUploaded', { count: selected.length }))
-    } else {
+    if (selected.length === 0) {
       setPhotoStatus(t('claimProcess.photosSkipped'))
       appendMessage('user', t('claimProcess.photosSkipped'))
+      setStep('description')
+      appendMessage('bot', t('claimProcess.askDescription'))
+      return
     }
-    setStep('description')
-    appendMessage('bot', t('claimProcess.askDescription'))
+
+    Promise.all(selected.map(readMedia))
+      .then((items) => {
+        setMediaItems(items)
+        setPhotoStatus(t('claimProcess.uploadCount', { count: items.length }))
+        appendMessage('user', t('claimProcess.photosUploaded', { count: items.length }))
+      })
+      .catch(() => {
+        setMediaItems([])
+        setPhotoStatus(t('claimProcess.photosSkipped'))
+        appendMessage('user', t('claimProcess.photosSkipped'))
+      })
+      .finally(() => {
+        setStep('description')
+        appendMessage('bot', t('claimProcess.askDescription'))
+      })
   }
 
   function handlePhotoSkip() {
     setPhotoStatus(t('claimProcess.photosSkipped'))
+    setMediaItems([])
     appendMessage('user', t('claimProcess.photosSkipped'))
     setStep('description')
     appendMessage('bot', t('claimProcess.askDescription'))
@@ -536,7 +563,7 @@ export default function ClaimProcessPage() {
                         >
                           <input
                             type="file"
-                            accept="image/*"
+                            accept="image/*,video/*"
                             multiple
                             onChange={handlePhotoSelect}
                             style={{ display: 'none' }}

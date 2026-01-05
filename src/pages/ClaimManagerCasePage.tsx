@@ -9,6 +9,7 @@ type StoredClaimData = {
   address?: string
   description?: string
   photoCount?: number
+  mediaItems?: Array<{ type: 'image' | 'video'; src: string }>
 }
 
 export default function ClaimManagerCasePage() {
