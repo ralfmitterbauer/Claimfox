@@ -223,8 +223,6 @@ export default function ClaimProcessPage() {
             setCity(address.cityValue)
             const streetLine = [address.road, address.number].filter(Boolean).join(' ')
             const cityLine = [address.postcode, address.cityValue].filter(Boolean).join(' ')
-            const resolvedLabel = [streetLine, cityLine].filter(Boolean).join(', ')
-            appendMessage('bot', t('claimProcess.locationGranted', { address: resolvedLabel || coordsText }))
             setLocationState('granted')
             setStep('address')
             appendMessage('bot', t('claimProcess.askAddressConfirm'))
@@ -525,9 +523,11 @@ export default function ClaimProcessPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div>
                   <h3 style={{ margin: 0 }}>{t('claimProcess.infoTitle')}</h3>
-                  <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
-                    {t('claimProcess.infoSubtitle')}
-                  </p>
+                  {t('claimProcess.infoSubtitle') && (
+                    <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
+                      {t('claimProcess.infoSubtitle')}
+                    </p>
+                  )}
                 </div>
 
                 <div style={{ display: 'grid', gap: '0.75rem' }}>
