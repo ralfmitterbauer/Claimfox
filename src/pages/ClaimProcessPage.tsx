@@ -119,7 +119,7 @@ export default function ClaimProcessPage() {
     {
       id: `m-${messageId.current++}`,
       author: 'bot',
-      text: t('claimProcess.askLocation'),
+      text: t('claimProcess.askTime'),
       time: timeLabel
     }
   ])
@@ -133,7 +133,12 @@ export default function ClaimProcessPage() {
   const [coords, setCoords] = useState<string | null>(null)
   const [claimNumber, setClaimNumber] = useState<string | null>(null)
   const [files, setFiles] = useState<File[]>([])
-  const [step, setStep] = useState<'location' | 'address' | 'photos' | 'description' | 'done'>('location')
+  const [photoStatus, setPhotoStatus] = useState('')
+  const [step, setStep] = useState<
+    'timeChoice' | 'timeOther' | 'locationChoice' | 'location' | 'address' | 'photos' | 'description' | 'done'
+  >('timeChoice')
+  const [incidentTime, setIncidentTime] = useState<string>('')
+  const [incidentTimeOther, setIncidentTimeOther] = useState('')
 
   const uploadLabel =
     files.length === 0
@@ -239,12 +244,49 @@ export default function ClaimProcessPage() {
     appendMessage('bot', t('claimProcess.askPhotos'))
   }
 
+  function handleIncidentTime(choice: 'now' | 'other') {
+    if (choice === 'now') {
+      setIncidentTime(`${dateLabel} ${timeLabel}`)
+      appendMessage('user', t('claimProcess.timeNow'))
+      setStep('locationChoice')
+      appendMessage('bot', t('claimProcess.askLocationChoice'))
+      return
+    }
+    appendMessage('user', t('claimProcess.timeOther'))
+    setStep('timeOther')
+  }
+
+  function handleTimeOtherConfirm() {
+    const trimmed = incidentTimeOther.trim()
+    if (!trimmed) return
+    setIncidentTime(trimmed)
+    appendMessage('user', trimmed)
+    setStep('locationChoice')
+    appendMessage('bot', t('claimProcess.askLocationChoice'))
+  }
+
+  function handleLocationChoice(choice: 'current' | 'other') {
+    if (choice === 'current') {
+      appendMessage('user', t('claimProcess.locationCurrent'))
+      setStep('location')
+      handleLocationRequest()
+      return
+    }
+    appendMessage('user', t('claimProcess.locationOther'))
+    setCoords(null)
+    setLocationState('idle')
+    setStep('address')
+    appendMessage('bot', t('claimProcess.askAddressConfirm'))
+  }
+
   function handlePhotoSelect(event: React.ChangeEvent<HTMLInputElement>) {
     const selected = Array.from(event.target.files ?? [])
     setFiles(selected)
     if (selected.length > 0) {
+      setPhotoStatus(t('claimProcess.uploadCount', { count: selected.length }))
       appendMessage('user', t('claimProcess.photosUploaded', { count: selected.length }))
     } else {
+      setPhotoStatus(t('claimProcess.photosSkipped'))
       appendMessage('user', t('claimProcess.photosSkipped'))
     }
     setStep('description')
@@ -252,6 +294,7 @@ export default function ClaimProcessPage() {
   }
 
   function handlePhotoSkip() {
+    setPhotoStatus(t('claimProcess.photosSkipped'))
     appendMessage('user', t('claimProcess.photosSkipped'))
     setStep('description')
     appendMessage('bot', t('claimProcess.askDescription'))
@@ -338,12 +381,40 @@ export default function ClaimProcessPage() {
                 </div>
               </div>
 
-              {step === 'location' && locationState === 'idle' && (
+              {step === 'timeChoice' && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
-                  <Button onClick={handleLocationRequest} style={{ padding: '0.6rem 1.3rem' }}>
-                    {t('claimProcess.locationButton')}
+                  <Button onClick={() => handleIncidentTime('now')} style={{ padding: '0.6rem 1.3rem' }}>
+                    {t('claimProcess.timeNow')}
                   </Button>
-                  <span style={{ color: '#ffffff', fontSize: '0.9rem' }}>{t('claimProcess.nextPrompt')}</span>
+                  <Button variant="secondary" onClick={() => handleIncidentTime('other')} style={{ padding: '0.6rem 1.3rem' }}>
+                    {t('claimProcess.timeOther')}
+                  </Button>
+                </div>
+              )}
+
+              {step === 'timeOther' && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
+                  <input
+                    value={incidentTimeOther}
+                    onChange={(event) => setIncidentTimeOther(event.target.value)}
+                    placeholder={t('claimProcess.timeOtherPlaceholder')}
+                    className="claim-process-input"
+                    style={{ flex: '1 1 240px' }}
+                  />
+                  <Button onClick={handleTimeOtherConfirm} style={{ padding: '0.6rem 1.5rem' }}>
+                    {t('claimProcess.confirmTime')}
+                  </Button>
+                </div>
+              )}
+
+              {step === 'locationChoice' && (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center', marginTop: '1rem' }}>
+                  <Button onClick={() => handleLocationChoice('current')} style={{ padding: '0.6rem 1.3rem' }}>
+                    {t('claimProcess.locationCurrent')}
+                  </Button>
+                  <Button variant="secondary" onClick={() => handleLocationChoice('other')} style={{ padding: '0.6rem 1.3rem' }}>
+                    {t('claimProcess.locationOther')}
+                  </Button>
                 </div>
               )}
 
@@ -450,72 +521,24 @@ export default function ClaimProcessPage() {
                 </div>
 
                 <div style={{ display: 'grid', gap: '0.75rem' }}>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gap: '0.75rem',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
-                    }}
-                  >
-                    {[ 
-                      { label: t('claimProcess.street'), value: street },
-                      { label: t('claimProcess.houseNumber'), value: houseNumber },
-                      { label: t('claimProcess.postalCode'), value: postalCode },
-                      { label: t('claimProcess.city'), value: city }
-                    ].map((field) => (
-                      <div
-                        key={field.label}
-                        style={{
-                          borderRadius: '16px',
-                          border: '1px solid rgba(255,255,255,0.25)',
-                          background: 'rgba(255,255,255,0.08)',
-                          padding: '0.65rem'
-                        }}
-                      >
-                        <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.75rem' }}>{field.label}</span>
-                        <div style={{ marginTop: '0.35rem', fontWeight: 600 }}>
-                          {field.value || t('claimProcess.valuePending')}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoPhotos')}</span>
-                    <strong>{files.length ? t('claimProcess.uploadCount', { count: files.length }) : t('claimProcess.valuePending')}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoDescription')}</span>
-                    <strong>{description || t('claimProcess.valuePending')}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoDate')}</span>
-                    <strong>{dateLabel}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoTime')}</span>
-                    <strong>{timeLabel}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoClaimNumber')}</span>
-                    <strong>{claimNumber ?? t('claimProcess.valuePending')}</strong>
-                  </div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                    <span style={{ color: 'rgba(255,255,255,0.7)' }}>{t('claimProcess.infoStatus')}</span>
-                    <strong>{t('claimProcess.statusOpen')}</strong>
-                  </div>
-                </div>
-
-                <div
-                  style={{
-                    borderRadius: '16px',
-                    border: '1px solid rgba(255,255,255,0.25)',
-                    background: 'rgba(255,255,255,0.08)',
-                    padding: '0.85rem'
-                  }}
-                >
-                  <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)', fontSize: '0.95rem' }}>
-                    {t('claimProcess.demoHint')}
-                  </p>
+                  {[ 
+                    { label: t('claimProcess.street'), value: street },
+                    { label: t('claimProcess.houseNumber'), value: houseNumber },
+                    { label: t('claimProcess.postalCode'), value: postalCode },
+                    { label: t('claimProcess.city'), value: city },
+                    { label: t('claimProcess.infoIncidentTime'), value: incidentTime },
+                    { label: t('claimProcess.infoPhotos'), value: photoStatus || (files.length ? t('claimProcess.uploadCount', { count: files.length }) : '') },
+                    { label: t('claimProcess.infoDescription'), value: description },
+                    { label: t('claimProcess.infoDate'), value: dateLabel },
+                    { label: t('claimProcess.infoTime'), value: timeLabel },
+                    { label: t('claimProcess.infoClaimNumber'), value: claimNumber ?? '' },
+                    { label: t('claimProcess.infoStatus'), value: t('claimProcess.statusOpen') }
+                  ].map((row) => (
+                    <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
+                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>{row.label}</span>
+                      <strong>{row.value || t('claimProcess.valuePending')}</strong>
+                    </div>
+                  ))}
                 </div>
               </div>
             </Card>

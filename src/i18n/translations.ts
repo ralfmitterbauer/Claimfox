@@ -25,23 +25,31 @@ type TranslationTree = {
     brokerPortal: string
     cards: Record<string, { title: string; description: string }>
   }
-    claimProcess: {
-      title: string
-      subtitle: string
-      chatTitle: string
-      chatSubtitle: string
-      chatStatus: string
-      intro: string
-      timeStampMessage: string
-      askLocation: string
-      askAddressConfirm: string
-      addressConfirmed: string
-      confirmAddress: string
-      askPhotos: string
-      photosUploaded: string
-      photosSkipped: string
-      skipPhotos: string
-      askDescription: string
+  claimProcess: {
+    title: string
+    subtitle: string
+    chatTitle: string
+    chatSubtitle: string
+    chatStatus: string
+    intro: string
+    timeStampMessage: string
+    askTime: string
+    timeNow: string
+    timeOther: string
+    timeOtherPlaceholder: string
+    confirmTime: string
+    askLocationChoice: string
+    locationCurrent: string
+    locationOther: string
+    askLocation: string
+    askAddressConfirm: string
+    addressConfirmed: string
+    confirmAddress: string
+    askPhotos: string
+    photosUploaded: string
+    photosSkipped: string
+    skipPhotos: string
+    askDescription: string
       locationButton: string
     locationPending: string
     locationPendingShort: string
@@ -65,11 +73,12 @@ type TranslationTree = {
     infoTitle: string
     infoSubtitle: string
     infoLocation: string
-      infoDate: string
-      infoTime: string
-      infoClaimNumber: string
-      infoPhotos: string
-      infoDescription: string
+    infoDate: string
+    infoTime: string
+    infoClaimNumber: string
+    infoPhotos: string
+    infoDescription: string
+    infoIncidentTime: string
       infoStatus: string
       statusOpen: string
       demoHint: string
@@ -536,6 +545,14 @@ export const translations: Record<Lang, TranslationTree> = {
       chatStatus: 'Live',
       intro: 'Guten Tag, hier ist Ihre Schadenbearbeitung. Ich begleite Sie strukturiert durch die Meldung.',
       timeStampMessage: 'Zeitstempel gesetzt: {{date}} · {{time}}.',
+      askTime: 'Ist der Schaden gerade passiert oder zu einem anderen Zeitpunkt?',
+      timeNow: 'Gerade passiert',
+      timeOther: 'Andere Zeit',
+      timeOtherPlaceholder: 'Datum und Uhrzeit eingeben …',
+      confirmTime: 'Zeit bestätigen',
+      askLocationChoice: 'Befindet sich der Schaden an Ihrem jetzigen Standort?',
+      locationCurrent: 'Aktueller Standort',
+      locationOther: 'Anderer Ort',
       askLocation: 'Darf ich Ihren Standort verwenden, um die Schadenadresse vorzubelegen?',
       askAddressConfirm: 'Bitte prüfen Sie die Adresse und bestätigen Sie sie.',
       addressConfirmed: 'Adresse bestätigt. Vielen Dank.',
@@ -573,6 +590,7 @@ export const translations: Record<Lang, TranslationTree> = {
       infoClaimNumber: 'Schadennummer',
       infoPhotos: 'Fotos',
       infoDescription: 'Schadenhergang',
+      infoIncidentTime: 'Schadenszeit',
       infoStatus: 'Status',
       statusOpen: 'Offen',
       demoHint: 'Zeitstempel und Standort werden direkt dem Schadenticket zugeordnet.'
@@ -1717,6 +1735,14 @@ export const translations: Record<Lang, TranslationTree> = {
       chatStatus: 'Live',
       intro: 'Good day. I will guide you through your claim in a structured way.',
       timeStampMessage: 'Timestamp logged: {{date}} · {{time}}.',
+      askTime: 'Did the incident happen just now or at another time?',
+      timeNow: 'Just now',
+      timeOther: 'Another time',
+      timeOtherPlaceholder: 'Enter date and time …',
+      confirmTime: 'Confirm time',
+      askLocationChoice: 'Did the incident occur at your current location?',
+      locationCurrent: 'Current location',
+      locationOther: 'Other location',
       askLocation: 'May I use your location to prefill the incident address?',
       askAddressConfirm: 'Please review the address and confirm.',
       addressConfirmed: 'Address confirmed. Thank you.',
@@ -1754,6 +1780,7 @@ export const translations: Record<Lang, TranslationTree> = {
       infoClaimNumber: 'Claim number',
       infoPhotos: 'Photos',
       infoDescription: 'Incident summary',
+      infoIncidentTime: 'Incident time',
       infoStatus: 'Status',
       statusOpen: 'Open',
       demoHint: 'Timestamp and location are attached to the claim ticket.'
