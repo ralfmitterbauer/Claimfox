@@ -492,7 +492,7 @@ export const translations: Record<Lang, TranslationTree> = {
           cta: 'Öffnen'
         },
         claimProcess: {
-          title: 'Schadenmanagement Prozess',
+          title: 'Schadenmeldung',
           description: 'Demo-Chatbot mit Standortabfrage, automatischem Zeitstempel und strukturierter Erfassung.',
           cta: 'Starten'
         },
@@ -520,7 +520,7 @@ export const translations: Record<Lang, TranslationTree> = {
       }
     },
     claimProcess: {
-      title: 'Schadenmanagement Prozess',
+      title: 'Schadenmeldung',
       subtitle: 'Demo MVP: Chatbot-Flow mit Standortabfrage, Zeitstempelung und strukturierter Schadenaufnahme.',
       intro: 'Willkommen im Schadenmanagement. Ich begleite dich Schritt für Schritt.',
       timeStampMessage: 'Schaden gemeldet am {{date}} um {{time}}.',
