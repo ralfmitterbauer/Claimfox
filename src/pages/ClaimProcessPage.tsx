@@ -6,6 +6,9 @@ import Header from '@/components/ui/Header'
 import ClaimsfoxIcon from '@/assets/logos/Claimsfox_icon.png'
 import { useI18n } from '@/i18n/I18nContext'
 
+const STORAGE_KEY = 'claimfox_claim_assistant'
+const CLAIMS_LIST_KEY = 'claimfox_claims_list'
+
 type ChatMessage = {
   id: string
   author: 'bot' | 'user'
@@ -137,6 +140,9 @@ export default function ClaimProcessPage() {
   ])
   const [draft, setDraft] = useState('')
   const [description, setDescription] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [licensePlate, setLicensePlate] = useState('')
   const [locationState, setLocationState] = useState<'idle' | 'pending' | 'granted' | 'denied'>('idle')
   const [street, setStreet] = useState('')
   const [houseNumber, setHouseNumber] = useState('')
@@ -147,7 +153,7 @@ export default function ClaimProcessPage() {
   const [mediaItems, setMediaItems] = useState<Array<{ type: 'image' | 'video'; src: string }>>([])
   const [photoStatus, setPhotoStatus] = useState('')
   const [step, setStep] = useState<
-    'timeChoice' | 'timeOther' | 'locationChoice' | 'location' | 'address' | 'photos' | 'description' | 'done'
+    'timeChoice' | 'timeOther' | 'locationChoice' | 'location' | 'address' | 'photos' | 'person' | 'description' | 'done'
   >('timeChoice')
   const [incidentTime, setIncidentTime] = useState<string>('')
   const [incidentTimeOther, setIncidentTimeOther] = useState('')
@@ -167,6 +173,9 @@ export default function ClaimProcessPage() {
     if (typeof window === 'undefined') return
     const payload = {
       claimNumber: claimNumber ?? undefined,
+      firstName: firstName || undefined,
+      lastName: lastName || undefined,
+      licensePlate: licensePlate || undefined,
       incidentTime: incidentTime || undefined,
       address: addressValue || undefined,
       description: description || undefined,
@@ -174,11 +183,21 @@ export default function ClaimProcessPage() {
       mediaItems
     }
     try {
-      window.localStorage.setItem('claimfox_claim_assistant', JSON.stringify(payload))
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
     } catch {
       // Ignore storage errors (e.g., quota or blocked storage) to keep the UI responsive.
     }
-  }, [addressValue, claimNumber, description, incidentTime, mediaItems])
+    if (!claimNumber) return
+    try {
+      const existingRaw = window.localStorage.getItem(CLAIMS_LIST_KEY)
+      const parsed = existingRaw ? (JSON.parse(existingRaw) as typeof payload[]) : []
+      const list = Array.isArray(parsed) ? parsed : []
+      const filtered = list.filter((item) => item?.claimNumber && item.claimNumber !== claimNumber)
+      window.localStorage.setItem(CLAIMS_LIST_KEY, JSON.stringify([...filtered, payload]))
+    } catch {
+      // Ignore storage errors (e.g., quota or blocked storage) to keep the UI responsive.
+    }
+  }, [addressValue, claimNumber, description, firstName, incidentTime, lastName, licensePlate, mediaItems])
 
   function getTimeStamp() {
     return new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
@@ -337,8 +356,8 @@ export default function ClaimProcessPage() {
     if (selected.length === 0) {
       setPhotoStatus(t('claimProcess.photosSkipped'))
       appendMessage('user', t('claimProcess.photosSkipped'))
-      setStep('description')
-      appendMessage('bot', t('claimProcess.askDescription'))
+      setStep('person')
+      appendMessage('bot', t('claimProcess.askPersonDetails'))
       return
     }
 
@@ -354,8 +373,8 @@ export default function ClaimProcessPage() {
         appendMessage('user', t('claimProcess.photosSkipped'))
       })
       .finally(() => {
-        setStep('description')
-        appendMessage('bot', t('claimProcess.askDescription'))
+        setStep('person')
+        appendMessage('bot', t('claimProcess.askPersonDetails'))
       })
   }
 
@@ -363,6 +382,13 @@ export default function ClaimProcessPage() {
     setPhotoStatus(t('claimProcess.photosSkipped'))
     setMediaItems([])
     appendMessage('user', t('claimProcess.photosSkipped'))
+    setStep('person')
+    appendMessage('bot', t('claimProcess.askPersonDetails'))
+  }
+
+  function handlePersonConfirm() {
+    if (!firstName.trim() || !lastName.trim() || !licensePlate.trim()) return
+    appendMessage('user', `${firstName.trim()} ${lastName.trim()} - ${licensePlate.trim()}`)
     setStep('description')
     appendMessage('bot', t('claimProcess.askDescription'))
   }
@@ -585,6 +611,51 @@ export default function ClaimProcessPage() {
                       </div>
                     )}
 
+                    {step === 'person' && (
+                      <div
+                        style={{
+                          marginTop: '0.5rem',
+                          display: 'grid',
+                          gap: '0.75rem',
+                          gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))'
+                        }}
+                      >
+                        {[
+                          { label: t('claimProcess.firstName'), value: firstName, onChange: setFirstName },
+                          { label: t('claimProcess.lastName'), value: lastName, onChange: setLastName },
+                          { label: t('claimProcess.licensePlate'), value: licensePlate, onChange: setLicensePlate }
+                        ].map((field) => (
+                          <div
+                            key={field.label}
+                            style={{
+                              borderRadius: '16px',
+                              border: '1px solid rgba(255,255,255,0.2)',
+                              background: 'rgba(255,255,255,0.2)',
+                              padding: '0.65rem'
+                            }}
+                          >
+                            <span style={{ color: 'rgba(8,0,40,0.65)', fontSize: '0.75rem' }}>{field.label}</span>
+                            <input
+                              value={field.value}
+                              onChange={(event) => field.onChange(event.target.value)}
+                              placeholder={field.label}
+                              className="claim-process-input"
+                              style={{ width: '100%', marginTop: '0.35rem' }}
+                            />
+                          </div>
+                        ))}
+                        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'flex-end' }}>
+                          <Button
+                            onClick={handlePersonConfirm}
+                            disabled={!firstName.trim() || !lastName.trim() || !licensePlate.trim()}
+                            style={{ padding: '0.55rem 1.4rem' }}
+                          >
+                            {t('claimProcess.confirmPersonDetails')}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+
                     {step === 'description' && (
                       <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                         <input
@@ -621,6 +692,9 @@ export default function ClaimProcessPage() {
                     { label: t('claimProcess.houseNumber'), value: houseNumber },
                     { label: t('claimProcess.postalCode'), value: postalCode },
                     { label: t('claimProcess.city'), value: city },
+                    { label: t('claimProcess.infoFirstName'), value: firstName },
+                    { label: t('claimProcess.infoLastName'), value: lastName },
+                    { label: t('claimProcess.infoLicensePlate'), value: licensePlate },
                     { label: t('claimProcess.infoIncidentTime'), value: incidentTime },
                     {
                       label: t('claimProcess.infoPhotos'),

@@ -181,6 +181,9 @@ const layoutStyles = `
 
 type ClaimAssistantData = {
   claimNumber?: string
+  firstName?: string
+  lastName?: string
+  licensePlate?: string
   incidentTime?: string
   address?: string
   description?: string
@@ -190,9 +193,10 @@ type ClaimAssistantData = {
 
 type ClaimManagerPageProps = {
   assistantData?: ClaimAssistantData
+  caseList?: React.ReactNode
 }
 
-export default function ClaimManagerPage({ assistantData }: ClaimManagerPageProps) {
+export default function ClaimManagerPage({ assistantData, caseList }: ClaimManagerPageProps) {
   const { t } = useI18n()
   const [claimStatus, setClaimStatus] = useState<(typeof timelineSteps)[number]>('review')
   const [costItems, setCostItems] = useState<CostItem[]>(initialCosts)
@@ -277,6 +281,7 @@ export default function ClaimManagerPage({ assistantData }: ClaimManagerPageProp
             className="claim-manager-app-stack"
             style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}
           >
+          {caseList}
           <Card style={{ ...CARD_STYLE, padding: '2rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               <span style={{ letterSpacing: '0.4em', fontSize: '0.75rem', color: TEXT_COLORS.muted, textTransform: 'uppercase' }}>

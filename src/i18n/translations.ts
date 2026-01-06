@@ -49,7 +49,12 @@ type TranslationTree = {
     photosUploaded: string
     photosSkipped: string
     skipPhotos: string
+    askPersonDetails: string
+    confirmPersonDetails: string
     askDescription: string
+    firstName: string
+    lastName: string
+    licensePlate: string
       locationButton: string
     locationPending: string
     locationPendingShort: string
@@ -80,6 +85,9 @@ type TranslationTree = {
     infoPhotos: string
     infoDescription: string
     infoIncidentTime: string
+    infoFirstName: string
+    infoLastName: string
+    infoLicensePlate: string
       infoStatus: string
       statusOpen: string
       demoHint: string
@@ -562,7 +570,12 @@ export const translations: Record<Lang, TranslationTree> = {
       photosUploaded: '{{count}} Foto(s) hochgeladen.',
       photosSkipped: 'Keine Fotos übermittelt.',
       skipPhotos: 'Ohne Fotos fortfahren',
+      askPersonDetails: 'Bitte Vorname, Nachname und Kennzeichen ergänzen.',
+      confirmPersonDetails: 'Angaben bestätigen',
       askDescription: 'Bitte kurz beschreiben, was passiert ist.',
+      firstName: 'Vorname',
+      lastName: 'Nachname',
+      licensePlate: 'Kennzeichen',
       locationButton: 'Standort freigeben',
       locationPending: 'Standort wird abgefragt …',
       locationPendingShort: 'Wird ermittelt …',
@@ -593,6 +606,9 @@ export const translations: Record<Lang, TranslationTree> = {
       infoPhotos: 'Fotos',
       infoDescription: 'Schadenhergang',
       infoIncidentTime: 'Schadenszeit',
+      infoFirstName: 'Vorname',
+      infoLastName: 'Nachname',
+      infoLicensePlate: 'Kennzeichen',
       infoStatus: 'Status',
       statusOpen: 'Offen',
       demoHint: 'Zeitstempel und Standort werden direkt dem Schadenticket zugeordnet.'
@@ -1031,6 +1047,17 @@ export const translations: Record<Lang, TranslationTree> = {
           date: 'Ereignis',
           dateValue: '12. März 2025',
           status: 'Status'
+        },
+        caseList: {
+          title: 'Gespeicherte Schäden',
+          subtitle: 'Wähle einen Schadenfall aus, um die Akte zu öffnen.',
+          empty: 'Keine gespeicherten Schäden.',
+          columns: {
+            claimNumber: 'Schadennummer',
+            firstName: 'Vorname',
+            lastName: 'Nachname',
+            licensePlate: 'Kennzeichen'
+          }
         },
         statusOptions: {
           intake: 'Eingang',
@@ -1755,7 +1782,12 @@ export const translations: Record<Lang, TranslationTree> = {
       photosUploaded: '{{count}} photo(s) uploaded.',
       photosSkipped: 'No photos provided.',
       skipPhotos: 'Continue without photos',
+      askPersonDetails: 'Please provide first name, last name, and license plate.',
+      confirmPersonDetails: 'Confirm details',
       askDescription: 'Briefly describe what happened.',
+      firstName: 'First name',
+      lastName: 'Last name',
+      licensePlate: 'License plate',
       locationButton: 'Share location',
       locationPending: 'Requesting location …',
       locationPendingShort: 'Locating …',
@@ -1786,6 +1818,9 @@ export const translations: Record<Lang, TranslationTree> = {
       infoPhotos: 'Photos',
       infoDescription: 'Incident summary',
       infoIncidentTime: 'Incident time',
+      infoFirstName: 'First name',
+      infoLastName: 'Last name',
+      infoLicensePlate: 'License plate',
       infoStatus: 'Status',
       statusOpen: 'Open',
       demoHint: 'Timestamp and location are attached to the claim ticket.'
@@ -2224,6 +2259,17 @@ export const translations: Record<Lang, TranslationTree> = {
           date: 'Incident',
           dateValue: '12 March 2025',
           status: 'Status'
+        },
+        caseList: {
+          title: 'Saved claims',
+          subtitle: 'Select a claim to open the file.',
+          empty: 'No saved claims yet.',
+          columns: {
+            claimNumber: 'Claim number',
+            firstName: 'First name',
+            lastName: 'Last name',
+            licensePlate: 'License plate'
+          }
         },
         statusOptions: {
           intake: 'Intake',
