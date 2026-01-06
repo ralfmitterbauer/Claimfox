@@ -273,7 +273,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
             minHeight: '100vh',
             width: '100%',
             color: '#ffffff',
-            padding: 'calc(var(--header-height) + 32px) 1.25rem 4rem'
+            padding: '32px 1.25rem 4rem'
           }}
         >
           <style>{layoutStyles}</style>

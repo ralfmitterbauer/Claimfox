@@ -15,7 +15,7 @@ type RoleItem = {
 const ROLE_ITEMS: RoleItem[] = [
   { key: 'claims', route: '/claim-manager', ctaKey: 'roles.cards.claims.cta' },
   { key: 'claimProcess', route: '/claim-process', ctaKey: 'roles.cards.claimProcess.cta' },
-  { key: 'partner' },
+  { key: 'partner', route: '/partner-management' },
   { key: 'reporting', route: '/marketing' },
   { key: 'logistics', route: '/logistics', ctaKey: 'roles.cards.logistics.cta' },
   { key: 'fleetManagement', route: '/fleet-management' }

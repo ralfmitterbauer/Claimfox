@@ -126,7 +126,7 @@ export default function ClaimManagerMarketingPage() {
           style={{
             minHeight: '100vh',
             width: '100%',
-            padding: 'calc(var(--header-height) + 32px) 1.25rem 4rem',
+            padding: '32px 1.25rem 4rem',
             display: 'flex',
             justifyContent: 'center',
             color: '#ffffff'

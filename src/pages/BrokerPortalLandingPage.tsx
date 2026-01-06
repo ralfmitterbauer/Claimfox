@@ -174,7 +174,7 @@ export default function BrokerPortalLandingPage() {
       <div
         style={{
           position: 'absolute',
-          top: 'calc(var(--header-height, 64px) + 16px)',
+          top: '16px',
           right: '3vw',
           zIndex: 2
         }}
@@ -205,13 +205,13 @@ export default function BrokerPortalLandingPage() {
           style={{
             maxWidth: '1280px',
             margin: '0 auto',
-          padding: 'calc(var(--header-height, 64px) + 48px) clamp(1.5rem, 4vw, 4rem) 72px',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '3.5rem'
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
+            padding: '48px clamp(1.5rem, 4vw, 4rem) 72px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '3.5rem'
+          }}
+        >
+          <div style={{ textAlign: 'center' }}>
             <img
               src={InsurfoxLogoLight}
               alt="Insurfox"

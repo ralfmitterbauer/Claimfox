@@ -310,7 +310,7 @@ export default function LogisticsAppPage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        padding: 'calc(var(--header-height) + 32px) clamp(1rem, 4vw, 3rem) 4rem',
+        padding: '32px clamp(1rem, 4vw, 3rem) 4rem',
         color: '#ffffff'
       }}
     >

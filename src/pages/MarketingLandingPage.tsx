@@ -197,46 +197,46 @@ export default function MarketingLandingPage() {
     <>
       <style>{layoutStyles}</style>
       <div style={{ position: 'relative', minHeight: '100vh', color: '#ffffff', overflow: 'hidden' }}>
+        <div
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '3vw',
+            zIndex: 4
+          }}
+        >
+          <Button
+            onClick={() => navigate('/fleet-reporting')}
+            style={{
+              background: '#D4380D',
+              borderColor: '#D4380D',
+              borderRadius: '999px',
+              padding: '0.6rem 1.4rem',
+              boxShadow: '0 16px 36px rgba(0,0,0,0.35)'
+            }}
+          >
+            {t('marketingFleet.hero.login')}
+          </Button>
+        </div>
+        <section
+          className="page"
+          style={{
+            paddingTop: '3rem',
+            paddingBottom: '4rem'
+          }}
+        >
           <div
             style={{
-              position: 'absolute',
-              top: 'calc(var(--header-height, 72px) + 10px)',
-              right: '3vw',
-              zIndex: 4
+              width: '100%',
+              maxWidth: '1320px',
+              margin: '0 auto',
+              padding: '0 3vw',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2.5rem'
             }}
           >
-            <Button
-              onClick={() => navigate('/fleet-reporting')}
-              style={{
-                background: '#D4380D',
-                borderColor: '#D4380D',
-                borderRadius: '999px',
-                padding: '0.6rem 1.4rem',
-                boxShadow: '0 16px 36px rgba(0,0,0,0.35)'
-              }}
-            >
-              {t('marketingFleet.hero.login')}
-            </Button>
-          </div>
-          <section
-            className="page"
-            style={{
-              paddingTop: 'calc(var(--header-height, 72px) + 3rem)',
-              paddingBottom: '4rem'
-            }}
-          >
-            <div
-              style={{
-                width: '100%',
-                maxWidth: '1320px',
-                margin: '0 auto',
-                padding: '0 3vw',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '2.5rem'
-              }}
-            >
-          <section style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <section style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '150px', height: 'auto' }} />
               <h1 style={{ margin: 0, fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', letterSpacing: '-0.03em', maxWidth: '680px' }}>

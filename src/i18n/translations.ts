@@ -246,6 +246,65 @@ type TranslationTree = {
     }
     thirdParty: Record<string, string>
   }
+  partnerManagement: {
+    title: string
+    subtitle: string
+    actions: {
+      addPartner: string
+    }
+    partnerTypes: {
+      workshop: string
+      surveyor: string
+      towing: string
+    }
+    selection: {
+      title: string
+      subtitle: string
+      response: string
+    }
+    claimMedia: {
+      title: string
+      subtitle: string
+      status: {
+        review: string
+        approved: string
+        missing: string
+      }
+    }
+    estimates: {
+      title: string
+      subtitle: string
+      cta: string
+    }
+    invoices: {
+      title: string
+      subtitle: string
+      cta: string
+    }
+    repair: {
+      title: string
+      subtitle: string
+      eta: string
+      steps: {
+        intake: string
+        diagnostics: string
+        parts: string
+        repair: string
+        handover: string
+      }
+    }
+    chat: {
+      title: string
+      subtitle: string
+      placeholder: string
+      send: string
+    }
+    questions: {
+      title: string
+      subtitle: string
+      cta: string
+    }
+  }
   marketingFleet: {
     hero: {
       title: string
@@ -1539,6 +1598,65 @@ export const translations: Record<Lang, TranslationTree> = {
         listening: '🎙️ Ich höre zu …'
       }
     },
+    partnerManagement: {
+      title: 'Partner Management',
+      subtitle: 'Partnernetzwerke, Dokumente und Live-Kommunikation je Schadenfall.',
+      actions: {
+        addPartner: 'Partner hinzufügen'
+      },
+      partnerTypes: {
+        workshop: 'Werkstatt',
+        surveyor: 'Gutachter',
+        towing: 'Abschleppdienst'
+      },
+      selection: {
+        title: 'Partnerauswahl',
+        subtitle: 'Netzwerke, Spezialisierung und Reaktionszeit.',
+        response: 'Antwortzeit'
+      },
+      claimMedia: {
+        title: 'Schadenbilder',
+        subtitle: 'Status der eingereichten Fotos.',
+        status: {
+          review: 'In Prüfung',
+          approved: 'Freigegeben',
+          missing: 'Fehlt'
+        }
+      },
+      estimates: {
+        title: 'Kostenvoranschläge',
+        subtitle: 'Eingang, Prüfung und Freigaben.',
+        cta: 'KV anfordern'
+      },
+      invoices: {
+        title: 'Rechnungen',
+        subtitle: 'Prüfung und Freigabe je Partner.',
+        cta: 'Rechnung prüfen'
+      },
+      repair: {
+        title: 'Reparaturstatus',
+        subtitle: 'Live-Status aus dem Partnernetzwerk.',
+        eta: 'Prognose: {{time}}',
+        steps: {
+          intake: 'Fahrzeugannahme',
+          diagnostics: 'Diagnose',
+          parts: 'Ersatzteile',
+          repair: 'Reparatur',
+          handover: 'Übergabe'
+        }
+      },
+      chat: {
+        title: 'Livechat',
+        subtitle: 'Rückfragen & Abstimmung im Schadenfall.',
+        placeholder: 'Nachricht schreiben …',
+        send: 'Senden'
+      },
+      questions: {
+        title: 'Rückfragen',
+        subtitle: 'Offene Punkte an den Partner.',
+        cta: 'Neue Rückfrage'
+      }
+    },
     brokerPortal: {
       title: 'IaaS Maklerportal'
     },
@@ -2749,6 +2867,65 @@ export const translations: Record<Lang, TranslationTree> = {
         voiceNotSupported: 'Your browser does not support speech output. Let us continue by typing.',
         voiceInputNotSupported: 'Listening is not available in this browser. Please type your response.',
         listening: '🎙️ Listening …'
+      }
+    },
+    partnerManagement: {
+      title: 'Partner management',
+      subtitle: 'Partner networks, documents, and live claim communication.',
+      actions: {
+        addPartner: 'Add partner'
+      },
+      partnerTypes: {
+        workshop: 'Repair shop',
+        surveyor: 'Surveyor',
+        towing: 'Towing service'
+      },
+      selection: {
+        title: 'Partner selection',
+        subtitle: 'Networks, specialization, and response times.',
+        response: 'Response time'
+      },
+      claimMedia: {
+        title: 'Claim media',
+        subtitle: 'Status of submitted photos.',
+        status: {
+          review: 'In review',
+          approved: 'Approved',
+          missing: 'Missing'
+        }
+      },
+      estimates: {
+        title: 'Estimates',
+        subtitle: 'Intake, review, and approvals.',
+        cta: 'Request estimate'
+      },
+      invoices: {
+        title: 'Invoices',
+        subtitle: 'Review and approval per partner.',
+        cta: 'Review invoice'
+      },
+      repair: {
+        title: 'Repair status',
+        subtitle: 'Live updates from the partner network.',
+        eta: 'ETA: {{time}}',
+        steps: {
+          intake: 'Vehicle intake',
+          diagnostics: 'Diagnostics',
+          parts: 'Parts',
+          repair: 'Repair',
+          handover: 'Handover'
+        }
+      },
+      chat: {
+        title: 'Live chat',
+        subtitle: 'Questions and coordination for this claim.',
+        placeholder: 'Write a message …',
+        send: 'Send'
+      },
+      questions: {
+        title: 'Open questions',
+        subtitle: 'Pending items for the partner.',
+        cta: 'New question'
       }
     },
     brokerPortal: {

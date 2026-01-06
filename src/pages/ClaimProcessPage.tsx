@@ -94,7 +94,7 @@ const layoutStyles = `
   }
   @media (max-width: 720px) {
     .claim-process-page {
-      padding: calc(var(--header-height) + 20px) 0.9rem 2.5rem;
+      padding: 20px 0.9rem 2.5rem;
     }
     .claim-process-chat-surface {
       padding: 1.1rem;
@@ -401,7 +401,7 @@ export default function ClaimProcessPage() {
         style={{
           minHeight: '100vh',
           width: '100%',
-          padding: 'calc(var(--header-height) + 32px) 1.25rem 4rem',
+          padding: '32px 1.25rem 4rem',
           display: 'flex',
           justifyContent: 'center',
           color: '#ffffff'

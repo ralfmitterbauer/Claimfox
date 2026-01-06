@@ -908,7 +908,7 @@ export default function RegistrationPage() {
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          padding: 'calc(var(--header-height) + 32px) 1rem 3rem'
+          padding: '32px 1rem 3rem'
         }}
       >
         <div style={{ width: '100%', maxWidth: 960 }}>
