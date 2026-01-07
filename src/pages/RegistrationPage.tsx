@@ -51,7 +51,7 @@ export default function RegistrationPage() {
 
         <Card variant="glass" style={{ padding: '1.75rem', color: '#0e0d1c' }}>
           <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
-            <label className="form-field" style={{ marginBottom: 0 }}>
+            <label className="form-field" style={{ marginBottom: 0, color: 'rgba(255,255,255,0.7)' }}>
               {t('registration.emailLabel')}
               <input
                 className="text-input"
@@ -65,7 +65,15 @@ export default function RegistrationPage() {
               />
             </label>
 
-            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', fontSize: '0.95rem', color: '#1f1d2b' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.6rem',
+                fontSize: '0.95rem',
+                color: 'rgba(255,255,255,0.7)'
+              }}
+            >
               <input
                 type="checkbox"
                 checked={consent}
