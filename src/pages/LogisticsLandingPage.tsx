@@ -57,7 +57,7 @@ const previewBars = [68, 92, 78, 84, 73, 96]
 const PREVIEW_VALUE_KEYS = ['eta', 'temp', 'customs'] as const
 
 const heroBlockStyle: React.CSSProperties = {
-  backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), linear-gradient(135deg, rgba(11, 28, 108, 0.85) 0%, rgba(18, 59, 154, 0.85) 100%), url(${HeroBlockBackground})`,
+  backgroundImage: `linear-gradient(135deg, rgba(11, 28, 108, 0.85) 0%, rgba(18, 59, 154, 0.85) 100%), url(${HeroBlockBackground})`,
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   padding: '2.5rem clamp(1rem, 4vw, 3rem)',

@@ -27,11 +27,11 @@ const ROLE_ITEMS: RoleItem[] = [
 const descriptionStyle: React.CSSProperties = {
   marginTop: 0,
   color: '#475569',
-  minHeight: '3rem',
+  minHeight: '2.2rem',
   fontSize: '0.95rem',
   lineHeight: 1.45,
   display: '-webkit-box',
-  WebkitLineClamp: 4,
+  WebkitLineClamp: 3,
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden'
 }
@@ -60,7 +60,7 @@ export default function RolesPage() {
         >
           <div
             style={{
-              backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), linear-gradient(135deg, rgba(11, 28, 108, 0.85) 0%, rgba(18, 59, 154, 0.85) 100%), url(${HeroBlockBackground})`,
+              backgroundImage: `linear-gradient(135deg, rgba(11, 28, 108, 0.85) 0%, rgba(18, 59, 154, 0.85) 100%), url(${HeroBlockBackground})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               padding: '2.5rem clamp(1rem, 4vw, 3rem)',
@@ -91,7 +91,7 @@ export default function RolesPage() {
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '1.25rem'
+              gap: '1rem'
             }}
           >
             {ROLE_ITEMS.map((item) => {
@@ -103,7 +103,7 @@ export default function RolesPage() {
                   variant="glass"
                   interactive={hasRoute}
                   onClick={hasRoute ? () => navigate(item.route!) : undefined}
-                  style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+                  style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
                 >
                   <p style={descriptionStyle}>{t(`roles.cards.${item.key}.description`)}</p>
                   <Button
@@ -117,7 +117,7 @@ export default function RolesPage() {
                         : undefined
                     }
                   >
-                    {item.ctaKey ? t(item.ctaKey) : t('roles.view')}
+                    {t('roles.view')}
                   </Button>
                 </Card>
               )
@@ -127,7 +127,7 @@ export default function RolesPage() {
               interactive
               onClick={() => navigate('/registration')}
               variant="glass"
-              style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+              style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
             >
               <p style={descriptionStyle}>{t('roles.registrationCardSubtitle')}</p>
               <Button
@@ -137,7 +137,7 @@ export default function RolesPage() {
                   navigate('/registration')
                 }}
               >
-                {t('roles.startJourney')}
+                {t('roles.view')}
               </Button>
             </Card>
             <Card
@@ -145,7 +145,7 @@ export default function RolesPage() {
               interactive
               onClick={() => navigate('/broker-portal')}
               variant="glass"
-              style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+              style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
             >
               <p style={descriptionStyle}>{t('roles.brokerPortal')}</p>
               <Button
