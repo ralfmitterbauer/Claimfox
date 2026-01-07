@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const featureKeys = [
   'statusTimeline',
@@ -133,8 +132,7 @@ export default function ClaimManagerMarketingPage() {
           }}
         >
           <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-              <img src={InsurfoxLogoDark} alt="Insurfox" style={{ height: '56px' }} />
+            <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
               <Button
                 onClick={() => navigate('/claim-manager-app')}
                 style={{ background: '#D4380D', padding: '0.65rem 1.4rem' }}
