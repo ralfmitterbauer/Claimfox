@@ -411,7 +411,6 @@ export default function ClaimProcessPage() {
           <Header
             title={t('claimProcess.title')}
             subtitle={t('claimProcess.subtitle')}
-            titleColor="#0e0d1c"
             subtitleColor="#65748b"
           />
 
