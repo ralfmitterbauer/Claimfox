@@ -14,7 +14,7 @@ type TranslationTree = {
     login: string
     logout: string
   }
-    roles: {
+  roles: {
       title: string
       subtitle: string
       logout: string
@@ -23,8 +23,71 @@ type TranslationTree = {
       registrationCardTitle: string
       registrationCardSubtitle: string
       brokerPortal: string
-      cards: Record<string, { title: string; description: string }>
+    cards: Record<string, { title: string; description: string }>
+  }
+  getQuote: {
+    title: string
+    subtitle: string
+    progress: {
+      title: string
+      subtitle: string
+      step: string
     }
+    company: {
+      title: string
+      subtitle: string
+      locationLabel: string
+      locationPlaceholder: string
+      location: {
+        de: string
+        eu: string
+      }
+    }
+    vehicles: {
+      title: string
+      subtitle: string
+      primary: string
+      additional: string
+      count: string
+      weight: string
+      regionLabel: string
+      add: string
+      region: {
+        de: string
+        eu: string
+      }
+    }
+    deductible: {
+      title: string
+      subtitle: string
+      amountLabel: string
+      courier: string
+      cold: string
+    }
+    preInsurer: {
+      title: string
+      subtitle: string
+      exists: string
+      name: string
+      number: string
+    }
+    summary: {
+      title: string
+      subtitle: string
+      netAnnual: string
+      tax: string
+      grossAnnual: string
+      contract: string
+    }
+    confirm: {
+      title: string
+      subtitle: string
+      privacy: string
+      submit: string
+    }
+    yes: string
+    no: string
+  }
     featureTree: {
       title: string
       subtitle: string
@@ -648,6 +711,11 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Funktionsübersicht für Claims, Partnernetzwerke und Workflows.',
           cta: 'Öffnen'
         },
+        getQuote: {
+          title: 'Angebot anfragen',
+          description: 'Mehrstufige Anfrage für Frachtführerhaftung und Fahrzeugdaten.',
+          cta: 'Öffnen'
+        },
         reporting: {
           title: 'Fleet Reporting',
           description: 'Fuhrpark-Kennzahlen, KPIs und Schadenreports bereitstellen.'
@@ -752,6 +820,69 @@ export const translations: Record<Lang, TranslationTree> = {
           }
         }
       }
+    },
+    getQuote: {
+      title: 'Angebot anfragen',
+      subtitle: 'Bitte machen Sie Ihre Angaben. Wir senden Ihnen Ihr Angebot an Ihre E-Mail-Adresse.',
+      progress: {
+        title: 'COMPARIOSN',
+        subtitle: 'Angebot beantragen',
+        step: 'Schritt 1 von 10'
+      },
+      company: {
+        title: 'Ihre Daten',
+        subtitle: 'An welchem Standort befindet sich Ihr Unternehmen?',
+        locationLabel: 'Bitte wählen Sie ein Land',
+        locationPlaceholder: 'Bitte wählen Sie ein Land',
+        location: {
+          de: 'Deutschland',
+          eu: 'Europa'
+        }
+      },
+      vehicles: {
+        title: 'Zu versichernde Fahrzeuge',
+        subtitle: 'Fahrzeuganzahl, Gewicht und Geltungsgebiet.',
+        primary: 'Frachtführerhaftungsversicherung',
+        additional: 'Weitere zu versichernde Fahrzeuge',
+        count: 'Anzahl der zu versichernden Fahrzeuge',
+        weight: 'Zulässiges Gesamtgewicht',
+        regionLabel: 'Geltungsgebiet',
+        add: 'Weitere Fahrzeuge hinzufügen',
+        region: {
+          de: 'Deutschland',
+          eu: 'Europa'
+        }
+      },
+      deductible: {
+        title: 'Selbstbeteiligung und Risiken',
+        subtitle: 'Bitte wählen Sie Ihre Optionen.',
+        amountLabel: 'Höhe der Selbstbeteiligung',
+        courier: 'Mitversicherung der Haftung bei Transport von Kurier-Express Paketen',
+        cold: 'Mitversicherung der Haftung bei Transport von Kühlgut mit entsprechenden Fahrzeugen'
+      },
+      preInsurer: {
+        title: 'Vorversicherer',
+        subtitle: 'Angaben zum Vorversicherer',
+        exists: 'Bestand eine Vorversicherung in den letzten 5 Jahren?',
+        name: 'Name des Versicherers',
+        number: 'Versicherungsnummer'
+      },
+      summary: {
+        title: 'Prämie',
+        subtitle: 'Für ein Kalenderjahr',
+        netAnnual: 'Jahresnettoprämie',
+        tax: 'Versicherungssteuer (Deutschland 19%)',
+        grossAnnual: 'Jahresbruttoprämie',
+        contract: 'Vertragslaufzeit'
+      },
+      confirm: {
+        title: 'Angebot beantragen',
+        subtitle: 'Ihre Angaben sind unvollständig? Pflichtfelder prüfen.',
+        privacy: 'Ich habe die Datenschutzerklärung gelesen und stimme ihr zu.',
+        submit: 'Angebot beantragen'
+      },
+      yes: 'Ja',
+      no: 'Nein'
     },
     claimProcess: {
       title: 'Schadenmeldung',
@@ -2021,6 +2152,11 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Structured overview of the platform capabilities.',
           cta: 'Open'
         },
+        getQuote: {
+          title: 'Get a Quote',
+          description: 'Multi-step quote flow for carrier liability and vehicles.',
+          cta: 'Open'
+        },
         reporting: {
           title: 'Fleet Reporting',
           description: 'Deliver fleet KPIs, dashboards, and claims reporting.'
@@ -2125,6 +2261,69 @@ export const translations: Record<Lang, TranslationTree> = {
           }
         }
       }
+    },
+    getQuote: {
+      title: 'Get a quote',
+      subtitle: 'Please provide your details. We will email your quote to you.',
+      progress: {
+        title: 'COMPARIOSN',
+        subtitle: 'Request a quote',
+        step: 'Step 1 of 10'
+      },
+      company: {
+        title: 'Your details',
+        subtitle: 'Where is your company located?',
+        locationLabel: 'Select a country',
+        locationPlaceholder: 'Select a country',
+        location: {
+          de: 'Germany',
+          eu: 'Europe'
+        }
+      },
+      vehicles: {
+        title: 'Insured vehicles',
+        subtitle: 'Count, weight, and coverage area.',
+        primary: 'Carrier liability insurance',
+        additional: 'Additional insured vehicles',
+        count: 'Number of insured vehicles',
+        weight: 'Gross vehicle weight',
+        regionLabel: 'Territory',
+        add: 'Add another vehicle group',
+        region: {
+          de: 'Germany',
+          eu: 'Europe'
+        }
+      },
+      deductible: {
+        title: 'Deductible and risks',
+        subtitle: 'Select your options.',
+        amountLabel: 'Deductible amount',
+        courier: 'Liability coverage for courier/express parcel transport',
+        cold: 'Liability coverage for refrigerated cargo with equipped vehicles'
+      },
+      preInsurer: {
+        title: 'Previous insurer',
+        subtitle: 'Previous coverage details',
+        exists: 'Were you insured in the last 5 years?',
+        name: 'Insurer name',
+        number: 'Policy number'
+      },
+      summary: {
+        title: 'Premium',
+        subtitle: 'For a calendar year',
+        netAnnual: 'Annual net premium',
+        tax: 'Insurance tax (Germany 19%)',
+        grossAnnual: 'Annual gross premium',
+        contract: 'Contract term'
+      },
+      confirm: {
+        title: 'Request a quote',
+        subtitle: 'Missing details? Check required fields.',
+        privacy: 'I have read the privacy policy and agree.',
+        submit: 'Request a quote'
+      },
+      yes: 'Yes',
+      no: 'No'
     },
     claimProcess: {
       title: 'Claims Process',
