@@ -17,6 +17,7 @@ import ClaimManagerPage from '@/pages/ClaimManagerPage'
 import ClaimManagerCasePage from '@/pages/ClaimManagerCasePage'
 import ClaimProcessPage from '@/pages/ClaimProcessPage'
 import PartnerManagementPage from '@/pages/PartnerManagementPage'
+import FeatureTreePage from '@/pages/FeatureTreePage'
 import LogisticsLandingPage from '@/pages/LogisticsLandingPage'
 import LogisticsAppPage from '@/pages/LogisticsAppPage'
 
@@ -52,6 +53,7 @@ export default function AppRouter() {
         <Route path="/claim-manager-case" element={<ClaimManagerCasePage />} />
         <Route path="/claim-process" element={<ClaimProcessPage />} />
         <Route path="/partner-management" element={<PartnerManagementPage />} />
+        <Route path="/feature-tree" element={<FeatureTreePage />} />
         <Route path="/logistics" element={<LogisticsLandingPage />} />
         <Route path="/logistics-app" element={<LogisticsAppPage />} />
       </Route>

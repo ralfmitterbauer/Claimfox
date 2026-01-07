@@ -14,17 +14,63 @@ type TranslationTree = {
     login: string
     logout: string
   }
-  roles: {
-    title: string
-    subtitle: string
-    logout: string
-    view: string
-    startJourney: string
-    registrationCardTitle: string
-    registrationCardSubtitle: string
-    brokerPortal: string
-    cards: Record<string, { title: string; description: string }>
-  }
+    roles: {
+      title: string
+      subtitle: string
+      logout: string
+      view: string
+      startJourney: string
+      registrationCardTitle: string
+      registrationCardSubtitle: string
+      brokerPortal: string
+      cards: Record<string, { title: string; description: string }>
+    }
+    featureTree: {
+      title: string
+      subtitle: string
+      sections: {
+        intake: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        partners: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        media: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        finance: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        repair: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        comms: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        analytics: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+        compliance: {
+          title: string
+          subtitle: string
+          items: Record<string, string>
+        }
+      }
+    }
   claimProcess: {
     title: string
     subtitle: string
@@ -586,6 +632,11 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
         },
+        featureTree: {
+          title: 'Feature Tree',
+          description: 'Funktionsübersicht für Claims, Partnernetzwerke und Workflows.',
+          cta: 'Öffnen'
+        },
         reporting: {
           title: 'Fleet Reporting',
           description: 'Fuhrpark-Kennzahlen, KPIs und Schadenreports bereitstellen.'
@@ -602,6 +653,92 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Spedition / Logistik',
           description: 'Transporte, Routen, Versicherungen und Schäden zentral steuern – mit Echtzeit-Status und KI-Alerts.',
           cta: 'Ansehen'
+        }
+      }
+    },
+    featureTree: {
+      title: 'Feature Tree',
+      subtitle: 'Strukturierte Übersicht der Plattformfunktionen für Claims und Partnernetzwerke.',
+      sections: {
+        intake: {
+          title: 'Schadenaufnahme',
+          subtitle: 'Eingang, Prüfung und Steuerung.',
+          items: {
+            claimIntake: 'Digitale Schadenaufnahme',
+            coverageCheck: 'Deckungsprüfung',
+            slaRules: 'SLA- und Eskalationslogik',
+            taskRouting: 'Task-Routing & Priorisierung'
+          }
+        },
+        partners: {
+          title: 'Partnernetzwerk',
+          subtitle: 'Werkstätten, Gutachter, Dienstleister.',
+          items: {
+            partnerDirectory: 'Partnerverzeichnis',
+            onboarding: 'Onboarding & Verträge',
+            capacity: 'Kapazitätssteuerung',
+            performance: 'Performance & Qualität'
+          }
+        },
+        media: {
+          title: 'Medien & Dokumente',
+          subtitle: 'Fotos, Belege, Nachweise.',
+          items: {
+            photoUpload: 'Foto- & Video-Uploads',
+            damageAi: 'Schadenbild-AI',
+            documentHub: 'Dokumenten-Hub',
+            versioning: 'Versionierung & Freigaben'
+          }
+        },
+        finance: {
+          title: 'Kosten & Rechnungen',
+          subtitle: 'KV, Freigabe, Abrechnung.',
+          items: {
+            estimates: 'Kostenvoranschläge',
+            invoices: 'Rechnungsprüfung',
+            approvals: 'Freigabe-Workflows',
+            reserves: 'Reservenmanagement'
+          }
+        },
+        repair: {
+          title: 'Reparatursteuerung',
+          subtitle: 'Status, Teile, Übergabe.',
+          items: {
+            statusTracking: 'Live-Status',
+            parts: 'Teilebeschaffung',
+            milestones: 'Meilensteine',
+            handover: 'Fahrzeugübergabe'
+          }
+        },
+        comms: {
+          title: 'Kommunikation',
+          subtitle: 'Abstimmung & Rückfragen.',
+          items: {
+            liveChat: 'Livechat',
+            questions: 'Rückfragen & Aufgaben',
+            notifications: 'Benachrichtigungen',
+            auditTrail: 'Audit Trail'
+          }
+        },
+        analytics: {
+          title: 'Analytics & AI',
+          subtitle: 'KPIs, Risiken, Insights.',
+          items: {
+            kpis: 'KPI-Dashboards',
+            trendReports: 'Trend-Reports',
+            benchmarks: 'Benchmarking',
+            fraudSignals: 'Fraud-Signale'
+          }
+        },
+        compliance: {
+          title: 'Compliance',
+          subtitle: 'Sicherheit & Governance.',
+          items: {
+            roles: 'Rollen & Rechte',
+            gdpr: 'DSGVO & Privacy',
+            accessLogs: 'Zugriffsprotokolle',
+            retention: 'Aufbewahrung'
+          }
         }
       }
     },
@@ -1857,6 +1994,11 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Partner Manager',
           description: 'Nurture relationships with assessors, workshops, and service partners.'
         },
+        featureTree: {
+          title: 'Feature Tree',
+          description: 'Structured overview of the platform capabilities.',
+          cta: 'Open'
+        },
         reporting: {
           title: 'Fleet Reporting',
           description: 'Deliver fleet KPIs, dashboards, and claims reporting.'
@@ -1873,6 +2015,92 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Logistics',
           description: 'Manage transports, routes, coverage and incidents with real-time status and AI alerts.',
           cta: 'View'
+        }
+      }
+    },
+    featureTree: {
+      title: 'Feature tree',
+      subtitle: 'Structured overview of the platform across claims and partner networks.',
+      sections: {
+        intake: {
+          title: 'Claim intake',
+          subtitle: 'Intake, review, and routing.',
+          items: {
+            claimIntake: 'Digital claim intake',
+            coverageCheck: 'Coverage validation',
+            slaRules: 'SLA and escalation rules',
+            taskRouting: 'Task routing & prioritization'
+          }
+        },
+        partners: {
+          title: 'Partner network',
+          subtitle: 'Repair shops, surveyors, service vendors.',
+          items: {
+            partnerDirectory: 'Partner directory',
+            onboarding: 'Onboarding & contracts',
+            capacity: 'Capacity steering',
+            performance: 'Performance & quality'
+          }
+        },
+        media: {
+          title: 'Media & documents',
+          subtitle: 'Photos, evidence, and files.',
+          items: {
+            photoUpload: 'Photo & video uploads',
+            damageAi: 'Damage AI',
+            documentHub: 'Document hub',
+            versioning: 'Versioning & approvals'
+          }
+        },
+        finance: {
+          title: 'Costs & invoices',
+          subtitle: 'Estimates, approvals, payments.',
+          items: {
+            estimates: 'Estimates',
+            invoices: 'Invoice review',
+            approvals: 'Approval workflows',
+            reserves: 'Reserve management'
+          }
+        },
+        repair: {
+          title: 'Repair control',
+          subtitle: 'Status, parts, handover.',
+          items: {
+            statusTracking: 'Live status',
+            parts: 'Parts procurement',
+            milestones: 'Milestones',
+            handover: 'Vehicle handover'
+          }
+        },
+        comms: {
+          title: 'Communication',
+          subtitle: 'Chat, questions, notifications.',
+          items: {
+            liveChat: 'Live chat',
+            questions: 'Questions & tasks',
+            notifications: 'Notifications',
+            auditTrail: 'Audit trail'
+          }
+        },
+        analytics: {
+          title: 'Analytics & AI',
+          subtitle: 'KPIs, risks, insights.',
+          items: {
+            kpis: 'KPI dashboards',
+            trendReports: 'Trend reports',
+            benchmarks: 'Benchmarking',
+            fraudSignals: 'Fraud signals'
+          }
+        },
+        compliance: {
+          title: 'Compliance',
+          subtitle: 'Security & governance.',
+          items: {
+            roles: 'Roles & permissions',
+            gdpr: 'GDPR & privacy',
+            accessLogs: 'Access logs',
+            retention: 'Retention policies'
+          }
         }
       }
     },
