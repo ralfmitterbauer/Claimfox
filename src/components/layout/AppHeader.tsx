@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import logoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 import type { Lang } from '@/i18n/translations'
@@ -13,7 +13,6 @@ const LANGUAGES: Array<{ label: string; value: Lang }> = [
 
 export default function AppHeader() {
   const navigate = useNavigate()
-  const location = useLocation()
   const { lang, setLang, t } = useI18n()
   const { isAuthenticated, logout } = useAuth()
 
@@ -28,17 +27,12 @@ export default function AppHeader() {
     navigate('/login')
   }
 
-  const hideLogoPaths = ['/registration', '/claim-manager', '/marketing']
-  const shouldHideLogo = hideLogoPaths.some((path) => location.pathname.startsWith(path))
-
   return (
     <header className="app-header">
       <div className="app-header__inner">
-        {!shouldHideLogo && (
-          <Link to="/roles" className="app-header__logo" aria-label="Insurfox">
-            <img src={logoDark} alt="Insurfox" />
-          </Link>
-        )}
+        <Link to="/roles" className="app-header__logo" aria-label="Insurfox">
+          <img src={logoDark} alt="Insurfox" />
+        </Link>
 
         <div className="app-header__actions">
           <div className="app-header__lang-switch" role="group" aria-label="Language switch">
