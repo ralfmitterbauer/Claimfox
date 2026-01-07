@@ -59,13 +59,12 @@ export default function ClaimManagerCasePage() {
       caseList={
         <Card
           style={{
-            background: 'rgba(255,255,255,0.1)',
-            border: '1px solid rgba(255,255,255,0.15)',
+            background: '#ffffff',
+            border: '1px solid #ececec',
             borderRadius: '24px',
             padding: '1.5rem',
-            color: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(18px)',
-            boxShadow: '0 18px 50px rgba(0,0,0,0.35)'
+            color: '#0e0d1c',
+            boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)'
           }}
         >
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -73,7 +72,7 @@ export default function ClaimManagerCasePage() {
               <h2 style={{ margin: 0, fontSize: '1.4rem', fontWeight: 600 }}>
                 {t('claimManager.app.caseList.title')}
               </h2>
-              <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.7)' }}>
+              <p style={{ margin: '0.35rem 0 0', color: '#64748b' }}>
                 {t('claimManager.app.caseList.subtitle')}
               </p>
             </div>
@@ -82,16 +81,16 @@ export default function ClaimManagerCasePage() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '520px' }}>
                   <thead>
                     <tr style={{ textAlign: 'left', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                      <th style={{ paddingBottom: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>
+                      <th style={{ paddingBottom: '0.5rem', color: '#94a3b8' }}>
                         {t('claimManager.app.caseList.columns.claimNumber')}
                       </th>
-                      <th style={{ paddingBottom: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>
+                      <th style={{ paddingBottom: '0.5rem', color: '#94a3b8' }}>
                         {t('claimManager.app.caseList.columns.firstName')}
                       </th>
-                      <th style={{ paddingBottom: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>
+                      <th style={{ paddingBottom: '0.5rem', color: '#94a3b8' }}>
                         {t('claimManager.app.caseList.columns.lastName')}
                       </th>
-                      <th style={{ paddingBottom: '0.5rem', color: 'rgba(255,255,255,0.6)' }}>
+                      <th style={{ paddingBottom: '0.5rem', color: '#94a3b8' }}>
                         {t('claimManager.app.caseList.columns.licensePlate')}
                       </th>
                     </tr>
@@ -105,19 +104,19 @@ export default function ClaimManagerCasePage() {
                           onClick={() => setSelectedClaimNumber(claim.claimNumber ?? null)}
                           style={{
                             cursor: 'pointer',
-                            background: isSelected ? 'rgba(255,255,255,0.12)' : 'transparent'
+                            background: isSelected ? '#f1f5f9' : 'transparent'
                           }}
                         >
-                          <td style={{ padding: '0.65rem 0.3rem', color: 'rgba(255,255,255,0.9)', fontWeight: 600 }}>
+                          <td style={{ padding: '0.65rem 0.3rem', color: '#0e0d1c', fontWeight: 600 }}>
                             {claim.claimNumber || '—'}
                           </td>
-                          <td style={{ padding: '0.65rem 0.3rem', color: 'rgba(255,255,255,0.75)' }}>
+                          <td style={{ padding: '0.65rem 0.3rem', color: '#64748b' }}>
                             {claim.firstName || '—'}
                           </td>
-                          <td style={{ padding: '0.65rem 0.3rem', color: 'rgba(255,255,255,0.75)' }}>
+                          <td style={{ padding: '0.65rem 0.3rem', color: '#64748b' }}>
                             {claim.lastName || '—'}
                           </td>
-                          <td style={{ padding: '0.65rem 0.3rem', color: 'rgba(255,255,255,0.75)' }}>
+                          <td style={{ padding: '0.65rem 0.3rem', color: '#64748b' }}>
                             {claim.licensePlate || '—'}
                           </td>
                         </tr>
@@ -127,7 +126,7 @@ export default function ClaimManagerCasePage() {
                 </table>
               </div>
             ) : (
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.7)' }}>
+              <p style={{ margin: 0, color: '#64748b' }}>
                 {t('claimManager.app.caseList.empty')}
               </p>
             )}

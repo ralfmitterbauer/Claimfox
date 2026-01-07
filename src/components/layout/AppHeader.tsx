@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import logoLight from '@/assets/logos/insurfox-logo-light.png'
+import logoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 import type { Lang } from '@/i18n/translations'
 import { useAuth } from '@/features/auth/AuthContext'
@@ -31,7 +31,7 @@ export default function AppHeader() {
     <header className="app-header">
       <div className="app-header__inner">
         <Link to="/roles" className="app-header__logo" aria-label="Insurfox">
-          <img src={logoLight} alt="Insurfox" />
+          <img src={logoDark} alt="Insurfox" />
         </Link>
 
         <div className="app-header__actions">

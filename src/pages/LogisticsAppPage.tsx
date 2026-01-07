@@ -311,16 +311,16 @@ export default function LogisticsAppPage() {
         minHeight: '100vh',
         width: '100%',
         padding: '32px clamp(1rem, 4vw, 3rem) 4rem',
-        color: '#ffffff'
+        color: '#0f172a'
       }}
     >
       <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div>
-          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)' }}>
+          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: '#64748b' }}>
             {t('logisticsApp.sections.overview')}
           </p>
           <h1 style={{ margin: '0.3rem 0', fontSize: 'clamp(2.4rem, 4vw, 3.4rem)', fontWeight: 700 }}>{t('logisticsApp.title')}</h1>
-          <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)', fontSize: '1.1rem' }}>{t('logisticsApp.subtitle')}</p>
+          <p style={{ margin: 0, color: '#475569', fontSize: '1.1rem' }}>{t('logisticsApp.subtitle')}</p>
         </div>
 
         <div
@@ -335,7 +335,7 @@ export default function LogisticsAppPage() {
               <p
                 style={{
                   margin: 0,
-                  color: 'rgba(255,255,255,0.66)',
+                  color: '#64748b',
                   letterSpacing: '0.06em',
                   textTransform: 'uppercase',
                   fontSize: '0.8rem'
@@ -360,27 +360,27 @@ export default function LogisticsAppPage() {
                 flex: '1 1 280px',
                 minWidth: '240px',
                 borderRadius: '20px',
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'rgba(255,255,255,0.08)',
-                color: '#fff',
+                border: '1px solid #d9d9d9',
+                background: '#ffffff',
+                color: '#0f172a',
                 padding: '0.5rem 1rem'
               }}
             />
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
-            <span style={{ color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>{t('logisticsApp.filters.statusLabel')}:</span>
+            <span style={{ color: '#475569', fontWeight: 600 }}>{t('logisticsApp.filters.statusLabel')}:</span>
             {statusFilters.map((filter) => (
               <button
                 key={filter.key}
                 type="button"
                 onClick={() => setStatusFilter(filter.key)}
                 style={{
-                  border: 'none',
+                  border: '1px solid #d9d9d9',
                   borderRadius: '999px',
                   padding: '0.4rem 1rem',
                   fontWeight: 600,
-                  background: statusFilter === filter.key ? filter.color ?? 'rgba(255,255,255,0.16)' : 'rgba(255,255,255,0.08)',
-                  color: '#fff',
+                  background: statusFilter === filter.key ? '#fde8df' : '#ffffff',
+                  color: '#0f172a',
                   cursor: 'pointer'
                 }}
               >
@@ -390,11 +390,11 @@ export default function LogisticsAppPage() {
           </div>
           <div style={{ overflowX: 'auto', paddingBottom: '0.5rem' }}>
             <table style={{ width: '100%', minWidth: '1100px', borderCollapse: 'separate', borderSpacing: 0 }}>
-              <caption style={{ textAlign: 'left', marginBottom: '0.75rem', fontWeight: 600, color: '#fff' }}>
+              <caption style={{ textAlign: 'left', marginBottom: '0.75rem', fontWeight: 600, color: '#0f172a' }}>
                 {t('logisticsApp.table.shipments.title')}
               </caption>
               <thead>
-                <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                <tr style={{ textAlign: 'left', color: '#64748b', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                   <th style={{ paddingBottom: '0.6rem' }}>{t('logisticsApp.table.shipments.col.shipment')}</th>
                   <th>{t('logisticsApp.table.shipments.col.customer')}</th>
                   <th>{t('logisticsApp.table.shipments.col.route')}</th>
@@ -410,16 +410,16 @@ export default function LogisticsAppPage() {
               <tbody>
                 {filteredShipments.length === 0 && (
                   <tr>
-                    <td colSpan={10} style={{ padding: '1rem', color: 'rgba(255,255,255,0.75)' }}>
+                    <td colSpan={10} style={{ padding: '1rem', color: '#64748b' }}>
                       {t('logisticsApp.table.shipments.empty')}
                     </td>
                   </tr>
                 )}
                 {filteredShipments.map((shipment) => (
-                  <tr key={shipment.id} style={{ borderTop: '1px solid rgba(255,255,255,0.12)', color: '#fff' }}>
+                  <tr key={shipment.id} style={{ borderTop: '1px solid #e2e8f0', color: '#0f172a' }}>
                     <td style={{ padding: '0.6rem 0.35rem' }}>
                       <strong>{shipment.id}</strong>
-                      <div style={{ fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{shipment.code}</div>
+                      <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{shipment.code}</div>
                     </td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.customer}</td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.route}</td>
@@ -436,9 +436,9 @@ export default function LogisticsAppPage() {
                     <td style={{ padding: '0.6rem 0.35rem' }}>{shipment.value}</td>
                     <td style={{ padding: '0.6rem 0.35rem' }}>
                       <div style={{ fontWeight: 600 }}>{shipment.contact}</div>
-                      <div style={{ color: 'rgba(255,255,255,0.7)' }}>{shipment.phone}</div>
+                      <div style={{ color: '#64748b' }}>{shipment.phone}</div>
                     </td>
-                    <td style={{ padding: '0.6rem 0.35rem', color: 'rgba(255,255,255,0.8)' }}>
+                    <td style={{ padding: '0.6rem 0.35rem', color: '#64748b' }}>
                       {shipment.noteKey ? t(`logisticsApp.shipmentsCopy.notes.${shipment.noteKey}`) : ''}
                     </td>
                   </tr>
@@ -460,19 +460,19 @@ export default function LogisticsAppPage() {
           {coverageCards.map((card) => (
             <Card key={card.titleKey} variant="glass" style={{ minHeight: '180px' }}>
               <h3 style={{ marginTop: 0 }}>{t(`logisticsApp.coverageCards.${card.titleKey}.title`)}</h3>
-              <p style={{ margin: '0.25rem 0', color: 'rgba(255,255,255,0.78)' }}>
+              <p style={{ margin: '0.25rem 0', color: '#475569' }}>
                 {t('logisticsApp.coverage.policyId')}: {card.policy}
               </p>
-              <p style={{ margin: '0.25rem 0', color: 'rgba(255,255,255,0.78)' }}>
+              <p style={{ margin: '0.25rem 0', color: '#475569' }}>
                 {t('logisticsApp.coverage.limit')}: {card.limit}
               </p>
-              <p style={{ margin: '0.25rem 0', color: 'rgba(255,255,255,0.78)' }}>
+              <p style={{ margin: '0.25rem 0', color: '#475569' }}>
                 {t('logisticsApp.coverage.deductible')}: {card.deductible}
               </p>
-              <p style={{ margin: '0.25rem 0', color: '#D3F261' }}>
+              <p style={{ margin: '0.25rem 0', color: '#15803d' }}>
                 {t('logisticsApp.coverage.status')}: {t(`logisticsApp.coverage.statusLabels.${card.statusKey}`)}
               </p>
-              <p style={{ margin: '0.25rem 0', color: 'rgba(255,255,255,0.75)' }}>
+              <p style={{ margin: '0.25rem 0', color: '#64748b' }}>
                 {t('logisticsApp.coverage.validity')}: {card.validity}
               </p>
             </Card>
@@ -484,9 +484,12 @@ export default function LogisticsAppPage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
             <div>
               <h2 style={{ margin: 0 }}>{t('logisticsApp.incidents.title')}</h2>
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.75)' }}>{t('logisticsApp.incidents.subtitle')}</p>
+              <p style={{ margin: 0, color: '#64748b' }}>{t('logisticsApp.incidents.subtitle')}</p>
             </div>
-            <Button variant="secondary" style={{ background: '#ffffff', color: '#0B1028', borderRadius: '999px' }}>
+            <Button
+              variant="secondary"
+              style={{ background: '#ffffff', color: '#0f172a', borderRadius: '999px', border: '1px solid #d9d9d9' }}
+            >
               {t('logisticsApp.incidents.openIncident')}
             </Button>
           </div>
@@ -497,22 +500,22 @@ export default function LogisticsAppPage() {
                 style={{
                   padding: '0.9rem 1rem',
                   borderRadius: '16px',
-                  border: '1px solid rgba(255,255,255,0.18)',
-                  background: 'rgba(255,255,255,0.08)'
+                  border: '1px solid #e2e8f0',
+                  background: '#f8fafc'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
                   <strong>{t(`logisticsApp.incidents.types.${incident.typeKey}`)}</strong>
                   <span style={badgeStyle(incidentRiskColor(incident.risk))}>{t(incidentRiskKey(incident.risk)).toUpperCase()}</span>
                 </div>
-                <p style={{ margin: '0.25rem 0 0', color: 'rgba(255,255,255,0.75)' }}>{incident.shipment}</p>
-                <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
+                <p style={{ margin: '0.25rem 0 0', color: '#475569' }}>{incident.shipment}</p>
+                <p style={{ margin: '0.35rem 0 0', color: '#475569' }}>
                   {t('logisticsApp.incidents.labels.status')}: {t(incidentStatusKey(incident.status))}
                 </p>
-                <p style={{ margin: '0.1rem 0', color: 'rgba(255,255,255,0.75)' }}>
+                <p style={{ margin: '0.1rem 0', color: '#475569' }}>
                   {t('logisticsApp.incidents.labels.cost')}: {incident.cost}
                 </p>
-                <p style={{ margin: 0, color: 'rgba(255,255,255,0.6)' }}>
+                <p style={{ margin: 0, color: '#64748b' }}>
                   {incident.docs} {t('logisticsApp.incidents.labels.documents')}
                 </p>
               </div>
@@ -533,9 +536,9 @@ export default function LogisticsAppPage() {
             <Card key={partner.titleKey} variant="glass" style={{ minHeight: '180px' }}>
               <h3 style={{ marginTop: 0 }}>{t(`logisticsApp.thirdParty.${partner.titleKey}`)}</h3>
               <p style={{ margin: '0.2rem 0', fontWeight: 600 }}>{partner.contact}</p>
-              <p style={{ margin: '0.2rem 0', color: 'rgba(255,255,255,0.75)' }}>{partner.address}</p>
-              <p style={{ margin: '0.2rem 0', color: 'rgba(255,255,255,0.78)' }}>{partner.phone}</p>
-              <p style={{ margin: '0.2rem 0', color: 'rgba(255,255,255,0.78)' }}>{partner.email}</p>
+              <p style={{ margin: '0.2rem 0', color: '#64748b' }}>{partner.address}</p>
+              <p style={{ margin: '0.2rem 0', color: '#475569' }}>{partner.phone}</p>
+              <p style={{ margin: '0.2rem 0', color: '#475569' }}>{partner.email}</p>
             </Card>
           ))}
           </div>
@@ -550,7 +553,14 @@ export default function LogisticsAppPage() {
               </Button>
               <Button
                 variant="secondary"
-                style={{ borderRadius: '999px', padding: '0.45rem 1.2rem', fontWeight: 600, background: '#ffffff', color: '#0B1028' }}
+                style={{
+                  borderRadius: '999px',
+                  padding: '0.45rem 1.2rem',
+                  fontWeight: 600,
+                  background: '#ffffff',
+                  color: '#0f172a',
+                  border: '1px solid #d9d9d9'
+                }}
               >
                 {t('logisticsApp.documents.download')}
               </Button>
@@ -562,11 +572,11 @@ export default function LogisticsAppPage() {
                 key={doc}
                 type="button"
                 style={{
-                  border: '1px solid rgba(255,255,255,0.25)',
+                  border: '1px solid #d9d9d9',
                   borderRadius: '999px',
                   padding: '0.5rem 1rem',
-                  background: 'rgba(255,255,255,0.08)',
-                  color: '#fff',
+                  background: '#ffffff',
+                  color: '#0f172a',
                   fontWeight: 600
                 }}
               >

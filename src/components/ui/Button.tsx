@@ -11,8 +11,8 @@ const VARIANT_STYLES: Record<'primary' | 'secondary', React.CSSProperties> = {
   },
   secondary: {
     background: '#ffffff',
-    border: '1px solid #d6d6f2',
-    color: '#080064'
+    border: '1px solid #d9d9d9',
+    color: '#0e0d1c'
   }
 }
 

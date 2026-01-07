@@ -4,7 +4,7 @@ import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
+import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -36,7 +36,7 @@ export default function RegistrationPage() {
     <section className="page registration-page" style={{ gap: '1.75rem' }}>
       <div style={{ width: '100%', maxWidth: 980, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <img src={InsurfoxLogoLight} alt="Insurfox" style={{ height: 56, objectFit: 'contain' }} />
+          <img src={InsurfoxLogoDark} alt="Insurfox" style={{ height: 56, objectFit: 'contain' }} />
           <Button variant="secondary" onClick={() => navigate('/roles')}>
             {t('registration.back')}
           </Button>
@@ -45,13 +45,13 @@ export default function RegistrationPage() {
         <Header
           title={t('registration.title')}
           subtitle={t('registration.subtitle')}
-          titleColor="#ffffff"
-          subtitleColor="rgba(255,255,255,0.78)"
+          titleColor="#0e0d1c"
+          subtitleColor="#65748b"
         />
 
-        <Card variant="glass" style={{ padding: '1.75rem', color: '#0e0d1c' }}>
+        <Card style={{ padding: '1.75rem' }}>
           <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
-            <label className="form-field" style={{ marginBottom: 0, color: 'rgba(255,255,255,0.7)' }}>
+            <label className="form-field" style={{ marginBottom: 0, color: '#475569' }}>
               {t('registration.emailLabel')}
               <input
                 className="text-input"
@@ -71,7 +71,7 @@ export default function RegistrationPage() {
                 alignItems: 'flex-start',
                 gap: '0.6rem',
                 fontSize: '0.95rem',
-                color: 'rgba(255,255,255,0.7)'
+                color: '#475569'
               }}
             >
               <input

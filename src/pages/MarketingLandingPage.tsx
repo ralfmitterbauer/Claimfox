@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
+import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const heroKpiKeys = ['realTime', 'ai', 'tuv', 'claims', 'docs', 'compliance'] as const
 const featureCardKeys = ['vehiclesMaster', 'realTime', 'aiPrioritization', 'tuvPlanning', 'claimsControl', 'docsPolicies'] as const
@@ -130,20 +130,30 @@ function AiAlertsCard({ title, value, description }: { title: string; value: str
       style={{
         borderRadius: '28px',
         padding: '1.75rem',
-        background: 'linear-gradient(135deg, rgba(8,0,100,0.85) 0%, rgba(19,16,64,0.6) 60%, rgba(212,56,13,0.35) 100%)',
-        boxShadow: '0 40px 80px rgba(4,0,40,0.55)',
-        border: '1px solid rgba(255,255,255,0.1)',
+        background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 60%, #fff2ed 100%)',
+        boxShadow: '0 40px 80px rgba(15, 23, 42, 0.12)',
+        border: '1px solid #e2e8f0',
         minHeight: '320px',
         position: 'relative',
         overflow: 'hidden'
       }}
     >
-      <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: '60%', height: '60%', background: 'radial-gradient(circle, rgba(255,255,255,0.25), rgba(255,255,255,0))', opacity: 0.7 }} />
+      <div
+        style={{
+          position: 'absolute',
+          top: '-20%',
+          right: '-10%',
+          width: '60%',
+          height: '60%',
+          background: 'radial-gradient(circle, rgba(212,56,13,0.18), rgba(255,255,255,0))',
+          opacity: 0.6
+        }}
+      />
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
           {aiIcon}
           <div>
-            <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.8)' }}>{title}</p>
+            <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>{title}</p>
             <strong style={{ fontSize: '1.3rem' }}>{value}</strong>
           </div>
         </div>
@@ -163,14 +173,14 @@ function AiAlertsCard({ title, value, description }: { title: string; value: str
                   width: '100%',
                   height: `${value}%`,
                   borderRadius: '12px',
-                  background: 'linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.1))',
-                  boxShadow: '0 10px 26px rgba(0,0,0,0.35)'
+                  background: 'linear-gradient(180deg, rgba(212,56,13,0.7), rgba(212,56,13,0.15))',
+                  boxShadow: '0 10px 26px rgba(15, 23, 42, 0.12)'
                 }}
               />
             </div>
           ))}
         </div>
-        <p style={{ margin: 0, fontSize: '0.95rem', color: 'rgba(255,255,255,0.85)' }}>{description}</p>
+        <p style={{ margin: 0, fontSize: '0.95rem', color: '#475569' }}>{description}</p>
       </div>
     </div>
   )
@@ -196,7 +206,15 @@ export default function MarketingLandingPage() {
   return (
     <>
       <style>{layoutStyles}</style>
-      <div style={{ position: 'relative', minHeight: '100vh', color: '#ffffff', overflow: 'hidden' }}>
+      <div
+        style={{
+          position: 'relative',
+          minHeight: '100vh',
+          color: '#0f172a',
+          background: 'linear-gradient(180deg, #f7f7f8 0%, #ffffff 100%)',
+          overflow: 'hidden'
+        }}
+      >
         <div
           style={{
             position: 'absolute',
@@ -238,11 +256,11 @@ export default function MarketingLandingPage() {
           >
             <section style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '150px', height: 'auto' }} />
+              <img src={InsurfoxLogoDark} alt="Insurfox" style={{ width: '150px', height: 'auto' }} />
               <h1 style={{ margin: 0, fontSize: 'clamp(2.2rem, 4vw, 3.5rem)', letterSpacing: '-0.03em', maxWidth: '680px' }}>
                 {t('marketingFleet.hero.title')}
               </h1>
-              <p style={{ margin: 0, fontSize: '1.1rem', color: 'rgba(255,255,255,0.9)', maxWidth: '640px' }}>
+              <p style={{ margin: 0, fontSize: '1.1rem', color: '#475569', maxWidth: '640px' }}>
                 {t('marketingFleet.hero.subtitle')}
               </p>
             </div>
@@ -259,13 +277,12 @@ export default function MarketingLandingPage() {
                   style={{
                     padding: '0.85rem 1rem',
                     borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.16)',
-                    border: '1px solid rgba(255,255,255,0.35)',
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
                     textAlign: 'center',
                     fontWeight: 600,
                     letterSpacing: '0.01em',
-                    backdropFilter: 'blur(14px)',
-                    WebkitBackdropFilter: 'blur(14px)'
+                    boxShadow: '0 12px 24px rgba(15, 23, 42, 0.08)'
                   }}
                 >
                   {t(`marketingFleet.kpi.${key}`)}
@@ -290,16 +307,16 @@ export default function MarketingLandingPage() {
                 <div key={key} style={featureCardStyle}>
                   <span>{featureIcons[key]}</span>
                   <strong style={{ fontSize: '1.05rem' }}>{t(`marketingFleet.manage.features.${key}.title`)}</strong>
-                  <p style={{ margin: 0, fontSize: '0.95rem', color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>
+                  <p style={{ margin: 0, fontSize: '0.95rem', color: '#475569', lineHeight: 1.45 }}>
                     {t(`marketingFleet.manage.features.${key}.description`)}
                   </p>
                   <div style={miniIllustrationStyle}>
-                    <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.25)', borderRadius: '4px' }} />
+                    <div style={{ flex: 1, height: '4px', background: '#e2e8f0', borderRadius: '4px' }} />
                     <div
                       style={{
                         flex: 1,
                         height: '4px',
-                        background: 'linear-gradient(90deg, rgba(212,56,13,0.8), rgba(255,255,255,0.3))',
+                        background: 'linear-gradient(90deg, rgba(212,56,13,0.8), rgba(212,56,13,0.15))',
                         borderRadius: '4px'
                       }}
                     />
@@ -312,7 +329,7 @@ export default function MarketingLandingPage() {
           <section style={{ ...glassSectionStyle, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div>
               <h2 style={sectionTitleStyle}>{t('marketingFleet.preview.title')}</h2>
-              <p style={{ margin: '0.3rem 0 0', color: 'rgba(255,255,255,0.85)' }}>{t('marketingFleet.preview.subtitle')}</p>
+              <p style={{ margin: '0.3rem 0 0', color: '#475569' }}>{t('marketingFleet.preview.subtitle')}</p>
             </div>
             <div
               style={{
@@ -323,7 +340,7 @@ export default function MarketingLandingPage() {
             >
               {previewKpis.map((kpi) => (
                 <div key={kpi.key} style={previewKpiCardStyle}>
-                  <p style={{ margin: 0, color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>
+                  <p style={{ margin: 0, color: '#64748b', fontSize: '0.85rem' }}>
                     {t(`marketingFleet.preview.kpis.${kpi.key}`)}
                   </p>
                   <strong style={{ fontSize: '1.6rem' }}>{kpi.value}</strong>
@@ -345,12 +362,12 @@ export default function MarketingLandingPage() {
                       <div
                         style={{
                           height: `${(entry.value / 18) * 130 + 20}px`,
-                          background: 'linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.1))',
+                          background: 'linear-gradient(180deg, rgba(212,56,13,0.7), rgba(212,56,13,0.12))',
                           borderRadius: '12px',
-                          boxShadow: '0 12px 30px rgba(0,0,0,0.25)'
+                          boxShadow: '0 12px 30px rgba(15, 23, 42, 0.12)'
                         }}
                       />
-                      <small style={{ color: 'rgba(255,255,255,0.75)' }}>{entry.label}</small>
+                      <small style={{ color: '#64748b' }}>{entry.label}</small>
                     </div>
                   ))}
                 </div>
@@ -378,7 +395,7 @@ export default function MarketingLandingPage() {
                     </div>
                   ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontSize: '0.8rem' }}>
                   {downtimeData.map((entry) => (
                     <span key={entry.label}>{entry.label}</span>
                   ))}
@@ -400,7 +417,7 @@ export default function MarketingLandingPage() {
                 <div key={key} style={useCaseCardStyle}>
                   <span>{useCaseIcons[key]}</span>
                   <strong>{t(`marketingFleet.usecases.items.${key}.title`)}</strong>
-                  <p style={{ margin: 0, color: 'rgba(255,255,255,0.85)', lineHeight: 1.45 }}>
+                  <p style={{ margin: 0, color: '#475569', lineHeight: 1.45 }}>
                     {t(`marketingFleet.usecases.items.${key}.description`)}
                   </p>
                 </div>
@@ -429,9 +446,9 @@ export default function MarketingLandingPage() {
                 style={{
                   minWidth: '220px',
                   padding: '0.9rem 1.6rem',
-                  borderColor: 'rgba(255,255,255,0.6)',
-                  color: '#ffffff',
-                  background: 'rgba(255,255,255,0.05)'
+                  borderColor: '#d9d9d9',
+                  color: '#0f172a',
+                  background: '#ffffff'
                 }}
               >
                 {t('marketingFleet.cta.secondary')}
@@ -446,27 +463,26 @@ export default function MarketingLandingPage() {
 }
 
 const glassSectionStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.08)',
-  border: '1px solid rgba(255,255,255,0.2)',
+  background: '#ffffff',
+  border: '1px solid #e2e8f0',
   borderRadius: '30px',
   padding: '2.2rem',
-  boxShadow: '0 35px 80px rgba(4,0,40,0.45)',
-  backdropFilter: 'blur(18px)',
-  WebkitBackdropFilter: 'blur(18px)'
+  boxShadow: '0 35px 80px rgba(15, 23, 42, 0.08)'
 }
 
 const sectionTitleStyle: React.CSSProperties = {
   margin: 0,
   fontSize: '1.5rem',
-  letterSpacing: '-0.01em'
+  letterSpacing: '-0.01em',
+  color: '#0f172a'
 }
 
 const featureCardStyle: React.CSSProperties = {
   borderRadius: '22px',
   padding: '1.4rem',
-  background: 'rgba(8,0,100,0.35)',
-  border: '1px solid rgba(255,255,255,0.18)',
-  boxShadow: '0 20px 50px rgba(0,0,0,0.3)',
+  background: '#f8fafc',
+  border: '1px solid #e2e8f0',
+  boxShadow: '0 20px 50px rgba(15, 23, 42, 0.08)',
   display: 'flex',
   flexDirection: 'column',
   gap: '0.8rem'
@@ -479,33 +495,33 @@ const miniIllustrationStyle: React.CSSProperties = {
 }
 
 const previewKpiCardStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.1)',
+  background: '#ffffff',
   borderRadius: '18px',
   padding: '1rem',
-  border: '1px solid rgba(255,255,255,0.2)',
-  boxShadow: '0 14px 34px rgba(0,0,0,0.3)'
+  border: '1px solid #e2e8f0',
+  boxShadow: '0 14px 34px rgba(15, 23, 42, 0.08)'
 }
 
 const miniChartCardStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.07)',
+  background: '#ffffff',
   borderRadius: '18px',
   padding: '1.2rem',
-  border: '1px solid rgba(255,255,255,0.18)',
-  boxShadow: '0 18px 46px rgba(0,0,0,0.35)'
+  border: '1px solid #e2e8f0',
+  boxShadow: '0 18px 46px rgba(15, 23, 42, 0.08)'
 }
 
 const chartTitleStyle: React.CSSProperties = {
   margin: '0 0 0.8rem',
   fontSize: '1rem',
-  color: 'rgba(255,255,255,0.9)'
+  color: '#1f2937'
 }
 
 const useCaseCardStyle: React.CSSProperties = {
   borderRadius: '22px',
   padding: '1.4rem',
-  background: 'rgba(8,0,100,0.4)',
-  border: '1px solid rgba(255,255,255,0.18)',
-  boxShadow: '0 14px 40px rgba(0,0,0,0.3)',
+  background: '#f8fafc',
+  border: '1px solid #e2e8f0',
+  boxShadow: '0 14px 40px rgba(15, 23, 42, 0.08)',
   display: 'flex',
   flexDirection: 'column',
   gap: '0.8rem'

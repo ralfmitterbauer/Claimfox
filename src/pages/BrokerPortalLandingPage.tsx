@@ -2,8 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
-import BrokerBackground from '@/assets/images/background_broker.png'
+import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const featureKeys = ['crm', 'tender', 'ai', 'insights', 'workflows', 'compliance'] as const
 const trustKeys = ['crm', 'tender', 'ai'] as const
@@ -97,17 +96,17 @@ const SectionDivider = () => (
     style={{
       width: '100%',
       height: '1px',
-      background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.45) 50%, rgba(255,255,255,0) 100%)',
+      background: 'linear-gradient(90deg, rgba(15,23,42,0) 0%, rgba(15,23,42,0.18) 50%, rgba(15,23,42,0) 100%)',
       opacity: 0.85
     }}
   />
 )
 
 const SectorsBannerGraphic = () => (
-  <svg width="120" height="90" viewBox="0 0 120 90" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="5" y="35" width="35" height="25" rx="4" fill="rgba(255,255,255,0.08)" />
-    <rect x="45" y="25" width="35" height="35" rx="4" fill="rgba(255,255,255,0.08)" />
-    <rect x="85" y="15" width="30" height="45" rx="6" fill="rgba(255,255,255,0.08)" />
+  <svg width="120" height="90" viewBox="0 0 120 90" fill="none" stroke="#475569" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="5" y="35" width="35" height="25" rx="4" fill="#f8fafc" />
+    <rect x="45" y="25" width="35" height="35" rx="4" fill="#f8fafc" />
+    <rect x="85" y="15" width="30" height="45" rx="6" fill="#f8fafc" />
     <path d="M12 30v-8a4 4 0 0 1 4-4h24" />
     <path d="M52 20v-6a4 4 0 0 1 4-4h42" />
     <path d="M90 62v18H10V60" />
@@ -121,17 +120,15 @@ const glassChipBaseStyle: React.CSSProperties = {
   justifyContent: 'center',
   padding: '10px 14px',
   borderRadius: '999px',
-  background: 'rgba(255,255,255,0.18)',
-  color: '#ffffff',
-  border: '1px solid rgba(255,255,255,0.4)',
+  background: '#ffffff',
+  color: '#0f172a',
+  border: '1px solid #e2e8f0',
   fontSize: '0.95rem',
   lineHeight: 1,
   fontWeight: 700,
   whiteSpace: 'nowrap',
   textAlign: 'center',
-  boxShadow: '0 10px 28px rgba(0,0,0,0.18)',
-  backdropFilter: 'blur(10px)',
-  WebkitBackdropFilter: 'blur(10px)',
+  boxShadow: '0 10px 28px rgba(15, 23, 42, 0.08)',
   transition: 'transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease',
   cursor: 'default',
   gap: '0.45rem'
@@ -148,8 +145,8 @@ function GlassChip({ label, weight = 700, icon }: { label: string; weight?: numb
         ...glassChipBaseStyle,
         fontWeight: weight,
         transform: hovered ? 'translateY(-1px)' : undefined,
-        background: hovered ? 'rgba(255,255,255,0.22)' : glassChipBaseStyle.background,
-        boxShadow: hovered ? '0 14px 34px rgba(0,0,0,0.22)' : glassChipBaseStyle.boxShadow
+        background: hovered ? '#fde8df' : glassChipBaseStyle.background,
+        boxShadow: hovered ? '0 14px 34px rgba(15, 23, 42, 0.12)' : glassChipBaseStyle.boxShadow
       }}
     >
       {icon && <span style={{ display: 'inline-flex' }}>{icon}</span>}
@@ -168,7 +165,8 @@ export default function BrokerPortalLandingPage() {
         position: 'relative',
         minHeight: '100vh',
         overflow: 'hidden',
-        color: '#fff'
+        color: '#0f172a',
+        background: 'linear-gradient(180deg, #f7f7f8 0%, #ffffff 100%)'
       }}
     >
       <div
@@ -182,9 +180,9 @@ export default function BrokerPortalLandingPage() {
         <Button
           onClick={() => navigate('/broker-crm')}
           style={{
-            background: '#D3F261',
-            color: '#081120',
-            border: 'none',
+            background: '#D4380D',
+            color: '#ffffff',
+            border: '1px solid #D4380D',
             paddingInline: '1.75rem',
             fontWeight: 700
           }}
@@ -213,7 +211,7 @@ export default function BrokerPortalLandingPage() {
         >
           <div style={{ textAlign: 'center' }}>
             <img
-              src={InsurfoxLogoLight}
+              src={InsurfoxLogoDark}
               alt="Insurfox"
               style={{
                 height: '90px',
@@ -226,12 +224,11 @@ export default function BrokerPortalLandingPage() {
             <h1
               style={{
                 margin: 0,
-                color: '#ffffff',
+                color: '#0f172a',
                 fontSize: 'clamp(2.6rem, 4vw, 3.6rem)',
                 lineHeight: 1.25,
                 letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                textShadow: '0 14px 34px rgba(0, 0, 0, 0.6)'
+                textTransform: 'uppercase'
               }}
             >
               {t('brokerPortal.title')}
@@ -241,7 +238,7 @@ export default function BrokerPortalLandingPage() {
                 marginTop: '1rem',
                 maxWidth: '740px',
                 marginInline: 'auto',
-                color: 'rgba(255,255,255,0.88)',
+                color: '#475569',
                 fontSize: '1.08rem',
                 lineHeight: 1.6
               }}
@@ -275,7 +272,7 @@ export default function BrokerPortalLandingPage() {
           >
             <div style={{ textAlign: 'left' }}>
               {[1, 2, 3].map((line) => (
-                <p key={line} style={{ color: 'rgba(255,255,255,0.9)', fontSize: '1.05rem', marginBottom: '0.75rem' }}>
+                <p key={line} style={{ color: '#475569', fontSize: '1.05rem', marginBottom: '0.75rem' }}>
                   {t(`brokerLanding.valueLine${line}`)}
                 </p>
               ))}
@@ -298,7 +295,7 @@ export default function BrokerPortalLandingPage() {
 
           <div>
             <header style={{ marginBottom: '1rem' }}>
-              <p style={{ textTransform: 'uppercase', letterSpacing: '0.2em', margin: 0, color: '#d0caff' }}>
+              <p style={{ textTransform: 'uppercase', letterSpacing: '0.2em', margin: 0, color: '#94a3b8' }}>
                 {t('brokerLanding.featureSectionSubtitle')}
               </p>
               <h2 style={{ margin: '0.35rem 0 0', fontSize: 'clamp(1.9rem, 3vw, 2.3rem)' }}>{t('brokerLanding.featureSectionTitle')}</h2>
@@ -320,7 +317,7 @@ export default function BrokerPortalLandingPage() {
 
           <div>
             <h3 style={{ margin: 0, fontSize: '1.7rem' }}>{t('brokerLanding.sectorsTitle')}</h3>
-            <p style={{ marginTop: '0.35rem', color: 'rgba(255,255,255,0.85)' }}>{t('brokerLanding.sectorsSubtitle')}</p>
+            <p style={{ marginTop: '0.35rem', color: '#475569' }}>{t('brokerLanding.sectorsSubtitle')}</p>
             <div
               style={{
                 marginTop: '1.25rem',
@@ -328,16 +325,14 @@ export default function BrokerPortalLandingPage() {
                 gap: '1rem',
                 padding: '1rem 1.5rem',
                 borderRadius: '20px',
-                background: 'rgba(255,255,255,0.15)',
-                border: '1px solid rgba(255,255,255,0.35)',
-                boxShadow: '0 18px 38px rgba(0,0,0,0.25)',
-                backdropFilter: 'blur(12px)',
-                WebkitBackdropFilter: 'blur(12px)',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 18px 38px rgba(15, 23, 42, 0.08)',
                 alignItems: 'center',
                 flexWrap: 'wrap'
               }}
             >
-              <div style={{ flex: '1 1 240px', color: 'rgba(255,255,255,0.92)', fontWeight: 600, fontSize: '1rem' }}>
+              <div style={{ flex: '1 1 240px', color: '#0f172a', fontWeight: 600, fontSize: '1rem' }}>
                 {t('brokerLanding.sectorsBanner')}
               </div>
               <div style={{ flex: '0 0 auto' }}>
@@ -362,7 +357,7 @@ export default function BrokerPortalLandingPage() {
 
           <div>
             <h3 style={{ margin: 0, fontSize: '1.75rem' }}>{t('brokerLanding.whyTitle')}</h3>
-            <p style={{ marginTop: '0.5rem', color: 'rgba(255,255,255,0.85)' }}>{t('brokerLanding.whySubtitle')}</p>
+            <p style={{ marginTop: '0.5rem', color: '#475569' }}>{t('brokerLanding.whySubtitle')}</p>
             <div
               style={{
                 display: 'grid',
@@ -377,12 +372,13 @@ export default function BrokerPortalLandingPage() {
                   style={{
                     padding: '1.5rem',
                     borderRadius: '18px',
-                    background: 'rgba(0,0,0,0.4)',
-                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
                     minHeight: '160px',
                     display: 'flex',
                     alignItems: 'center',
-                    color: 'rgba(255,255,255,0.95)'
+                    color: '#1f2937',
+                    boxShadow: '0 12px 28px rgba(15, 23, 42, 0.08)'
                   }}
                 >
                   {t(`brokerLanding.whyItems.${key}`)}

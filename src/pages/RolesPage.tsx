@@ -25,7 +25,7 @@ const ROLE_ITEMS: RoleItem[] = [
 
 const descriptionStyle: React.CSSProperties = {
   marginTop: 0,
-  color: 'rgba(255,255,255,0.85)',
+  color: '#475569',
   minHeight: '3rem',
   fontSize: '0.95rem',
   lineHeight: 1.45,
@@ -60,8 +60,8 @@ export default function RolesPage() {
           <Header
             title={t('roles.title')}
             subtitle={t('roles.subtitle')}
-            titleColor="#ffffff"
-            subtitleColor="rgba(255,255,255,0.85)"
+            titleColor="#0e0d1c"
+            subtitleColor="#65748b"
             actions={
               <Button variant="secondary" onClick={handleLogout}>
                 {t('roles.logout')}

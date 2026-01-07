@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
+import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const featureKeys = [
   'statusTimeline',
@@ -129,12 +129,12 @@ export default function ClaimManagerMarketingPage() {
             padding: '32px 1.25rem 4rem',
             display: 'flex',
             justifyContent: 'center',
-            color: '#ffffff'
+            color: '#0e0d1c'
           }}
         >
           <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
-              <img src={InsurfoxLogoLight} alt="Insurfox" style={{ height: '56px' }} />
+              <img src={InsurfoxLogoDark} alt="Insurfox" style={{ height: '56px' }} />
               <Button
                 onClick={() => navigate('/claim-manager-app')}
                 style={{ background: '#D4380D', padding: '0.65rem 1.4rem' }}
@@ -152,11 +152,11 @@ export default function ClaimManagerMarketingPage() {
                 alignItems: 'center'
               }}
             >
-              <p style={{ letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', margin: 0 }}>
+              <p style={{ letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', margin: 0 }}>
                 {t('claimManager.marketing.hero.overline')}
               </p>
               <h1 style={{ margin: 0, fontSize: '3rem', fontWeight: 700 }}>{t('claimManager.marketing.hero.title')}</h1>
-              <p style={{ maxWidth: '760px', color: 'rgba(255,255,255,0.85)', fontSize: '1.15rem' }}>
+              <p style={{ maxWidth: '760px', color: '#475569', fontSize: '1.15rem' }}>
                 {t('claimManager.marketing.hero.subtitle')}
               </p>
             </div>
@@ -167,8 +167,8 @@ export default function ClaimManagerMarketingPage() {
                   key={key}
                   variant="glass"
                   style={{
-                    background: 'rgba(255,255,255,0.08)',
-                    border: '1px solid rgba(255,255,255,0.25)',
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
                     minHeight: '180px'
                   }}
                 >
@@ -176,7 +176,7 @@ export default function ClaimManagerMarketingPage() {
                     {featureIcons[key]}
                     <div>
                       <h3 style={{ margin: '0 0 0.35rem' }}>{t(`claimManager.marketing.features.${key}.title`)}</h3>
-                      <p style={{ margin: 0, color: 'rgba(255,255,255,0.75)' }}>
+                      <p style={{ margin: 0, color: '#64748b' }}>
                         {t(`claimManager.marketing.features.${key}.description`)}
                       </p>
                     </div>
@@ -188,8 +188,8 @@ export default function ClaimManagerMarketingPage() {
             <Card
               variant="glass"
               style={{
-                background: 'rgba(255,255,255,0.09)',
-                border: '1px solid rgba(255,255,255,0.2)',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 display: 'flex',
                 flexWrap: 'wrap',
                 gap: '1.75rem',
@@ -198,7 +198,7 @@ export default function ClaimManagerMarketingPage() {
             >
               <div style={{ flex: '1 1 320px' }}>
                 <h2 style={{ margin: '0 0 0.5rem' }}>{t('claimManager.marketing.preview.title')}</h2>
-                <p style={{ margin: 0, color: 'rgba(255,255,255,0.75)' }}>
+                <p style={{ margin: 0, color: '#64748b' }}>
                   {t('claimManager.marketing.preview.subtitle')}
                 </p>
                 <div style={{ marginTop: '1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
@@ -209,11 +209,11 @@ export default function ClaimManagerMarketingPage() {
                         flex: '1 1 120px',
                         padding: '0.85rem',
                         borderRadius: '14px',
-                        background: 'rgba(255,255,255,0.12)',
-                        border: '1px solid rgba(255,255,255,0.2)'
+                        background: '#f8fafc',
+                        border: '1px solid #e2e8f0'
                       }}
                     >
-                      <p style={{ margin: 0, fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
+                      <p style={{ margin: 0, fontSize: '0.85rem', color: '#94a3b8' }}>
                         {t(`claimManager.marketing.preview.kpis.${item.key}`)}
                       </p>
                       <strong style={{ fontSize: '1.4rem' }}>{item.value}</strong>
@@ -224,11 +224,11 @@ export default function ClaimManagerMarketingPage() {
               <div
                 style={{
                   flex: '1 1 360px',
-                  background: 'rgba(8,16,64,0.6)',
+                  background: '#f8fafc',
                   borderRadius: '20px',
                   padding: '1.25rem',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  boxShadow: '0 30px 50px rgba(3,0,40,0.4)'
+                  border: '1px solid #e2e8f0',
+                  boxShadow: '0 10px 28px rgba(15, 23, 42, 0.08)'
                 }}
               >
                 <p style={{ margin: '0 0 1rem', fontWeight: 600 }}>{t('claimManager.marketing.preview.chartTitle')}</p>
@@ -251,7 +251,7 @@ export default function ClaimManagerMarketingPage() {
                         x2={chartPadding.left + chartInnerWidth}
                         y1={chartPadding.top + chartInnerHeight * ratio}
                         y2={chartPadding.top + chartInnerHeight * ratio}
-                        stroke="rgba(255,255,255,0.12)"
+                        stroke="#e2e8f0"
                         strokeDasharray="4 6"
                       />
                     ))}
@@ -264,7 +264,7 @@ export default function ClaimManagerMarketingPage() {
                         cy={point.y}
                         r="4"
                         fill="rgba(211,242,97,0.95)"
-                        stroke="rgba(8,16,64,0.9)"
+                        stroke="#0f172a"
                         strokeWidth="2"
                       />
                     ))}
@@ -275,19 +275,19 @@ export default function ClaimManagerMarketingPage() {
                         y={Math.max(chartPadding.top + 12, point.y - 8)}
                         textAnchor="middle"
                         fontSize="10"
-                        fill="rgba(255,255,255,0.7)"
+                        fill="#64748b"
                       >
                         {`€${point.value.toLocaleString('de-DE')}`}
                       </text>
                     ))}
                   </svg>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', color: 'rgba(255,255,255,0.6)', fontSize: '0.75rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', color: '#94a3b8', fontSize: '0.75rem' }}>
                     {previewSeries.map((item) => (
                       <span key={item.week}>{item.week}</span>
                     ))}
                   </div>
                 </div>
-                <p style={{ margin: '1rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
+                <p style={{ margin: '1rem 0 0', color: '#64748b' }}>
                   {t('claimManager.marketing.preview.notes')}
                 </p>
               </div>

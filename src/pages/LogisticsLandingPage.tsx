@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
+import InsurfoxLogoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 const KPI_KEYS = ['liveShipments', 'coverageRate', 'openIncidents', 'etaDeviation'] as const
 const FEATURE_KEYS = ['realtime', 'coverage', 'incidents', 'thirdparty', 'ai', 'routes'] as const
@@ -66,12 +66,12 @@ export default function LogisticsLandingPage() {
         minHeight: '100vh',
         width: '100%',
         padding: '48px clamp(1rem, 4vw, 3rem) 4rem',
-        color: '#ffffff'
+        color: '#0f172a'
       }}
     >
       <div style={{ width: '100%', maxWidth: 1220, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <img src={InsurfoxLogoLight} alt="Insurfox" style={{ height: 70, objectFit: 'contain' }} />
+          <img src={InsurfoxLogoDark} alt="Insurfox" style={{ height: 70, objectFit: 'contain' }} />
           <Button
             onClick={() => navigate('/logistics-app')}
             style={{ background: '#D4380D', padding: '0.65rem 1.5rem', borderRadius: '999px', fontWeight: 600 }}
@@ -81,11 +81,11 @@ export default function LogisticsLandingPage() {
         </div>
 
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.66)' }}>
+          <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: '#64748b' }}>
             {t('logisticsLanding.badge')}
           </p>
           <h1 style={{ margin: 0, fontSize: 'clamp(2.8rem, 5vw, 3.8rem)', fontWeight: 700 }}>{t('logisticsLanding.title')}</h1>
-          <p style={{ margin: 0, maxWidth: '840px', color: 'rgba(255,255,255,0.85)', fontSize: '1.2rem' }}>{t('logisticsLanding.subtitle')}</p>
+          <p style={{ margin: 0, maxWidth: '840px', color: '#475569', fontSize: '1.2rem' }}>{t('logisticsLanding.subtitle')}</p>
         </div>
 
         <div
@@ -101,7 +101,7 @@ export default function LogisticsLandingPage() {
               variant="glass"
               style={{ padding: '1.1rem', minHeight: '120px', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}
             >
-              <p style={{ margin: 0, color: 'rgba(255,255,255,0.65)', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
+              <p style={{ margin: 0, color: '#64748b', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: '0.85rem' }}>
                 {t(`logisticsLanding.kpi.${key}`)}
               </p>
               <p style={{ margin: 0, fontSize: '2rem', fontWeight: 700 }}>{t(`logisticsLanding.kpiValues.${key}`)}</p>
@@ -130,7 +130,7 @@ export default function LogisticsLandingPage() {
                   {featureIcons[key]}
                   <div>
                     <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.15rem' }}>{t(`logisticsLanding.cards.${key}.title`)}</h3>
-                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t(`logisticsLanding.cards.${key}.body`)}</p>
+                    <p style={{ margin: 0, color: '#475569' }}>{t(`logisticsLanding.cards.${key}.body`)}</p>
                   </div>
                 </div>
               </Card>
@@ -138,7 +138,7 @@ export default function LogisticsLandingPage() {
           </div>
 
           <Card variant="glass" style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-            <p style={{ margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>
+            <p style={{ margin: 0, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#64748b', fontSize: '0.85rem' }}>
               {t('logisticsLanding.preview.title')}
             </p>
             <div style={{ display: 'flex', gap: '0.65rem', flexWrap: 'wrap' }}>
@@ -147,13 +147,13 @@ export default function LogisticsLandingPage() {
                   key={key}
                   style={{
                     flex: '1 1 100px',
-                    background: 'rgba(255,255,255,0.08)',
+                    background: '#ffffff',
                     borderRadius: '14px',
                     padding: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.18)'
+                    border: '1px solid #e2e8f0'
                   }}
                 >
-                  <p style={{ margin: 0, fontSize: '0.9rem', color: 'rgba(255,255,255,0.7)' }}>{t(`logisticsLanding.preview.${key}`)}</p>
+                  <p style={{ margin: 0, fontSize: '0.9rem', color: '#64748b' }}>{t(`logisticsLanding.preview.${key}`)}</p>
                   <strong style={{ fontSize: '1.4rem' }}>{t(`logisticsLanding.previewValues.${key}`)}</strong>
                 </div>
               ))}
@@ -166,14 +166,14 @@ export default function LogisticsLandingPage() {
                       width: '70%',
                       height: `${value}%`,
                       borderRadius: '16px',
-                      background: 'linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.25))',
-                      boxShadow: '0 15px 30px rgba(0,0,0,0.4)'
+                      background: 'linear-gradient(180deg, rgba(212,56,13,0.7), rgba(212,56,13,0.15))',
+                      boxShadow: '0 15px 30px rgba(15, 23, 42, 0.12)'
                     }}
                   />
                 </div>
               ))}
             </div>
-            <p style={{ margin: 0, color: 'rgba(255,255,255,0.8)' }}>{t('logisticsLanding.preview.footer')}</p>
+            <p style={{ margin: 0, color: '#64748b' }}>{t('logisticsLanding.preview.footer')}</p>
           </Card>
         </div>
       </div>

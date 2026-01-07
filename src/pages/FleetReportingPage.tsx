@@ -373,8 +373,8 @@ const INITIAL_CLAIMS: ClaimRow[] = [
   }
 ]
 
-const GLASS_TEXT = 'rgba(255,255,255,0.85)'
-const GLASS_SUBTLE = 'rgba(255,255,255,0.65)'
+const GLASS_TEXT = '#0e0d1c'
+const GLASS_SUBTLE = '#64748b'
 
 const TRAFFIC_COLORS = {
   green: '#16A34A',
@@ -674,13 +674,13 @@ function KpiCard({
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <div style={{ flex: '0 0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</div>
         <div style={{ minWidth: 0 }}>
-          <p style={{ margin: 0, color: 'rgba(255,255,255,0.78)', fontSize: '0.9rem' }}>{label}</p>
+          <p style={{ margin: 0, color: '#64748b', fontSize: '0.9rem' }}>{label}</p>
           <div
             style={{
               marginTop: '0.3rem',
               fontSize: valueSize === 'compact' ? '1rem' : '2rem',
               fontWeight: 700,
-              color: '#ffffff',
+              color: '#0e0d1c',
               maxWidth: '100%',
               ...(valueSize === 'compact'
                 ? {
@@ -793,8 +793,8 @@ export default function FleetReportingPage() {
 
   const tableCellStyle: React.CSSProperties = {
     padding: '0.65rem 0.5rem',
-    borderBottom: '1px solid rgba(255,255,255,0.12)',
-    color: '#ffffff',
+    borderBottom: '1px solid #e2e8f0',
+    color: '#0e0d1c',
     fontSize: '0.95rem',
     verticalAlign: 'middle',
     whiteSpace: 'nowrap'
@@ -804,23 +804,21 @@ export default function FleetReportingPage() {
     position: 'sticky',
     top: 0,
     zIndex: 2,
-    background: 'rgba(15,15,30,0.8)',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
+    background: '#f8fafc',
     textAlign: 'left',
     padding: '0.55rem 0.5rem',
     fontSize: '0.85rem',
     letterSpacing: '0.05em',
     textTransform: 'uppercase',
-    color: 'rgba(255,255,255,0.78)'
+    color: '#94a3b8'
   }
 
   const inputStyle: React.CSSProperties = {
     width: '100%',
     borderRadius: '10px',
-    border: '1px solid rgba(255,255,255,0.35)',
-    background: 'rgba(0,0,0,0.35)',
-    color: '#ffffff',
+    border: '1px solid #d9d9d9',
+    background: '#ffffff',
+    color: '#0e0d1c',
     padding: '0.45rem 0.6rem',
     fontSize: '0.9rem',
     outline: 'none'
@@ -1017,8 +1015,8 @@ export default function FleetReportingPage() {
           <Header
             title={t('fleetReporting.title')}
             subtitle={t('fleetReporting.subtitle')}
-            titleColor="#ffffff"
-            subtitleColor="rgba(255,255,255,0.82)"
+            titleColor="#0e0d1c"
+            subtitleColor="#65748b"
           />
 
           <div className="fleet-kpi-grid">
@@ -1056,7 +1054,7 @@ export default function FleetReportingPage() {
 
             <Card variant="glass">
               <header style={{ marginBottom: '1rem' }}>
-                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#ffffff' }}>{t('fleetReporting.charts.coverageTitle')}</h2>
+                <h2 style={{ margin: 0, fontSize: '1.2rem', color: '#0e0d1c' }}>{t('fleetReporting.charts.coverageTitle')}</h2>
                 <p style={{ margin: '0.35rem 0 0', color: GLASS_SUBTLE }}>{t('fleetReporting.charts.coverageSubtitle')}</p>
               </header>
               <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
@@ -1070,7 +1068,7 @@ export default function FleetReportingPage() {
                 </div>
               </div>
               <header style={{ marginBottom: '1rem' }}>
-                <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff' }}>{t('fleetReporting.charts.severityTitle')}</h3>
+                <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#0e0d1c' }}>{t('fleetReporting.charts.severityTitle')}</h3>
                 <p style={{ margin: '0.25rem 0 0', color: GLASS_SUBTLE }}>{t('fleetReporting.charts.severitySubtitle')}</p>
               </header>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
@@ -1087,7 +1085,7 @@ export default function FleetReportingPage() {
                         }}
                       />
                     </div>
-                    <strong style={{ color: '#ffffff', minWidth: '48px' }}>{entry.value}%</strong>
+                    <strong style={{ color: '#0e0d1c', minWidth: '48px' }}>{entry.value}%</strong>
                   </div>
                 ))}
               </div>
@@ -1108,10 +1106,10 @@ export default function FleetReportingPage() {
                   style={{
                     padding: '1rem 1.25rem',
                     borderRadius: '18px',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    boxShadow: '0 14px 32px rgba(0,0,0,0.28)',
-                    color: '#ffffff',
+                    background: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    boxShadow: '0 8px 20px rgba(15, 23, 42, 0.08)',
+                    color: '#0e0d1c',
                     display: 'flex',
                     alignItems: 'center'
                   }}
@@ -1198,9 +1196,9 @@ export default function FleetReportingPage() {
                     width: '100%',
                     padding: '0.55rem 0.85rem',
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(0,0,0,0.25)',
-                    color: '#ffffff'
+                    border: '1px solid #d9d9d9',
+                    background: '#ffffff',
+                    color: '#0e0d1c'
                   }}
                 />
               </div>
@@ -1219,10 +1217,10 @@ export default function FleetReportingPage() {
                   style={{
                     padding: '1rem 1.2rem',
                     borderRadius: '18px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(255,255,255,0.1)',
-                    boxShadow: '0 12px 32px rgba(0,0,0,0.25)',
-                    color: '#ffffff',
+                    border: '1px solid #e2e8f0',
+                    background: '#ffffff',
+                    boxShadow: '0 8px 20px rgba(15, 23, 42, 0.08)',
+                    color: '#0e0d1c',
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '0.45rem'
@@ -1234,9 +1232,10 @@ export default function FleetReportingPage() {
                       style={{
                         padding: '0.3rem 0.8rem',
                         borderRadius: '999px',
-                        border: '1px solid rgba(255,255,255,0.35)',
+                        border: '1px solid #e2e8f0',
                         fontSize: '0.75rem',
-                        background: 'rgba(0,0,0,0.2)'
+                        background: '#f8fafc',
+                        color: '#64748b'
                       }}
                     >
                       {t(`fleetReporting.vehicles.filters.typeOptions.${vehicle.type}`)}
@@ -1290,9 +1289,9 @@ export default function FleetReportingPage() {
                     onClick={() => setDamageType(option.value)}
                     style={{
                       borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: damageType === option.value ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
+                      border: '1px solid #d9d9d9',
+                      background: damageType === option.value ? '#fde8df' : '#ffffff',
+                      color: '#0e0d1c',
                       padding: '0.35rem 0.9rem',
                       fontWeight: 600,
                       cursor: 'pointer'
@@ -1311,9 +1310,9 @@ export default function FleetReportingPage() {
                     onClick={() => setRangeFilter(option.value)}
                     style={{
                       borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: rangeFilter === option.value ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
+                      border: '1px solid #d9d9d9',
+                      background: rangeFilter === option.value ? '#fde8df' : '#ffffff',
+                      color: '#0e0d1c',
                       padding: '0.35rem 0.9rem',
                       fontWeight: 600,
                       cursor: 'pointer'
@@ -1333,9 +1332,9 @@ export default function FleetReportingPage() {
                     width: '100%',
                     padding: '0.55rem 0.85rem',
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(0,0,0,0.25)',
-                    color: '#ffffff'
+                    border: '1px solid #d9d9d9',
+                    background: '#ffffff',
+                    color: '#0e0d1c'
                   }}
                 />
               </div>
@@ -1348,8 +1347,8 @@ export default function FleetReportingPage() {
                 maxWidth: '100%',
                 WebkitOverflowScrolling: 'touch',
                 borderRadius: '22px',
-                border: '1px solid rgba(255,255,255,0.25)',
-                background: 'rgba(0,0,0,0.25)'
+                border: '1px solid #e2e8f0',
+                background: '#ffffff'
               }}
             >
               <table
@@ -1358,7 +1357,7 @@ export default function FleetReportingPage() {
                   minWidth: '1200px',
                   borderCollapse: 'separate',
                   borderSpacing: 0,
-                  color: '#ffffff',
+                  color: '#0e0d1c',
                   tableLayout: 'fixed'
                 }}
               >
@@ -1431,9 +1430,9 @@ export default function FleetReportingPage() {
                   disabled={!canScrollLeft}
                   style={{
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#ffffff',
+                    border: '1px solid #d9d9d9',
+                    background: '#ffffff',
+                    color: '#0e0d1c',
                     padding: '0.35rem 0.8rem',
                     cursor: canScrollLeft ? 'pointer' : 'not-allowed',
                     opacity: canScrollLeft ? 1 : 0.5
@@ -1447,9 +1446,9 @@ export default function FleetReportingPage() {
                   disabled={!canScrollRight}
                   style={{
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(255,255,255,0.12)',
-                    color: '#ffffff',
+                    border: '1px solid #d9d9d9',
+                    background: '#ffffff',
+                    color: '#0e0d1c',
                     padding: '0.35rem 0.8rem',
                     cursor: canScrollRight ? 'pointer' : 'not-allowed',
                     opacity: canScrollRight ? 1 : 0.5

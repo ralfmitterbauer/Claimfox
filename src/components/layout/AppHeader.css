@@ -4,10 +4,11 @@
   left: 0;
   right: 0;
   height: var(--header-height, 64px);
-  background: #080064;
-  color: #ffffff;
-  z-index: 100;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+  background: #ffffff;
+  color: #0e0d1c;
+  z-index: 120;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid #ececec;
 }
 
 .app-header__inner {
@@ -42,7 +43,7 @@
 .app-header__lang-switch {
   display: inline-flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.18);
+  background: #f3f4f6;
   border-radius: 999px;
   padding: 4px;
   gap: 6px;
@@ -51,7 +52,7 @@
 .app-header__lang-btn {
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.8);
+  color: #475569;
   padding: 6px 14px;
   border-radius: 999px;
   font-weight: 600;
@@ -61,18 +62,18 @@
 }
 
 .app-header__lang-btn.is-active {
-  background: #ffffff;
-  color: #080064;
-}
-
-.app-header__lang-btn:hover {
+  background: #d4380d;
   color: #ffffff;
 }
 
+.app-header__lang-btn:hover {
+  color: #0e0d1c;
+}
+
 .app-header__auth-btn {
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #d9d9d9;
+  background: #ffffff;
+  color: #0e0d1c;
   padding: 6px 14px;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -82,8 +83,8 @@
 }
 
 .app-header__auth-btn:hover {
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.55);
+  color: #0e0d1c;
+  border-color: #bdbdbd;
 }
 
 @media (max-width: 640px) {

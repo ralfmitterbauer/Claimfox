@@ -46,14 +46,12 @@ export default function Card({
       tabIndex={isInteractive ? tabIndex ?? 0 : tabIndex}
       className={className}
       style={{
-        backgroundColor: isGlass ? 'rgba(255,255,255,0.1)' : '#fff',
-        border: isGlass ? '1px solid rgba(255,255,255,0.15)' : undefined,
-        borderRadius: '24px',
-        padding: '2rem',
-        boxShadow: isGlass ? '0 20px 60px rgba(0,0,0,0.35)' : '0 22px 50px rgba(8, 4, 50, 0.15)',
-        backdropFilter: isGlass ? 'blur(18px)' : undefined,
-        WebkitBackdropFilter: isGlass ? 'blur(18px)' : undefined,
-        color: isGlass ? '#ffffff' : undefined,
+        backgroundColor: '#ffffff',
+        border: '1px solid #ececec',
+        borderRadius: '20px',
+        padding: '1.75rem',
+        boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)',
+        color: '#0e0d1c',
         width: '100%',
         cursor: isInteractive ? 'pointer' : undefined,
         transition: isInteractive ? 'transform 0.2s ease, box-shadow 0.2s ease' : undefined,
@@ -63,12 +61,12 @@ export default function Card({
       {(title || subtitle) && (
         <header style={{ marginBottom: '1.5rem' }}>
           {title && (
-            <h2 style={{ margin: 0, fontSize: '1.3rem', color: isGlass ? '#ffffff' : '#080064' }}>
+            <h2 style={{ margin: 0, fontSize: '1.3rem', color: '#0e0d1c' }}>
               {title}
             </h2>
           )}
           {subtitle && (
-            <p style={{ marginTop: '0.35rem', marginBottom: 0, color: isGlass ? 'rgba(255,255,255,0.8)' : '#616075' }}>
+            <p style={{ marginTop: '0.35rem', marginBottom: 0, color: '#65748b' }}>
               {subtitle}
             </p>
           )}

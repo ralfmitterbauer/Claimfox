@@ -44,8 +44,8 @@ export default function FeatureTreePage() {
         <Header
           title={t('featureTree.title')}
           subtitle={t('featureTree.subtitle')}
-          titleColor="#ffffff"
-          subtitleColor="rgba(255,255,255,0.82)"
+          titleColor="#0e0d1c"
+          subtitleColor="#65748b"
         />
 
         <div
@@ -69,9 +69,9 @@ export default function FeatureTreePage() {
                     style={{
                       borderRadius: '14px',
                       padding: '0.65rem 0.8rem',
-                      border: '1px solid rgba(255,255,255,0.18)',
-                      background: 'rgba(255,255,255,0.08)',
-                      color: '#ffffff',
+                      border: '1px solid #e2e8f0',
+                      background: '#f8fafc',
+                      color: '#0e0d1c',
                       fontWeight: 600
                     }}
                   >

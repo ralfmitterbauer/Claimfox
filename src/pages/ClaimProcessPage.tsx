@@ -404,15 +404,15 @@ export default function ClaimProcessPage() {
           padding: '32px 1.25rem 4rem',
           display: 'flex',
           justifyContent: 'center',
-          color: '#ffffff'
+          color: '#0e0d1c'
         }}
       >
         <div style={{ width: '100%', maxWidth: 1200, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <Header
             title={t('claimProcess.title')}
             subtitle={t('claimProcess.subtitle')}
-            titleColor="#ffffff"
-            subtitleColor="rgba(255,255,255,0.8)"
+            titleColor="#0e0d1c"
+            subtitleColor="#65748b"
           />
 
           <div className="claim-process-grid">
@@ -675,12 +675,12 @@ export default function ClaimProcessPage() {
               </div>
             </Card>
 
-            <Card variant="glass" style={{ padding: '1.5rem', color: '#ffffff' }}>
+            <Card variant="glass" style={{ padding: '1.5rem', color: '#0e0d1c' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <div>
                   <h3 style={{ margin: 0 }}>{t('claimProcess.infoTitle')}</h3>
                   {t('claimProcess.infoSubtitle') && (
-                    <p style={{ margin: '0.35rem 0 0', color: 'rgba(255,255,255,0.75)' }}>
+                    <p style={{ margin: '0.35rem 0 0', color: '#64748b' }}>
                       {t('claimProcess.infoSubtitle')}
                     </p>
                   )}
@@ -707,7 +707,7 @@ export default function ClaimProcessPage() {
                     { label: t('claimProcess.infoStatus'), value: t('claimProcess.statusOpen') }
                   ].map((row) => (
                     <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>{row.label}</span>
+                      <span style={{ color: '#64748b' }}>{row.label}</span>
                       <strong>{row.value || t('claimProcess.valuePending')}</strong>
                     </div>
                   ))}

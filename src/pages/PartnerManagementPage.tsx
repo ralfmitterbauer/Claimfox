@@ -81,8 +81,8 @@ export default function PartnerManagementPage() {
         <Header
           title={t('partnerManagement.title')}
           subtitle={t('partnerManagement.subtitle')}
-          titleColor="#ffffff"
-          subtitleColor="rgba(255,255,255,0.82)"
+          titleColor="#0e0d1c"
+          subtitleColor="#65748b"
           actions={<Button variant="secondary">{t('partnerManagement.actions.addPartner')}</Button>}
         />
 
@@ -99,10 +99,10 @@ export default function PartnerManagementPage() {
                     style={{
                       textAlign: 'left',
                       borderRadius: '16px',
-                      border: `1px solid ${isActive ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.2)'}`,
+                      border: `1px solid ${isActive ? '#d4380d' : '#e2e8f0'}`,
                       padding: '0.75rem 0.9rem',
-                      background: isActive ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.08)',
-                      color: '#ffffff',
+                      background: isActive ? '#fff4ee' : '#f8fafc',
+                      color: '#0e0d1c',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '0.3rem',
@@ -110,10 +110,10 @@ export default function PartnerManagementPage() {
                     }}
                   >
                     <strong>{partner.name}</strong>
-                    <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.75)' }}>
+                    <span style={{ fontSize: '0.85rem', color: '#64748b' }}>
                       {getTypeLabel(partner.type)} • {partner.city}
                     </span>
-                    <span style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)' }}>
+                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>
                       ★ {partner.rating} · {t('partnerManagement.selection.response')}: {partner.responseTime}
                     </span>
                   </button>
@@ -130,15 +130,15 @@ export default function PartnerManagementPage() {
                   style={{
                     borderRadius: '14px',
                     padding: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    background: 'rgba(0,0,0,0.18)',
+                    border: '1px solid #e2e8f0',
+                    background: '#f8fafc',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     gap: '1rem'
                   }}
                 >
-                  <span style={{ color: '#ffffff', fontWeight: 600 }}>{item.title}</span>
+                  <span style={{ color: '#0e0d1c', fontWeight: 600 }}>{item.title}</span>
                   <span
                     style={{
                       padding: '0.2rem 0.75rem',
@@ -162,14 +162,14 @@ export default function PartnerManagementPage() {
           <Card variant="glass" title={t('partnerManagement.estimates.title')} subtitle={t('partnerManagement.estimates.subtitle')}>
             <div style={{ display: 'grid', gap: '0.65rem' }}>
               {ESTIMATES.map((item) => (
-                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', color: '#ffffff' }}>
+                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', color: '#0e0d1c' }}>
                   <div>
                     <strong>{item.label}</strong>
-                    <p style={{ margin: '0.2rem 0 0', color: 'rgba(255,255,255,0.7)' }}>{item.partner}</p>
+                    <p style={{ margin: '0.2rem 0 0', color: '#64748b' }}>{item.partner}</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <strong>{item.amount}</strong>
-                    <p style={{ margin: '0.2rem 0 0', color: 'rgba(255,255,255,0.7)' }}>{item.status}</p>
+                    <p style={{ margin: '0.2rem 0 0', color: '#64748b' }}>{item.status}</p>
                   </div>
                 </div>
               ))}
@@ -182,14 +182,14 @@ export default function PartnerManagementPage() {
           <Card variant="glass" title={t('partnerManagement.invoices.title')} subtitle={t('partnerManagement.invoices.subtitle')}>
             <div style={{ display: 'grid', gap: '0.65rem' }}>
               {INVOICES.map((item) => (
-                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', color: '#ffffff' }}>
+                <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', color: '#0e0d1c' }}>
                   <div>
                     <strong>{item.label}</strong>
-                    <p style={{ margin: '0.2rem 0 0', color: 'rgba(255,255,255,0.7)' }}>{item.partner}</p>
+                    <p style={{ margin: '0.2rem 0 0', color: '#64748b' }}>{item.partner}</p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <strong>{item.amount}</strong>
-                    <p style={{ margin: '0.2rem 0 0', color: 'rgba(255,255,255,0.7)' }}>{item.status}</p>
+                    <p style={{ margin: '0.2rem 0 0', color: '#64748b' }}>{item.status}</p>
                   </div>
                 </div>
               ))}
@@ -205,14 +205,14 @@ export default function PartnerManagementPage() {
                 const isDone = step.progress === 'done'
                 const isActive = step.progress === 'active'
                 return (
-                  <div key={step.key} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#ffffff' }}>
+                  <div key={step.key} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#0e0d1c' }}>
                     <div
                       style={{
                         width: 28,
                         height: 28,
                         borderRadius: '50%',
-                        background: isDone ? '#22C55E' : isActive ? '#F59E0B' : 'rgba(255,255,255,0.18)',
-                        color: isDone || isActive ? '#0b1028' : '#ffffff',
+                        background: isDone ? '#22C55E' : isActive ? '#F59E0B' : '#e2e8f0',
+                        color: isDone || isActive ? '#0b1028' : '#0e0d1c',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -226,7 +226,7 @@ export default function PartnerManagementPage() {
                 )
               })}
             </div>
-            <p style={{ margin: '0.9rem 0 0', color: 'rgba(255,255,255,0.7)' }}>
+            <p style={{ margin: '0.9rem 0 0', color: '#64748b' }}>
               {t('partnerManagement.repair.eta', { time: lang === 'de' ? '3 Tage' : '3 days' })}
             </p>
           </Card>
@@ -242,8 +242,8 @@ export default function PartnerManagementPage() {
                     key={message.id}
                     style={{
                       alignSelf: isPartner ? 'flex-start' : 'flex-end',
-                      background: isPartner ? 'rgba(255,255,255,0.15)' : 'rgba(212,56,13,0.2)',
-                      color: '#ffffff',
+                      background: isPartner ? '#f1f5f9' : '#fde8df',
+                      color: '#0e0d1c',
                       padding: '0.75rem 1rem',
                       borderRadius: '16px',
                       maxWidth: '80%'
@@ -260,10 +260,10 @@ export default function PartnerManagementPage() {
                 style={{
                   flex: 1,
                   borderRadius: '12px',
-                  border: '1px solid rgba(255,255,255,0.25)',
+                  border: '1px solid #d9d9d9',
                   padding: '0.6rem 0.8rem',
-                  background: 'rgba(0,0,0,0.25)',
-                  color: '#ffffff'
+                  background: '#ffffff',
+                  color: '#0e0d1c'
                 }}
               />
               <Button>{t('partnerManagement.chat.send')}</Button>
@@ -278,9 +278,9 @@ export default function PartnerManagementPage() {
                   style={{
                     borderRadius: '14px',
                     padding: '0.75rem',
-                    border: '1px solid rgba(255,255,255,0.18)',
-                    background: 'rgba(255,255,255,0.08)',
-                    color: '#ffffff'
+                    border: '1px solid #e2e8f0',
+                    background: '#f8fafc',
+                    color: '#0e0d1c'
                   }}
                 >
                   {question}

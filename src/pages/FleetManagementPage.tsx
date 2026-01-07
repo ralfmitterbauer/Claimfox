@@ -4,8 +4,8 @@ import Header from '@/components/ui/Header'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 
-const GLASS_TEXT = 'rgba(255,255,255,0.85)'
-const GLASS_SUBTLE = 'rgba(255,255,255,0.65)'
+const GLASS_TEXT = '#0e0d1c'
+const GLASS_SUBTLE = '#64748b'
 
 const TRAFFIC_COLORS = {
   green: '#16A34A',
@@ -32,24 +32,24 @@ const BADGE_BASE: React.CSSProperties = {
 
 const listHeaderCellStyle: React.CSSProperties = {
   padding: '0.6rem 0.5rem',
-  color: 'rgba(255,255,255,0.75)',
+  color: '#94a3b8',
   fontSize: '0.85rem',
   letterSpacing: '0.04em',
   textTransform: 'uppercase',
-  borderBottom: '1px solid rgba(255,255,255,0.15)'
+  borderBottom: '1px solid #e2e8f0'
 }
 
 const listCellStyle: React.CSSProperties = {
   padding: '0.65rem 0.5rem',
-  borderBottom: '1px solid rgba(255,255,255,0.08)',
-  color: '#ffffff'
+  borderBottom: '1px solid #e2e8f0',
+  color: '#0e0d1c'
 }
 
 const SECTION_CARD_STYLE: React.CSSProperties = {
   borderRadius: '24px',
   padding: '1.5rem',
-  background: 'rgba(255,255,255,0.12)',
-  border: '1px solid rgba(255,255,255,0.18)'
+  background: '#ffffff',
+  border: '1px solid #e2e8f0'
 }
 
 const detailLabelStyle: React.CSSProperties = {
@@ -60,7 +60,7 @@ const detailLabelStyle: React.CSSProperties = {
 
 const detailValueStyle: React.CSSProperties = {
   fontSize: '1rem',
-  color: '#ffffff',
+  color: '#0e0d1c',
   fontWeight: 600,
   margin: 0
 }
@@ -379,8 +379,8 @@ export default function FleetManagementPage() {
           <Header
             title={t('fleetManagement.title')}
             subtitle={t('fleetManagement.subtitle')}
-            titleColor="#ffffff"
-            subtitleColor="rgba(255,255,255,0.82)"
+            titleColor="#0e0d1c"
+            subtitleColor="#65748b"
           />
 
           <div
@@ -393,13 +393,13 @@ export default function FleetManagementPage() {
             {KPI_DATA.map((item) => (
               <Card key={item.key} variant="glass">
                 <p style={{ margin: 0, color: GLASS_SUBTLE }}>{t(`fleetManagement.kpi.${item.key}`)}</p>
-                <div style={{ marginTop: '0.35rem', fontSize: '1.8rem', fontWeight: 700, color: '#ffffff' }}>{item.value}</div>
+                <div style={{ marginTop: '0.35rem', fontSize: '1.8rem', fontWeight: 700, color: '#0e0d1c' }}>{item.value}</div>
               </Card>
             ))}
           </div>
 
           <Card variant="glass" style={SECTION_CARD_STYLE}>
-            <header style={{ marginBottom: '1rem', color: '#ffffff' }}>
+            <header style={{ marginBottom: '1rem', color: '#0e0d1c' }}>
               <h2 style={{ margin: 0 }}>{t('fleetManagement.list.title')}</h2>
             </header>
             <div
@@ -419,9 +419,9 @@ export default function FleetManagementPage() {
                     onClick={() => setTypeFilter(filter.value)}
                     style={{
                       borderRadius: '999px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: typeFilter === filter.value ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.12)',
-                      color: '#ffffff',
+                      border: '1px solid #d9d9d9',
+                      background: typeFilter === filter.value ? '#fde8df' : '#ffffff',
+                      color: '#0e0d1c',
                       padding: '0.35rem 0.9rem',
                       cursor: 'pointer'
                     }}
@@ -467,9 +467,9 @@ export default function FleetManagementPage() {
                     width: '100%',
                     padding: '0.55rem 0.85rem',
                     borderRadius: '999px',
-                    border: '1px solid rgba(255,255,255,0.35)',
-                    background: 'rgba(0,0,0,0.25)',
-                    color: '#ffffff'
+                    border: '1px solid #d9d9d9',
+                    background: '#ffffff',
+                    color: '#0e0d1c'
                   }}
                 />
               </div>
@@ -477,15 +477,15 @@ export default function FleetManagementPage() {
 
             <div
               style={{
-                border: '1px solid rgba(255,255,255,0.25)',
+                border: '1px solid #e2e8f0',
                 borderRadius: '18px',
                 overflow: 'hidden',
-                background: 'rgba(255,255,255,0.06)'
+                background: '#ffffff'
               }}
             >
-              <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ffffff', fontSize: '0.92rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', color: '#0e0d1c', fontSize: '0.92rem' }}>
                 <thead>
-                  <tr style={{ textAlign: 'left', background: 'rgba(255,255,255,0.08)' }}>
+                  <tr style={{ textAlign: 'left', background: '#f8fafc' }}>
                     <th style={listHeaderCellStyle}>{lang === 'de' ? 'Fahrzeug' : 'Vehicle'}</th>
                     <th style={listHeaderCellStyle}>{t('fleetManagement.filters.statusLabel')}</th>
                     <th style={listHeaderCellStyle}>{lang === 'de' ? 'Standort' : 'Location'}</th>
@@ -508,7 +508,7 @@ export default function FleetManagementPage() {
                         onClick={() => setSelectedVehicleId(vehicle.id)}
                         style={{
                           cursor: 'pointer',
-                          background: vehicle.id === selectedVehicleId ? 'rgba(255,255,255,0.08)' : undefined
+                          background: vehicle.id === selectedVehicleId ? '#f1f5f9' : undefined
                         }}
                       >
                         <td style={listCellStyle}>
@@ -541,7 +541,7 @@ export default function FleetManagementPage() {
           ) : (
             <>
               <Card variant="glass" style={{ ...SECTION_CARD_STYLE, padding: '1.75rem' }}>
-                <header style={{ marginBottom: '1rem', color: '#ffffff' }}>
+                <header style={{ marginBottom: '1rem', color: '#0e0d1c' }}>
                   <h2 style={{ margin: 0 }}>
                     {t('fleetManagement.detail.title')} – {selectedVehicle.plate}
                   </h2>
@@ -554,7 +554,7 @@ export default function FleetManagementPage() {
                   }}
                 >
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                    <h3 style={{ margin: 0, color: '#ffffff' }}>{t('fleetManagement.detail.overview')}</h3>
+                    <h3 style={{ margin: 0, color: '#0e0d1c' }}>{t('fleetManagement.detail.overview')}</h3>
                     <div style={detailRowStyle}>
                       <p style={detailLabelStyle}>VIN</p>
                       <p style={detailValueStyle}>{selectedVehicle.vin}</p>
@@ -579,7 +579,7 @@ export default function FleetManagementPage() {
                     </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
-                    <h3 style={{ margin: 0, color: '#ffffff' }}>{t('fleetManagement.detail.schedule')}</h3>
+                    <h3 style={{ margin: 0, color: '#0e0d1c' }}>{t('fleetManagement.detail.schedule')}</h3>
                     <div style={detailRowStyle}>
                       <p style={detailLabelStyle}>{t('fleetManagement.detail.inspection')}</p>
                       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.5rem' }}>
@@ -608,7 +608,7 @@ export default function FleetManagementPage() {
               </Card>
 
               <Card variant="glass" style={SECTION_CARD_STYLE}>
-                <header style={{ marginBottom: '1rem', color: '#ffffff' }}>
+                <header style={{ marginBottom: '1rem', color: '#0e0d1c' }}>
                   <h2 style={{ margin: 0 }}>{t('fleetManagement.detail.documents')}</h2>
                 </header>
                 <div
@@ -624,9 +624,9 @@ export default function FleetManagementPage() {
                       style={{
                         padding: '0.6rem 0.85rem',
                         borderRadius: '14px',
-                        border: '1px solid rgba(255,255,255,0.35)',
-                        color: '#ffffff',
-                        background: 'rgba(0,0,0,0.25)',
+                        border: '1px solid #e2e8f0',
+                        color: '#0e0d1c',
+                        background: '#f8fafc',
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
@@ -645,7 +645,7 @@ export default function FleetManagementPage() {
               </Card>
 
               <Card variant="glass" style={SECTION_CARD_STYLE}>
-                <header style={{ marginBottom: '1rem', color: '#ffffff' }}>
+                <header style={{ marginBottom: '1rem', color: '#0e0d1c' }}>
                   <h2 style={{ margin: 0 }}>{t('fleetManagement.detail.policies')}</h2>
                 </header>
                 <div style={{ overflowX: 'auto' }}>
@@ -654,12 +654,12 @@ export default function FleetManagementPage() {
                       width: '100%',
                       minWidth: '720px',
                       borderCollapse: 'collapse',
-                      color: '#ffffff',
+                      color: '#0e0d1c',
                       fontSize: '0.9rem'
                     }}
                   >
                     <thead>
-                      <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.75)' }}>
+                      <tr style={{ textAlign: 'left', color: '#94a3b8' }}>
                         <th>{t('fleetManagement.detail.policiesColumns.number')}</th>
                         <th>{t('fleetManagement.detail.policiesColumns.line')}</th>
                         <th>{t('fleetManagement.detail.policiesColumns.sum')}</th>
@@ -696,7 +696,7 @@ export default function FleetManagementPage() {
               <Card variant="glass" style={SECTION_CARD_STYLE}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
                   <div>
-                    <h2 style={{ margin: 0, color: '#ffffff' }}>{t('fleetManagement.detail.drivers')}</h2>
+                    <h2 style={{ margin: 0, color: '#0e0d1c' }}>{t('fleetManagement.detail.drivers')}</h2>
                     <p style={{ margin: '0.3rem 0 0', color: GLASS_SUBTLE }}>
                       {t('fleetManagement.driverPicker.title')}
                     </p>
@@ -711,8 +711,8 @@ export default function FleetManagementPage() {
                       marginTop: '0.9rem',
                       padding: '0.9rem',
                       borderRadius: '16px',
-                      border: '1px solid rgba(255,255,255,0.35)',
-                      background: 'rgba(0,0,0,0.2)'
+                      border: '1px solid #e2e8f0',
+                      background: '#f8fafc'
                     }}
                   >
                     <p style={{ margin: '0 0 0.5rem', color: GLASS_TEXT }}>{t('fleetManagement.driverPicker.title')}</p>
@@ -743,9 +743,9 @@ export default function FleetManagementPage() {
                         style={{
                           padding: '0.9rem',
                           borderRadius: '16px',
-                          border: '1px solid rgba(255,255,255,0.35)',
-                          background: 'rgba(255,255,255,0.1)',
-                          color: '#ffffff',
+                          border: '1px solid #e2e8f0',
+                          background: '#ffffff',
+                          color: '#0e0d1c',
                           display: 'flex',
                           flexDirection: 'column',
                           gap: '0.35rem'

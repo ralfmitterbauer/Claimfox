@@ -41,8 +41,8 @@ const customers = [
 
 const activityKeys = ['followUp', 'proposal', 'documents', 'audit', 'training'] as const
 
-const GLASS_TEXT = 'rgba(255,255,255,0.85)'
-const GLASS_SUBTLE = 'rgba(255,255,255,0.65)'
+const GLASS_TEXT = '#0e0d1c'
+const GLASS_SUBTLE = '#64748b'
 
 export default function BrokerCrmPage() {
   const { t } = useI18n()
@@ -95,8 +95,8 @@ export default function BrokerCrmPage() {
       <Header
         title={t('brokerCrm.title')}
         subtitle={t('brokerCrm.subtitle')}
-        titleColor="#ffffff"
-        subtitleColor="rgba(255,255,255,0.8)"
+        titleColor="#0e0d1c"
+        subtitleColor="#65748b"
       />
 
       <div
@@ -109,8 +109,8 @@ export default function BrokerCrmPage() {
         {kpiData.map((item) => (
           <Card key={item.key} variant="glass">
             <p style={{ margin: 0, color: GLASS_TEXT, fontSize: '0.95rem' }}>{t(`brokerCrm.kpi.${item.key}`)}</p>
-            <div style={{ marginTop: '0.5rem', fontSize: '2rem', fontWeight: 700, color: '#ffffff' }}>{item.value}</div>
-            <span style={{ color: '#8ef3c6', fontWeight: 600 }}>{item.trend}</span>
+            <div style={{ marginTop: '0.5rem', fontSize: '2rem', fontWeight: 700, color: '#0e0d1c' }}>{item.value}</div>
+            <span style={{ color: '#16A34A', fontWeight: 600 }}>{item.trend}</span>
           </Card>
         ))}
       </div>
@@ -171,7 +171,7 @@ export default function BrokerCrmPage() {
                     flex: 1,
                     height: '12px',
                     borderRadius: '999px',
-                    background: 'rgba(255,255,255,0.15)',
+                    background: '#e2e8f0',
                     overflow: 'hidden'
                   }}
                 >
@@ -188,7 +188,7 @@ export default function BrokerCrmPage() {
                     }}
                   />
                 </div>
-                <strong style={{ color: '#ffffff' }}>{entry.value}</strong>
+                <strong style={{ color: '#0e0d1c' }}>{entry.value}</strong>
               </div>
             ))}
           </div>
@@ -209,9 +209,9 @@ export default function BrokerCrmPage() {
               style={{
                 padding: '1rem 1.25rem',
                 borderRadius: '18px',
-                background: 'rgba(255,255,255,0.12)',
-                border: '1px solid rgba(255,255,255,0.3)',
-                boxShadow: '0 12px 30px rgba(0,0,0,0.28)',
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                boxShadow: '0 8px 20px rgba(15, 23, 42, 0.08)',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
@@ -221,7 +221,7 @@ export default function BrokerCrmPage() {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.75rem' }}>
                 <div style={{ minWidth: 0 }}>
-                  <p style={{ margin: 0, fontWeight: 600, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  <p style={{ margin: 0, fontWeight: 600, color: '#0e0d1c', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {t(`brokerCrm.ai.items.${key}.name`)}
                   </p>
                 </div>
@@ -229,8 +229,8 @@ export default function BrokerCrmPage() {
                   style={{
                     padding: '0.2rem 0.55rem',
                     borderRadius: '999px',
-                    background: probabilityItemKeys.has(key) ? 'rgba(25, 214, 152, 0.18)' : 'rgba(167, 140, 255, 0.18)',
-                    color: probabilityItemKeys.has(key) ? '#74f2c2' : '#d7c7ff',
+                    background: probabilityItemKeys.has(key) ? '#dcfce7' : '#ede9fe',
+                    color: probabilityItemKeys.has(key) ? '#15803d' : '#6d28d9',
                     fontWeight: 600,
                     fontSize: '0.85rem',
                     whiteSpace: 'nowrap',
@@ -247,12 +247,12 @@ export default function BrokerCrmPage() {
                 {t(`brokerCrm.ai.items.${key}.type`)}
               </small>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', color: GLASS_SUBTLE, marginTop: '0.25rem' }}>
-                <span style={{ fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>
+                <span style={{ fontSize: '0.75rem', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#94a3b8' }}>
                   {t('brokerCrm.ai.labels.recommendation')}
                 </span>
                 <strong
                   style={{
-                    color: '#ffffff',
+                    color: '#0e0d1c',
                     fontSize: '0.95rem',
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
@@ -277,9 +277,9 @@ export default function BrokerCrmPage() {
       >
         <Card variant="glass" title={t('brokerCrm.table.title')}>
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', color: '#ffffff' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', color: '#0e0d1c' }}>
               <thead>
-                <tr style={{ textAlign: 'left', color: 'rgba(255,255,255,0.78)', fontSize: '0.9rem', background: 'rgba(255,255,255,0.08)' }}>
+                <tr style={{ textAlign: 'left', color: '#94a3b8', fontSize: '0.9rem', background: '#f8fafc' }}>
                   <th style={{ padding: '0.6rem 0.4rem' }}>{t('brokerCrm.table.name')}</th>
                   <th style={{ padding: '0.6rem 0.4rem' }}>{t('brokerCrm.table.status')}</th>
                   <th style={{ padding: '0.6rem 0.4rem' }}>{t('brokerCrm.table.lastContact')}</th>
@@ -292,7 +292,7 @@ export default function BrokerCrmPage() {
                   <tr
                     key={customer.name}
                     style={{
-                      borderTop: index === 0 ? 'none' : '1px solid rgba(255,255,255,0.12)'
+                      borderTop: index === 0 ? 'none' : '1px solid #e2e8f0'
                     }}
                   >
                     <td style={{ padding: '0.75rem 0.4rem', fontWeight: 600 }}>{customer.name}</td>
@@ -320,7 +320,7 @@ export default function BrokerCrmPage() {
                         {t(`brokerCrm.table.potentialLabels.${customer.potentialKey}`)}
                       </span>
                     </td>
-                    <td style={{ padding: '0.75rem 0.4rem', color: '#ffffff' }}>
+                    <td style={{ padding: '0.75rem 0.4rem', color: '#0e0d1c' }}>
                       {t(`brokerCrm.table.nextSteps.${customer.nextStepKey}`)}
                     </td>
                   </tr>
@@ -337,11 +337,11 @@ export default function BrokerCrmPage() {
                 style={{
                   padding: '0.75rem 0.85rem',
                   borderRadius: '14px',
-                  background: 'rgba(255,255,255,0.12)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  color: '#ffffff',
+                  background: '#f8fafc',
+                  border: '1px solid #e2e8f0',
+                  color: '#0e0d1c',
                   fontWeight: 500,
-                  boxShadow: '0 8px 22px rgba(0,0,0,0.2)'
+                  boxShadow: '0 6px 18px rgba(15, 23, 42, 0.08)'
                 }}
               >
                 {t(`brokerCrm.activities.${key}`)}

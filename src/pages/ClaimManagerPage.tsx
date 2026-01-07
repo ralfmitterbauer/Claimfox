@@ -80,19 +80,18 @@ const KPI_KEYS = [
 ] as const
 
 const CARD_STYLE: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.1)',
-  border: '1px solid rgba(255,255,255,0.15)',
-  borderRadius: '28px',
+  background: '#ffffff',
+  border: '1px solid #ececec',
+  borderRadius: '20px',
   padding: '1.5rem',
-  color: 'rgba(255,255,255,0.92)',
-  backdropFilter: 'blur(18px)',
-  boxShadow: '0 20px 60px rgba(0,0,0,0.35)'
+  color: '#0e0d1c',
+  boxShadow: '0 8px 24px rgba(15, 23, 42, 0.08)'
 }
 
 const TEXT_COLORS = {
-  primary: 'rgba(255,255,255,0.92)',
-  secondary: 'rgba(255,255,255,0.75)',
-  muted: 'rgba(255,255,255,0.55)'
+  primary: '#0e0d1c',
+  secondary: '#64748b',
+  muted: '#94a3b8'
 } as const
 
 const ACCENT_COLOR = '#D4380D'
@@ -272,7 +271,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
           style={{
             minHeight: '100vh',
             width: '100%',
-            color: '#ffffff',
+            color: '#0e0d1c',
             padding: '32px 1.25rem 4rem'
           }}
         >
@@ -287,7 +286,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
               <span style={{ letterSpacing: '0.4em', fontSize: '0.75rem', color: TEXT_COLORS.muted, textTransform: 'uppercase' }}>
                 {t('claimManager.app.header.overline')}
               </span>
-              <h1 style={{ margin: 0, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 600, color: '#fff' }}>
+              <h1 style={{ margin: 0, fontSize: 'clamp(2.5rem, 4vw, 3.5rem)', fontWeight: 600, color: '#0e0d1c' }}>
                 {t('claimManager.app.header.title')}
               </h1>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', color: TEXT_COLORS.secondary }}>
@@ -308,8 +307,8 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                       justifyContent: 'center',
                       padding: '0.2rem 0.85rem',
                       borderRadius: '999px',
-                      background: 'rgba(255,255,255,0.15)',
-                      border: '1px solid rgba(255,255,255,0.2)',
+                      background: '#f1f5f9',
+                      border: '1px solid #e2e8f0',
                       fontWeight: 600
                     }}
                   >
@@ -336,10 +335,10 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                 variant="secondary"
                 onClick={() => setSurveyorModalOpen(true)}
                 style={{
-                  background: 'rgba(255,255,255,0.12)',
-                  color: '#fff',
+                  background: '#ffffff',
+                  color: '#0e0d1c',
                   borderRadius: '999px',
-                  border: '1px solid rgba(255,255,255,0.25)',
+                  border: '1px solid #d9d9d9',
                   height: '42px',
                   padding: '0 1.4rem',
                   fontWeight: 600
@@ -352,8 +351,8 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                 onClick={() => setPartnerModalOpen(true)}
                 style={{
                   background: '#ffffff',
-                  color: '#0B1028',
-                    borderRadius: '999px',
+                  color: '#0e0d1c',
+                  borderRadius: '999px',
                   height: '42px',
                   padding: '0 1.4rem',
                   fontWeight: 600
@@ -379,7 +378,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                   <p style={{ margin: 0, fontSize: '0.85rem', color: TEXT_COLORS.muted, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                     {t(`claimManager.app.kpis.${kpi.key}`)}
                   </p>
-                  <p style={{ margin: '0.35rem 0 0', fontSize: '1.8rem', fontWeight: 600, color: '#fff' }}>{kpi.value}</p>
+                  <p style={{ margin: '0.35rem 0 0', fontSize: '1.8rem', fontWeight: 600, color: '#0e0d1c' }}>{kpi.value}</p>
                 </div>
               ))}
             </div>
@@ -446,10 +445,10 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                 value={claimStatus}
                 onChange={(event) => setClaimStatus(event.target.value as (typeof timelineSteps)[number])}
                 style={{
-                  background: 'rgba(255,255,255,0.08)',
-                  color: '#fff',
+                  background: '#ffffff',
+                  color: '#0e0d1c',
                   borderRadius: '999px',
-                  border: '1px solid rgba(255,255,255,0.25)',
+                  border: '1px solid #d9d9d9',
                   padding: '0.45rem 1rem',
                   minWidth: '180px'
                 }}
@@ -465,13 +464,13 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
               {timelineSteps.map((step, index) => {
                 const isActive = timelineSteps.indexOf(claimStatus) >= index
                 return (
-                  <div key={step} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: isActive ? '#D3F261' : TEXT_COLORS.muted }}>
+                    <div key={step} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: isActive ? '#16A34A' : TEXT_COLORS.muted }}>
                     <div
                       style={{
                         width: '30px',
                         height: '30px',
                         borderRadius: '50%',
-                        border: `2px solid ${isActive ? '#D3F261' : 'rgba(255,255,255,0.35)'}`,
+                        border: `2px solid ${isActive ? '#16A34A' : '#cbd5e1'}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -491,19 +490,19 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
           <Card style={CARD_STYLE}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.75rem' }}>
               <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.costs.title')}</h2>
-              <Button
-                variant="secondary"
-                onClick={() => setCostModalOpen(true)}
-                style={{
-                  background: 'rgba(255,255,255,0.12)',
-                  color: '#fff',
-                  borderRadius: '999px',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  height: '40px',
-                  padding: '0 1.25rem',
-                  fontWeight: 600
-                }}
-              >
+            <Button
+              variant="secondary"
+              onClick={() => setCostModalOpen(true)}
+              style={{
+                background: '#ffffff',
+                color: '#0e0d1c',
+                borderRadius: '999px',
+                border: '1px solid #d9d9d9',
+                height: '40px',
+                padding: '0 1.25rem',
+                fontWeight: 600
+              }}
+            >
                 {t('claimManager.app.costs.confirm')}
               </Button>
             </div>
@@ -519,7 +518,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                 </thead>
                 <tbody>
                   {costItems.map((item) => (
-                    <tr key={item.id} style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <tr key={item.id} style={{ borderTop: '1px solid #e2e8f0' }}>
                       <td style={{ padding: '0.6rem 0.4rem', color: TEXT_COLORS.secondary }}>{t(`claimManager.app.costs.items.${item.labelKey}`)}</td>
                       <td style={{ padding: '0.6rem 0.4rem' }}>
                         <input
@@ -529,9 +528,9 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                           style={{
                             width: '100%',
                             borderRadius: '14px',
-                            border: '1px solid rgba(255,255,255,0.25)',
-                            background: 'rgba(255,255,255,0.08)',
-                            color: '#fff',
+                            border: '1px solid #d9d9d9',
+                            background: '#ffffff',
+                            color: '#0e0d1c',
                             padding: '0.45rem 0.75rem'
                           }}
                         />
@@ -543,9 +542,9 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                           style={{
                             width: '100%',
                             borderRadius: '14px',
-                            border: '1px solid rgba(255,255,255,0.25)',
-                            background: 'rgba(255,255,255,0.08)',
-                            color: '#fff',
+                            border: '1px solid #d9d9d9',
+                            background: '#ffffff',
+                            color: '#0e0d1c',
                             padding: '0.45rem 0.75rem'
                           }}
                         >
@@ -563,9 +562,9 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                           style={{
                             width: '100%',
                             borderRadius: '14px',
-                            border: '1px solid rgba(255,255,255,0.25)',
-                            background: 'rgba(255,255,255,0.08)',
-                            color: '#fff',
+                            border: '1px solid #d9d9d9',
+                            background: '#ffffff',
+                            color: '#0e0d1c',
                             padding: '0.45rem 0.75rem'
                           }}
                         />
@@ -616,8 +615,8 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                   style={{
                     padding: '0.85rem 1rem',
                     borderRadius: '18px',
-                    border: '1px solid rgba(255,255,255,0.15)',
-                    background: 'rgba(255,255,255,0.08)',
+                    border: '1px solid #e2e8f0',
+                    background: '#f8fafc',
                     color: TEXT_COLORS.primary
                   }}
                 >
@@ -640,9 +639,9 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                       textAlign: 'left',
                       padding: '0.75rem 1rem',
                       borderRadius: '16px',
-                      border: '1px solid rgba(255,255,255,0.2)',
-                      background: 'rgba(255,255,255,0.08)',
-                      color: '#fff',
+                      border: '1px solid #e2e8f0',
+                      background: '#f8fafc',
+                      color: '#0e0d1c',
                       fontWeight: 600
                     }}
                   >
@@ -664,10 +663,10 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                 {assistantMedia ? (
                   <div
                     style={{
-                      border: '1px solid rgba(255,255,255,0.2)',
+                      border: '1px solid #e2e8f0',
                       borderRadius: '22px',
                       padding: '0.9rem',
-                      background: 'rgba(255,255,255,0.07)',
+                      background: '#f8fafc',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '0.7rem'
@@ -710,7 +709,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                               prev === 0 ? assistantMedia.length - 1 : prev - 1
                             )
                           }
-                          style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
+                          style={{ background: '#ffffff', color: '#0e0d1c', border: '1px solid #d9d9d9' }}
                         >
                           {t('claimManager.app.documents.damage.prev')}
                         </Button>
@@ -724,7 +723,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                               prev === assistantMedia.length - 1 ? 0 : prev + 1
                             )
                           }
-                          style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.2)' }}
+                          style={{ background: '#ffffff', color: '#0e0d1c', border: '1px solid #d9d9d9' }}
                         >
                           {t('claimManager.app.documents.damage.next')}
                         </Button>
@@ -736,10 +735,10 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
                     <div
                       key={image.key}
                       style={{
-                        border: '1px solid rgba(255,255,255,0.2)',
+                        border: '1px solid #e2e8f0',
                         borderRadius: '22px',
                         padding: '0.9rem',
-                        background: 'rgba(255,255,255,0.07)',
+                        background: '#f8fafc',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '0.7rem'
