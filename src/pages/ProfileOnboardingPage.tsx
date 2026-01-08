@@ -61,7 +61,7 @@ const STORAGE_KEY = 'cf_profile_wizard'
 
 function IllustrationPanel({ image, secondaryImage }: { image: string; secondaryImage: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
       <div
         style={{
           borderRadius: '22px',
@@ -69,7 +69,7 @@ function IllustrationPanel({ image, secondaryImage }: { image: string; secondary
           overflow: 'hidden',
           background: '#ffffff',
           width: '100%',
-          aspectRatio: '1 / 1'
+          flex: 1
         }}
       >
         <img
@@ -85,13 +85,13 @@ function IllustrationPanel({ image, secondaryImage }: { image: string; secondary
           overflow: 'hidden',
           background: '#ffffff',
           width: '100%',
-          aspectRatio: '1 / 1'
+          flex: 1
         }}
       >
         <img
           src={secondaryImage}
           alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: '#ffffff' }}
         />
       </div>
     </div>
@@ -209,7 +209,7 @@ export default function ProfileOnboardingPage() {
             alignItems: 'stretch'
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
             <Card>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -225,7 +225,7 @@ export default function ProfileOnboardingPage() {
               </div>
             </Card>
 
-            <Card>
+            <Card style={{ flex: 1 }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
               <div>
                 <span
@@ -317,26 +317,26 @@ export default function ProfileOnboardingPage() {
                 )}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
-                <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <Button variant="secondary" onClick={handleBack} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Button variant="secondary" onClick={handleBack} style={{ padding: '0.3rem 0.5rem', fontSize: '0.74rem' }}>
                     {t('profile.actions.back')}
                   </Button>
-                  <Button variant="secondary" onClick={handleLater} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                  <Button variant="secondary" onClick={handleLater} style={{ padding: '0.3rem 0.5rem', fontSize: '0.74rem' }}>
                     {t('profile.actions.later')}
                   </Button>
-                  <Button variant="secondary" onClick={handleSkip} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                  <Button variant="secondary" onClick={handleSkip} style={{ padding: '0.3rem 0.5rem', fontSize: '0.74rem' }}>
                     {t('profile.actions.skip')}
                   </Button>
-                  <Button variant="secondary" onClick={handleSave} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                  <Button variant="secondary" onClick={handleSave} style={{ padding: '0.3rem 0.5rem', fontSize: '0.74rem' }}>
                     {t('profile.actions.save')}
                   </Button>
-                  <Button variant="secondary" onClick={handleReset} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                  <Button variant="secondary" onClick={handleReset} style={{ padding: '0.3rem 0.5rem', fontSize: '0.74rem' }}>
                     {t('profile.overview.reset')}
                   </Button>
                   <Button
                     onClick={handleNext}
                     disabled={activeField.required ? !isFieldComplete(activeField) : false}
-                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
+                    style={{ padding: '0.3rem 0.55rem', fontSize: '0.74rem' }}
                   >
                     {stepIndex === totalSteps - 1 ? t('profile.actions.finish') : t('profile.actions.next')}
                   </Button>
