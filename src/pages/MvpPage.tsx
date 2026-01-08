@@ -6,16 +6,19 @@ import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
 
 type MvpStep = {
-  key: 'registration' | 'claimProcess' | 'claimManager' | 'partnerManagement' | 'getQuote'
+  key: 'registration' | 'profile' | 'getQuote' | 'policyPurchase' | 'authentication' | 'claimProcess' | 'aiModules' | 'dashboards'
   route: string
 }
 
 const MVP_STEPS: MvpStep[] = [
   { key: 'registration', route: '/registration' },
+  { key: 'profile', route: '/profile' },
+  { key: 'getQuote', route: '/get-quote' },
+  { key: 'policyPurchase', route: '/policy-purchase' },
+  { key: 'authentication', route: '/login' },
   { key: 'claimProcess', route: '/claim-process' },
-  { key: 'claimManager', route: '/claim-manager' },
-  { key: 'partnerManagement', route: '/partner-management' },
-  { key: 'getQuote', route: '/get-quote' }
+  { key: 'aiModules', route: '/feature-tree' },
+  { key: 'dashboards', route: '/fleet-reporting' }
 ]
 
 const descriptionStyle: React.CSSProperties = {

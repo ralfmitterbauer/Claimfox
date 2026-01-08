@@ -1,8 +1,8 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { useI18n } from '@/i18n/I18nContext'
 
 export default function MyProfilePage() {
-  const { t } = useTranslation()
+  const { t } = useI18n()
   return (
     <section className="page">
       <h1 className="page-title">{t('profile.title')}</h1>

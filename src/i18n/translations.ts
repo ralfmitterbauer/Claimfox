@@ -30,6 +30,15 @@ type TranslationTree = {
     subtitle: string
     steps: Record<string, { title: string; description: string }>
   }
+  profile: {
+    title: string
+    placeholder: string
+  }
+  policyPurchase: {
+    title: string
+    subtitle: string
+    placeholder: string
+  }
   getQuote: {
     title: string
     subtitle: string
@@ -752,23 +761,44 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Registrierung',
           description: 'Erfasse die E-Mail-Adresse und starte den Onboarding-Prozess.'
         },
+        getQuote: {
+          title: 'Angebot anfragen',
+          description: 'Mehrstufige Anfrage für Versicherungs- und Fahrzeugdaten.'
+        },
+        policyPurchase: {
+          title: 'Police kaufen',
+          description: 'Verbindlicher Abschluss und Zahlungsdetails für die Police.'
+        },
+        authentication: {
+          title: 'User Authentication',
+          description: 'Login, Zugriff und Rollenprüfung für die MVP-Strecke.'
+        },
         claimProcess: {
           title: 'Schadenmeldung',
           description: 'Chatbasierte Erfassung mit Standort, Zeitstempel und strukturierten Daten.'
         },
-        claimManager: {
-          title: 'Schadenmanager',
-          description: 'Steuere Freigaben, Dokumente und Partner im Cockpit.'
+        profile: {
+          title: 'User Profilseite',
+          description: 'Persönliche und organisatorische Angaben im Überblick.'
         },
-        partnerManagement: {
-          title: 'Partner Management',
-          description: 'Werkstätten, Gutachter und Dienstleister koordinieren.'
+        aiModules: {
+          title: 'KI Module',
+          description: 'Automatisierungen, Priorisierung und KI-Insights für Entscheider.'
         },
-        getQuote: {
-          title: 'Angebot anfragen',
-          description: 'Mehrstufige Anfrage für Versicherungs- und Fahrzeugdaten.'
+        dashboards: {
+          title: 'Dashboards',
+          description: 'KPIs, Reports und Statusübersichten für das MVP.'
         }
       }
+    },
+    profile: {
+      title: 'Profil',
+      placeholder: 'Profilinformationen folgen in der MVP-Strecke.'
+    },
+    policyPurchase: {
+      title: 'Police kaufen',
+      subtitle: 'Abschlussstrecke für Policen und Zahlungsinformationen.',
+      placeholder: 'Hier entsteht die Kaufstrecke für Policen.'
     },
     featureTree: {
       title: 'Feature Tree',
@@ -2223,23 +2253,44 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Registration',
           description: 'Capture the email address and start onboarding.'
         },
+        getQuote: {
+          title: 'Get a quote',
+          description: 'Multi-step request for insurance and vehicle details.'
+        },
+        policyPurchase: {
+          title: 'Purchase policy',
+          description: 'Binding checkout and payment details for the policy.'
+        },
+        authentication: {
+          title: 'User authentication',
+          description: 'Login, access, and role checks for the MVP flow.'
+        },
         claimProcess: {
           title: 'Claim intake',
           description: 'Chat-based intake with location, timestamps, and structured data.'
         },
-        claimManager: {
-          title: 'Claim manager',
-          description: 'Manage approvals, documents, and partners in one cockpit.'
+        profile: {
+          title: 'User profile',
+          description: 'Personal and organization details at a glance.'
         },
-        partnerManagement: {
-          title: 'Partner management',
-          description: 'Coordinate workshops, surveyors, and service partners.'
+        aiModules: {
+          title: 'AI modules',
+          description: 'Automation, prioritization, and AI insights for decision makers.'
         },
-        getQuote: {
-          title: 'Get a quote',
-          description: 'Multi-step request for insurance and vehicle details.'
+        dashboards: {
+          title: 'Dashboards',
+          description: 'KPIs, reports, and status overviews for the MVP.'
         }
       }
+    },
+    profile: {
+      title: 'Profile',
+      placeholder: 'Profile details will be added in the MVP flow.'
+    },
+    policyPurchase: {
+      title: 'Purchase policy',
+      subtitle: 'Checkout flow for policies and payment details.',
+      placeholder: 'The policy purchase flow will be built here.'
     },
     featureTree: {
       title: 'Feature tree',
