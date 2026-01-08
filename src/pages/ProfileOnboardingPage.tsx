@@ -180,6 +180,16 @@ export default function ProfileOnboardingPage() {
     navigate('/profile')
   }
 
+  function handleBack() {
+    if (stepIndex === 0) {
+      navigate('/profile')
+      return
+    }
+    const nextStep = stepIndex - 1
+    setStepIndex(nextStep)
+    persist(nextStep, formData, false)
+  }
+
   function handleReset() {
     setStepIndex(0)
     setFormData({})
@@ -307,23 +317,26 @@ export default function ProfileOnboardingPage() {
                 )}
 
               <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                  <Button variant="secondary" onClick={handleLater} style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                  <Button variant="secondary" onClick={handleBack} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
+                    {t('profile.actions.back')}
+                  </Button>
+                  <Button variant="secondary" onClick={handleLater} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
                     {t('profile.actions.later')}
                   </Button>
-                  <Button variant="secondary" onClick={handleSkip} style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem' }}>
+                  <Button variant="secondary" onClick={handleSkip} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
                     {t('profile.actions.skip')}
                   </Button>
-                  <Button variant="secondary" onClick={handleSave} style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem' }}>
+                  <Button variant="secondary" onClick={handleSave} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
                     {t('profile.actions.save')}
                   </Button>
-                  <Button variant="secondary" onClick={handleReset} style={{ padding: '0.4rem 0.7rem', fontSize: '0.8rem' }}>
+                  <Button variant="secondary" onClick={handleReset} style={{ padding: '0.35rem 0.6rem', fontSize: '0.78rem' }}>
                     {t('profile.overview.reset')}
                   </Button>
                   <Button
                     onClick={handleNext}
                     disabled={activeField.required ? !isFieldComplete(activeField) : false}
-                    style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
+                    style={{ padding: '0.35rem 0.65rem', fontSize: '0.78rem' }}
                   >
                     {stepIndex === totalSteps - 1 ? t('profile.actions.finish') : t('profile.actions.next')}
                   </Button>
