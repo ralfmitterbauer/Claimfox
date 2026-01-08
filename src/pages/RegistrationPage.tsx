@@ -28,6 +28,10 @@ export default function RegistrationPage() {
       setError(t('registration.privacyError'))
       return
     }
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('registrationEmail', trimmed)
+      window.localStorage.setItem('registrationPrivacyConsent', consent ? 'true' : 'false')
+    }
     setSubmitted(true)
   }
 

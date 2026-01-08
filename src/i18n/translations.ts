@@ -32,7 +32,71 @@ type TranslationTree = {
   }
   profile: {
     title: string
-    placeholder: string
+    subtitle: string
+    stepLabel: string
+    saved: string
+    passwordMismatch: string
+    registration: {
+      title: string
+      emailHint: string
+      consentHint: string
+    }
+    progress: {
+      title: string
+      caption: string
+    }
+    steps: {
+      personal: {
+        title: string
+        subtitle: string
+      }
+      company: {
+        title: string
+        subtitle: string
+      }
+    }
+    actions: {
+      back: string
+      next: string
+      save: string
+      finish: string
+    }
+    fields: {
+      email: string
+      privacyConsent: string
+      companyName: string
+      legalForm: string
+      street: string
+      houseNumber: string
+      addressAdditional: string
+      zip: string
+      city: string
+      country: string
+      vatId: string
+      directorFirstName: string
+      directorLastName: string
+      salutation: string
+      contactFirstName: string
+      contactLastName: string
+      phoneCountryCode: string
+      phone: string
+      language: string
+      password: string
+      passwordConfirm: string
+      advisorCode: string
+      kycBranch: string
+      kycDirector: string
+      kycBusiness: string
+    }
+    options: {
+      yes: string
+      no: string
+      select: string
+      language: {
+        de: string
+        en: string
+      }
+    }
   }
   policyPurchase: {
     title: string
@@ -793,7 +857,71 @@ export const translations: Record<Lang, TranslationTree> = {
     },
     profile: {
       title: 'Profil',
-      placeholder: 'Profilinformationen folgen in der MVP-Strecke.'
+      subtitle: 'Vervollständigen Sie Ihr Profil Schritt für Schritt.',
+      stepLabel: 'Schritt {{current}} von {{total}}',
+      saved: 'Gespeichert',
+      passwordMismatch: 'Die Passwörter stimmen nicht überein.',
+      registration: {
+        title: 'Registrierung',
+        emailHint: 'Diese E-Mail wurde bei der Registrierung erfasst.',
+        consentHint: 'Einwilligung zur Datenverarbeitung liegt vor.'
+      },
+      progress: {
+        title: 'Fertigstellungsgrad',
+        caption: '{{percent}}% abgeschlossen'
+      },
+      steps: {
+        personal: {
+          title: 'Persönliche Daten',
+          subtitle: 'Kontaktdaten, Sprache und Sicherheitsangaben.'
+        },
+        company: {
+          title: 'Unternehmensdaten',
+          subtitle: 'Firmen- und Adressdaten für den Vertragsabschluss.'
+        }
+      },
+      actions: {
+        back: 'Zurück',
+        next: 'Weiter',
+        save: 'Speichern & später fortsetzen',
+        finish: 'Profil abschließen'
+      },
+      fields: {
+        email: 'E-Mail Adresse',
+        privacyConsent: 'Datenschutz-Zustimmung',
+        companyName: 'Firmenname inkl. Rechtsform',
+        legalForm: 'Rechtsform',
+        street: 'Straße',
+        houseNumber: 'Hausnummer',
+        addressAdditional: 'Adresszusatz',
+        zip: 'Postleitzahl',
+        city: 'Stadt',
+        country: 'Land',
+        vatId: 'USt-IDNr.',
+        directorFirstName: 'Vorname des Geschäftsführers',
+        directorLastName: 'Nachname des Geschäftsführers',
+        salutation: 'Anrede',
+        contactFirstName: 'Vorname',
+        contactLastName: 'Nachname',
+        phoneCountryCode: 'Ländercode',
+        phone: 'Telefon',
+        language: 'Sprache',
+        password: 'Passwort',
+        passwordConfirm: 'Passwort wiederholen',
+        advisorCode: 'Beraternummer',
+        kycBranch: 'Niederlassung in Sanktionsregion vorhanden?',
+        kycDirector: 'Geschäftsführer/Verwaltungsrat wohnhaft in Sanktionsregion?',
+        kycBusiness: 'Geschäftsbeziehungen zu sanktionierten Regionen?'
+      },
+      options: {
+        yes: 'Ja',
+        no: 'Nein',
+        select: 'Bitte auswählen',
+        language: {
+          de: 'Deutsch',
+          en: 'Englisch'
+        }
+      }
     },
     policyPurchase: {
       title: 'Police kaufen',
@@ -2285,7 +2413,71 @@ export const translations: Record<Lang, TranslationTree> = {
     },
     profile: {
       title: 'Profile',
-      placeholder: 'Profile details will be added in the MVP flow.'
+      subtitle: 'Complete your profile step by step.',
+      stepLabel: 'Step {{current}} of {{total}}',
+      saved: 'Saved',
+      passwordMismatch: 'Passwords do not match.',
+      registration: {
+        title: 'Registration',
+        emailHint: 'This email was captured during registration.',
+        consentHint: 'Data processing consent is recorded.'
+      },
+      progress: {
+        title: 'Completion',
+        caption: '{{percent}}% complete'
+      },
+      steps: {
+        personal: {
+          title: 'Personal details',
+          subtitle: 'Contact data, language and security settings.'
+        },
+        company: {
+          title: 'Company details',
+          subtitle: 'Company and address details for the contract.'
+        }
+      },
+      actions: {
+        back: 'Back',
+        next: 'Next',
+        save: 'Save & continue later',
+        finish: 'Finish profile'
+      },
+      fields: {
+        email: 'Email address',
+        privacyConsent: 'Privacy consent',
+        companyName: 'Company name incl. legal form',
+        legalForm: 'Legal form',
+        street: 'Street',
+        houseNumber: 'House number',
+        addressAdditional: 'Address line 2',
+        zip: 'Postal code',
+        city: 'City',
+        country: 'Country',
+        vatId: 'VAT ID',
+        directorFirstName: 'Managing director first name',
+        directorLastName: 'Managing director last name',
+        salutation: 'Salutation',
+        contactFirstName: 'First name',
+        contactLastName: 'Last name',
+        phoneCountryCode: 'Country code',
+        phone: 'Phone',
+        language: 'Language',
+        password: 'Password',
+        passwordConfirm: 'Confirm password',
+        advisorCode: 'Advisor code',
+        kycBranch: 'Branch in sanctioned region?',
+        kycDirector: 'Director or board in sanctioned region?',
+        kycBusiness: 'Business with sanctioned regions?'
+      },
+      options: {
+        yes: 'Yes',
+        no: 'No',
+        select: 'Please select',
+        language: {
+          de: 'German',
+          en: 'English'
+        }
+      }
     },
     policyPurchase: {
       title: 'Purchase policy',
