@@ -25,6 +25,15 @@ export default function MyProfilePage() {
     return parsed?.completed ?? false
   })()
 
+  function handleReset() {
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem(STORAGE_KEY)
+      window.localStorage.removeItem('registrationEmail')
+      window.localStorage.removeItem('registrationPrivacyConsent')
+    }
+    navigate(0)
+  }
+
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 980, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -85,6 +94,9 @@ export default function MyProfilePage() {
               <strong style={{ color: '#0f172a' }}>{t('profile.overview.summaryTitle')}</strong>
               <p style={{ margin: '0.35rem 0 0', color: '#64748b' }}>{t('profile.overview.summarySubtitle')}</p>
             </div>
+            <Button variant="secondary" onClick={handleReset}>
+              {t('profile.overview.reset')}
+            </Button>
           </div>
           <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>

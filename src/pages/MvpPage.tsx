@@ -6,12 +6,22 @@ import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
 
 type MvpStep = {
-  key: 'registration' | 'profile' | 'getQuote' | 'policyPurchase' | 'authentication' | 'claimProcess' | 'aiModules' | 'dashboards'
+  key:
+    | 'registration'
+    | 'onboarding'
+    | 'profile'
+    | 'getQuote'
+    | 'policyPurchase'
+    | 'authentication'
+    | 'claimProcess'
+    | 'aiModules'
+    | 'dashboards'
   route: string
 }
 
 const MVP_STEPS: MvpStep[] = [
   { key: 'registration', route: '/registration' },
+  { key: 'onboarding', route: '/profile/onboarding' },
   { key: 'profile', route: '/profile' },
   { key: 'getQuote', route: '/get-quote' },
   { key: 'policyPurchase', route: '/policy-purchase' },
@@ -78,6 +88,9 @@ export default function MvpPage() {
               </Button>
             </Card>
           ))}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button onClick={() => navigate('/profile')}>{t('mvp.nextStep')}</Button>
         </div>
       </div>
     </section>

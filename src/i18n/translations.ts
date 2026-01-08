@@ -28,22 +28,24 @@ type TranslationTree = {
   mvp: {
     title: string
     subtitle: string
+    nextStep: string
     steps: Record<string, { title: string; description: string }>
   }
   profile: {
     title: string
     subtitle: string
-    overview: {
-      title: string
-      subtitle: string
-      edit: string
-      open: string
-      back: string
-      summaryTitle: string
-      summarySubtitle: string
-      sections: {
+      overview: {
         title: string
-        onboarding: string
+        subtitle: string
+        edit: string
+        open: string
+        back: string
+        reset: string
+        summaryTitle: string
+        summarySubtitle: string
+        sections: {
+          title: string
+          onboarding: string
         personal: string
         company: string
         insurances: string
@@ -854,10 +856,15 @@ export const translations: Record<Lang, TranslationTree> = {
     mvp: {
       title: 'MVP Übersicht',
       subtitle: 'Alle Prozessschritte im Überblick – klicke dich durch die MVP-Strecke.',
+      nextStep: 'Nächster Schritt',
       steps: {
         registration: {
           title: 'Registrierung',
           description: 'Erfasse die E-Mail-Adresse und starte den Onboarding-Prozess.'
+        },
+        onboarding: {
+          title: 'Onboarding',
+          description: 'Wizard zur Erfassung persönlicher und Unternehmensdaten.'
         },
         getQuote: {
           title: 'Angebot anfragen',
@@ -898,6 +905,7 @@ export const translations: Record<Lang, TranslationTree> = {
         edit: 'Profil bearbeiten',
         open: 'Öffnen',
         back: 'Zurück zur Übersicht',
+        reset: 'Daten zurücksetzen',
         summaryTitle: 'Ihre Basisdaten',
         summarySubtitle: 'Ein kurzer Überblick der wichtigsten Angaben.',
         sections: {
@@ -2444,10 +2452,15 @@ export const translations: Record<Lang, TranslationTree> = {
     mvp: {
       title: 'MVP overview',
       subtitle: 'All process steps at a glance — click through the MVP flow.',
+      nextStep: 'Next step',
       steps: {
         registration: {
           title: 'Registration',
           description: 'Capture the email address and start onboarding.'
+        },
+        onboarding: {
+          title: 'Onboarding',
+          description: 'Wizard to capture personal and company details.'
         },
         getQuote: {
           title: 'Get a quote',
@@ -2488,6 +2501,7 @@ export const translations: Record<Lang, TranslationTree> = {
         edit: 'Edit profile',
         open: 'Open',
         back: 'Back to overview',
+        reset: 'Reset data',
         summaryTitle: 'Your base data',
         summarySubtitle: 'A quick overview of the key information.',
         sections: {
