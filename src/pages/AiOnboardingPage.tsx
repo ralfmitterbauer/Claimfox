@@ -29,6 +29,7 @@ const sections = [
 
 export default function AiOnboardingPage() {
   const { t } = useI18n()
+  const [showArchitecture, setShowArchitecture] = React.useState(false)
 
   return (
     <section className="page" style={{ gap: '2.5rem' }}>
@@ -41,7 +42,9 @@ export default function AiOnboardingPage() {
               <p className="whitepaper-subtitle">{t('aiOnboarding.subtitle')}</p>
               <div className="whitepaper-hero-actions">
                 <Button>{t('aiOnboarding.cta.primary')}</Button>
-                <Button variant="secondary">{t('aiOnboarding.cta.secondary')}</Button>
+                <Button variant="secondary" onClick={() => setShowArchitecture((prev) => !prev)}>
+                  {t('aiOnboarding.cta.secondary')}
+                </Button>
               </div>
             </div>
             <div className="whitepaper-hero-graphic">
@@ -69,6 +72,46 @@ export default function AiOnboardingPage() {
             </Card>
           ))}
         </div>
+
+        {showArchitecture && (
+          <Card className="intern-architecture">
+            <h2>{t('aiOnboarding.architectureTitle')}</h2>
+            <pre>
+{`┌─────────────────────┐
+│  Onboarding UI      │
+│  (Wizard + Validation)
+└─────────┬───────────┘
+          │
+┌─────────▼───────────┐
+│ Intake Service      │
+│ - Schema Checks     │
+│ - Pseudonymisierung │
+└─────────┬───────────┘
+          │
+┌─────────▼───────────┐
+│ Feature Store       │
+│ - Allowlist         │
+│ - Versionierung     │
+└─────────┬───────────┘
+          │
+┌─────────▼───────────┐
+│ AI Scoring Service  │
+│ - Empfehlungen      │
+│ - Risiko-Flags      │
+└─────────┬───────────┘
+          │
+┌─────────▼───────────┐
+│ Review & Approval   │
+│ (Human-in-the-Loop) │
+└─────────┬───────────┘
+          │
+┌─────────▼───────────┐
+│ Core Systems        │
+│ (Policy, CRM, BI)   │
+└─────────────────────┘`}
+            </pre>
+          </Card>
+        )}
 
         <Card className="whitepaper-footer">
           <div>

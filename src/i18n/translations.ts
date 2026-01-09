@@ -28,6 +28,14 @@ type TranslationTree = {
         processes: string
         internal: string
       }
+      internalAuth: {
+        title: string
+        subtitle: string
+        username: string
+        pin: string
+        submit: string
+        error: string
+      }
     cards: Record<string, { title: string; description: string; cta?: string }>
   }
   mvp: {
@@ -206,6 +214,7 @@ type TranslationTree = {
       title: string
       subtitle: string
     }
+    architectureTitle: string
   }
   getQuote: {
     title: string
@@ -879,6 +888,14 @@ export const translations: Record<Lang, TranslationTree> = {
         processes: 'Prozesse',
         internal: 'Interne Dokumentation'
       },
+      internalAuth: {
+        title: 'Interne Dokumentation',
+        subtitle: 'Bitte Zugangsdaten eingeben, um fortzufahren.',
+        username: 'Benutzername',
+        pin: 'PIN',
+        submit: 'Freigeben',
+        error: 'Zugangsdaten prüfen.'
+      },
       cards: {
         mvp: {
           title: 'MVP Übersicht',
@@ -1191,7 +1208,8 @@ export const translations: Record<Lang, TranslationTree> = {
         secondary: 'Team kontaktieren',
         title: 'Nächster Schritt',
         subtitle: 'Diskutieren Sie den KI-Einsatz im Onboarding mit unserem Entwicklerteam.'
-      }
+      },
+      architectureTitle: 'Architekturübersicht'
     },
     featureTree: {
       title: 'Feature Tree',
@@ -2596,6 +2614,14 @@ export const translations: Record<Lang, TranslationTree> = {
         processes: 'Processes',
         internal: 'Internal documentation'
       },
+      internalAuth: {
+        title: 'Internal documentation',
+        subtitle: 'Enter the credentials to continue.',
+        username: 'Username',
+        pin: 'PIN',
+        submit: 'Unlock',
+        error: 'Check your credentials.'
+      },
       cards: {
         mvp: {
           title: 'MVP overview',
@@ -2908,7 +2934,8 @@ export const translations: Record<Lang, TranslationTree> = {
         secondary: 'Contact team',
         title: 'Next step',
         subtitle: 'Discuss AI onboarding with our engineering team.'
-      }
+      },
+      architectureTitle: 'Architecture overview'
     },
     featureTree: {
       title: 'Feature tree',

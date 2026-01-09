@@ -62,12 +62,58 @@ const descriptionStyle: React.CSSProperties = {
 export default function RolesPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
+  const [showAuth, setShowAuth] = React.useState(false)
+  const [authUser, setAuthUser] = React.useState('')
+  const [authPin, setAuthPin] = React.useState('')
+  const [authError, setAuthError] = React.useState('')
+  const [pendingRoute, setPendingRoute] = React.useState<string | null>(null)
 
-  function renderCard(item: RoleItem) {
+  const isAuthed =
+    typeof window !== 'undefined' && window.localStorage.getItem('cf_intern_auth') === 'true'
+
+  function handleInternalAccess(route: string) {
+    if (isAuthed) {
+      navigate(route)
+      return
+    }
+    setPendingRoute(route)
+    setShowAuth(true)
+  }
+
+  function handleAuthSubmit(event: React.FormEvent) {
+    event.preventDefault()
+    const valid = authUser.trim().toLowerCase() === 'ralf' && authPin.trim() === '1704'
+    if (!valid) {
+      setAuthError(t('roles.internalAuth.error'))
+      return
+    }
+    setAuthError('')
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem('cf_intern_auth', 'true')
+    }
+    setShowAuth(false)
+    const nextRoute = pendingRoute
+    setPendingRoute(null)
+    if (nextRoute) {
+      navigate(nextRoute)
+    }
+  }
+
+  function renderCard(item: RoleItem, requireAuth = false) {
     const hasRoute = Boolean(item.route)
     const titleKey = item.key === 'brokerPortal' ? 'roles.brokerPortal' : `roles.cards.${item.key}.title`
     const descriptionKey =
       item.key === 'brokerPortal' ? 'roles.brokerPortal' : `roles.cards.${item.key}.description`
+
+    const handleClick = hasRoute
+      ? () => {
+          if (requireAuth) {
+            handleInternalAccess(item.route!)
+            return
+          }
+          navigate(item.route!)
+        }
+      : undefined
 
     return (
       <Card
@@ -75,7 +121,7 @@ export default function RolesPage() {
         title={t(titleKey)}
         variant="glass"
         interactive={hasRoute}
-        onClick={hasRoute ? () => navigate(item.route!) : undefined}
+        onClick={handleClick}
         style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
       >
         <p style={descriptionStyle}>{t(descriptionKey)}</p>
@@ -85,6 +131,10 @@ export default function RolesPage() {
             hasRoute
               ? (event) => {
                   event.stopPropagation()
+                  if (requireAuth) {
+                    handleInternalAccess(item.route!)
+                    return
+                  }
                   navigate(item.route!)
                 }
               : undefined
@@ -96,7 +146,7 @@ export default function RolesPage() {
     )
   }
 
-  function renderSection(title: string, items: RoleItem[]) {
+  function renderSection(title: string, items: RoleItem[], requireAuth = false) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <h2 style={{ margin: 0 }}>{title}</h2>
@@ -107,7 +157,7 @@ export default function RolesPage() {
             gap: '1rem'
           }}
         >
-          {items.map(renderCard)}
+          {items.map((item) => renderCard(item, requireAuth))}
         </div>
       </div>
     )
@@ -149,7 +199,35 @@ export default function RolesPage() {
           <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
           {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
           <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
-          {renderSection(t('roles.sections.internal'), INTERNAL_ITEMS)}
+          {renderSection(t('roles.sections.internal'), INTERNAL_ITEMS, true)}
+          {showAuth && (
+            <Card style={{ maxWidth: 520 }}>
+              <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                <strong>{t('roles.internalAuth.title')}</strong>
+                <span style={{ color: '#64748b' }}>{t('roles.internalAuth.subtitle')}</span>
+                <label className="form-field">
+                  {t('roles.internalAuth.username')}
+                  <input
+                    className="text-input"
+                    value={authUser}
+                    onChange={(event) => setAuthUser(event.target.value)}
+                  />
+                </label>
+                <label className="form-field">
+                  {t('roles.internalAuth.pin')}
+                  <input
+                    className="text-input"
+                    type="password"
+                    inputMode="numeric"
+                    value={authPin}
+                    onChange={(event) => setAuthPin(event.target.value)}
+                  />
+                </label>
+                {authError && <span className="error-text">{authError}</span>}
+                <Button type="submit">{t('roles.internalAuth.submit')}</Button>
+              </form>
+            </Card>
+          )}
         </div>
       </section>
   )
