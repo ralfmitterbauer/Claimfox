@@ -33,6 +33,7 @@ import ProfileOnboardingPage from '@/pages/ProfileOnboardingPage'
 import AiWhitepaperPage from '@/pages/AiWhitepaperPage'
 import InternPage from '@/pages/InternPage'
 import AiOnboardingPage from '@/pages/AiOnboardingPage'
+import UserIdentificationPage from '@/pages/UserIdentificationPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -82,6 +83,7 @@ export default function AppRouter() {
         <Route path="/ai-whitepaper" element={<AiWhitepaperPage />} />
         <Route path="/intern" element={<InternPage />} />
         <Route path="/ai-onboarding" element={<AiOnboardingPage />} />
+        <Route path="/user-identification" element={<UserIdentificationPage />} />
       </Route>
       <Route path="*" element={<NotFoundRedirect />} />
     </Routes>

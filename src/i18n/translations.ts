@@ -194,6 +194,75 @@ type TranslationTree = {
       subtitle: string
     }
   }
+  identification: {
+    title: string
+    subtitle: string
+    progress: string
+    steps: {
+      start: string
+      documents: string
+      capture: string
+      verification: string
+      selfie: string
+      summary: string
+    }
+    intro: {
+      title: string
+      body: string
+    }
+    document: {
+      title: string
+      subtitle: string
+      type: string
+      typePlaceholder: string
+      typeId: string
+      typePassport: string
+      typeOther: string
+      country: string
+      countryPlaceholder: string
+    }
+    capture: {
+      title: string
+      subtitle: string
+      front: string
+      back: string
+    }
+    verify: {
+      title: string
+      subtitle: string
+      issuing: string
+      authenticity: string
+      mrz: string
+      failed: string
+    }
+    selfie: {
+      title: string
+      subtitle: string
+      capture: string
+    }
+    summary: {
+      title: string
+      subtitle: string
+      status: string
+      docType: string
+      country: string
+      audit: string
+      notice: string
+    }
+    status: {
+      ok: string
+      pending: string
+      success: string
+      failed: string
+    }
+    actions: {
+      start: string
+      back: string
+      next: string
+      verify: string
+      restart: string
+    }
+  }
   aiOnboarding: {
     kicker: string
     title: string
@@ -915,6 +984,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Onboarding',
           description: 'Aktueller Onboarding-Prozess mit Wizard und Fortschrittsanzeige.'
         },
+        identification: {
+          title: 'User Identifikation',
+          description: 'Verifizierung von Ausweisdokument und Selfie-Abgleich.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -1214,6 +1287,75 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'Diskutieren Sie den KI-Einsatz im Onboarding mit unserem Entwicklerteam.'
       },
       architectureTitle: 'Architekturübersicht'
+    },
+    identification: {
+      title: 'User Identifikation',
+      subtitle: 'Identitätsprüfung mit Dokumenten-Scan, Echtheitsprüfung und Selfie-Abgleich.',
+      progress: 'Prozessfortschritt',
+      steps: {
+        start: 'Start',
+        documents: 'Ausweisdaten',
+        capture: 'Dokument-Scan',
+        verification: 'Echtheitsprüfung',
+        selfie: 'Selfie-Abgleich',
+        summary: 'Abschluss'
+      },
+      intro: {
+        title: 'Identifizierung starten',
+        body: 'Wir führen Sie sicher durch die Prüfung. Bitte halten Sie Ihr Ausweisdokument bereit und sorgen Sie für gute Lichtverhältnisse.'
+      },
+      document: {
+        title: 'Ausweisdokument erfassen',
+        subtitle: 'Wählen Sie den Dokumenttyp und das ausstellende Land.',
+        type: 'Dokumenttyp',
+        typePlaceholder: 'Bitte auswählen',
+        typeId: 'Personalausweis',
+        typePassport: 'Reisepass',
+        typeOther: 'Anderes Dokument',
+        country: 'Ausstellendes Land',
+        countryPlaceholder: 'z. B. Deutschland'
+      },
+      capture: {
+        title: 'Dokument scannen',
+        subtitle: 'Laden Sie ein Foto der Vorder- und Rückseite hoch.',
+        front: 'Vorderseite',
+        back: 'Rückseite'
+      },
+      verify: {
+        title: 'Dokument verifizieren',
+        subtitle: 'Echtheit, MRZ und Ländercode werden geprüft.',
+        issuing: 'Ausstellendes Land',
+        authenticity: 'Echtheitsprüfung',
+        mrz: 'MRZ-Auslesung',
+        failed: 'Verifizierung fehlgeschlagen. Bitte Dokumente erneut prüfen.'
+      },
+      selfie: {
+        title: 'Selfie aufnehmen',
+        subtitle: 'Nehmen Sie ein Selfie auf, um den Abgleich zu starten.',
+        capture: 'Selfie-Datei'
+      },
+      summary: {
+        title: 'Ergebnis',
+        subtitle: 'Dokumentation des Prüfprozesses.',
+        status: 'Status',
+        docType: 'Dokumenttyp',
+        country: 'Ausstellendes Land',
+        audit: 'Audit-ID',
+        notice: 'Alle Prüfergebnisse wurden protokolliert. Bei Misserfolg wenden Sie sich an den Support.'
+      },
+      status: {
+        ok: 'Bestanden',
+        pending: 'Ausstehend',
+        success: 'Erfolgreich',
+        failed: 'Misserfolg'
+      },
+      actions: {
+        start: 'Prozess starten',
+        back: 'Zurück',
+        next: 'Weiter',
+        verify: 'Jetzt prüfen',
+        restart: 'Neu starten'
+      }
     },
     featureTree: {
       title: 'Feature Tree',
@@ -2645,6 +2787,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Onboarding',
           description: 'Current onboarding flow with wizard steps and progress tracking.'
         },
+        identification: {
+          title: 'User Identification',
+          description: 'Verify ID document and match with selfie.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Nurture relationships with assessors, workshops, and service partners.'
@@ -2944,6 +3090,75 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'Discuss AI onboarding with our engineering team.'
       },
       architectureTitle: 'Architecture overview'
+    },
+    identification: {
+      title: 'User identification',
+      subtitle: 'Identity verification with document scan, authenticity checks, and selfie match.',
+      progress: 'Progress',
+      steps: {
+        start: 'Start',
+        documents: 'Document info',
+        capture: 'Document scan',
+        verification: 'Verification',
+        selfie: 'Selfie match',
+        summary: 'Summary'
+      },
+      intro: {
+        title: 'Start verification',
+        body: 'We guide you through the process. Please have your ID ready and ensure good lighting.'
+      },
+      document: {
+        title: 'Provide document details',
+        subtitle: 'Choose the document type and issuing country.',
+        type: 'Document type',
+        typePlaceholder: 'Select',
+        typeId: 'ID card',
+        typePassport: 'Passport',
+        typeOther: 'Other document',
+        country: 'Issuing country',
+        countryPlaceholder: 'e.g. Germany'
+      },
+      capture: {
+        title: 'Scan document',
+        subtitle: 'Upload a photo of the front and back.',
+        front: 'Front side',
+        back: 'Back side'
+      },
+      verify: {
+        title: 'Verify document',
+        subtitle: 'Authenticity, MRZ, and issuing country are checked.',
+        issuing: 'Issuing country',
+        authenticity: 'Authenticity check',
+        mrz: 'MRZ extraction',
+        failed: 'Verification failed. Please recheck the document photos.'
+      },
+      selfie: {
+        title: 'Capture selfie',
+        subtitle: 'Take a selfie to match against the document.',
+        capture: 'Selfie file'
+      },
+      summary: {
+        title: 'Result',
+        subtitle: 'Verification record and outcome.',
+        status: 'Status',
+        docType: 'Document type',
+        country: 'Issuing country',
+        audit: 'Audit ID',
+        notice: 'All verification signals were logged. If it fails, contact support.'
+      },
+      status: {
+        ok: 'Passed',
+        pending: 'Pending',
+        success: 'Success',
+        failed: 'Failed'
+      },
+      actions: {
+        start: 'Start process',
+        back: 'Back',
+        next: 'Next',
+        verify: 'Run verification',
+        restart: 'Restart'
+      }
     },
     featureTree: {
       title: 'Feature tree',
