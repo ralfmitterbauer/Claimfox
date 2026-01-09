@@ -21,6 +21,7 @@ type RoleItem = {
     | 'intern'
     | 'brokerPortal'
     | 'aiOnboarding'
+    | 'onboarding'
   route?: string
   ctaKey?: string
 }
@@ -36,7 +37,8 @@ const OVERVIEW_ITEMS: RoleItem[] = [
 
 const PROCESS_ITEMS: RoleItem[] = [
   { key: 'claimProcess', route: '/claim-process', ctaKey: 'roles.cards.claimProcess.cta' },
-  { key: 'getQuote', route: '/get-quote', ctaKey: 'roles.cards.getQuote.cta' }
+  { key: 'getQuote', route: '/get-quote', ctaKey: 'roles.cards.getQuote.cta' },
+  { key: 'onboarding', route: '/profile/onboarding' }
 ]
 
 const INTERNAL_ITEMS: RoleItem[] = [

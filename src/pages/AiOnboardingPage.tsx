@@ -73,42 +73,63 @@ export default function AiOnboardingPage() {
             ))}
           </div>
 
-          {showArchitecture && (
+{showArchitecture && (
             <Card className="intern-architecture">
               <h2>{t('aiOnboarding.architectureTitle')}</h2>
               <pre>
-{`┌─────────────────────┐
-│  Onboarding UI      │
-│  (Wizard + Validation)
-└─────────┬───────────┘
-          │
-┌─────────▼───────────┐
-│ Intake Service      │
-│ - Schema Checks     │
-│ - Pseudonymisierung │
-└─────────┬───────────┘
-          │
-┌─────────▼───────────┐
-│ Feature Store       │
-│ - Allowlist         │
-│ - Versionierung     │
-└─────────┬───────────┘
-          │
-┌─────────▼───────────┐
-│ AI Scoring Service  │
-│ - Empfehlungen      │
-│ - Risiko-Flags      │
-└─────────┬───────────┘
-          │
-┌─────────▼───────────┐
-│ Review & Approval   │
-│ (Human-in-the-Loop) │
-└─────────┬───────────┘
-          │
-┌─────────▼───────────┐
-│ Core Systems        │
-│ (Policy, CRM, BI)   │
-└─────────────────────┘`}
+{`┌─────────────────────────────────────────────────────┐
+│  Onboarding UI (Wizard)                              │
+│  - Registrierung (E-Mail + Consent)                  │
+│  - Persönliche Daten                                 │
+│  - Unternehmensdaten                                 │
+│  - Schritt-Status & Fortschritt                      │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Client Validation Layer                              │
+│ - Required Field Checks                              │
+│ - Format Validierung (E-Mail, Telefon, PLZ)          │
+│ - Inline Hinweise & Error States                     │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Intake API Gateway                                  │
+│ - Schema Validation                                 │
+│ - Pseudonymisierung (Personenbezug)                 │
+│ - Tokenisierung / Hashing                           │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Data Quality Service                                │
+│ - Konsistenzchecks                                  │
+│ - Anomalie-Flags                                    │
+│ - Duplikat-Erkennung                                │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Feature Store                                        │
+│ - Allowlist Enforcement                             │
+│ - Versionierung                                     │
+│ - Audit-Trail Hooks                                 │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ AI Scoring & Assist Service                          │
+│ - Risikoindikatoren                                 │
+│ - Vorschläge/Autofill                               │
+│ - Priorisierung (ohne Auto-Decision)                │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Human-in-the-Loop Review                             │
+│ - Freigabe durch Sachbearbeitung                    │
+│ - Override & Kommentar                              │
+└───────────────────────┬─────────────────────────────┘
+                        │
+┌───────────────────────▼─────────────────────────────┐
+│ Core Systems                                         │
+│ - Policy / CRM / Billing / BI                        │
+└─────────────────────────────────────────────────────┘`}
               </pre>
             </Card>
           )}

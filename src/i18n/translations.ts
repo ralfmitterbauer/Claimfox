@@ -911,6 +911,10 @@ export const translations: Record<Lang, TranslationTree> = {
           description: 'Demo-Chatbot mit Standortabfrage, automatischem Zeitstempel und strukturierter Erfassung.',
           cta: 'Starten'
         },
+        onboarding: {
+          title: 'Onboarding',
+          description: 'Aktueller Onboarding-Prozess mit Wizard und Fortschrittsanzeige.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -2636,6 +2640,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Claims Process',
           description: 'Demo chatbot with location capture, automatic timestamps, and structured intake.',
           cta: 'Start'
+        },
+        onboarding: {
+          title: 'Onboarding',
+          description: 'Current onboarding flow with wizard steps and progress tracking.'
         },
         partner: {
           title: 'Partner Manager',
