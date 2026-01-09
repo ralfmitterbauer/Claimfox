@@ -18,23 +18,32 @@ type RoleItem = {
     | 'getQuote'
     | 'mvp'
     | 'whitepaper'
+    | 'intern'
+    | 'brokerPortal'
   route?: string
   ctaKey?: string
 }
 
-const ROLE_ITEMS: RoleItem[] = [
-  { key: 'mvp', route: '/mvp' },
+const OVERVIEW_ITEMS: RoleItem[] = [
   { key: 'claims', route: '/claim-manager', ctaKey: 'roles.cards.claims.cta' },
-  { key: 'claimProcess', route: '/claim-process', ctaKey: 'roles.cards.claimProcess.cta' },
   { key: 'partner', route: '/partner-management' },
   { key: 'reporting', route: '/marketing' },
-  { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
-  { key: 'getQuote', route: '/get-quote', ctaKey: 'roles.cards.getQuote.cta' },
-  { key: 'whitepaper', route: '/ai-whitepaper' },
-  { key: 'intern', route: '/intern' },
   { key: 'logistics', route: '/logistics', ctaKey: 'roles.cards.logistics.cta' },
-  { key: 'fleetManagement', route: '/fleet-management' }
-] as const
+  { key: 'fleetManagement', route: '/fleet-management' },
+  { key: 'brokerPortal', route: '/broker-portal' }
+]
+
+const PROCESS_ITEMS: RoleItem[] = [
+  { key: 'claimProcess', route: '/claim-process', ctaKey: 'roles.cards.claimProcess.cta' },
+  { key: 'getQuote', route: '/get-quote', ctaKey: 'roles.cards.getQuote.cta' }
+]
+
+const INTERNAL_ITEMS: RoleItem[] = [
+  { key: 'mvp', route: '/mvp' },
+  { key: 'whitepaper', route: '/ai-whitepaper' },
+  { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
+  { key: 'intern', route: '/intern' }
+]
 
 const descriptionStyle: React.CSSProperties = {
   marginTop: 0,
@@ -51,6 +60,56 @@ const descriptionStyle: React.CSSProperties = {
 export default function RolesPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
+
+  function renderCard(item: RoleItem) {
+    const hasRoute = Boolean(item.route)
+    const titleKey = item.key === 'brokerPortal' ? 'roles.brokerPortal' : `roles.cards.${item.key}.title`
+    const descriptionKey =
+      item.key === 'brokerPortal' ? 'roles.brokerPortal' : `roles.cards.${item.key}.description`
+
+    return (
+      <Card
+        key={item.key}
+        title={t(titleKey)}
+        variant="glass"
+        interactive={hasRoute}
+        onClick={hasRoute ? () => navigate(item.route!) : undefined}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
+      >
+        <p style={descriptionStyle}>{t(descriptionKey)}</p>
+        <Button
+          style={{ width: '100%', marginTop: 'auto', padding: '0.55rem 0.9rem', fontSize: '0.9rem', borderRadius: '999px' }}
+          onClick={
+            hasRoute
+              ? (event) => {
+                  event.stopPropagation()
+                  navigate(item.route!)
+                }
+              : undefined
+          }
+        >
+          {t('roles.view')}
+        </Button>
+      </Card>
+    )
+  }
+
+  function renderSection(title: string, items: RoleItem[]) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <h2 style={{ margin: 0 }}>{title}</h2>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '1rem'
+          }}
+        >
+          {items.map(renderCard)}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <section className="page" style={{ gap: '2rem' }}>
@@ -84,60 +143,11 @@ export default function RolesPage() {
               />
             </div>
           </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-              gap: '1rem'
-            }}
-          >
-            {ROLE_ITEMS.map((item) => {
-              const hasRoute = Boolean(item.route)
-              return (
-                <Card
-                  key={item.key}
-                  title={t(`roles.cards.${item.key}.title`)}
-                  variant="glass"
-                  interactive={hasRoute}
-                  onClick={hasRoute ? () => navigate(item.route!) : undefined}
-                  style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
-                >
-                  <p style={descriptionStyle}>{t(`roles.cards.${item.key}.description`)}</p>
-                  <Button
-                    style={{ width: '100%', marginTop: 'auto', padding: '0.55rem 0.9rem', fontSize: '0.9rem', borderRadius: '999px' }}
-                    onClick={
-                      hasRoute
-                        ? (event) => {
-                            event.stopPropagation()
-                            navigate(item.route!)
-                          }
-                        : undefined
-                    }
-                  >
-                    {t('roles.view')}
-                  </Button>
-                </Card>
-              )
-            })}
-            <Card
-              title={t('roles.brokerPortal')}
-              interactive
-              onClick={() => navigate('/broker-portal')}
-              variant="glass"
-              style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
-            >
-              <p style={descriptionStyle}>{t('roles.brokerPortal')}</p>
-              <Button
-                style={{ width: '100%', marginTop: 'auto', padding: '0.55rem 0.9rem', fontSize: '0.9rem', borderRadius: '999px' }}
-                onClick={(event) => {
-                  event.stopPropagation()
-                  navigate('/broker-portal')
-                }}
-              >
-                {t('roles.view')}
-              </Button>
-            </Card>
-          </div>
+          {renderSection(t('roles.sections.overview'), OVERVIEW_ITEMS)}
+          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
+          {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
+          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
+          {renderSection(t('roles.sections.internal'), INTERNAL_ITEMS)}
         </div>
       </section>
   )

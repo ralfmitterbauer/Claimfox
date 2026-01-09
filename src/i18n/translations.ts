@@ -23,6 +23,11 @@ type TranslationTree = {
       registrationCardTitle: string
       registrationCardSubtitle: string
       brokerPortal: string
+      sections: {
+        overview: string
+        processes: string
+        internal: string
+      }
     cards: Record<string, { title: string; description: string; cta?: string }>
   }
   mvp: {
@@ -848,6 +853,11 @@ export const translations: Record<Lang, TranslationTree> = {
       registrationCardTitle: 'Registrierung',
       registrationCardSubtitle: 'Starte die neue, KI-gestützte Journey und melde Partner oder Kund:innen komfortabel an.',
       brokerPortal: 'Maklerportal',
+      sections: {
+        overview: 'Rollenübersicht',
+        processes: 'Prozesse',
+        internal: 'Interne Dokumentation'
+      },
       cards: {
         mvp: {
           title: 'MVP Übersicht',
@@ -2520,6 +2530,11 @@ export const translations: Record<Lang, TranslationTree> = {
       registrationCardTitle: 'Registration',
       registrationCardSubtitle: 'Launch the guided, AI-supported journey to onboard partners or customers with ease.',
       brokerPortal: 'Broker Portal',
+      sections: {
+        overview: 'Role overview',
+        processes: 'Processes',
+        internal: 'Internal documentation'
+      },
       cards: {
         mvp: {
           title: 'MVP overview',
