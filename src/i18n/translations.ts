@@ -1430,11 +1430,11 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         6: {
           title: 'Was „Native KI“ bei Insurfox bedeutet',
-          body: 'Eigene KI-Modelle, Trainingspipelines, Inferenz-Services und Model-Registries.<br/>❌ Keine externen KI-APIs<br/>❌ Kein Fremdtraining<br/>❌ Kein Modell-Sharing'
+          body: 'Eigene KI-Modelle, Trainingspipelines, Inferenz-Services und Model-Registries.<br/>Keine externen KI-APIs, kein Fremdtraining, kein Modell-Sharing.'
         },
         7: {
           title: 'KI-Use-Cases (Insurance Core)',
-          body: 'Risiko- & Pricing-Berechnung, Fraud Detection & Anomalien, Portfolio- & Loss-Ratio-Analysen, Schaden- & Prozessoptimierung, Prolongations- & Renewal-Hinweise.<br/>➡️ immer entscheidungsunterstützend.'
+          body: 'Risiko- & Pricing-Berechnung, Fraud Detection & Anomalien, Portfolio- & Loss-Ratio-Analysen, Schaden- & Prozessoptimierung, Prolongations- & Renewal-Hinweise.<br/>Immer entscheidungsunterstützend.'
         },
         8: {
           title: 'Sensible Daten',
@@ -1450,7 +1450,7 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         11: {
           title: 'KI-Governance (BaFin-konform)',
-          body: 'KI gibt Empfehlungen, keine Entscheidungen. Human-in-the-Loop verpflichtend. Erklärbare Ergebnisse. Vollständige Audit-Trails.<br/>➡️ Keine automatische Ablehnung oder Kündigung.'
+          body: 'KI gibt Empfehlungen, keine Entscheidungen. Human-in-the-Loop verpflichtend. Erklärbare Ergebnisse. Vollständige Audit-Trails.<br/>Keine automatische Ablehnung oder Kündigung.'
         },
         12: {
           title: 'Datenschutz & Datensicherheit',
@@ -1478,7 +1478,7 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         18: {
           title: 'EU AI Act & Zukunftssicherheit',
-          body: 'Vorbereitung auf Hochrisiko-KI, dokumentierte Governance, nachvollziehbare Entscheidungslogik, Audit- & Reporting-Fähigkeit.<br/>➡️ Insurfox ist EU-AI-Act-ready.'
+          body: 'Vorbereitung auf Hochrisiko-KI, dokumentierte Governance, nachvollziehbare Entscheidungslogik, Audit- & Reporting-Fähigkeit.<br/>Insurfox ist EU-AI-Act-ready.'
         },
         19: {
           title: 'Zusammenfassung',
@@ -3343,11 +3343,11 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         6: {
           title: 'What “native AI” means',
-          body: 'Own AI models, training pipelines, inference services, and model registries.<br/>❌ No external AI APIs<br/>❌ No third-party training<br/>❌ No model sharing'
+          body: 'Own AI models, training pipelines, inference services, and model registries.<br/>No external AI APIs, no third-party training, no model sharing.'
         },
         7: {
           title: 'AI use cases (core)',
-          body: 'Risk & pricing, fraud detection, portfolio & loss ratio analytics, claims & process optimization, renewal signals.<br/>➡️ always decision support.'
+          body: 'Risk & pricing, fraud detection, portfolio & loss ratio analytics, claims & process optimization, renewal signals.<br/>Always decision support.'
         },
         8: {
           title: 'Sensitive data',
@@ -3363,7 +3363,7 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         11: {
           title: 'AI governance (BaFin)',
-          body: 'AI recommends, not decides. Human-in-the-loop required. Explainable outcomes. Full audit trails.<br/>➡️ No auto rejection or termination.'
+          body: 'AI recommends, not decides. Human-in-the-loop required. Explainable outcomes. Full audit trails.<br/>No auto rejection or termination.'
         },
         12: {
           title: 'Data protection & security',
@@ -3391,7 +3391,7 @@ export const translations: Record<Lang, TranslationTree> = {
         },
         18: {
           title: 'EU AI Act readiness',
-          body: 'Prepared for high-risk AI, documented governance, traceable decision logic, audit & reporting capability.<br/>➡️ Insurfox is EU AI Act ready.'
+          body: 'Prepared for high-risk AI, documented governance, traceable decision logic, audit & reporting capability.<br/>Insurfox is EU AI Act ready.'
         },
         19: {
           title: 'Summary',

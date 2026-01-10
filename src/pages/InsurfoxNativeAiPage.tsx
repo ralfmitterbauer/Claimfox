@@ -11,6 +11,7 @@ export default function InsurfoxNativeAiPage() {
   const [activeSlide, setActiveSlide] = useState(0)
 
   const slideTitles = useMemo(() => SLIDES.map((slide) => t(`nativeAi.slides.${slide}.title`)), [t])
+  const graphicTypes = ['network', 'shield', 'chart', 'layers', 'radar'] as const
 
   function goToSlide(index: number) {
     setActiveSlide(Math.max(0, Math.min(index, SLIDES.length - 1)))
@@ -20,7 +21,9 @@ export default function InsurfoxNativeAiPage() {
     <InternAuthGate>
       <section className="page native-ai-page">
         <div className="native-ai-shell">
-          <Header title={t('nativeAi.deckTitle')} subtitle={t('nativeAi.deckSubtitle')} subtitleColor="#65748b" />
+          <div className="native-ai-header">
+            <Header title={t('nativeAi.deckTitle')} subtitle={t('nativeAi.deckSubtitle')} subtitleColor="#65748b" />
+          </div>
 
           <div className="native-ai-slider">
             <div className="native-ai-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
@@ -38,15 +41,27 @@ export default function InsurfoxNativeAiPage() {
                     />
                   </div>
                   <div className="native-ai-slide-aside">
-                    <div className="native-ai-slide-graphic">
+                    <div className={`native-ai-slide-graphic native-ai-graphic-${graphicTypes[index % graphicTypes.length]}`}>
                       <div className="whitepaper-orb whitepaper-orb-primary" />
                       <div className="whitepaper-orb whitepaper-orb-secondary" />
-                      <svg viewBox="0 0 420 360" fill="none">
-                        <rect x="60" y="80" width="300" height="200" rx="26" stroke="#1f2a5f" strokeWidth="2" />
-                        <path d="M120 140h180M120 180h130M120 220h150" stroke="#d4380d" strokeWidth="2" strokeLinecap="round" />
-                        <circle cx="120" cy="120" r="12" fill="#ffffff" stroke="#1f2a5f" strokeWidth="2" />
-                        <circle cx="300" cy="250" r="16" fill="#ffffff" stroke="#d4380d" strokeWidth="2" />
-                      </svg>
+                      <div className="native-ai-graphic-content">
+                        {graphicTypes[index % graphicTypes.length] === 'chart' && (
+                          <>
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </>
+                        )}
+                        {graphicTypes[index % graphicTypes.length] === 'layers' && (
+                          <>
+                            <span />
+                            <span />
+                            <span />
+                          </>
+                        )}
+                      </div>
                     </div>
                     <div className="native-ai-slide-meta">
                       <span>{t('nativeAi.title')}</span>
@@ -56,26 +71,25 @@ export default function InsurfoxNativeAiPage() {
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className="native-ai-nav">
-            <Button variant="secondary" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0}>
-              ←
-            </Button>
-            <div className="native-ai-dots">
-              {SLIDES.map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={index === activeSlide ? 'native-ai-dot active' : 'native-ai-dot'}
-                  onClick={() => goToSlide(index)}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
+            <div className="native-ai-nav">
+              <Button variant="secondary" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0}>
+                ←
+              </Button>
+              <div className="native-ai-dots">
+                {SLIDES.map((_, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={index === activeSlide ? 'native-ai-dot active' : 'native-ai-dot'}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+              <Button variant="secondary" onClick={() => goToSlide(activeSlide + 1)} disabled={activeSlide === SLIDES.length - 1}>
+                →
+              </Button>
             </div>
-            <Button variant="secondary" onClick={() => goToSlide(activeSlide + 1)} disabled={activeSlide === SLIDES.length - 1}>
-              →
-            </Button>
           </div>
         </div>
       </section>
