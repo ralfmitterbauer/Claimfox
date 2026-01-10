@@ -13,30 +13,35 @@ export default function RegulatoryGovernancePage() {
     const slide = (index: number) => deck.slides[String(index)]
     return [
       {
-        title: `${slide(1).title} / ${slide(2).title}`,
+        title: slide(1).title,
         bullets: [...slide(1).bullets, ...slide(2).bullets, ...slide(3).bullets],
         footer: slide(1).footer
       },
       {
-        title: `${slide(4).title} / ${slide(5).title}`,
-        bullets: [...slide(4).bullets, ...slide(5).bullets, ...slide(6).bullets]
+        title: slide(5).title,
+        bullets: [
+          ...slide(4).bullets,
+          ...slide(5).bullets,
+          ...slide(6).bullets,
+          ...slide(7).bullets,
+          ...slide(8).bullets
+        ]
       },
       {
-        title: `${slide(7).title} / ${slide(8).title}`,
-        bullets: [...slide(7).bullets, ...slide(8).bullets, ...slide(9).bullets]
-      },
-      {
-        title: `${slide(10).title} / ${slide(11).title}`,
-        bullets: [...slide(10).bullets, ...slide(11).bullets, ...slide(12).bullets],
+        title: slide(11).title,
+        bullets: [
+          ...slide(9).bullets,
+          ...slide(10).bullets,
+          ...slide(11).bullets,
+          ...slide(12).bullets,
+          ...slide(13).bullets,
+          ...slide(14).bullets,
+          ...slide(15).bullets,
+          ...slide(16).bullets,
+          ...slide(17).bullets,
+          ...slide(18).bullets
+        ],
         footer: slide(11).footer
-      },
-      {
-        title: `${slide(13).title} / ${slide(14).title}`,
-        bullets: [...slide(13).bullets, ...slide(14).bullets, ...slide(15).bullets]
-      },
-      {
-        title: `${slide(16).title} / ${slide(17).title}`,
-        bullets: [...slide(16).bullets, ...slide(17).bullets, ...slide(18).bullets]
       }
     ]
   }, [deck])
