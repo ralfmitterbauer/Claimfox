@@ -304,6 +304,11 @@ export default function UserIdentificationPage() {
               {selfieImage ? <img src={selfieImage} alt="" /> : <div className="selfie-placeholder" />}
               <div className="selfie-overlay">{t('identification.selfie.overlay')}</div>
             </div>
+            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1rem', flexWrap: 'wrap' }}>
+              <Button variant="secondary" onClick={() => startCamera('selfie')}>
+                {t('identification.camera.capture')}
+              </Button>
+            </div>
             <label className="form-field">
               {t('identification.selfie.capture')}
               <input type="file" accept="image/*" onChange={(event) => setSelfieFile(event.target.files?.[0] ?? null)} />
@@ -376,6 +381,7 @@ export default function UserIdentificationPage() {
                   {captureTarget !== 'selfie' && (
                     <div className="id-camera-overlay">
                       <div className="id-camera-frame" />
+                      <div className="id-camera-slot">{t('identification.camera.slot')}</div>
                       <div className="id-camera-line" />
                       <p>{t('identification.camera.guide')}</p>
                     </div>

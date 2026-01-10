@@ -275,6 +275,7 @@ type TranslationTree = {
       capture: string
       take: string
       guide: string
+      slot: string
       error: string
       title: {
         front: string
@@ -1391,6 +1392,7 @@ export const translations: Record<Lang, TranslationTree> = {
         capture: 'Kamera öffnen',
         take: 'Foto aufnehmen',
         guide: 'Dokument innerhalb des Rahmens ausrichten',
+        slot: 'Ausweisfeld',
         error: 'Kamera konnte nicht gestartet werden.',
         title: {
           front: 'Vorderseite erfassen',
@@ -3216,6 +3218,7 @@ export const translations: Record<Lang, TranslationTree> = {
         capture: 'Open camera',
         take: 'Capture photo',
         guide: 'Align the document inside the frame',
+        slot: 'ID frame',
         error: 'Camera could not be started.',
         title: {
           front: 'Capture front side',
