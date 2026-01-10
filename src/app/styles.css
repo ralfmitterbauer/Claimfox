@@ -470,7 +470,7 @@ h6 {
 
 .regulatory-overview {
   padding: 24px;
-  height: 100vh;
+  height: 100dvh;
   background: #f4f6fb;
   overflow: hidden;
 }
@@ -494,7 +494,7 @@ h6 {
 }
 
 .regulatory-layout {
-  height: calc(100% - 40px);
+  height: var(--deck-height, calc(100dvh - 120px));
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 1.1rem;
@@ -509,7 +509,7 @@ h6 {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.5rem;
   overflow: hidden;
 }
 
@@ -532,7 +532,7 @@ h6 {
 .regulatory-slide-content {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.2rem;
   flex: 1;
   justify-content: space-between;
 }
@@ -549,6 +549,55 @@ h6 {
   color: #475569;
   line-height: 1.7;
   font-size: 1.12rem;
+}
+
+.regulatory-slide-content p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 1.08rem;
+}
+
+.regulatory-sections {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.regulatory-section h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #1f2a5f;
+}
+
+.regulatory-table {
+  display: grid;
+  gap: 0.35rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.5rem 0.7rem;
+  background: #f8fafc;
+}
+
+.regulatory-table-head,
+.regulatory-table-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 0.75rem;
+}
+
+.regulatory-table-head {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.regulatory-table-row {
+  color: #475569;
+  font-size: 0.95rem;
 }
 
 .regulatory-section {
@@ -574,35 +623,33 @@ h6 {
 
 .regulatory-right {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-rows: minmax(0, 1fr);
   gap: 0.9rem;
 }
 
-.regulatory-image-card {
+.regulatory-media-stack {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+  place-items: center;
+  height: 100%;
+}
+
+.regulatory-media-card {
   background: #ffffff;
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid rgba(15, 23, 42, 0.08);
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
   aspect-ratio: 1 / 1;
-  max-height: 36vh;
+  width: min(100%, calc((var(--deck-height, 600px) - 24px) / 2));
 }
 
-.regulatory-image-card img {
+.regulatory-media-card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-.regulatory-highlight-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: clamp(0.9rem, 1.8vw, 1.4rem);
-  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.1);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  display: grid;
-  gap: 0.5rem;
 }
 
 .regulatory-footer {
@@ -611,22 +658,6 @@ h6 {
   border-top: 1px solid #e2e8f0;
   color: #1f2a5f;
   font-weight: 600;
-}
-
-.regulatory-highlight-card ul {
-  margin: 0;
-  padding-left: 1.1rem;
-  color: #475569;
-  line-height: 1.7;
-  font-size: 0.98rem;
-}
-
-.regulatory-kicker {
-  color: #1f2a5f;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.78rem;
 }
 
 .regulatory-nav {
