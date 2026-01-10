@@ -25,6 +25,7 @@ type RoleItem = {
     | 'identification'
     | 'compliance'
     | 'regulatoryGovernance'
+    | 'auditAppendix'
   route?: string
   ctaKey?: string
 }
@@ -55,7 +56,8 @@ const INTERNAL_ITEMS: RoleItem[] = [
 ]
 
 const GOVERNANCE_ITEMS: RoleItem[] = [
-  { key: 'regulatoryGovernance', route: '/governance/regulatory-ai-governance' }
+  { key: 'regulatoryGovernance', route: '/governance/regulatory-ai-governance' },
+  { key: 'auditAppendix', route: '/governance/audit-appendix' }
 ]
 
 const descriptionStyle: React.CSSProperties = {

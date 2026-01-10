@@ -36,6 +36,7 @@ import AiOnboardingPage from '@/pages/AiOnboardingPage'
 import UserIdentificationPage from '@/pages/UserIdentificationPage'
 import InsurfoxNativeAiPage from '@/pages/InsurfoxNativeAiPage'
 import RegulatoryGovernancePage from '@/pages/RegulatoryGovernancePage'
+import AuditAppendixPage from '@/pages/AuditAppendixPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -88,6 +89,7 @@ export default function AppRouter() {
         <Route path="/user-identification" element={<UserIdentificationPage />} />
         <Route path="/insurfox-native-ai" element={<InsurfoxNativeAiPage />} />
         <Route path="/governance/regulatory-ai-governance" element={<RegulatoryGovernancePage />} />
+        <Route path="/governance/audit-appendix" element={<AuditAppendixPage />} />
       </Route>
       <Route path="*" element={<NotFoundRedirect />} />
     </Routes>

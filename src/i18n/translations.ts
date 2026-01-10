@@ -1037,6 +1037,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Regulatory & AI Governance Framework',
           description: 'Regulatorische Präsentation für Aufsicht, Audits und Governance.'
         },
+        auditAppendix: {
+          title: 'Audit Appendix',
+          description: 'Prüfungsnahe Referenz mit Rollen, Kontrollen und Governance-Nachweisen.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -3143,6 +3147,10 @@ export const translations: Record<Lang, TranslationTree> = {
         regulatoryGovernance: {
           title: 'Regulatory & AI Governance Framework',
           description: 'Regulatory deck for supervisors, auditors, and compliance stakeholders.'
+        },
+        auditAppendix: {
+          title: 'Audit Appendix',
+          description: 'Audit-ready reference with responsibilities, controls, and governance evidence.'
         },
         partner: {
           title: 'Partner Manager',
