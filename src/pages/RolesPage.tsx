@@ -135,7 +135,7 @@ export default function RolesPage() {
         variant="glass"
         interactive={hasRoute}
         onClick={handleClick}
-        style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1rem', minHeight: '175px' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '0.85rem', minHeight: '150px' }}
       >
         <p style={descriptionStyle}>{t(descriptionKey)}</p>
       </Card>
