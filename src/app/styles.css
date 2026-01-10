@@ -483,6 +483,25 @@ h6 {
   padding: 16px 24px 24px;
 }
 
+.deck-hero {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-size: cover;
+  background-position: center;
+  padding: 2.6rem clamp(1rem, 4vw, 3rem);
+  color: #ffffff;
+  box-shadow: 0 30px 70px rgba(11, 28, 108, 0.25);
+}
+
+.deck-hero-inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
 .deck-header header {
   padding-bottom: 0.25rem;
 }
@@ -796,6 +815,39 @@ h6 {
 .deck-arrow:disabled {
   opacity: 0.3;
   cursor: default;
+}
+
+.governance-deck {
+  background: #f4f6fb;
+}
+
+.governance-deck .deck-shell {
+  padding: 0;
+  gap: 0;
+}
+
+.governance-deck .deck-slider {
+  padding: 20px clamp(1rem, 3vw, 2.5rem) 28px;
+}
+
+.governance-deck .deck-content {
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.12);
+}
+
+.governance-deck .deck-aside-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 24px 40px rgba(15, 23, 42, 0.08);
+}
+
+.governance-deck .deck-aside-caption {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+}
+
+.governance-deck .deck-divider {
+  background: linear-gradient(90deg, rgba(31, 42, 95, 0.08), rgba(31, 42, 95, 0.4));
 }
 
 @media (prefers-reduced-motion: reduce) {

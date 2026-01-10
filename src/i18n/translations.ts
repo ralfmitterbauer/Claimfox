@@ -195,6 +195,12 @@ type TranslationTree = {
       subtitle: string
     }
   }
+  regulatoryDeck: {
+    title: string
+    subtitle: string
+    caption: string
+    slides: Record<string, { title: string; bullets: string[]; footer?: string }>
+  }
   identification: {
     title: string
     subtitle: string
@@ -1282,6 +1288,168 @@ export const translations: Record<Lang, TranslationTree> = {
         secondary: 'Expertenkontakt',
         title: 'Bereit für souveräne KI?',
         subtitle: 'Erhalten Sie das Whitepaper und sprechen Sie mit unserem Team über Ihren AI-Stack.'
+      }
+    },
+    regulatoryDeck: {
+      title: 'Regulatory & AI Governance Framework',
+      subtitle: 'Oversight, Control and Accountability for AI in Insurance',
+      caption: 'Regulatory deck',
+      slides: {
+        1: {
+          title: 'Zweck und regulatorischer Geltungsbereich',
+          bullets: [
+            'Diese Präsentation beschreibt das Regulatory & AI Governance Framework der Insurfox AI IaaS.',
+            'Im Fokus steht der kontrollierte Einsatz von Künstlicher Intelligenz in Versicherungsprozessen.',
+            'Adressaten sind Aufsichtsbehörden, Versicherer, Rückversicherer und Auditoren.'
+          ],
+          footer: 'Scope: Versicherung, Krankenversicherung, Mobilität, InsurTech'
+        },
+        2: {
+          title: 'Regulatorische Rahmenbedingungen',
+          bullets: [
+            'GDPR / DSGVO',
+            'BaFin-Aufsichtsanforderungen',
+            'EU AI Act (Hochrisiko-KI-Systeme)',
+            'EIOPA-Leitlinien zu KI und Digitalisierung',
+            'Lloyd’s Mindeststandards'
+          ]
+        },
+        3: {
+          title: 'Rolle von Insurfox',
+          bullets: [
+            'Insurfox agiert als Technologie- und Prozessplattform.',
+            'Insurfox ist nicht der Risikoträger.',
+            'Finale Underwriting- und Schadenentscheidungen liegen beim Versicherer oder Rückversicherer.',
+            'Insurfox liefert ausschließlich Entscheidungshilfen.'
+          ]
+        },
+        4: {
+          title: 'Klassifizierung der KI-Nutzung',
+          bullets: [
+            'KI wird zur Entscheidungsunterstützung eingesetzt, nicht für autonome Entscheidungen.',
+            'Risikohinweise, Preisempfehlungen, Betrugserkennung.',
+            'Human-in-the-Loop ist für alle wesentlichen Entscheidungen verpflichtend.'
+          ]
+        },
+        5: {
+          title: 'AI Governance Framework',
+          bullets: [
+            'Definierte KI-Use-Cases und klare Grenzen.',
+            'Model Lifecycle Management.',
+            'Versionskontrolle und Nachvollziehbarkeit.',
+            'Klare Verantwortlichkeiten zwischen System, KI und Versicherer.'
+          ]
+        },
+        6: {
+          title: 'Daten-Governance Prinzipien',
+          bullets: [
+            'Zweckbindung.',
+            'Datenminimierung.',
+            'Rechtmäßige Verarbeitung.',
+            'Rollenbasierte Zugriffskontrolle.',
+            'Audit-Logging.'
+          ]
+        },
+        7: {
+          title: 'Umgang mit sensiblen Daten',
+          bullets: [
+            'Gesundheitsdaten, biometrische Daten und Standortdaten können verarbeitet werden, sofern rechtlich zulässig.',
+            'Verarbeitung erfordert ausdrückliche Einwilligung oder gesetzliche Versicherungsverpflichtungen.',
+            'Zusätzliche Schutzmaßnahmen gelten für sensible Daten.'
+          ]
+        },
+        8: {
+          title: 'Kontrollen für sensible Daten',
+          bullets: [
+            'Getrennte Daten-Domänen.',
+            'Eingeschränkter Zugriff auf Modelle.',
+            'Separate Verarbeitungspipelines.',
+            'Erweiterte Logging- und Review-Anforderungen.'
+          ]
+        },
+        9: {
+          title: 'Model Management und Erklärbarkeit',
+          bullets: [
+            'Alle Modelle sind versioniert und dokumentiert.',
+            'Trainingsdatenquellen werden erfasst.',
+            'Outputs sind erklärbar.',
+            'Modelländerungen folgen kontrollierten Release-Prozessen.'
+          ]
+        },
+        10: {
+          title: 'Menschliche Aufsicht',
+          bullets: [
+            'KI-Outputs sind ausschließlich Empfehlungen.',
+            'Finale Entscheidungen treffen autorisierte Versicherungsmitarbeitende.',
+            'Override- und Review-Mechanismen sind verpflichtend.'
+          ]
+        },
+        11: {
+          title: 'Auditierbarkeit und Nachvollziehbarkeit',
+          bullets: [
+            'Eingabedaten werden protokolliert.',
+            'Modellversion wird protokolliert.',
+            'Output und Zeitstempel werden protokolliert.',
+            'Nutzerinteraktionen werden protokolliert.'
+          ],
+          footer: 'Aufbewahrung gemäß regulatorischer Anforderungen.'
+        },
+        12: {
+          title: 'Outsourcing und Drittparteirisiko',
+          bullets: [
+            'Keine externen KI-Service-Provider.',
+            'Keine Weitergabe von Trainings- oder Inferenzdaten an Dritte.',
+            'Keine Abhängigkeit von externen Foundation Models.'
+          ]
+        },
+        13: {
+          title: 'Datenresidenz und Souveränität',
+          bullets: [
+            'Datenresidenz je Jurisdiktion konfigurierbar.',
+            'Keine Cross-Tenant Datennutzung.',
+            'Versicherer behalten volle Datenhoheit.'
+          ]
+        },
+        14: {
+          title: 'Sicherheitsmaßnahmen',
+          bullets: [
+            'Logische Mandantentrennung.',
+            'Verschlüsselung at rest und in transit.',
+            'Zugriffsmonitoring und Logging.',
+            'Incident-Response-Prozesse.'
+          ]
+        },
+        15: {
+          title: 'Compliance Monitoring',
+          bullets: [
+            'Kontinuierliches internes Monitoring.',
+            'Review der KI-Nutzung.',
+            'Change-Management-Prozesse.',
+            'Dokumentation für aufsichtsrechtliche Prüfung.'
+          ]
+        },
+        16: {
+          title: 'EU AI Act Alignment',
+          bullets: [
+            'Anforderungen für Hochrisiko-KI werden abgedeckt.',
+            'Risikomanagement und Human Oversight sind verankert.',
+            'Transparenz und Auditierbarkeit sind sichergestellt.'
+          ]
+        },
+        17: {
+          title: 'Zusammenfassung',
+          bullets: [
+            'Kontrollierter KI-Einsatz in Versicherungsprozessen.',
+            'Governance durch Systemarchitektur erzwungen.',
+            'Klare Verantwortungs- und Haftungszuordnung.'
+          ]
+        },
+        18: {
+          title: 'Abschluss',
+          bullets: [
+            'Insurfox AI IaaS stellt Regulatory & AI Governance als Infrastruktur für regulierte Versicherungsmärkte bereit.'
+          ]
+        }
       }
     },
     aiOnboarding: {
@@ -3200,6 +3368,168 @@ export const translations: Record<Lang, TranslationTree> = {
         secondary: 'Talk to an expert',
         title: 'Ready for sovereign AI?',
         subtitle: 'Get the whitepaper and discuss your AI stack with our team.'
+      }
+    },
+    regulatoryDeck: {
+      title: 'Regulatory & AI Governance Framework',
+      subtitle: 'Oversight, Control and Accountability for AI in Insurance',
+      caption: 'Regulatory deck',
+      slides: {
+        1: {
+          title: 'Purpose and Regulatory Scope',
+          bullets: [
+            'This presentation describes the Regulatory & AI Governance Framework of the Insurfox AI IaaS.',
+            'It focuses on the controlled use of artificial intelligence within insurance processes.',
+            'The intended audience includes supervisory authorities, insurers, reinsurers, and auditors.'
+          ],
+          footer: 'Scope: Insurance, Health Insurance, Mobility, InsurTech'
+        },
+        2: {
+          title: 'Regulatory Landscape',
+          bullets: [
+            'GDPR / DSGVO',
+            'BaFin supervisory requirements',
+            'EU AI Act (High-Risk AI Systems)',
+            'EIOPA guidelines on AI and digitalisation',
+            'Lloyd’s minimum standards'
+          ]
+        },
+        3: {
+          title: 'Role of Insurfox',
+          bullets: [
+            'Insurfox operates as a technology and process platform.',
+            'Insurfox is not the risk carrier.',
+            'Final underwriting and claims decisions remain with the insurer or reinsurer.',
+            'Insurfox provides decision support only.'
+          ]
+        },
+        4: {
+          title: 'AI Usage Classification',
+          bullets: [
+            'AI is used for decision support, not for autonomous decision-making.',
+            'Risk indication, pricing recommendations, fraud detection.',
+            'Human-in-the-loop is mandatory for all material decisions.'
+          ]
+        },
+        5: {
+          title: 'AI Governance Framework',
+          bullets: [
+            'Defined AI use cases and boundaries.',
+            'Model lifecycle management.',
+            'Version control and traceability.',
+            'Clear accountability between system, AI, and insurer.'
+          ]
+        },
+        6: {
+          title: 'Data Governance Principles',
+          bullets: [
+            'Purpose limitation.',
+            'Data minimisation.',
+            'Lawful processing.',
+            'Role-based access control.',
+            'Audit logging.'
+          ]
+        },
+        7: {
+          title: 'Handling of Sensitive Data',
+          bullets: [
+            'Health data, biometric data and location data may be processed where legally permitted.',
+            'Processing requires explicit consent or statutory insurance obligations.',
+            'Additional safeguards apply to sensitive data.'
+          ]
+        },
+        8: {
+          title: 'Sensitive Data Controls',
+          bullets: [
+            'Segregated data domains.',
+            'Restricted access to models.',
+            'Separate processing pipelines.',
+            'Enhanced logging and review requirements.'
+          ]
+        },
+        9: {
+          title: 'Model Management and Explainability',
+          bullets: [
+            'All models are versioned and documented.',
+            'Training data sources are recorded.',
+            'Outputs are explainable.',
+            'Model changes follow controlled release procedures.'
+          ]
+        },
+        10: {
+          title: 'Human Oversight',
+          bullets: [
+            'AI outputs are recommendations only.',
+            'Final decisions are made by authorised insurance staff.',
+            'Override and review mechanisms are enforced.'
+          ]
+        },
+        11: {
+          title: 'Auditability and Traceability',
+          bullets: [
+            'Input data is logged.',
+            'Model version is logged.',
+            'Output and timestamp are logged.',
+            'User interactions are logged.'
+          ],
+          footer: 'Retention aligned with regulatory requirements.'
+        },
+        12: {
+          title: 'Outsourcing and Third-Party Risk',
+          bullets: [
+            'No external AI service providers.',
+            'No transfer of training or inference data to third parties.',
+            'No dependency on external foundation models.'
+          ]
+        },
+        13: {
+          title: 'Data Residency and Sovereignty',
+          bullets: [
+            'Data residency configurable per jurisdiction.',
+            'No cross-tenant data usage.',
+            'Insurers retain full data ownership.'
+          ]
+        },
+        14: {
+          title: 'Security Measures',
+          bullets: [
+            'Logical tenant isolation.',
+            'Encryption at rest and in transit.',
+            'Access monitoring and logging.',
+            'Incident response processes.'
+          ]
+        },
+        15: {
+          title: 'Compliance Monitoring',
+          bullets: [
+            'Continuous internal monitoring.',
+            'Review of AI usage.',
+            'Change management procedures.',
+            'Documentation for supervisory review.'
+          ]
+        },
+        16: {
+          title: 'EU AI Act Alignment',
+          bullets: [
+            'High-risk AI system requirements addressed.',
+            'Risk management and human oversight enforced.',
+            'Transparency and auditability ensured.'
+          ]
+        },
+        17: {
+          title: 'Summary',
+          bullets: [
+            'Controlled AI usage within insurance processes.',
+            'Governance enforced by system architecture.',
+            'Clear allocation of responsibility and accountability.'
+          ]
+        },
+        18: {
+          title: 'Closing Statement',
+          bullets: [
+            'Insurfox AI IaaS provides Regulatory & AI Governance as infrastructure for regulated insurance markets.'
+          ]
+        }
       }
     },
     aiOnboarding: {
