@@ -761,7 +761,7 @@ h6 {
 .selfie-cutout {
   width: 55%;
   height: 65%;
-  border-radius: 50%;
+  border-radius: 50% / 60%;
   border: 2px solid rgba(255, 255, 255, 0.85);
   box-shadow: 0 0 0 999px rgba(15, 23, 42, 0.45);
 }

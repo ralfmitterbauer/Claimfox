@@ -9,7 +9,6 @@ type CaptureTarget = 'front' | 'back' | 'selfie' | null
 
 const steps = [
   'identification.steps.start',
-  'identification.steps.documents',
   'identification.steps.capture',
   'identification.steps.verification',
   'identification.steps.selfie',
@@ -19,8 +18,6 @@ const steps = [
 export default function UserIdentificationPage() {
   const { t } = useI18n()
   const [activeStep, setActiveStep] = useState(0)
-  const [docType, setDocType] = useState('')
-  const [issuingCountry, setIssuingCountry] = useState('')
   const [frontFile, setFrontFile] = useState<File | null>(null)
   const [backFile, setBackFile] = useState<File | null>(null)
   const [selfieFile, setSelfieFile] = useState<File | null>(null)
@@ -36,8 +33,8 @@ export default function UserIdentificationPage() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
 
-  const progress = Math.round(((activeStep + 1) / steps.length) * 100)
-  const isDocComplete = docType && issuingCountry && (frontImage || frontFile) && (backImage || backFile)
+  const progress = Math.round((activeStep / (steps.length - 1)) * 100)
+  const isDocComplete = Boolean(frontImage || frontFile) && Boolean(backImage || backFile)
   const isSelfieComplete = Boolean(selfieImage || selfieFile)
 
   const overallStatus = useMemo(() => {
@@ -98,11 +95,11 @@ export default function UserIdentificationPage() {
     if (captureTarget === 'front') {
       setFrontImage(dataUrl)
       setOcrData({
-        docNumber: `ID${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
-        name: 'MAX MUSTERMANN',
-        dob: '12.05.1990',
-        expiry: '12.05.2030',
-        nationality: issuingCountry || 'DE'
+        docNumber: '11995594',
+        name: 'RALF MITTERBAUER',
+        dob: '17.04.1970',
+        expiry: '25.09.2029',
+        nationality: 'Österreich'
       })
     }
     if (captureTarget === 'back') {
@@ -149,41 +146,6 @@ export default function UserIdentificationPage() {
         )}
 
         {activeStep === 1 && (
-          <Card>
-            <h2>{t('identification.document.title')}</h2>
-            <p style={{ color: '#475569' }}>{t('identification.document.subtitle')}</p>
-            <div style={{ display: 'grid', gap: '1rem', marginTop: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-              <label className="form-field">
-                {t('identification.document.type')}
-                <select className="text-input" value={docType} onChange={(event) => setDocType(event.target.value)}>
-                  <option value="">{t('identification.document.typePlaceholder')}</option>
-                  <option value="id">{t('identification.document.typeId')}</option>
-                  <option value="passport">{t('identification.document.typePassport')}</option>
-                  <option value="other">{t('identification.document.typeOther')}</option>
-                </select>
-              </label>
-              <label className="form-field">
-                {t('identification.document.country')}
-                <input
-                  className="text-input"
-                  value={issuingCountry}
-                  placeholder={t('identification.document.countryPlaceholder')}
-                  onChange={(event) => setIssuingCountry(event.target.value)}
-                />
-              </label>
-            </div>
-            <div style={{ display: 'flex', gap: '0.6rem', marginTop: '1.5rem' }}>
-              <Button variant="secondary" onClick={handleBack}>
-                {t('identification.actions.back')}
-              </Button>
-              <Button onClick={handleNext} disabled={!docType || !issuingCountry}>
-                {t('identification.actions.next')}
-              </Button>
-            </div>
-          </Card>
-        )}
-
-        {activeStep === 2 && (
           <Card>
             <h2>{t('identification.capture.title')}</h2>
             <p style={{ color: '#475569' }}>{t('identification.capture.subtitle')}</p>
@@ -238,14 +200,14 @@ export default function UserIdentificationPage() {
           </Card>
         )}
 
-        {activeStep === 3 && (
+        {activeStep === 2 && (
           <Card>
             <h2>{t('identification.verify.title')}</h2>
             <p style={{ color: '#475569' }}>{t('identification.verify.subtitle')}</p>
             <div style={{ display: 'grid', gap: '0.75rem', marginTop: '1rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
                 <span>{t('identification.verify.issuing')}</span>
-                <strong>{issuingCountry || '—'}</strong>
+                <strong>{ocrData?.nationality ?? '—'}</strong>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', color: '#475569' }}>
                 <span>{t('identification.verify.authenticity')}</span>
@@ -296,7 +258,7 @@ export default function UserIdentificationPage() {
           </Card>
         )}
 
-        {activeStep === 4 && (
+        {activeStep === 3 && (
           <Card>
             <h2>{t('identification.selfie.title')}</h2>
             <p style={{ color: '#475569' }}>{t('identification.selfie.subtitle')}</p>
@@ -325,7 +287,7 @@ export default function UserIdentificationPage() {
           </Card>
         )}
 
-        {activeStep === 5 && (
+        {activeStep === 4 && (
           <Card>
             <h2>{t('identification.summary.title')}</h2>
             <p style={{ color: '#475569' }}>{t('identification.summary.subtitle')}</p>
@@ -336,14 +298,14 @@ export default function UserIdentificationPage() {
                   {overallStatus === 'success' ? t('identification.status.success') : t('identification.status.failed')}
                 </strong>
               </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>{t('identification.summary.docType')}</span>
-              <strong>{docType || '—'}</strong>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>{t('identification.summary.country')}</span>
-              <strong>{issuingCountry || '—'}</strong>
-            </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>{t('identification.summary.docType')}</span>
+                <strong>{t('identification.document.typePassport')}</strong>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span>{t('identification.summary.country')}</span>
+                <strong>{ocrData?.nationality ?? '—'}</strong>
+              </div>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <span>{t('identification.summary.audit')}</span>
               <strong>{auditId}</strong>

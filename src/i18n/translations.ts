@@ -200,7 +200,6 @@ type TranslationTree = {
     progress: string
     steps: {
       start: string
-      documents: string
       capture: string
       verification: string
       selfie: string
@@ -211,15 +210,9 @@ type TranslationTree = {
       body: string
     }
     document: {
-      title: string
-      subtitle: string
-      type: string
-      typePlaceholder: string
       typeId: string
       typePassport: string
       typeOther: string
-      country: string
-      countryPlaceholder: string
     }
     capture: {
       title: string
@@ -1315,7 +1308,6 @@ export const translations: Record<Lang, TranslationTree> = {
       progress: 'Prozessfortschritt',
       steps: {
         start: 'Start',
-        documents: 'Ausweisdaten',
         capture: 'Dokument-Scan',
         verification: 'Echtheitsprüfung',
         selfie: 'Selfie-Abgleich',
@@ -1326,15 +1318,9 @@ export const translations: Record<Lang, TranslationTree> = {
         body: 'Wir führen Sie sicher durch die Prüfung. Bitte halten Sie Ihr Ausweisdokument bereit und sorgen Sie für gute Lichtverhältnisse.'
       },
       document: {
-        title: 'Ausweisdokument erfassen',
-        subtitle: 'Wählen Sie den Dokumenttyp und das ausstellende Land.',
-        type: 'Dokumenttyp',
-        typePlaceholder: 'Bitte auswählen',
         typeId: 'Personalausweis',
         typePassport: 'Reisepass',
-        typeOther: 'Anderes Dokument',
-        country: 'Ausstellendes Land',
-        countryPlaceholder: 'z. B. Deutschland'
+        typeOther: 'Anderes Dokument'
       },
       capture: {
         title: 'Dokument scannen',
@@ -3141,7 +3127,6 @@ export const translations: Record<Lang, TranslationTree> = {
       progress: 'Progress',
       steps: {
         start: 'Start',
-        documents: 'Document info',
         capture: 'Document scan',
         verification: 'Verification',
         selfie: 'Selfie match',
@@ -3152,15 +3137,9 @@ export const translations: Record<Lang, TranslationTree> = {
         body: 'We guide you through the process. Please have your ID ready and ensure good lighting.'
       },
       document: {
-        title: 'Provide document details',
-        subtitle: 'Choose the document type and issuing country.',
-        type: 'Document type',
-        typePlaceholder: 'Select',
         typeId: 'ID card',
         typePassport: 'Passport',
-        typeOther: 'Other document',
-        country: 'Issuing country',
-        countryPlaceholder: 'e.g. Germany'
+        typeOther: 'Other document'
       },
       capture: {
         title: 'Scan document',
