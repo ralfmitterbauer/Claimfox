@@ -34,6 +34,7 @@ import AiWhitepaperPage from '@/pages/AiWhitepaperPage'
 import InternPage from '@/pages/InternPage'
 import AiOnboardingPage from '@/pages/AiOnboardingPage'
 import UserIdentificationPage from '@/pages/UserIdentificationPage'
+import InsurfoxNativeAiPage from '@/pages/InsurfoxNativeAiPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -84,6 +85,7 @@ export default function AppRouter() {
         <Route path="/intern" element={<InternPage />} />
         <Route path="/ai-onboarding" element={<AiOnboardingPage />} />
         <Route path="/user-identification" element={<UserIdentificationPage />} />
+        <Route path="/insurfox-native-ai" element={<InsurfoxNativeAiPage />} />
       </Route>
       <Route path="*" element={<NotFoundRedirect />} />
     </Routes>

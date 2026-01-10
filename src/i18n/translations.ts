@@ -277,6 +277,15 @@ type TranslationTree = {
       }
     }
   }
+  nativeAi: {
+    kicker: string
+    title: string
+    subtitle: string
+    heroChip: string
+    deckTitle: string
+    deckSubtitle: string
+    slides: Record<number, { title: string; body: string }>
+  }
   aiOnboarding: {
     kicker: string
     title: string
@@ -1002,6 +1011,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'User Identifikation',
           description: 'Verifizierung von Ausweisdokument und Selfie-Abgleich.'
         },
+        compliance: {
+          title: 'Compliance',
+          description: 'Präsentation: Insurfox native AI für regulierte Märkte.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -1384,6 +1397,96 @@ export const translations: Record<Lang, TranslationTree> = {
           front: 'Vorderseite erfassen',
           back: 'Rückseite erfassen',
           selfie: 'Selfie aufnehmen'
+        }
+      }
+    },
+    nativeAi: {
+      kicker: 'INSURFOX AI IaaS',
+      title: 'Insurfox native AI',
+      subtitle: 'Sichere, native KI für Versicherungen, InsurTech & Health-Care',
+      heroChip: 'Regulated AI Stack',
+      deckTitle: 'Präsentation',
+      deckSubtitle: 'Business- und Compliance-Deck für regulierte Märkte.',
+      slides: {
+        1: {
+          title: 'Insurfox AI IaaS',
+          body: 'Die KI-native Versicherungsplattform für regulierte Märkte.<br/>Sichere, DSGVO-, GDPR- & BaFin-konforme KI für Insurance, Mobility & Health.'
+        },
+        2: {
+          title: 'Executive Summary',
+          body: 'Insurfox ist eine vollintegrierte Insurance-IaaS.<br/>KI ist nativ Teil der Plattform, kein externes Add-on.<br/>Sensible Daten werden sicher, kontrolliert und regulatorisch korrekt verarbeitet.<br/>Keine externen KI-Anbieter, kein Daten- oder Modellabfluss.<br/><strong>Bottom Line:</strong> KI wird bei Insurfox produktiv nutzbar – ohne regulatorisches Risiko.'
+        },
+        3: {
+          title: 'Das Kernproblem im Markt',
+          body: 'Fragmentierte Systeme, externe KI-SaaS & Hyperscaler, unklare Datenflüsse, Black-Box-Entscheidungen.<br/><strong>Risiken:</strong> DSGVO-Verstöße, BaFin-Beanstandungen, Kontrollverlust über KI & IP, Reputationsrisiken.'
+        },
+        4: {
+          title: 'Der Insurfox-Ansatz',
+          body: 'KI als Infrastruktur – nicht als Tool.<br/>Eine Plattform für alle Versicherungsprozesse.<br/>Integrierte Makler- & Dienstleister-Ökosysteme.<br/>Native KI innerhalb der IaaS.<br/>Klare Trennung von Entscheidungshilfe und Entscheidungshoheit.'
+        },
+        5: {
+          title: 'Gesamtarchitektur (High Level)',
+          body: 'INSURFOX IaaS verbindet Versicherer, Broker Portal, Core Engine und Native KI Layer.<br/>Keine externen KI-Systeme, keine Datenweitergabe.'
+        },
+        6: {
+          title: 'Was „Native KI“ bei Insurfox bedeutet',
+          body: 'Eigene KI-Modelle, Trainingspipelines, Inferenz-Services und Model-Registries.<br/>❌ Keine externen KI-APIs<br/>❌ Kein Fremdtraining<br/>❌ Kein Modell-Sharing'
+        },
+        7: {
+          title: 'KI-Use-Cases (Insurance Core)',
+          body: 'Risiko- & Pricing-Berechnung, Fraud Detection & Anomalien, Portfolio- & Loss-Ratio-Analysen, Schaden- & Prozessoptimierung, Prolongations- & Renewal-Hinweise.<br/>➡️ immer entscheidungsunterstützend.'
+        },
+        8: {
+          title: 'Sensible Daten',
+          body: '<strong>Insurfox schließt sensible Daten nicht aus – sondern macht sie sicher nutzbar.</strong><br/>Gesundheitsdaten, Biometrische Daten, Bewegungs- & Standortdaten.'
+        },
+        9: {
+          title: 'Rechtliche Grundlage',
+          body: 'Verarbeitung sensibler Daten nur bei gesetzlicher Grundlage, expliziter Einwilligung, klar definiertem Versicherungszweck.<br/>Grundsätze: Zweckbindung, Datensparsamkeit, Transparenz, Löschkonzepte.'
+        },
+        10: {
+          title: 'Sensitive-Data-Architektur',
+          body: 'Sensitive Data Zone: isolierte Datenräume, eigene KI-Modelle, getrennte Trainingspipelines.'
+        },
+        11: {
+          title: 'KI-Governance (BaFin-konform)',
+          body: 'KI gibt Empfehlungen, keine Entscheidungen. Human-in-the-Loop verpflichtend. Erklärbare Ergebnisse. Vollständige Audit-Trails.<br/>➡️ Keine automatische Ablehnung oder Kündigung.'
+        },
+        12: {
+          title: 'Datenschutz & Datensicherheit',
+          body: 'Mandantentrennung, rollenbasierte Zugriffe, Pseudonymisierung, Verschlüsselung, Protokollierung aller KI-Outputs.<br/>Wichtig: KI-Modelle lernen nicht über Kunden hinweg.'
+        },
+        13: {
+          title: 'Schnittstellen zur Versicherung',
+          body: 'Inbound: Vertrags- & Policendaten, Schadenhistorien, Tarif- & Regelwerke, optionale Real-Time-Daten.<br/>Outbound: Risiko-Scores, Preisempfehlungen, Fraud-Hinweise, Entscheidungs-Dashboards.'
+        },
+        14: {
+          title: 'Historische Datenanforderungen',
+          body: '<strong>Pflicht:</strong> Policen & Laufzeiten, Schadenarten & -höhen, Abwicklungsverläufe, Objekt- & Risikodaten.<br/><strong>Optional:</strong> Telematik, Prozesszeiten, Ereignisdaten, Health-Programme.'
+        },
+        15: {
+          title: 'Warum keine externe KI?',
+          body: 'Externe KI bedeutet Datenabfluss, Kontrollverlust, IP-Risiken, regulatorische Unsicherheit.<br/>Insurfox bedeutet volle Datenhoheit, volle KI-Kontrolle, volle Auditierbarkeit.'
+        },
+        16: {
+          title: 'Vorteile für Versicherungen',
+          body: 'Schnellere Underwriting-Prozesse, bessere Loss Ratios, weniger Fraud, saubere BaFin-Kommunikation, zukunftssichere KI-Strategie.'
+        },
+        17: {
+          title: 'Vorteile für Investoren',
+          body: 'Tiefer technologischer Burggraben, regulatorische Eintrittsbarriere, skalierbares IaaS-Modell, hohe Kundenbindung, KI + Insurance IP.'
+        },
+        18: {
+          title: 'EU AI Act & Zukunftssicherheit',
+          body: 'Vorbereitung auf Hochrisiko-KI, dokumentierte Governance, nachvollziehbare Entscheidungslogik, Audit- & Reporting-Fähigkeit.<br/>➡️ Insurfox ist EU-AI-Act-ready.'
+        },
+        19: {
+          title: 'Zusammenfassung',
+          body: 'Insurfox macht KI im Versicherungswesen produktiv, sicher und regulatorisch akzeptiert – auch mit sensiblen Daten.'
+        },
+        20: {
+          title: 'Abschluss',
+          body: 'Insurfox AI IaaS – die kontrollierte Antwort auf KI im regulierten Versicherungsmarkt.'
         }
       }
     },
@@ -2821,6 +2924,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'User Identification',
           description: 'Verify ID document and match with selfie.'
         },
+        compliance: {
+          title: 'Compliance',
+          description: 'Presentation: Insurfox native AI for regulated markets.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Nurture relationships with assessors, workshops, and service partners.'
@@ -3203,6 +3310,96 @@ export const translations: Record<Lang, TranslationTree> = {
           front: 'Capture front side',
           back: 'Capture back side',
           selfie: 'Capture selfie'
+        }
+      }
+    },
+    nativeAi: {
+      kicker: 'INSURFOX AI IaaS',
+      title: 'Insurfox native AI',
+      subtitle: 'Secure, native AI for insurers, InsurTech & health-care.',
+      heroChip: 'Regulated AI Stack',
+      deckTitle: 'Presentation',
+      deckSubtitle: 'Business and compliance deck for regulated markets.',
+      slides: {
+        1: {
+          title: 'Insurfox AI IaaS',
+          body: 'The AI-native insurance platform for regulated markets.<br/>Secure, GDPR- & BaFin-compliant AI for Insurance, Mobility & Health.'
+        },
+        2: {
+          title: 'Executive Summary',
+          body: 'Insurfox is a fully integrated Insurance-IaaS.<br/>AI is a native part of the platform, not an external add-on.<br/>Sensitive data is handled securely, controlled, and compliant.<br/>No external AI vendors, no data or model leakage.<br/><strong>Bottom line:</strong> Productive AI without regulatory risk.'
+        },
+        3: {
+          title: 'Core market problem',
+          body: 'Fragmented systems, external AI SaaS & hyperscalers, unclear data flows, black-box decisions.<br/><strong>Risks:</strong> GDPR violations, regulatory flags, loss of AI/IP control, reputational risk.'
+        },
+        4: {
+          title: 'Insurfox approach',
+          body: 'AI as infrastructure, not a tool.<br/>One platform for all insurance processes.<br/>Integrated broker & partner ecosystems.<br/>Native AI inside the IaaS.<br/>Clear split between decision support and decision authority.'
+        },
+        5: {
+          title: 'High-level architecture',
+          body: 'INSURFOX IaaS connects insurers, broker portal, core engine, and native AI layer.<br/>No external AI systems, no data sharing.'
+        },
+        6: {
+          title: 'What “native AI” means',
+          body: 'Own AI models, training pipelines, inference services, and model registries.<br/>❌ No external AI APIs<br/>❌ No third-party training<br/>❌ No model sharing'
+        },
+        7: {
+          title: 'AI use cases (core)',
+          body: 'Risk & pricing, fraud detection, portfolio & loss ratio analytics, claims & process optimization, renewal signals.<br/>➡️ always decision support.'
+        },
+        8: {
+          title: 'Sensitive data',
+          body: '<strong>Insurfox does not exclude sensitive data – it makes it safely usable.</strong><br/>Health data, biometrics, mobility & telematics data.'
+        },
+        9: {
+          title: 'Legal basis',
+          body: 'Sensitive data only under legal basis, explicit consent, and clear insurance purpose.<br/>Principles: purpose limitation, data minimization, transparency, deletion policies.'
+        },
+        10: {
+          title: 'Sensitive data architecture',
+          body: 'Sensitive Data Zone with isolated data rooms, own AI models, and separate training pipelines.'
+        },
+        11: {
+          title: 'AI governance (BaFin)',
+          body: 'AI recommends, not decides. Human-in-the-loop required. Explainable outcomes. Full audit trails.<br/>➡️ No auto rejection or termination.'
+        },
+        12: {
+          title: 'Data protection & security',
+          body: 'Tenant isolation, role-based access, pseudonymization, encryption, logging of AI outputs.<br/>Important: models never learn across customers.'
+        },
+        13: {
+          title: 'Interfaces',
+          body: 'Inbound: policy data, claims history, tariffs & rules, optional real-time data.<br/>Outbound: risk scores, pricing recommendations, fraud insights, decision dashboards.'
+        },
+        14: {
+          title: 'Historical data requirements',
+          body: '<strong>Required:</strong> policies & terms, claim types & amounts, processing history, risk data.<br/><strong>Optional:</strong> telematics, process times, event data, health programs.'
+        },
+        15: {
+          title: 'Why no external AI?',
+          body: 'External AI means data leakage, loss of control, IP risks, regulatory uncertainty.<br/>Insurfox means full data sovereignty, full AI control, full auditability.'
+        },
+        16: {
+          title: 'Benefits for insurers',
+          body: 'Faster underwriting, better loss ratios, less fraud, clean regulator communication, future-proof AI strategy.'
+        },
+        17: {
+          title: 'Benefits for investors',
+          body: 'Deep tech moat, regulatory barrier, scalable IaaS model, strong customer lock-in, AI + insurance IP.'
+        },
+        18: {
+          title: 'EU AI Act readiness',
+          body: 'Prepared for high-risk AI, documented governance, traceable decision logic, audit & reporting capability.<br/>➡️ Insurfox is EU AI Act ready.'
+        },
+        19: {
+          title: 'Summary',
+          body: 'Insurfox makes AI in insurance productive, safe, and regulator-approved — even with sensitive data.'
+        },
+        20: {
+          title: 'Closing',
+          body: 'Insurfox AI IaaS — the controlled answer to AI in regulated insurance markets.'
         }
       }
     },

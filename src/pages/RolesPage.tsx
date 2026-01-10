@@ -23,6 +23,7 @@ type RoleItem = {
     | 'aiOnboarding'
     | 'onboarding'
     | 'identification'
+    | 'compliance'
   route?: string
   ctaKey?: string
 }
@@ -48,6 +49,7 @@ const INTERNAL_ITEMS: RoleItem[] = [
   { key: 'whitepaper', route: '/ai-whitepaper' },
   { key: 'aiOnboarding', route: '/ai-onboarding' },
   { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
+  { key: 'compliance', route: '/insurfox-native-ai' },
   { key: 'intern', route: '/intern' }
 ]
 
