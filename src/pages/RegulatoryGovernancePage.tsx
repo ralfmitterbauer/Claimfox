@@ -324,6 +324,23 @@ export default function RegulatoryGovernancePage() {
             {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
           </button>
         </div>
+        <div className="framework-print">
+          <h1>Regulatory & AI Governance Framework</h1>
+          {sections.map((section) => (
+            <div key={section.id} className="framework-print-section">
+              <h2>{section.title}</h2>
+              {section.intro && <p>{section.intro}</p>}
+              {section.text && <p>{section.text}</p>}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
         <div className="regulatory-framework-grid">
           <div className="regulatory-framework-column">
             {sections.slice(0, 7).map((section) => (
