@@ -199,6 +199,16 @@ type TranslationTree = {
     title: string
     subtitle: string
     caption: string
+    summary: {
+      scopeTitle: string
+      scopeItems: string[]
+      governanceTitle: string
+      governanceItems: string[]
+      securityTitle: string
+      securityItems: string[]
+    }
+    highlightTitle: string
+    highlights: string[]
     slides: Record<string, { title: string; bullets: string[]; footer?: string }>
   }
   identification: {
@@ -1294,6 +1304,33 @@ export const translations: Record<Lang, TranslationTree> = {
       title: 'Regulatory & AI Governance Framework',
       subtitle: 'Oversight, Control and Accountability for AI in Insurance',
       caption: 'Regulatory deck',
+      summary: {
+        scopeTitle: 'Regulatorischer Rahmen',
+        scopeItems: [
+          'GDPR/DSGVO, BaFin-Aufsicht, EU AI Act, EIOPA-Leitlinien und Lloyd’s Standards.',
+          'Insurfox agiert als Technologie- und Prozessplattform, nicht als Risikoträger.',
+          'KI wird ausschließlich entscheidungsunterstützend eingesetzt; Human-in-the-Loop ist verpflichtend.'
+        ],
+        governanceTitle: 'Governance & Modellkontrolle',
+        governanceItems: [
+          'Definierte Use Cases, klare Grenzen und Verantwortlichkeiten.',
+          'Model Lifecycle Management mit Versionierung und kontrollierten Releases.',
+          'Erklärbare Outputs, Audit-Trails und dokumentierte Modelländerungen.'
+        ],
+        securityTitle: 'Datenhoheit & Sicherheit',
+        securityItems: [
+          'Sensitive Data Zones mit separaten Pipelines und eingeschränktem Zugriff.',
+          'Mandantentrennung, Verschlüsselung, Logging und Incident-Response-Prozesse.',
+          'Keine externen KI-Anbieter, keine Daten- oder Modellabflüsse.'
+        ]
+      },
+      highlightTitle: 'Highlights',
+      highlights: [
+        'Regulatorische Lesbarkeit für Aufsicht, Audits und Compliance.',
+        'Governance wird technisch erzwungen, nicht nur dokumentiert.',
+        'Klare Trennung zwischen Entscheidungsunterstützung und Entscheidungshoheit.',
+        'Vollständige Auditierbarkeit über Daten, Modelle und Nutzerinteraktionen.'
+      ],
       slides: {
         1: {
           title: 'Zweck und regulatorischer Geltungsbereich',
@@ -3374,6 +3411,33 @@ export const translations: Record<Lang, TranslationTree> = {
       title: 'Regulatory & AI Governance Framework',
       subtitle: 'Oversight, Control and Accountability for AI in Insurance',
       caption: 'Regulatory deck',
+      summary: {
+        scopeTitle: 'Regulatory scope',
+        scopeItems: [
+          'GDPR/DSGVO, BaFin supervision, EU AI Act, EIOPA guidance, and Lloyd’s standards.',
+          'Insurfox operates as a technology and process platform, not the risk carrier.',
+          'AI is decision support only; Human-in-the-Loop is mandatory.'
+        ],
+        governanceTitle: 'Governance & model control',
+        governanceItems: [
+          'Defined use cases, clear boundaries, and accountability.',
+          'Model lifecycle management with versioning and controlled releases.',
+          'Explainable outputs, audit trails, and documented model changes.'
+        ],
+        securityTitle: 'Data sovereignty & security',
+        securityItems: [
+          'Sensitive data zones with segregated pipelines and restricted access.',
+          'Tenant isolation, encryption, logging, and incident response.',
+          'No external AI providers, no data or model exfiltration.'
+        ]
+      },
+      highlightTitle: 'Highlights',
+      highlights: [
+        'Regulatory readability for supervisors, audits, and compliance teams.',
+        'Governance enforced in the system architecture, not only by policy.',
+        'Clear separation between decision support and decision authority.',
+        'Full auditability across data, models, and user interactions.'
+      ],
       slides: {
         1: {
           title: 'Purpose and Regulatory Scope',
