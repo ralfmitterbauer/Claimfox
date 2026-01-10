@@ -674,7 +674,7 @@ h6 {
 .framework-print-header {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 1.6rem;
+  margin-bottom: 0.65rem;
 }
 
 .framework-print-header img {
@@ -701,7 +701,7 @@ h6 {
 }
 
 .framework-print-section ul {
-  padding-left: 1.2rem;
+  padding-left: 1.8rem;
 }
 
 .regulatory-framework-grid {
