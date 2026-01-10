@@ -20,6 +20,11 @@ type SlideContent = {
   footer?: string
 }
 
+type SideNote = {
+  heading: string
+  text: string
+}
+
 function getSlides(lang: Lang): SlideContent[] {
   if (lang === 'de') {
     return [
@@ -355,6 +360,21 @@ export default function RegulatoryGovernancePage() {
   const [activeSlide, setActiveSlide] = useState(0)
   const deck = useMemo(() => translations[lang]?.regulatoryDeck ?? translations.en.regulatoryDeck, [lang])
   const slides = useMemo(() => getSlides(lang), [lang])
+  const sideNotes = useMemo<SideNote[]>(
+    () =>
+      lang === 'de'
+        ? [
+            { heading: 'Regulatorische Lesbarkeit', text: 'Strukturierte Inhalte für Aufsicht, Audit und Compliance.' },
+            { heading: 'Governance im System', text: 'Technische Kontrollen statt reiner Policy-Dokumentation.' },
+            { heading: 'Klare Verantwortlichkeit', text: 'Trennung von Plattformbetrieb und Entscheidungshoheit.' }
+          ]
+        : [
+            { heading: 'Regulatory readability', text: 'Structured content for supervisors, audits, and compliance.' },
+            { heading: 'Governance in the system', text: 'Technical controls instead of policy-only governance.' },
+            { heading: 'Clear accountability', text: 'Separation of platform operations and decision authority.' }
+          ],
+    [lang]
+  )
   const navRef = useRef<HTMLDivElement | null>(null)
   const [deckHeight, setDeckHeight] = useState(0)
 
@@ -377,7 +397,7 @@ export default function RegulatoryGovernancePage() {
   useEffect(() => {
     function updateHeights() {
       const navHeight = navRef.current?.getBoundingClientRect().height ?? 0
-      setDeckHeight(window.innerHeight - navHeight - 48)
+      setDeckHeight(window.innerHeight - navHeight - 56)
     }
 
     updateHeights()
@@ -462,6 +482,17 @@ export default function RegulatoryGovernancePage() {
                       </div>
                       <div className="regulatory-media-card">
                         <img src={GovernanceImage} alt={deck.title} />
+                      </div>
+                    </div>
+                    <div className="regulatory-highlight-card">
+                      <span className="regulatory-kicker">{deck.highlightTitle}</span>
+                      <div className="regulatory-highlight-grid">
+                        {sideNotes.map((note) => (
+                          <div key={note.heading} className="regulatory-highlight-item">
+                            <strong>{note.heading}</strong>
+                            <span>{note.text}</span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
