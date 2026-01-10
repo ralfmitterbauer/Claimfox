@@ -75,6 +75,80 @@ h6 {
   padding: 24px 24px 32px;
 }
 
+.roles-page {
+  gap: 1.5rem;
+}
+
+.roles-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.roles-hero {
+  background-size: cover;
+  background-position: center;
+  padding: 2.2rem clamp(1rem, 4vw, 3rem);
+  color: #ffffff;
+  box-shadow: 0 30px 70px rgba(11, 28, 108, 0.25);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+.roles-hero-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.roles-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.roles-divider {
+  height: 2px;
+  background: #1f2a5f;
+  width: 100%;
+  border-radius: 999px;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 1400px) {
+  .roles-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1000px) {
+  .roles-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .roles-page {
+    padding: 16px 16px 24px;
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roles-hero {
+    padding: 1.8rem 1rem;
+  }
+}
+
 .card {
   background: var(--surface);
   border-radius: 20px;

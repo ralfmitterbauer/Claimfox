@@ -34,7 +34,6 @@ import AiWhitepaperPage from '@/pages/AiWhitepaperPage'
 import InternPage from '@/pages/InternPage'
 import AiOnboardingPage from '@/pages/AiOnboardingPage'
 import UserIdentificationPage from '@/pages/UserIdentificationPage'
-import InsurfoxNativeAiPage from '@/pages/InsurfoxNativeAiPage'
 import RegulatoryGovernancePage from '@/pages/RegulatoryGovernancePage'
 import AuditAppendixPage from '@/pages/AuditAppendixPage'
 
@@ -87,7 +86,6 @@ export default function AppRouter() {
         <Route path="/intern" element={<InternPage />} />
         <Route path="/ai-onboarding" element={<AiOnboardingPage />} />
         <Route path="/user-identification" element={<UserIdentificationPage />} />
-        <Route path="/insurfox-native-ai" element={<InsurfoxNativeAiPage />} />
         <Route path="/governance/regulatory-ai-governance" element={<RegulatoryGovernancePage />} />
         <Route path="/governance/audit-appendix" element={<AuditAppendixPage />} />
       </Route>

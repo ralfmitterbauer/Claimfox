@@ -23,7 +23,6 @@ type RoleItem = {
     | 'aiOnboarding'
     | 'onboarding'
     | 'identification'
-    | 'compliance'
     | 'regulatoryGovernance'
     | 'auditAppendix'
   route?: string
@@ -46,18 +45,20 @@ const PROCESS_ITEMS: RoleItem[] = [
   { key: 'identification', route: '/user-identification' }
 ]
 
-const INTERNAL_ITEMS: RoleItem[] = [
-  { key: 'mvp', route: '/mvp' },
-  { key: 'whitepaper', route: '/ai-whitepaper' },
-  { key: 'aiOnboarding', route: '/ai-onboarding' },
-  { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
-  { key: 'compliance', route: '/insurfox-native-ai' },
-  { key: 'intern', route: '/intern' }
-]
-
 const GOVERNANCE_ITEMS: RoleItem[] = [
   { key: 'regulatoryGovernance', route: '/governance/regulatory-ai-governance' },
   { key: 'auditAppendix', route: '/governance/audit-appendix' }
+]
+
+const PRESENTATION_ITEMS: RoleItem[] = [
+  { key: 'whitepaper', route: '/ai-whitepaper' }
+]
+
+const DEVELOPMENT_ITEMS: RoleItem[] = [
+  { key: 'mvp', route: '/mvp' },
+  { key: 'aiOnboarding', route: '/ai-onboarding' },
+  { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
+  { key: 'intern', route: '/intern' }
 ]
 
 const descriptionStyle: React.CSSProperties = {
@@ -135,11 +136,11 @@ export default function RolesPage() {
         variant="glass"
         interactive={hasRoute}
         onClick={handleClick}
-        style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1.25rem', minHeight: '200px' }}
+        style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '1rem', minHeight: '175px' }}
       >
         <p style={descriptionStyle}>{t(descriptionKey)}</p>
         <Button
-          style={{ width: '100%', marginTop: 'auto', padding: '0.55rem 0.9rem', fontSize: '0.9rem', borderRadius: '999px' }}
+          style={{ width: '100%', marginTop: 'auto', padding: '0.45rem 0.8rem', fontSize: '0.85rem', borderRadius: '999px' }}
           onClick={
             hasRoute
               ? (event) => {
@@ -161,15 +162,9 @@ export default function RolesPage() {
 
   function renderSection(title: string, items: RoleItem[], requireAuth = false) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="roles-section">
         <h2 style={{ margin: 0 }}>{title}</h2>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-            gap: '1rem'
-          }}
-        >
+        <div className="roles-grid">
           {items.map((item) => renderCard(item, requireAuth))}
         </div>
       </div>
@@ -177,45 +172,32 @@ export default function RolesPage() {
   }
 
   return (
-    <section className="page" style={{ gap: '2rem' }}>
+    <section className="page roles-page">
+      <div className="roles-container">
         <div
+          className="roles-hero"
           style={{
-            width: '100%',
-            maxWidth: '1200px',
-            margin: '0 auto',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2rem'
+            backgroundImage: `linear-gradient(135deg, rgba(7, 20, 74, 0.9) 0%, rgba(11, 45, 122, 0.9) 100%), url(${HeroBlockBackground})`
           }}
         >
-          <div
-            style={{
-              backgroundImage: `linear-gradient(135deg, rgba(7, 20, 74, 0.9) 0%, rgba(11, 45, 122, 0.9) 100%), url(${HeroBlockBackground})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              padding: '2.5rem clamp(1rem, 4vw, 3rem)',
-              color: '#ffffff',
-              boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
-              width: '100vw',
-              marginLeft: 'calc(50% - 50vw)'
-            }}
-          >
-            <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}>
-              <Header
-                title={t('roles.title')}
-                subtitle={t('roles.subtitle')}
-                subtitleColor="rgba(255,255,255,0.82)"
-              />
-            </div>
+          <div className="roles-hero-inner">
+            <Header
+              title={t('roles.title')}
+              subtitle={t('roles.subtitle')}
+              subtitleColor="rgba(255,255,255,0.82)"
+            />
           </div>
-          {renderSection(t('roles.sections.overview'), OVERVIEW_ITEMS)}
-          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
-          {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
-          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
-          {renderSection(t('roles.sections.internal'), INTERNAL_ITEMS, true)}
-          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
-          {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS, true)}
         </div>
+        {renderSection(t('roles.sections.overview'), OVERVIEW_ITEMS)}
+        <div className="roles-divider" />
+        {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
+        <div className="roles-divider" />
+        {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS, true)}
+        <div className="roles-divider" />
+        {renderSection(t('roles.sections.presentations'), PRESENTATION_ITEMS, true)}
+        <div className="roles-divider" />
+        {renderSection(t('roles.sections.development'), DEVELOPMENT_ITEMS, true)}
+      </div>
         {showAuth && (
           <div className="modal-backdrop" onClick={() => setShowAuth(false)}>
             <div className="modal-card" onClick={(event) => event.stopPropagation()}>
@@ -251,6 +233,6 @@ export default function RolesPage() {
             </div>
           </div>
         )}
-      </section>
+    </section>
   )
 }
