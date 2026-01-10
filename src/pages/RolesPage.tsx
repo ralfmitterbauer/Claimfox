@@ -24,6 +24,7 @@ type RoleItem = {
     | 'onboarding'
     | 'identification'
     | 'compliance'
+    | 'regulatoryGovernance'
   route?: string
   ctaKey?: string
 }
@@ -51,6 +52,10 @@ const INTERNAL_ITEMS: RoleItem[] = [
   { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
   { key: 'compliance', route: '/insurfox-native-ai' },
   { key: 'intern', route: '/intern' }
+]
+
+const GOVERNANCE_ITEMS: RoleItem[] = [
+  { key: 'regulatoryGovernance', route: '/governance/regulatory-ai-governance' }
 ]
 
 const descriptionStyle: React.CSSProperties = {
@@ -206,6 +211,8 @@ export default function RolesPage() {
           {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
           <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
           {renderSection(t('roles.sections.internal'), INTERNAL_ITEMS, true)}
+          <div style={{ height: 2, background: '#1f2a5f', width: '100%', borderRadius: 999 }} />
+          {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS, true)}
         </div>
         {showAuth && (
           <div className="modal-backdrop" onClick={() => setShowAuth(false)}>

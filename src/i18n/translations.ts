@@ -27,6 +27,7 @@ type TranslationTree = {
         overview: string
         processes: string
         internal: string
+        governance: string
       }
       internalAuth: {
         title: string
@@ -978,7 +979,8 @@ export const translations: Record<Lang, TranslationTree> = {
       sections: {
         overview: 'Rollenübersicht',
         processes: 'Prozesse',
-        internal: 'Interne Dokumentation'
+        internal: 'Interne Dokumentation',
+        governance: 'Governance'
       },
       internalAuth: {
         title: 'Interne Dokumentation',
@@ -1014,6 +1016,10 @@ export const translations: Record<Lang, TranslationTree> = {
         compliance: {
           title: 'Compliance',
           description: 'Präsentation: Insurfox native AI für regulierte Märkte.'
+        },
+        regulatoryGovernance: {
+          title: 'Regulatory & AI Governance Framework',
+          description: 'Regulatorische Präsentation für Aufsicht, Audits und Governance.'
         },
         partner: {
           title: 'Partner Manager',
@@ -2891,7 +2897,8 @@ export const translations: Record<Lang, TranslationTree> = {
       sections: {
         overview: 'Role overview',
         processes: 'Processes',
-        internal: 'Internal documentation'
+        internal: 'Internal documentation',
+        governance: 'Governance'
       },
       internalAuth: {
         title: 'Internal documentation',
@@ -2927,6 +2934,10 @@ export const translations: Record<Lang, TranslationTree> = {
         compliance: {
           title: 'Compliance',
           description: 'Presentation: Insurfox native AI for regulated markets.'
+        },
+        regulatoryGovernance: {
+          title: 'Regulatory & AI Governance Framework',
+          description: 'Regulatory deck for supervisors, auditors, and compliance stakeholders.'
         },
         partner: {
           title: 'Partner Manager',
