@@ -1,535 +1,197 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import InternAuthGate from '@/components/InternAuthGate'
+import React from 'react'
 import Header from '@/components/ui/Header'
-import GovernanceImage from '@/assets/images/hero_ai_iaas.png'
-import { useI18n } from '@/i18n/I18nContext'
-import { translations, type Lang } from '@/i18n/translations'
+import Card from '@/components/ui/Card'
+import InternAuthGate from '@/components/InternAuthGate'
 
-type SlideSection = {
-  heading: string
+type SectionBlock = {
+  id: string
+  title: string
+  intro?: string
   bullets?: string[]
   text?: string
-  table?: { headers: [string, string]; rows: [string, string][] }
 }
 
-type SlideContent = {
-  id: number
-  title: string
-  intro: string
-  sections: SlideSection[]
-  footer?: string
-}
-
-type SideNote = {
-  heading: string
-  text: string
-}
-
-function getSlides(lang: Lang): SlideContent[] {
-  if (lang === 'de') {
-    return [
-      {
-        id: 1,
-        title: 'Purpose, Scope and Regulatory Landscape',
-        intro:
-          'Dieses Dokument beschreibt das Regulatory & AI Governance Framework der Insurfox AI IaaS. Es zeigt, wie KI in Versicherungsprozessen kontrolliert, nachvollziehbar und regulatorisch konform eingesetzt wird.',
-        sections: [
-          {
-            heading: 'Scope',
-            bullets: ['Versicherung', 'Krankenversicherung', 'Mobility', 'InsurTech']
-          },
-          {
-            heading: 'Regulatory frameworks',
-            bullets: ['GDPR/DSGVO', 'BaFin', 'EU AI Act', 'EIOPA', 'Lloyd’s Standards']
-          },
-          {
-            heading: 'Intended audience',
-            bullets: ['Aufsichtsbehörden', 'Versicherer & Rückversicherer', 'Prüfungsinstanzen']
-          }
-        ],
-        footer: 'Scope: Insurance, Health, Mobility, InsurTech'
-      },
-      {
-        id: 2,
-        title: 'Rolle, Verantwortlichkeit und Entscheidungshoheit',
-        intro:
-          'Insurfox agiert ausschließlich als Technologie- und Prozessplattform und ist nicht Risikoträger. Entscheidungshoheit und Haftung verbleiben beim Versicherer bzw. Rückversicherer.',
-        sections: [
-          {
-            heading: 'Rollenaufteilung',
-            bullets: ['Provider: Plattformbetrieb & Controls (Insurfox)', 'Deployer: Versicherer & Rückversicherer']
-          },
-          {
-            heading: 'Entscheidungshoheit',
-            bullets: ['Human-in-the-Loop verpflichtend', 'Keine autonomen, bindenden Entscheidungen']
-          },
-          {
-            heading: 'Verantwortlichkeit',
-            table: {
-              headers: ['Responsibility', 'Assigned to'],
-              rows: [
-                ['Plattformbetrieb & Controls', 'Insurfox'],
-                ['Underwriting & Schadenentscheidung', 'Versicherer'],
-                ['Pricing & Risikotragung', 'Versicherer'],
-                ['Regulatorisches Reporting', 'Versicherer (mit Insurfox Support)']
-              ]
-            }
-          }
-        ]
-      },
-      {
-        id: 3,
-        title: 'AI Governance Framework',
-        intro:
-          'Governance ist integraler Bestandteil der Architektur und wird technisch erzwungen. Fokus: klare Use Cases, kontrollierte Modelle, überprüfbare Outputs.',
-        sections: [
-          {
-            heading: 'Zulässige KI-Nutzung',
-            bullets: ['Entscheidungsunterstützung', 'Risiko-/Tarifempfehlungen', 'Betrugs- und Anomalieerkennung']
-          },
-          {
-            heading: 'Model Lifecycle',
-            bullets: ['Registry & Versionierung', 'Kontrollierte Releases', 'Dokumentierte Trainingsquellen']
-          },
-          {
-            heading: 'Explainability',
-            bullets: ['Erklärbare Scores', 'Dokumentierte Merkmale & Logik']
-          },
-          {
-            heading: 'Human Oversight',
-            bullets: ['Review & Override', 'Eskalationspfade für wesentliche Entscheidungen']
-          }
-        ]
-      },
-      {
-        id: 4,
-        title: 'Data Governance & Sensitive Data Controls',
-        intro:
-          'Datenverarbeitung erfolgt zweckgebunden, minimiert und rechtmäßig. Sensitive Daten werden nur unter klaren Voraussetzungen verarbeitet.',
-        sections: [
-          {
-            heading: 'Data Governance Principles',
-            bullets: ['Zweckbindung', 'Datenminimierung', 'Rechtmäßige Verarbeitung', 'RBAC']
-          },
-          {
-            heading: 'Sensitive Daten',
-            bullets: [
-              'Gesundheits-, biometrische und Standortdaten (nur rechtlich zulässig)',
-              'Rechtsgrundlage: Einwilligung oder gesetzliche Verpflichtung',
-              'Zusätzliche Schutzmechanismen'
-            ]
-          },
-          {
-            heading: 'Controls',
-            bullets: ['Getrennte Domänen', 'Eingeschränkter Zugriff', 'Separate Pipelines', 'Erweiterte Reviews']
-          },
-          {
-            heading: 'Control levels',
-            table: {
-              headers: ['Standard', 'Zusätzlich (sensitiv)'],
-              rows: [
-                ['RBAC, Logging, Verschlüsselung', 'Restriktiver Modellzugriff'],
-                ['Mandantentrennung', 'Separate Verarbeitungspfade'],
-                ['Retention Policies', 'Verpflichtender Human Review']
-              ]
-            }
-          }
-        ]
-      },
-      {
-        id: 5,
-        title: 'Auditability, Traceability & Record-Keeping',
-        intro:
-          'Auditierbarkeit ist durch strukturierte Logs, nachvollziehbare Modellstände und dokumentierte Entscheidungen sichergestellt.',
-        sections: [
-          {
-            heading: 'Was wird protokolliert',
-            bullets: ['Eingabedaten', 'Modellversion', 'KI-Output', 'Zeitstempel', 'User-Interaktionen']
-          },
-          {
-            heading: 'Evidence matrix',
-            table: {
-              headers: ['Event', 'Recorded fields'],
-              rows: [
-                ['Input', 'Schema, Quelle, Zeitstempel'],
-                ['Model execution', 'Model-ID, Version, Parameter'],
-                ['Output', 'Score, Confidence, Rationale'],
-                ['User action', 'Reviewer, Entscheidung, Zeitstempel']
-              ]
-            }
-          },
-          {
-            heading: 'Retention & Prüfungsfähigkeit',
-            text: 'Aufbewahrung gemäß regulatorischer Anforderungen und jederzeit auditfähig.'
-          }
-        ]
-      },
-      {
-        id: 6,
-        title: 'Third-Party Risk, Security & EU AI Act Alignment',
-        intro:
-          'Outsourcing-Risiken, Sicherheit und EU-AI-Act-Konformität werden durch die Systemarchitektur abgedeckt.',
-        sections: [
-          {
-            heading: 'Outsourcing & Drittparteien',
-            bullets: ['Keine externen KI-Anbieter', 'Kein Datenabfluss', 'Keine Foundation-Model-Abhängigkeit']
-          },
-          {
-            heading: 'Security measures',
-            bullets: ['Mandantentrennung', 'Verschlüsselung at rest/in transit', 'Monitoring & Logging', 'Incident Response']
-          },
-          {
-            heading: 'Data residency & sovereignty',
-            bullets: ['Jurisdiktion konfigurierbar', 'Versicherer behält Datenhoheit', 'Keine Cross-Tenant-Nutzung']
-          },
-          {
-            heading: 'EU AI Act alignment',
-            bullets: ['Risikomanagement', 'Transparenz', 'Human Oversight', 'Logging & Auditierbarkeit']
-          }
-        ]
-      }
+const sections: SectionBlock[] = [
+  {
+    id: 'intro',
+    title: 'Regulatory & AI Governance Framework',
+    intro:
+      'Dieses Dokument beschreibt das Regulatory & AI Governance Framework der Insurfox AI IaaS. Es erläutert, wie künstliche Intelligenz innerhalb von Versicherungsprozessen kontrolliert, nachvollziehbar und regulatorisch konform eingesetzt wird.',
+    text:
+      'Der Fokus liegt auf Governance-Strukturen, Verantwortlichkeiten, Daten- und Modellkontrolle sowie auf der Sicherstellung der aufsichtsrechtlichen Anforderungen für regulierte Versicherungsmärkte.'
+  },
+  {
+    id: 'audience',
+    title: 'Adressaten',
+    bullets: ['Aufsichtsbehörden', 'Versicherungsunternehmen', 'Rückversicherer', 'Interne und externe Prüfungsinstanzen']
+  },
+  {
+    id: 'scope',
+    title: 'Regulatorischer Geltungsbereich',
+    bullets: [
+      'DSGVO / GDPR',
+      'BaFin-aufsichtsrechtliche Anforderungen',
+      'EU AI Act (insbesondere High-Risk-KI-Systeme)',
+      'EIOPA-Leitlinien zur Digitalisierung und KI',
+      'Mindeststandards von Lloyd’s und vergleichbaren Aufsichtsregimen'
+    ],
+    text:
+      'Der Anwendungsbereich umfasst unter anderem Versicherungen, Krankenversicherungen, Mobilitäts- und Telematik-basierte Versicherungen sowie InsurTech-Plattformen.'
+  },
+  {
+    id: 'roles',
+    title: 'Rolle von Insurfox und Verantwortlichkeiten',
+    bullets: [
+      'Insurfox agiert ausschließlich als Technologie- und Prozessplattform.',
+      'Insurfox ist weder Risikoträger noch Entscheidungsträger im versicherungsrechtlichen Sinne.',
+      'Die Entscheidungshoheit verbleibt stets beim Versicherer bzw. Rückversicherer.',
+      'Underwriting-, Pricing- und Schadenentscheidungen werden nicht automatisiert getroffen.',
+      'Insurfox stellt ausschließlich Entscheidungsunterstützung, Analysen und Hinweise bereit.'
+    ],
+    text:
+      'Diese klare Trennung stellt sicher, dass Verantwortlichkeiten, Haftung und Aufsichtspflichten eindeutig zugeordnet bleiben.'
+  },
+  {
+    id: 'ai-classification',
+    title: 'Einsatz und Klassifikation von KI',
+    bullets: [
+      'Risikobewertung und Risikoindikatoren',
+      'Preis- und Tarifempfehlungen',
+      'Betrugs- und Anomalieerkennung',
+      'Portfolio-, Prozess- und Bestandsanalysen'
+    ],
+    text:
+      'Autonome, rechtsverbindliche Entscheidungen durch KI finden nicht statt. Für alle wesentlichen Entscheidungen ist ein Human-in-the-Loop verbindlich vorgesehen.'
+  },
+  {
+    id: 'ai-governance',
+    title: 'AI Governance Framework',
+    bullets: [
+      'klar definierte KI-Use-Cases und Einsatzgrenzen',
+      'vollständiges Model Lifecycle Management',
+      'Versionierung und Dokumentation aller Modelle',
+      'kontrollierte Release- und Änderungsprozesse',
+      'nachvollziehbare und erklärbare KI-Outputs'
+    ],
+    text: 'Governance wird technisch erzwungen und ist jederzeit überprüfbar.'
+  },
+  {
+    id: 'data-governance',
+    title: 'Data Governance und Datenschutz',
+    bullets: [
+      'Zweckbindung',
+      'Datenminimierung',
+      'Rechtmäßige Verarbeitung',
+      'Rollenbasierte Zugriffskontrolle',
+      'Vollständiges Audit-Logging'
+    ],
+    text: 'Die Datenhoheit verbleibt stets beim jeweiligen Versicherer.'
+  },
+  {
+    id: 'sensitive-data',
+    title: 'Umgang mit sensiblen Daten',
+    bullets: ['Gesundheitsdaten', 'biometrische Daten', 'Bewegungs- und Standortdaten'],
+    text:
+      'Die Verarbeitung sensibler Daten erfolgt ausschließlich auf Basis ausdrücklicher Einwilligung oder gesetzlicher Versicherungsverpflichtungen.'
+  },
+  {
+    id: 'sensitive-controls',
+    title: 'Zusätzliche Schutzmaßnahmen für sensible Daten',
+    bullets: [
+      'getrennte Daten- und Verarbeitungsdomänen',
+      'eingeschränkter Zugriff auf Modelle und Trainingspipelines',
+      'separate Verarbeitungs- und Analysepfade',
+      'erweiterte Logging-, Review- und Freigabeanforderungen'
+    ],
+    text: 'Eine sparten- oder mandantenübergreifende Nutzung sensibler Daten findet nicht statt.'
+  },
+  {
+    id: 'auditability',
+    title: 'Auditierbarkeit und Nachvollziehbarkeit',
+    bullets: [
+      'verwendete Eingabedaten (pseudonymisiert)',
+      'Modellversion und Konfiguration',
+      'erzeugte KI-Outputs',
+      'Zeitstempel',
+      'Nutzer- und Rolleninteraktionen'
+    ],
+    text:
+      'Die Aufbewahrung der Protokolle erfolgt gemäß regulatorischer Aufbewahrungsanforderungen und ermöglicht jederzeit eine aufsichtsrechtliche Prüfung.'
+  },
+  {
+    id: 'outsourcing',
+    title: 'Outsourcing, Drittanbieter und Modellabhängigkeiten',
+    bullets: [
+      'Es werden keine externen KI-Service-Provider eingesetzt.',
+      'Trainings- und Inferenzdaten werden nicht an Dritte weitergegeben.',
+      'Es besteht keine Abhängigkeit von externen Foundation Models.'
+    ],
+    text: 'Dadurch werden Outsourcing- und Drittparteirisiken signifikant reduziert.'
+  },
+  {
+    id: 'security',
+    title: 'Datensouveränität, Mandantentrennung und Sicherheit',
+    bullets: [
+      'Datenresidenz ist je Jurisdiktion konfigurierbar.',
+      'Keine Cross-Tenant-Datennutzung oder Modellnutzung.',
+      'Logische Mandantentrennung auf Infrastruktur-Ebene.',
+      'Verschlüsselung von Daten im Ruhezustand und während der Übertragung.',
+      'Zugriffskontrollen, Monitoring und Incident-Response-Prozesse.'
     ]
+  },
+  {
+    id: 'eu-ai-act',
+    title: 'EU AI Act – Einordnung und Konformität',
+    text:
+      'Die innerhalb der Insurfox AI IaaS eingesetzten KI-Systeme sind – abhängig vom Use Case – als High-Risk-KI-Systeme im Sinne des EU AI Act einzuordnen.',
+    bullets: ['Risikomanagement', 'Daten- und Modellgovernance', 'Transparenz', 'menschliche Aufsicht', 'Auditierbarkeit']
+  },
+  {
+    id: 'summary',
+    title: 'Zusammenfassung',
+    text:
+      'Die Insurfox AI IaaS stellt ein strukturiertes Regulatory & AI Governance Framework bereit, das den kontrollierten Einsatz von KI in regulierten Versicherungsmärkten ermöglicht. Governance, Transparenz und Aufsicht sind integrale Bestandteile der Plattformarchitektur und bilden die Grundlage für eine nachhaltige, regulatorisch konforme Nutzung von KI.'
   }
-
-  return [
-    {
-      id: 1,
-      title: 'Purpose, Scope and Regulatory Landscape',
-      intro:
-        'This document describes the Regulatory & AI Governance Framework of the Insurfox AI IaaS. It explains how AI is used in insurance processes in a controlled, traceable, and compliant manner.',
-      sections: [
-        {
-          heading: 'Scope',
-          bullets: ['Insurance', 'Health Insurance', 'Mobility', 'InsurTech']
-        },
-        {
-          heading: 'Regulatory frameworks',
-          bullets: ['GDPR/DSGVO', 'BaFin', 'EU AI Act', 'EIOPA', 'Lloyd’s standards']
-        },
-        {
-          heading: 'Intended audience',
-          bullets: ['Supervisory authorities', 'Insurers & reinsurers', 'Auditors']
-        }
-      ],
-      footer: 'Scope: Insurance, Health, Mobility, InsurTech'
-    },
-    {
-      id: 2,
-      title: 'Roles, Accountability and Decision Authority',
-      intro:
-        'Insurfox operates solely as a technology and process platform and is not the risk carrier. Decision authority and liability remain with the insurer or reinsurer.',
-      sections: [
-        {
-          heading: 'Role allocation',
-          bullets: ['Provider: Insurfox platform operations', 'Deployer: insurers and reinsurers']
-        },
-        {
-          heading: 'Decision authority',
-          bullets: ['Human-in-the-loop mandatory', 'No autonomous binding decisions']
-        },
-        {
-          heading: 'Responsibility allocation',
-          table: {
-            headers: ['Responsibility', 'Assigned to'],
-            rows: [
-              ['Platform operation & controls', 'Insurfox'],
-              ['Underwriting & claims decision', 'Insurer'],
-              ['Risk acceptance & pricing', 'Insurer'],
-              ['Compliance reporting', 'Insurer (with Insurfox support)']
-            ]
-          }
-        }
-      ]
-    },
-    {
-      id: 3,
-      title: 'AI Governance Framework',
-      intro:
-        'Governance connects policy, model lifecycle, and operational oversight with controlled releases and traceable outputs.',
-      sections: [
-        {
-          heading: 'Permitted AI usage',
-          bullets: ['Decision support only', 'Risk/pricing recommendations', 'Fraud/anomaly detection']
-        },
-        {
-          heading: 'Model lifecycle governance',
-          bullets: ['Registry & versioning', 'Controlled release process', 'Documented training sources']
-        },
-        {
-          heading: 'Explainability',
-          bullets: ['Score-level explainability', 'Documented rationale & features']
-        },
-        {
-          heading: 'Human oversight',
-          bullets: ['Review & override', 'Escalation paths for material decisions']
-        }
-      ]
-    },
-    {
-      id: 4,
-      title: 'Data Governance and Sensitive Data Controls',
-      intro:
-        'Data processing follows purpose limitation, minimisation, and lawful bases. Sensitive data is handled only under clear safeguards.',
-      sections: [
-        {
-          heading: 'Data governance principles',
-          bullets: ['Purpose limitation', 'Data minimisation', 'Lawful processing', 'Role-based access control']
-        },
-        {
-          heading: 'Sensitive data handling',
-          bullets: [
-            'Health, biometric and location data where legally permitted',
-            'Lawful basis: consent or statutory obligation',
-            'Enhanced safeguards for sensitive data'
-          ]
-        },
-        {
-          heading: 'Controls',
-          bullets: ['Segregated domains', 'Restricted access', 'Separate pipelines', 'Enhanced review']
-        },
-        {
-          heading: 'Control levels',
-          table: {
-            headers: ['Standard controls', 'Additional for sensitive data'],
-            rows: [
-              ['RBAC, logging, encryption', 'Restricted model access'],
-              ['Tenant isolation', 'Separate processing pipelines'],
-              ['Retention policies', 'Mandatory human review']
-            ]
-          }
-        }
-      ]
-    },
-    {
-      id: 5,
-      title: 'Auditability, Traceability and Record-Keeping',
-      intro:
-        'Auditability is ensured through complete logs, traceable model states, and documented decisions.',
-      sections: [
-        {
-          heading: 'What is logged',
-          bullets: ['Input data', 'Model version', 'Output score', 'Timestamp', 'User interaction']
-        },
-        {
-          heading: 'Evidence matrix',
-          table: {
-            headers: ['Event', 'Recorded fields'],
-            rows: [
-              ['Input', 'Schema, source, timestamp'],
-              ['Model execution', 'Model ID, version, parameters'],
-              ['Output', 'Score, confidence, rationale'],
-              ['User action', 'Reviewer, decision, timestamp']
-            ]
-          }
-        },
-        {
-          heading: 'Retention & supervisory evidence',
-          text: 'Retention aligned with regulatory requirements and supervisory review readiness.'
-        }
-      ]
-    },
-    {
-      id: 6,
-      title: 'Third-Party Risk, Security and EU AI Act Alignment',
-      intro:
-        'Outsourcing risk, security controls, and EU AI Act alignment are embedded in the system architecture.',
-      sections: [
-        {
-          heading: 'Third-party risk & outsourcing',
-          bullets: ['No external AI providers', 'No transfer of training/inference data', 'No foundation model dependency']
-        },
-        {
-          heading: 'Security measures',
-          bullets: ['Tenant isolation', 'Encryption at rest/in transit', 'Monitoring & logging', 'Incident response']
-        },
-        {
-          heading: 'Data residency & sovereignty',
-          bullets: ['Jurisdiction configurable', 'Insurer retains ownership', 'No cross-tenant usage']
-        },
-        {
-          heading: 'EU AI Act alignment',
-          bullets: ['Risk management', 'Transparency', 'Human oversight', 'Logging & auditability']
-        }
-      ]
-    }
-  ]
-}
+]
 
 export default function RegulatoryGovernancePage() {
-  const { lang } = useI18n()
-  const [activeSlide, setActiveSlide] = useState(0)
-  const deck = useMemo(() => translations[lang]?.regulatoryDeck ?? translations.en.regulatoryDeck, [lang])
-  const slides = useMemo(() => getSlides(lang), [lang])
-  const sideNotes = useMemo<SideNote[]>(
-    () =>
-      lang === 'de'
-        ? [
-            { heading: 'Regulatorische Lesbarkeit', text: 'Strukturierte Inhalte für Aufsicht, Audit und Compliance.' },
-            { heading: 'Governance im System', text: 'Technische Kontrollen statt reiner Policy-Dokumentation.' },
-            { heading: 'Klare Verantwortlichkeit', text: 'Trennung von Plattformbetrieb und Entscheidungshoheit.' }
-          ]
-        : [
-            { heading: 'Regulatory readability', text: 'Structured content for supervisors, audits, and compliance.' },
-            { heading: 'Governance in the system', text: 'Technical controls instead of policy-only governance.' },
-            { heading: 'Clear accountability', text: 'Separation of platform operations and decision authority.' }
-          ],
-    [lang]
-  )
-  const navRef = useRef<HTMLDivElement | null>(null)
-  const [deckHeight, setDeckHeight] = useState(0)
-
-  const totalSlides = slides.length
-
-  function goToSlide(nextIndex: number) {
-    setActiveSlide(Math.max(0, Math.min(nextIndex, totalSlides - 1)))
-  }
-
-  useEffect(() => {
-    setActiveSlide(0)
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = previousOverflow
-    }
-  }, [])
-
-  useEffect(() => {
-    function updateHeights() {
-      const navHeight = navRef.current?.getBoundingClientRect().height ?? 0
-      setDeckHeight(window.innerHeight - navHeight - 56)
-    }
-
-    updateHeights()
-    window.addEventListener('resize', updateHeights)
-    return () => window.removeEventListener('resize', updateHeights)
-  }, [])
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'ArrowRight') {
-        goToSlide(activeSlide + 1)
-      }
-      if (event.key === 'ArrowLeft') {
-        goToSlide(activeSlide - 1)
-      }
-      if (event.key === 'Home') {
-        goToSlide(0)
-      }
-      if (event.key === 'End') {
-        goToSlide(totalSlides - 1)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [activeSlide, totalSlides])
-
   return (
     <InternAuthGate>
-      <section className="page regulatory-overview" style={{ ['--deck-height' as never]: `${deckHeight}px` }}>
-        <div className="regulatory-slider">
-          <div className="regulatory-track" style={{ transform: `translateX(-${activeSlide * 100}%)` }}>
-            {slides.map((slide, index) => (
-              <div key={`${slide.title}-${index}`} className="regulatory-slide">
-                <div className="regulatory-layout">
-                  <div className="regulatory-left-card">
-                    <div className="regulatory-left-header">
-                      <Header title={deck.title} subtitle={deck.subtitle} subtitleColor="#65748b" />
-                      <span className="regulatory-slide-index">
-                        {String(index + 1).padStart(2, '0')} / {String(totalSlides).padStart(2, '0')}
-                      </span>
-                    </div>
-                    <div className="regulatory-slide-content">
-                      <h1>{slide.title}</h1>
-                      <p>{slide.intro}</p>
-                      <div className="regulatory-sections">
-                        {slide.sections.map((section) => (
-                          <div key={section.heading} className="regulatory-section">
-                            <h3>{section.heading}</h3>
-                            {section.text && <p>{section.text}</p>}
-                            {section.bullets && (
-                              <ul>
-                                {section.bullets.map((item) => (
-                                  <li key={item}>{item}</li>
-                                ))}
-                              </ul>
-                            )}
-                            {section.table && (
-                              <div className="regulatory-table">
-                                <div className="regulatory-table-head">
-                                  <span>{section.table.headers[0]}</span>
-                                  <span>{section.table.headers[1]}</span>
-                                </div>
-                                {section.table.rows.map((row) => (
-                                  <div key={row.join('-')} className="regulatory-table-row">
-                                    <span>{row[0]}</span>
-                                    <span>{row[1]}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                      {slide.footer && <div className="regulatory-footer">{slide.footer}</div>}
-                    </div>
-                  </div>
-                  <div className="regulatory-right">
-                    <div className="regulatory-media-stack">
-                      <div className="regulatory-media-card">
-                        <img src={GovernanceImage} alt={deck.title} />
-                      </div>
-                      <div className="regulatory-media-card">
-                        <img src={GovernanceImage} alt={deck.title} />
-                      </div>
-                    </div>
-                    <div className="regulatory-highlight-card">
-                      <span className="regulatory-kicker">{deck.highlightTitle}</span>
-                      <div className="regulatory-highlight-grid">
-                        {sideNotes.map((note) => (
-                          <div key={note.heading} className="regulatory-highlight-item">
-                            <strong>{note.heading}</strong>
-                            <span>{note.text}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <section className="page regulatory-framework-page">
+        <Header
+          title="Regulatory & AI Governance Framework"
+          subtitle="Regulatorische Übersicht für Aufsicht, Audits und Governance"
+          subtitleColor="#65748b"
+        />
+        <div className="regulatory-framework-grid">
+          <div className="regulatory-framework-column">
+            {sections.slice(0, 7).map((section) => (
+              <Card key={section.id} title={section.title}>
+                {section.intro && <p className="framework-paragraph">{section.intro}</p>}
+                {section.text && <p className="framework-paragraph">{section.text}</p>}
+                {section.bullets && (
+                  <ul className="framework-list">
+                    {section.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
             ))}
           </div>
-          <div className="regulatory-nav" ref={navRef}>
-            <button
-              type="button"
-              className="deck-arrow"
-              onClick={() => goToSlide(activeSlide - 1)}
-              disabled={activeSlide === 0}
-              aria-label="Previous slide"
-            >
-              ←
-            </button>
-            <div className="deck-dots">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  className={index === activeSlide ? 'deck-dot active' : 'deck-dot'}
-                  onClick={() => goToSlide(index)}
-                  aria-label={`Slide ${index + 1}`}
-                />
-              ))}
-            </div>
-            <button
-              type="button"
-              className="deck-arrow"
-              onClick={() => goToSlide(activeSlide + 1)}
-              disabled={activeSlide === totalSlides - 1}
-              aria-label="Next slide"
-            >
-              →
-            </button>
+          <div className="regulatory-framework-column">
+            {sections.slice(7).map((section) => (
+              <Card key={section.id} title={section.title}>
+                {section.text && <p className="framework-paragraph">{section.text}</p>}
+                {section.bullets && (
+                  <ul className="framework-list">
+                    {section.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+            ))}
           </div>
         </div>
       </section>
