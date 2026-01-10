@@ -760,35 +760,24 @@ h6 {
 
 .selfie-silhouette {
   position: relative;
-  width: 60%;
-  height: 75%;
-  border-radius: 50% / 60%;
+  width: 52%;
+  height: 68%;
+  border-radius: 50% / 65%;
   box-shadow: 0 0 0 999px rgba(15, 23, 42, 0.45);
   border: 2px solid rgba(255, 255, 255, 0.9);
-}
-
-.selfie-silhouette::before {
-  content: '';
-  position: absolute;
-  top: 8%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 52%;
-  height: 52%;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.9);
+  transform: translateY(6%);
 }
 
 .selfie-silhouette::after {
   content: '';
   position: absolute;
-  bottom: 6%;
+  bottom: -14%;
   left: 50%;
   transform: translateX(-50%);
-  width: 72%;
-  height: 40%;
+  width: 80%;
+  height: 42%;
   border-radius: 50% / 70%;
-  border: 2px solid rgba(255, 255, 255, 0.85);
+  border: 2px solid rgba(255, 255, 255, 0.75);
 }
 
 .id-camera-actions {
