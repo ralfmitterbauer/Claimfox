@@ -674,11 +674,11 @@ h6 {
 .framework-print-header {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 1.6rem;
 }
 
 .framework-print-header img {
-  height: 28px;
+  height: 56px;
   width: auto;
 }
 
@@ -742,11 +742,16 @@ h6 {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 18mm 16mm;
+    margin: 20mm 20mm;
   }
 
   body {
     background: #ffffff;
+  }
+
+  * {
+    background: transparent !important;
+    box-shadow: none !important;
   }
 
   .framework-download {
