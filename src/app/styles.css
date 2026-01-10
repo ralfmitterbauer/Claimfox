@@ -742,7 +742,7 @@ h6 {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 20mm 20mm;
+    margin: 10mm 20mm 20mm 20mm;
   }
 
   body {
