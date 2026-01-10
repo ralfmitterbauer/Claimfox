@@ -350,7 +350,7 @@ export default function UserIdentificationPage() {
                   )}
                   {captureTarget === 'selfie' && (
                     <div className="selfie-overlay-layer">
-                      <div className="selfie-cutout" />
+                      <div className="selfie-silhouette" />
                       <p>{t('identification.selfie.overlay')}</p>
                     </div>
                   )}
