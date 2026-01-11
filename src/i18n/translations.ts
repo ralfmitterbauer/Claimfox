@@ -970,8 +970,8 @@ export const translations: Record<Lang, TranslationTree> = {
       logout: 'Logout'
     },
     roles: {
-      title: 'Rollenübersicht',
-      subtitle: 'Wähle eine Rolle aus, um die Demo weiterzuführen. Alle Inhalte sind statisch und dienen nur der Illustration.',
+      title: 'Insurfox AI IaaS',
+      subtitle: 'AI-native Insurance-IaaS-Plattform zur Abbildung zentraler Versicherungsprozesse',
       logout: 'Logout',
       view: 'Ansehen',
       startJourney: 'Starten',
@@ -2914,8 +2914,8 @@ export const translations: Record<Lang, TranslationTree> = {
       logout: 'Logout'
     },
     roles: {
-      title: 'Role overview',
-      subtitle: 'Pick a role to continue the experience. The content is static and meant for demonstration only.',
+      title: 'Insurfox AI IaaS',
+      subtitle: 'AI-native Insurance IaaS platform for core insurance processes.',
       logout: 'Logout',
       view: 'View',
       startJourney: 'Start journey',
