@@ -9,6 +9,12 @@ type WhitepaperSection = {
   title: string
   paragraphs: string[]
   bullets?: string[]
+  split?: {
+    leftTitle: string
+    rightTitle: string
+    leftItems: string[]
+    rightItems: string[]
+  }
 }
 
 function getWhitepaperContent(lang: 'de' | 'en') {
@@ -87,7 +93,23 @@ function getWhitepaperContent(lang: 'de' | 'en') {
             'Flottenversicherung',
             'Transport- und Warenversicherung (Cargo Insurance)',
             'Logistik-Kompositversicherung (u. a. Inhalts-, Haftpflicht-, Cyber-, D&O-, Maschinen- und Warenkreditversicherung)'
-          ]
+          ],
+          split: {
+            leftTitle: 'Prozesse',
+            rightTitle: 'Produkte',
+            leftItems: [
+              'Digitaler Schadenbearbeitungsprozess (Claims Handling)',
+              'Digitale Policierung (Policy Issuance)',
+              'Digitales Vertragsmanagement inkl. Endorsements und Renewals',
+              'Integration in das Versicherungsökosystem über digitale Schnittstellen'
+            ],
+            rightItems: [
+              'Verkehrshaftungsversicherung (Carrier’s Liability Insurance)',
+              'Flottenversicherung',
+              'Transport- und Warenversicherung (Cargo Insurance)',
+              'Logistik-Kompositversicherung (u. a. Inhalts-, Haftpflicht-, Cyber-, D&O-, Maschinen- und Warenkreditversicherung)'
+            ]
+          }
         },
         {
           id: '07',
@@ -223,7 +245,23 @@ function getWhitepaperContent(lang: 'de' | 'en') {
           'electronic equipment insurance',
           'machinery insurance',
           'trade credit insurance'
-        ]
+        ],
+        split: {
+          leftTitle: 'Processes',
+          rightTitle: 'Products',
+          leftItems: [
+            'Claims handling processes',
+            'Digital policy issuance',
+            'Digital contract management with endorsements and renewals',
+            'Integration into the broader insurance ecosystem'
+          ],
+          rightItems: [
+            'Carrier’s liability insurance',
+            'Fleet insurance',
+            'Cargo insurance',
+            'Logistics composite insurance (contents, liability, cyber, D&O, machinery, trade credit)'
+          ]
+        }
       },
       {
         id: '08',
@@ -290,29 +328,29 @@ export default function InsurfoxWhitepaperPage() {
             <Card className="insurfox-whitepaper-media-card">
               <div className="insurfox-whitepaper-media-header">
                 <h3>{lang === 'en' ? 'Ecosystem Coverage' : 'Ecosystem Coverage'}</h3>
-                <span>{lang === 'en' ? 'Stakeholders connected' : 'Stakeholders connected'}</span>
+                <span>{lang === 'en' ? 'Stakeholders connected' : 'Stakeholder vernetzt'}</span>
               </div>
               <div className="insurfox-whitepaper-bars">
                 <div>
-                  <span>{lang === 'en' ? 'Insurers' : 'Insurers'}</span>
+                  <span>{lang === 'en' ? 'Insurers' : 'Versicherer'}</span>
                   <div className="insurfox-whitepaper-bar">
                     <div style={{ width: '82%' }} />
                   </div>
                 </div>
                 <div>
-                  <span>{lang === 'en' ? 'Brokers' : 'Brokers'}</span>
+                  <span>{lang === 'en' ? 'Brokers' : 'Makler'}</span>
                   <div className="insurfox-whitepaper-bar">
                     <div style={{ width: '74%' }} />
                   </div>
                 </div>
                 <div>
-                  <span>{lang === 'en' ? 'Logistics' : 'Logistics'}</span>
+                  <span>{lang === 'en' ? 'Logistics' : 'Logistik'}</span>
                   <div className="insurfox-whitepaper-bar">
                     <div style={{ width: '68%' }} />
                   </div>
                 </div>
                 <div>
-                  <span>{lang === 'en' ? 'Enterprise' : 'Enterprise'}</span>
+                  <span>{lang === 'en' ? 'Enterprise' : 'Industrie'}</span>
                   <div className="insurfox-whitepaper-bar">
                     <div style={{ width: '61%' }} />
                   </div>
@@ -321,20 +359,20 @@ export default function InsurfoxWhitepaperPage() {
             </Card>
             <Card className="insurfox-whitepaper-media-card">
               <div className="insurfox-whitepaper-media-header">
-                <h3>{lang === 'en' ? 'AI-Enabled Value Chain' : 'AI-Enabled Value Chain'}</h3>
-                <span>{lang === 'en' ? 'From risk to claims' : 'From risk to claims'}</span>
+                <h3>{lang === 'en' ? 'AI-Enabled Value Chain' : 'KI-gestützte Wertschöpfung'}</h3>
+                <span>{lang === 'en' ? 'From risk to claims' : 'Von Risiko bis Schaden'}</span>
               </div>
               <div className="insurfox-whitepaper-flow">
                 <div>
-                  <strong>{lang === 'en' ? 'Risk' : 'Risk'}</strong>
-                  <span>{lang === 'en' ? 'Signals' : 'Signals'}</span>
+                  <strong>{lang === 'en' ? 'Risk' : 'Risiko'}</strong>
+                  <span>{lang === 'en' ? 'Signals' : 'Signale'}</span>
                 </div>
                 <div>
                   <strong>{lang === 'en' ? 'Pricing' : 'Pricing'}</strong>
-                  <span>{lang === 'en' ? 'Recommendations' : 'Recommendations'}</span>
+                  <span>{lang === 'en' ? 'Recommendations' : 'Empfehlungen'}</span>
                 </div>
                 <div>
-                  <strong>{lang === 'en' ? 'Claims' : 'Claims'}</strong>
+                  <strong>{lang === 'en' ? 'Claims' : 'Schaden'}</strong>
                   <span>{lang === 'en' ? 'Automation' : 'Automation'}</span>
                 </div>
               </div>
@@ -343,16 +381,16 @@ export default function InsurfoxWhitepaperPage() {
         </div>
         <div className="insurfox-whitepaper-signals">
           <Card className="insurfox-whitepaper-signal-card">
-            <h3>{lang === 'en' ? 'AI Governance' : 'AI Governance'}</h3>
-            <p>{lang === 'en' ? 'Decision support with auditable models and controlled data flows.' : 'Decision support with auditable models and controlled data flows.'}</p>
+            <h3>{lang === 'en' ? 'AI Governance' : 'KI-Governance'}</h3>
+            <p>{lang === 'en' ? 'Decision support with auditable models and controlled data flows.' : 'Entscheidungsunterstützung mit auditierbaren Modellen und kontrollierten Datenflüssen.'}</p>
           </Card>
           <Card className="insurfox-whitepaper-signal-card">
-            <h3>{lang === 'en' ? 'Operational Efficiency' : 'Operational Efficiency'}</h3>
-            <p>{lang === 'en' ? 'Unified workflows reduce friction across underwriting, claims and servicing.' : 'Unified workflows reduce friction across underwriting, claims and servicing.'}</p>
+            <h3>{lang === 'en' ? 'Operational Efficiency' : 'Operative Effizienz'}</h3>
+            <p>{lang === 'en' ? 'Unified workflows reduce friction across underwriting, claims and servicing.' : 'Einheitliche Workflows reduzieren Reibung in Underwriting, Schaden und Service.'}</p>
           </Card>
           <Card className="insurfox-whitepaper-signal-card">
-            <h3>{lang === 'en' ? 'Scalable Integration' : 'Scalable Integration'}</h3>
-            <p>{lang === 'en' ? 'API-first architecture enables partner onboarding with minimal lift.' : 'API-first architecture enables partner onboarding with minimal lift.'}</p>
+            <h3>{lang === 'en' ? 'Scalable Integration' : 'Skalierbare Integration'}</h3>
+            <p>{lang === 'en' ? 'API-first architecture enables partner onboarding with minimal lift.' : 'API-first-Architektur ermöglicht Partner-Onboarding mit geringem Aufwand.'}</p>
           </Card>
         </div>
         <div className="insurfox-whitepaper-grid">
@@ -364,13 +402,32 @@ export default function InsurfoxWhitepaperPage() {
               {section.paragraphs.map((paragraph) => (
                 <p key={paragraph}>{paragraph}</p>
               ))}
-              {section.bullets && (
+              {section.split ? (
+                <div className="insurfox-whitepaper-split">
+                  <div>
+                    <h4>{section.split.leftTitle}</h4>
+                    <ul>
+                      {section.split.leftItems.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h4>{section.split.rightTitle}</h4>
+                    <ul>
+                      {section.split.rightItems.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : section.bullets ? (
                 <ul>
                   {section.bullets.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-              )}
+              ) : null}
             </Card>
           ))}
         </div>
