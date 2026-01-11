@@ -843,6 +843,11 @@ h6 {
   gap: 1.5rem;
 }
 
+.insurfox-whitepaper-header {
+  padding: 0 24px;
+  align-items: flex-start;
+}
+
 .insurfox-whitepaper-summary {
   padding: 2rem;
   box-shadow: 0 22px 44px rgba(15, 23, 42, 0.1);
@@ -968,6 +973,10 @@ h6 {
     padding: 0;
     gap: 0;
     background: none;
+  }
+
+  .insurfox-whitepaper-shell {
+    display: none;
   }
 }
 

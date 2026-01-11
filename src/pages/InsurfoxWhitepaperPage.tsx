@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
+import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 
 type WhitepaperSection = {
@@ -264,12 +265,21 @@ export default function InsurfoxWhitepaperPage() {
   return (
     <section className="page insurfox-whitepaper-page">
       <div className="insurfox-whitepaper-shell">
-        <div className="insurfox-whitepaper-hero">
+        <div className="framework-header-row insurfox-whitepaper-header">
           <Header
             title={content.title}
             subtitle={content.subtitle}
             subtitleColor="#65748b"
           />
+          <button
+            type="button"
+            className="framework-download"
+            onClick={() => window.print()}
+          >
+            {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
+          </button>
+        </div>
+        <div className="insurfox-whitepaper-hero">
           <Card className="insurfox-whitepaper-summary">
             <h2>{content.summaryTitle}</h2>
             {content.summary.map((paragraph) => (
@@ -296,6 +306,34 @@ export default function InsurfoxWhitepaperPage() {
             </Card>
           ))}
         </div>
+      </div>
+      <div className="framework-print">
+        <div className="framework-print-header">
+          <img src={InsurfoxLogo} alt="Insurfox" />
+        </div>
+        <h1>{content.title}</h1>
+        <p className="framework-print-subtitle">{content.subtitle}</p>
+        <div className="framework-print-section">
+          <h2>{content.summaryTitle}</h2>
+          {content.summary.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+        {content.sections.map((section) => (
+          <div key={section.id} className="framework-print-section">
+            <h2>{section.title}</h2>
+            {section.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {section.bullets && (
+              <ul>
+                {section.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   )
