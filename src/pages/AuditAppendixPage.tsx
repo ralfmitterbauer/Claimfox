@@ -440,7 +440,7 @@ function getAuditContent(lang: Lang) {
 
 function SectionCard({ section }: { section: SectionBlock }) {
   return (
-    <Card title={section.title}>
+    <Card title={section.title} className="audit-appendix-card">
       {section.intro && <p className="audit-paragraph">{section.intro}</p>}
       {section.bullets && (
         <ul className="audit-list">
@@ -498,12 +498,14 @@ function SectionCard({ section }: { section: SectionBlock }) {
 export default function AuditAppendixPage() {
   const { lang } = useI18n()
   const content = useMemo(() => getAuditContent(lang), [lang])
+  const leadSection = content.left[0]
+  const remainingLeft = content.left.slice(1)
 
   return (
     <InternAuthGate>
-      <section className="page strategic-deep-dive-page">
-        <div className="strategic-shell">
-          <div className="framework-header-row strategic-header">
+      <section className="page audit-appendix-page">
+        <div className="audit-appendix-shell">
+          <div className="framework-header-row audit-appendix-header">
             <Header
               title={content.title}
               subtitle={content.subtitle}
@@ -517,13 +519,30 @@ export default function AuditAppendixPage() {
               {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
             </button>
           </div>
-          <div className="strategic-grid">
-            <div className="strategic-column">
-              {content.left.map((section) => (
+          <div className="audit-appendix-lead">
+            <Card className="audit-appendix-lead-card">
+              <div className="audit-appendix-lead-head">
+                <p className="audit-appendix-lead-kicker">{content.subtitle}</p>
+                <h2 className="audit-appendix-lead-title">{leadSection.title}</h2>
+              </div>
+              {leadSection.intro && <p className="audit-paragraph">{leadSection.intro}</p>}
+              {leadSection.bullets && (
+                <ul className="audit-list">
+                  {leadSection.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+              {leadSection.text && <p className="audit-paragraph">{leadSection.text}</p>}
+            </Card>
+          </div>
+          <div className="audit-appendix-grid">
+            <div className="audit-appendix-column">
+              {remainingLeft.map((section) => (
                 <SectionCard key={section.id} section={section} />
               ))}
             </div>
-            <div className="strategic-column">
+            <div className="audit-appendix-column">
               {content.right.map((section) => (
                 <SectionCard key={section.id} section={section} />
               ))}
