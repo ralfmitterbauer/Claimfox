@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import InternAuthGate from '@/components/InternAuthGate'
+import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 import type { Lang } from '@/i18n/translations'
 
