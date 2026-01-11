@@ -281,7 +281,6 @@ export default function InsurfoxWhitepaperPage() {
           {content.sections.map((section) => (
             <Card key={section.id} className="insurfox-whitepaper-card">
               <div className="insurfox-whitepaper-card-head">
-                <span>{section.id}</span>
                 <h3>{section.title}</h3>
               </div>
               {section.paragraphs.map((paragraph) => (
