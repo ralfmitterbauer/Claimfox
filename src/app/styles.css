@@ -937,16 +937,22 @@ h6 {
   display: grid;
   gap: 0.3rem;
   text-align: center;
+  justify-items: center;
 }
 
 .insurfox-whitepaper-flow strong {
   font-size: 0.95rem;
   color: #0f172a;
+  line-height: 1.2;
 }
 
 .insurfox-whitepaper-flow span {
   font-size: 0.8rem;
   color: #64748b;
+  line-height: 1.2;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .insurfox-whitepaper-signals {
@@ -1045,6 +1051,10 @@ h6 {
   }
 
   .insurfox-whitepaper-split {
+    grid-template-columns: 1fr;
+  }
+
+  .insurfox-whitepaper-flow {
     grid-template-columns: 1fr;
   }
 }
