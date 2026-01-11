@@ -28,6 +28,7 @@ type RoleItem = {
     | 'profile'
     | 'policyPurchase'
     | 'strategicDeepDive'
+    | 'insurfoxWhitepaper'
   route?: string
   ctaKey?: string
 }
@@ -58,7 +59,8 @@ const GOVERNANCE_ITEMS: RoleItem[] = [
 
 const PRESENTATION_ITEMS: RoleItem[] = [
   { key: 'whitepaper', route: '/ai-whitepaper' },
-  { key: 'strategicDeepDive', route: '/governance/strategic-deep-dive' }
+  { key: 'strategicDeepDive', route: '/governance/strategic-deep-dive' },
+  { key: 'insurfoxWhitepaper', route: '/insurfox-whitepaper' }
 ]
 
 const DEVELOPMENT_ITEMS: RoleItem[] = [

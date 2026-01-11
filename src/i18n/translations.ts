@@ -1037,6 +1037,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Strategic Technology & AI Governance Deep Dive',
           description: 'Strategischer Deep Dive zur Technologie- und Governance-Architektur.'
         },
+        insurfoxWhitepaper: {
+          title: 'Insurfox Whitepaper',
+          description: 'AI-getriebene Versicherungsplattform für Logistik, Transport & Mobility.'
+        },
         partner: {
           title: 'Partner Manager',
           description: 'Pflege Kontakte zu Gutachtern, Werkstätten und Dienstleistern.'
@@ -2972,6 +2976,10 @@ export const translations: Record<Lang, TranslationTree> = {
         strategicDeepDive: {
           title: 'Strategic Technology & AI Governance Deep Dive',
           description: 'Strategic deep dive into architecture and AI governance.'
+        },
+        insurfoxWhitepaper: {
+          title: 'Insurfox Whitepaper',
+          description: 'AI-driven insurance platform for logistics, transport, and mobility.'
         },
         partner: {
           title: 'Partner Manager',

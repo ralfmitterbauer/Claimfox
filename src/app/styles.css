@@ -822,6 +822,94 @@ h6 {
   font-size: 1.35rem;
 }
 
+.insurfox-whitepaper-page {
+  max-width: none;
+  margin: 0;
+  gap: 1.5rem;
+}
+
+.insurfox-whitepaper-shell {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.insurfox-whitepaper-hero {
+  padding: 0 24px;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.insurfox-whitepaper-summary {
+  padding: 2rem;
+  box-shadow: 0 22px 44px rgba(15, 23, 42, 0.1);
+}
+
+.insurfox-whitepaper-summary h2 {
+  margin: 0 0 1rem;
+  color: var(--insurfox-orange);
+  font-size: 1.35rem;
+}
+
+.insurfox-whitepaper-summary p {
+  margin: 0 0 0.9rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.insurfox-whitepaper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  padding: 0 24px 24px;
+}
+
+.insurfox-whitepaper-card {
+  padding: 1.6rem;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+}
+
+.insurfox-whitepaper-card-head {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.insurfox-whitepaper-card-head span {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #65748b;
+}
+
+.insurfox-whitepaper-card-head h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.insurfox-whitepaper-card p {
+  margin: 0 0 0.8rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.insurfox-whitepaper-card ul {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+@media (max-width: 1100px) {
+  .insurfox-whitepaper-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1200px) {
   .strategic-grid {
     grid-template-columns: 1fr;
