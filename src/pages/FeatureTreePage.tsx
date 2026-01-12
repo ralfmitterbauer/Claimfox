@@ -2,7 +2,6 @@ import React from 'react'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
-import InternAuthGate from '@/components/InternAuthGate'
 
 type SectionKey =
   | 'intake'
@@ -40,8 +39,7 @@ export default function FeatureTreePage() {
   const { t } = useI18n()
 
   return (
-    <InternAuthGate>
-      <section className="page" style={{ gap: '1.75rem' }}>
+    <section className="page" style={{ gap: '1.75rem' }}>
         <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
           <Header
             title={t('featureTree.title')}
@@ -85,7 +83,6 @@ export default function FeatureTreePage() {
             ))}
           </div>
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

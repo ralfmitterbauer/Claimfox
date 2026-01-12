@@ -87,44 +87,8 @@ const descriptionStyle: React.CSSProperties = {
 export default function RolesPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
-  const [showAuth, setShowAuth] = React.useState(false)
-  const [authUser, setAuthUser] = React.useState('')
-  const [authPin, setAuthPin] = React.useState('')
-  const [authError, setAuthError] = React.useState('')
-  const [pendingRoute, setPendingRoute] = React.useState<string | null>(null)
 
-  const isAuthed =
-    typeof window !== 'undefined' && window.localStorage.getItem('cf_intern_auth') === 'true'
-
-  function handleInternalAccess(route: string) {
-    if (isAuthed) {
-      navigate(route)
-      return
-    }
-    setPendingRoute(route)
-    setShowAuth(true)
-  }
-
-  function handleAuthSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    const valid = authUser.trim().toLowerCase() === 'insurteam' && authPin.trim() === '2105'
-    if (!valid) {
-      setAuthError(t('roles.internalAuth.error'))
-      return
-    }
-    setAuthError('')
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem('cf_intern_auth', 'true')
-    }
-    setShowAuth(false)
-    const nextRoute = pendingRoute
-    setPendingRoute(null)
-    if (nextRoute) {
-      navigate(nextRoute)
-    }
-  }
-
-  function renderCard(item: RoleItem, requireAuth = false) {
+  function renderCard(item: RoleItem) {
     const hasRoute = Boolean(item.route)
     const titleKey = item.key === 'brokerPortal' ? 'roles.brokerPortal' : `roles.cards.${item.key}.title`
     const descriptionKey =
@@ -132,10 +96,6 @@ export default function RolesPage() {
 
     const handleClick = hasRoute
       ? () => {
-          if (requireAuth) {
-            handleInternalAccess(item.route!)
-            return
-          }
           navigate(item.route!)
         }
       : undefined
@@ -155,12 +115,12 @@ export default function RolesPage() {
     )
   }
 
-  function renderSection(title: string, items: RoleItem[], requireAuth = false) {
+  function renderSection(title: string, items: RoleItem[]) {
     return (
       <div className="roles-section">
         <h2 style={{ margin: 0 }}>{title}</h2>
         <div className="roles-grid">
-          {items.map((item) => renderCard(item, requireAuth))}
+          {items.map((item) => renderCard(item))}
         </div>
       </div>
     )
@@ -187,47 +147,12 @@ export default function RolesPage() {
         <div className="roles-divider" />
         {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
         <div className="roles-divider" />
-        {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS, true)}
+        {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS)}
         <div className="roles-divider" />
-        {renderSection(t('roles.sections.presentations'), PRESENTATION_ITEMS, true)}
+        {renderSection(t('roles.sections.presentations'), PRESENTATION_ITEMS)}
         <div className="roles-divider" />
-        {renderSection(t('roles.sections.development'), DEVELOPMENT_ITEMS, true)}
+        {renderSection(t('roles.sections.development'), DEVELOPMENT_ITEMS)}
       </div>
-        {showAuth && (
-          <div className="modal-backdrop" onClick={() => setShowAuth(false)}>
-            <div className="modal-card" onClick={(event) => event.stopPropagation()}>
-              <form onSubmit={handleAuthSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-                <strong>{t('roles.internalAuth.title')}</strong>
-                <span style={{ color: '#64748b' }}>{t('roles.internalAuth.subtitle')}</span>
-                <label className="form-field">
-                  {t('roles.internalAuth.username')}
-                  <input
-                    className="text-input"
-                    value={authUser}
-                    onChange={(event) => setAuthUser(event.target.value)}
-                  />
-                </label>
-                <label className="form-field">
-                  {t('roles.internalAuth.pin')}
-                  <input
-                    className="text-input"
-                    type="password"
-                    inputMode="numeric"
-                    value={authPin}
-                    onChange={(event) => setAuthPin(event.target.value)}
-                  />
-                </label>
-                {authError && <span className="error-text">{authError}</span>}
-                <div style={{ display: 'flex', gap: '0.6rem', justifyContent: 'flex-end' }}>
-                  <Button type="button" variant="secondary" onClick={() => setShowAuth(false)}>
-                    {t('profile.actions.back')}
-                  </Button>
-                  <Button type="submit">{t('roles.internalAuth.submit')}</Button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
     </section>
   )
 }

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
-import InternAuthGate from '@/components/InternAuthGate'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 
@@ -391,8 +390,7 @@ export default function StrategicDeepDivePage() {
   const headerSubtitle = 'Insurfox IaaS – Enabling Regulated AI at Scale'
 
   return (
-    <InternAuthGate>
-      <section className="page strategic-deep-dive-page">
+    <section className="page strategic-deep-dive-page">
         <div className="strategic-shell">
           <div className="framework-header-row strategic-header">
             <Header
@@ -449,7 +447,6 @@ export default function StrategicDeepDivePage() {
             </div>
           ))}
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

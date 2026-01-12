@@ -3,7 +3,6 @@ import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import InternAuthGate from '@/components/InternAuthGate'
 
 const useCases = [
   'whitepaper.useCases.risk',
@@ -29,8 +28,7 @@ export default function AiWhitepaperPage() {
   const { t } = useI18n()
 
   return (
-    <InternAuthGate>
-      <section className="page" style={{ gap: '2.5rem' }}>
+    <section className="page" style={{ gap: '2.5rem' }}>
         <div className="whitepaper-hero">
           <div className="whitepaper-hero-inner">
             <div className="whitepaper-hero-content">
@@ -110,7 +108,6 @@ export default function AiWhitepaperPage() {
             <Button>{t('whitepaper.cta.primary')}</Button>
           </div>
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

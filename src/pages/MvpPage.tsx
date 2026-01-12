@@ -4,7 +4,6 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
-import InternAuthGate from '@/components/InternAuthGate'
 
 type MvpStep = {
   key:
@@ -37,8 +36,7 @@ export default function MvpPage() {
   const { t } = useI18n()
 
   return (
-    <InternAuthGate>
-      <section className="page" style={{ gap: '2rem' }}>
+    <section className="page" style={{ gap: '2rem' }}>
         <div
           style={{
             width: '100%',
@@ -80,7 +78,6 @@ export default function MvpPage() {
             ))}
           </div>
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
-import InternAuthGate from '@/components/InternAuthGate'
 import { useI18n } from '@/i18n/I18nContext'
 import type { Lang } from '@/i18n/translations'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
@@ -309,8 +308,7 @@ export default function RegulatoryGovernancePage() {
   const sections = useMemo(() => getSections(lang), [lang])
 
   return (
-    <InternAuthGate>
-      <section className="page regulatory-framework-page">
+    <section className="page regulatory-framework-page">
         <div className="framework-header-row">
           <Header
             title="Regulatory & AI Governance Framework"
@@ -376,7 +374,6 @@ export default function RegulatoryGovernancePage() {
             ))}
           </div>
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

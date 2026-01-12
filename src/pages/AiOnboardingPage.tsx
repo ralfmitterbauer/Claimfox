@@ -3,7 +3,6 @@ import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import InternAuthGate from '@/components/InternAuthGate'
 
 const sections = [
   {
@@ -33,8 +32,7 @@ export default function AiOnboardingPage() {
   const [showArchitecture, setShowArchitecture] = React.useState(false)
 
   return (
-    <InternAuthGate>
-      <section className="page" style={{ gap: '2.5rem' }}>
+    <section className="page" style={{ gap: '2.5rem' }}>
         <div style={{ width: '100%', maxWidth: 1100, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           <div className="whitepaper-hero">
             <div className="whitepaper-hero-inner" style={{ gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)' }}>
@@ -128,7 +126,6 @@ export default function AiOnboardingPage() {
             <Button onClick={() => setShowArchitecture((prev) => !prev)}>{t('aiOnboarding.cta.primary')}</Button>
           </Card>
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }

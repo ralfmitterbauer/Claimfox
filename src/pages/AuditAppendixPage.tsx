@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
-import InternAuthGate from '@/components/InternAuthGate'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import { useI18n } from '@/i18n/I18nContext'
 import type { Lang } from '@/i18n/translations'
@@ -502,8 +501,7 @@ export default function AuditAppendixPage() {
   const remainingLeft = content.left.slice(1)
 
   return (
-    <InternAuthGate>
-      <section className="page audit-appendix-page">
+    <section className="page audit-appendix-page">
         <div className="audit-appendix-shell">
           <div className="framework-header-row audit-appendix-header">
             <Header
@@ -590,7 +588,6 @@ export default function AuditAppendixPage() {
             </div>
           ))}
         </div>
-      </section>
-    </InternAuthGate>
+    </section>
   )
 }
