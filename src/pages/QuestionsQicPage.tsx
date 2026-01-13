@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
+import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 
 type QicSection = {
   id: string
@@ -258,6 +259,13 @@ export default function QuestionsQicPage() {
       <div className="insurfox-whitepaper-shell">
         <div className="framework-header-row insurfox-whitepaper-header">
           <Header title={content.title} subtitle={content.subtitle} subtitleColor="#65748b" />
+          <button
+            type="button"
+            className="framework-download"
+            onClick={() => window.print()}
+          >
+            {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
+          </button>
         </div>
         <div className="insurfox-whitepaper-grid">
           {content.sections.map((section) => (
@@ -273,6 +281,23 @@ export default function QuestionsQicPage() {
             </Card>
           ))}
         </div>
+      </div>
+      <div className="framework-print">
+        <div className="framework-print-header">
+          <img src={InsurfoxLogo} alt="Insurfox" />
+        </div>
+        <h1>{content.title}</h1>
+        <p className="framework-print-subtitle">{content.subtitle}</p>
+        {content.sections.map((section) => (
+          <div key={section.id} className="framework-print-section">
+            <h2>{section.title}</h2>
+            <ul>
+              {section.questions.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   )
