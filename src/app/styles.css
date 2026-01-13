@@ -1037,6 +1037,182 @@ h6 {
   line-height: 1.6;
 }
 
+.profile-overview-page {
+  max-width: none;
+  margin: 0;
+}
+
+.profile-overview-shell {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.profile-overview-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 1.5rem;
+}
+
+.profile-overview-card {
+  padding: 1.6rem;
+}
+
+.profile-overview-summary {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.profile-overview-summary-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.profile-overview-summary-head h2 {
+  margin: 0.3rem 0 0;
+  font-size: 1.3rem;
+  color: #0f172a;
+}
+
+.profile-overview-kicker {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.profile-overview-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.profile-overview-metrics div {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.profile-overview-metrics span {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.profile-overview-metrics strong {
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.profile-overview-onboarding {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.profile-overview-onboarding-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.profile-overview-onboarding-head h2 {
+  margin: 0.35rem 0 0;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.profile-overview-onboarding-head p {
+  margin: 0.35rem 0 0;
+  color: #64748b;
+}
+
+.profile-overview-progress {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.profile-overview-progress > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #1f2a5f;
+}
+
+.profile-overview-progress-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.profile-overview-progress-bar div {
+  height: 100%;
+  background: #d4380d;
+}
+
+.profile-overview-sections-head h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.profile-overview-section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profile-overview-section-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-overview-section-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.profile-overview-section-card span {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.profile-overview-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+}
+
+@media (max-width: 980px) {
+  .profile-overview-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-overview-metrics {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 1100px) {
   .insurfox-whitepaper-hero {
     grid-template-columns: 1fr;
