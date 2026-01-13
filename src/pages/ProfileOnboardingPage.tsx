@@ -37,12 +37,7 @@ const PERSONAL_FIELDS: FieldDefinition[] = [
   },
   { key: 'account.password', labelKey: 'profile.fields.password', required: true, type: 'password', group: 'personal' },
   { key: 'account.password_confirm', labelKey: 'profile.fields.passwordConfirm', required: true, type: 'password', group: 'personal' },
-  { key: 'account.advisor_code', labelKey: 'profile.fields.advisorCode', required: false, type: 'text', group: 'personal' },
-  { key: 'company.director.first_name', labelKey: 'profile.fields.directorFirstName', required: true, type: 'text', group: 'personal' },
-  { key: 'company.director.last_name', labelKey: 'profile.fields.directorLastName', required: true, type: 'text', group: 'personal' },
-  { key: 'kyc.has_branch_in_sanctioned_region', labelKey: 'profile.fields.kycBranch', required: true, type: 'boolean', group: 'personal' },
-  { key: 'kyc.director_from_sanctioned_region', labelKey: 'profile.fields.kycDirector', required: true, type: 'boolean', group: 'personal' },
-  { key: 'kyc.has_business_with_sanctioned_region', labelKey: 'profile.fields.kycBusiness', required: true, type: 'boolean', group: 'personal' }
+  { key: 'account.advisor_code', labelKey: 'profile.fields.advisorCode', required: false, type: 'text', group: 'personal' }
 ]
 
 const COMPANY_FIELDS: FieldDefinition[] = [
@@ -54,7 +49,12 @@ const COMPANY_FIELDS: FieldDefinition[] = [
   { key: 'company.address.zip', labelKey: 'profile.fields.zip', required: true, type: 'text', group: 'company' },
   { key: 'company.address.city', labelKey: 'profile.fields.city', required: true, type: 'text', group: 'company' },
   { key: 'company.address.country', labelKey: 'profile.fields.country', required: true, type: 'text', group: 'company' },
-  { key: 'company.vat_id', labelKey: 'profile.fields.vatId', required: false, type: 'text', group: 'company' }
+  { key: 'company.vat_id', labelKey: 'profile.fields.vatId', required: false, type: 'text', group: 'company' },
+  { key: 'company.director.first_name', labelKey: 'profile.fields.directorFirstName', required: true, type: 'text', group: 'company' },
+  { key: 'company.director.last_name', labelKey: 'profile.fields.directorLastName', required: true, type: 'text', group: 'company' },
+  { key: 'kyc.has_branch_in_sanctioned_region', labelKey: 'profile.fields.kycBranch', required: true, type: 'boolean', group: 'company' },
+  { key: 'kyc.director_from_sanctioned_region', labelKey: 'profile.fields.kycDirector', required: true, type: 'boolean', group: 'company' },
+  { key: 'kyc.has_business_with_sanctioned_region', labelKey: 'profile.fields.kycBusiness', required: true, type: 'boolean', group: 'company' }
 ]
 
 const STORAGE_KEY = 'cf_profile_wizard'
