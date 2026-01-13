@@ -62,39 +62,17 @@ const STORAGE_KEY = 'cf_profile_wizard'
 
 function IllustrationPanel({ image, secondaryImage }: { image: string; secondaryImage: string }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', height: '100%' }}>
-      <div
-        style={{
-          borderRadius: '22px',
-          border: '1px solid #e2e8f0',
-          overflow: 'hidden',
-          background: 'transparent',
-          width: '100%',
-          flex: 1
-        }}
-      >
-        <img
-          src={image}
-          alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: 'transparent' }}
-        />
-      </div>
-      <div
-        style={{
-          borderRadius: '22px',
-          border: '1px solid #e2e8f0',
-          overflow: 'hidden',
-          background: 'transparent',
-          width: '100%',
-          flex: 1
-        }}
-      >
-        <img
-          src={secondaryImage}
-          alt=""
-          style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: 'transparent' }}
-        />
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <img
+        src={image}
+        alt=""
+        style={{ width: '100%', height: 'auto', objectFit: 'contain', display: 'block', background: 'transparent' }}
+      />
+      <img
+        src={secondaryImage}
+        alt=""
+        style={{ width: '100%', height: 'auto', objectFit: 'contain', display: 'block', background: 'transparent' }}
+      />
     </div>
   )
 }
