@@ -1593,7 +1593,7 @@ h6 {
     justify-content: space-between;
     align-items: flex-start;
     gap: 1.2rem;
-    margin-bottom: 0;
+    margin-bottom: -0.2cm;
   }
 
   .cv-print-photo img {
@@ -1604,18 +1604,18 @@ h6 {
   }
 
   .cv-print-contact {
-    margin-top: -0.1cm;
-    margin-bottom: 1.2rem;
+    margin-top: -0.25cm;
+    margin-bottom: 0.7rem;
     max-width: calc(100% - 5.2cm);
   }
 
   .cv-print-contact p {
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.15;
   }
 
   .cv-print h3 {
-    margin: 0.7rem 0 0.3rem;
+    margin: 0.5rem 0 0.25rem;
     font-size: 1.05rem;
     color: #1f2a5f;
   }
