@@ -1475,6 +1475,15 @@ h6 {
   gap: 0.8rem;
 }
 
+.cv-profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 18px;
+  object-fit: cover;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
 .cv-profile-card strong {
   color: #0f172a;
 }
@@ -1577,6 +1586,25 @@ h6 {
     margin: 0 0 0.8rem;
     font-size: 1.2rem;
     color: #0f172a;
+  }
+
+  .cv-print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .cv-print-photo img {
+    width: 4.2cm;
+    height: 4.2cm;
+    object-fit: cover;
+    border-radius: 0.6cm;
+  }
+
+  .cv-print-contact {
+    margin-bottom: 0.8rem;
   }
 
   .cv-print h3 {

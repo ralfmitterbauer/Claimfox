@@ -3,6 +3,7 @@ import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import CvAuthGate from '@/components/CvAuthGate'
+import profileImage from '@/assets/images/rm.png'
 
 export default function CvPage() {
   return (
@@ -24,12 +25,7 @@ export default function CvPage() {
               <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
             </div>
             <Card className="cv-profile-card">
-              <div className="cv-profile-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#1f2a5f" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21a8 8 0 0 0-16 0" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-              </div>
+              <img className="cv-profile-image" src={profileImage} alt="Ralf Mitterbauer" />
               <div>
                 <strong>Profil</strong>
                 <p>
@@ -142,23 +138,35 @@ export default function CvPage() {
         </div>
 
         <div className="cv-print">
-          <h1>Lebenslauf</h1>
-          <h2>Ralf Mitterbauer</h2>
-          <p>IT Product Owner | Produktmanager Software & Plattformen</p>
-          <p>Uhlandstraße 11 · 31162 Bad Salzdetfuth (Region Hannover)</p>
-          <p>Telefon: +49 (0)151 22644067 · E-Mail: ralf.mitterbauer@t-online.de</p>
-          <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
+          <div className="cv-print-header">
+            <div>
+              <h1>Ralf Mitterbauer</h1>
+              <h2>IT Product Owner | Produktmanager Software & Plattformen</h2>
+            </div>
+            <div className="cv-print-photo">
+              <img src={profileImage} alt="Ralf Mitterbauer" />
+            </div>
+          </div>
+          <div className="cv-print-contact">
+            <p>Uhlandstraße 11</p>
+            <p>31162 Bad Salzdetfuth (Region Hannover)</p>
+            <p>Telefon: +49 (0)151 22644067</p>
+            <p>E-Mail: ralf.mitterbauer@t-online.de</p>
+            <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
+          </div>
 
           <h3>Profil</h3>
           <p>
             Engagierter und erfahrener IT Product Owner und Produktmanager mit umfassender Expertise in der Entwicklung, Strukturierung und
-            Weiterentwicklung komplexer Software- und Plattformlösungen. Langjährige Erfahrung im Aufbau skalierbarer Produktarchitekturen,
-            der Modellierung End-to-End-Prozesse sowie der Übersetzung fachlicher Anforderungen in stabile, marktfähige IT-Lösungen.
+            Weiterentwicklung komplexer Software- und Plattformlösungen.
+          </p>
+          <p>
+            Langjährige Erfahrung im Aufbau skalierbarer Produktarchitekturen, der Modellierung End-to-End-Prozesse sowie der Übersetzung fachlicher
+            Anforderungen in stabile, marktfähige IT-Lösungen.
           </p>
           <p>
             Besonders stark in prozessgetriebenen und regulierten Umfeldern, mit ausgeprägter Schnittstellenkompetenz zwischen Business, IT,
-            Entwicklung und Management. Verbindet technisches Verständnis mit analytischer Stärke, pragmatischer Umsetzung und klarer Kommunikation.
-            Hohe Affinität zu Mobilität, Technik, Digitalisierung und Qualitätssicherung.
+            Entwicklung und Management.
           </p>
 
           <h3>Fach- & Methodenkompetenzen</h3>
@@ -180,7 +188,9 @@ export default function CvPage() {
           <p>IT Product Owner Claims / Plattformen · seit 11/2025</p>
           <ul>
             <li>Verantwortung für die agile Weiterentwicklung einer skalierbaren IaaS-basierten Softwareplattform im Bereich Schadenmanagement (Claims).</li>
+            <li>Aufbau und Weiterentwicklung der Struktur und Architektur der Plattform als technisches Fundament.</li>
             <li>Definition der Produkt- und Plattformstrategie, Zielarchitektur und Roadmap.</li>
+            <li>Modellierung, Analyse und Optimierung End-to-End-Geschäftsprozesse.</li>
             <li>Übersetzung fachlicher, regulatorischer und technischer Anforderungen in Epics, Features und User Stories.</li>
             <li>Priorisierung und Pflege des Product Backlogs nach Business Value und strategischer Relevanz.</li>
           </ul>
@@ -188,8 +198,11 @@ export default function CvPage() {
           <h4>RLE Nova GmbH</h4>
           <p>Produktmanager / Vertrieb · 01/2022 – 10/2025</p>
           <ul>
-            <li>Konzeption, Entwicklung und Markteinführung digitaler Systeme und Plattformlösungen.</li>
+            <li>Verantwortung für Konzeption, Entwicklung und Markteinführung digitaler Systeme und Plattformlösungen.</li>
+            <li>Entwicklung innovativer Softwarelösungen für Eventmanagement, Identitäts- und Zugangssysteme.</li>
             <li>Digitale Transformation von Ticketing-, Akkreditierungs- und Check-in-Prozessen.</li>
+            <li>Umsetzung datenschutzkonformer Lösungen inkl. Identitäts- und Statusverifikation.</li>
+            <li>Enge Zusammenarbeit mit Entwicklung, Kunden und Technologiepartnern.</li>
             <li>Steuerung interdisziplinärer Projektteams von der Idee bis zur Marktreife.</li>
           </ul>
 
@@ -197,7 +210,9 @@ export default function CvPage() {
           <p>Senior Berater After Sales · 05/2017 – 12/2021</p>
           <ul>
             <li>Strategische Beratung im internationalen Aftersales-Umfeld.</li>
+            <li>Durchführung umfangreicher Markt- und Wettbewerbsanalysen (Europa & weitere Märkte).</li>
             <li>Entwicklung datenbasierter Vertriebs- und Service-Strategien.</li>
+            <li>Leitung regionaler Beraterteams.</li>
             <li>Umsetzung von Change-Management-Maßnahmen mit messbaren Effizienz- und Umsatzsteigerungen.</li>
           </ul>
 
@@ -205,7 +220,9 @@ export default function CvPage() {
           <p>Geschäftsleiter · 06/2015 – 05/2017</p>
           <ul>
             <li>Gesamtverantwortung für einen der größten Filialbetriebe mit über 36 Mitarbeitenden.</li>
+            <li>Führung, Entwicklung und Motivation großer Teams.</li>
             <li>Umsetzung umfassender Change- und Optimierungsmaßnahmen.</li>
+            <li>Prozessoptimierung, Umsatzsteigerung und Ergebnisverantwortung.</li>
           </ul>
 
           <h3>Weitere berufliche Stationen (Auswahl)</h3>

@@ -15,3 +15,12 @@
    npm run build
    ```
    Deploy the generated `dist/` folder (already configured for Netlify SPA hosting).
+
+## CV PDF export
+1. Generate the PDF:
+   ```bash
+   npm run pdf
+   ```
+2. Output files:
+   - `dist/cv_rm.pdf`
+   - `dist/preview.png`
