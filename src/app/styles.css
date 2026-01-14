@@ -1604,14 +1604,14 @@ h6 {
   }
 
   .cv-print-contact {
-    margin-top: -1.5cm;
-    margin-bottom: 0.3rem;
+    margin-top: -1.7cm;
+    margin-bottom: 0.28rem;
     max-width: calc(100% - 5.2cm);
   }
 
   .cv-print-contact p {
     margin: 0;
-    line-height: 1.02;
+    line-height: 1.01;
   }
 
   .cv-print h3 {
