@@ -984,7 +984,8 @@ export const translations: Record<Lang, TranslationTree> = {
         internal: 'Interne Dokumentation',
         governance: 'Governance',
         presentations: 'Präsentationen',
-        development: 'Development'
+        development: 'Development',
+        projectLanding: 'Projekt Landing Page'
       },
       internalAuth: {
         title: 'Interne Dokumentation',
@@ -1052,6 +1053,14 @@ export const translations: Record<Lang, TranslationTree> = {
         setup: {
           title: 'Setup',
           description: 'Zielarchitektur, Plattform-Schichten und Integrationsprinzipien der Insurfox IaaS.'
+        },
+        landingSitemap: {
+          title: 'Sitemap',
+          description: 'Sitemap und Navigationsstruktur der Insurfox Landing Page.'
+        },
+        landingTools: {
+          title: 'Toolsliste',
+          description: 'Technologie- und Tool-Übersicht der Landing Page.'
         },
         partner: {
           title: 'Partner Manager',
@@ -2936,7 +2945,8 @@ export const translations: Record<Lang, TranslationTree> = {
         internal: 'Internal documentation',
         governance: 'Governance',
         presentations: 'Presentations',
-        development: 'Development'
+        development: 'Development',
+        projectLanding: 'Project landing page'
       },
       internalAuth: {
         title: 'Internal documentation',
@@ -3004,6 +3014,14 @@ export const translations: Record<Lang, TranslationTree> = {
         setup: {
           title: 'Setup',
           description: 'Target architecture, platform layers, and integration principles for Insurfox IaaS.'
+        },
+        landingSitemap: {
+          title: 'Sitemap',
+          description: 'Sitemap and navigation structure of the Insurfox landing page.'
+        },
+        landingTools: {
+          title: 'Tools list',
+          description: 'Technology and tooling overview of the landing page.'
         },
         partner: {
           title: 'Partner Manager',

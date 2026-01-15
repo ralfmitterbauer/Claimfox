@@ -32,6 +32,8 @@ type RoleItem = {
     | 'requirementsCatalog'
     | 'questionsQic'
     | 'setup'
+    | 'landingSitemap'
+    | 'landingTools'
   route?: string
   ctaKey?: string
 }
@@ -74,6 +76,11 @@ const DEVELOPMENT_ITEMS: RoleItem[] = [
   { key: 'aiOnboarding', route: '/ai-onboarding' },
   { key: 'featureTree', route: '/feature-tree', ctaKey: 'roles.cards.featureTree.cta' },
   { key: 'intern', route: '/intern' }
+]
+
+const PROJECT_LANDING_ITEMS: RoleItem[] = [
+  { key: 'landingSitemap', route: '/landing/sitemap' },
+  { key: 'landingTools', route: '/landing/tools' }
 ]
 
 const descriptionStyle: React.CSSProperties = {
@@ -154,6 +161,8 @@ export default function RolesPage() {
         {renderSection(t('roles.sections.governance'), GOVERNANCE_ITEMS)}
         <div className="roles-divider" />
         {renderSection(t('roles.sections.presentations'), PRESENTATION_ITEMS)}
+        <div className="roles-divider" />
+        {renderSection(t('roles.sections.projectLanding'), PROJECT_LANDING_ITEMS)}
         <div className="roles-divider" />
         {renderSection(t('roles.sections.development'), DEVELOPMENT_ITEMS)}
       </div>

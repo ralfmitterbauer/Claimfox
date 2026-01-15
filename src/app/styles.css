@@ -1687,6 +1687,29 @@ h6 {
   margin-bottom: 0.4rem;
 }
 
+.landing-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.landing-sitemap-list {
+  max-height: 420px;
+  overflow: auto;
+  padding-right: 0.5rem;
+}
+
+@media print {
+  .landing-actions,
+  .app-header {
+    display: none !important;
+  }
+
+  .landing-sitemap-list {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
 @media (max-width: 980px) {
   .setup-grid {
     grid-template-columns: 1fr;

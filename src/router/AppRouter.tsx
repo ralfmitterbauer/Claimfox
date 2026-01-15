@@ -44,6 +44,8 @@ import CvPage from '@/pages/CvPage'
 import AnschreibenPage from '@/pages/AnschreibenPage'
 import SetupPage from '@/pages/SetupPage'
 import StoryblokTestPage from '@/pages/StoryblokTestPage'
+import LandingSitemapPage from '@/pages/LandingSitemapPage'
+import LandingToolsPage from '@/pages/LandingToolsPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -102,6 +104,8 @@ export default function AppRouter() {
         <Route path="/questions-qic" element={<QuestionsQicPage />} />
         <Route path="/setup" element={<SetupPage />} />
         <Route path="/storyblok-test" element={<StoryblokTestPage />} />
+        <Route path="/landing/sitemap" element={<LandingSitemapPage />} />
+        <Route path="/landing/tools" element={<LandingToolsPage />} />
         <Route path="/cv" element={<CvPage />} />
         <Route path="/anschreiben" element={<AnschreibenPage />} />
       </Route>
