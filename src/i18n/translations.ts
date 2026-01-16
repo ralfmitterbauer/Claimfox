@@ -2206,7 +2206,8 @@ export const translations: Record<Lang, TranslationTree> = {
             claimNumber: 'Schadennummer',
             firstName: 'Vorname',
             lastName: 'Nachname',
-            licensePlate: 'Kennzeichen'
+            licensePlate: 'Kennzeichen',
+            date: 'Ereignis'
           }
         },
         statusOptions: {
@@ -2217,6 +2218,7 @@ export const translations: Record<Lang, TranslationTree> = {
           closure: 'Abschluss'
         },
         actions: {
+          backToList: 'Zurück zur Übersicht',
           approveCosts: 'Kostenfreigabe',
           assignSurveyor: 'Gutachter beauftragen',
           changePartner: 'Partner ändern'
@@ -4173,7 +4175,8 @@ export const translations: Record<Lang, TranslationTree> = {
             claimNumber: 'Claim number',
             firstName: 'First name',
             lastName: 'Last name',
-            licensePlate: 'License plate'
+            licensePlate: 'License plate',
+            date: 'Incident'
           }
         },
         statusOptions: {
@@ -4184,6 +4187,7 @@ export const translations: Record<Lang, TranslationTree> = {
           closure: 'Closure'
         },
         actions: {
+          backToList: 'Back to overview',
           approveCosts: 'Approve costs',
           assignSurveyor: 'Assign surveyor',
           changePartner: 'Change partner'

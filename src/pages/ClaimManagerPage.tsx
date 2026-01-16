@@ -193,9 +193,16 @@ type ClaimAssistantData = {
 type ClaimManagerPageProps = {
   assistantData?: ClaimAssistantData
   caseList?: React.ReactNode
+  fullWidth?: boolean
+  onBack?: () => void
 }
 
-export default function ClaimManagerPage({ assistantData, caseList }: ClaimManagerPageProps) {
+export default function ClaimManagerPage({
+  assistantData,
+  caseList,
+  fullWidth = false,
+  onBack
+}: ClaimManagerPageProps) {
   const { t } = useI18n()
   const [claimStatus, setClaimStatus] = useState<(typeof timelineSteps)[number]>('review')
   const [costItems, setCostItems] = useState<CostItem[]>(initialCosts)
@@ -278,7 +285,7 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
           <style>{layoutStyles}</style>
           <div
             className="claim-manager-app-stack"
-            style={{ width: '100%', maxWidth: 1200, margin: '0 auto' }}
+            style={{ width: '100%', maxWidth: fullWidth ? '100%' : 1200, margin: '0 auto' }}
           >
           {caseList}
           <Card style={{ ...CARD_STYLE, padding: '2rem' }}>
@@ -318,6 +325,23 @@ export default function ClaimManagerPage({ assistantData, caseList }: ClaimManag
               </div>
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1rem' }}>
+              {onBack ? (
+                <Button
+                  variant="secondary"
+                  onClick={onBack}
+                  style={{
+                    background: '#ffffff',
+                    color: '#0e0d1c',
+                    borderRadius: '999px',
+                    border: '1px solid #d9d9d9',
+                    height: '42px',
+                    padding: '0 1.4rem',
+                    fontWeight: 600
+                  }}
+                >
+                  {t('claimManager.app.actions.backToList')}
+                </Button>
+              ) : null}
               <Button
                 onClick={() => setCostModalOpen(true)}
                 style={{

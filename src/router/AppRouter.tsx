@@ -15,6 +15,7 @@ import MarketingLandingPage from '@/pages/MarketingLandingPage'
 import ClaimManagerMarketingPage from '@/pages/ClaimManagerMarketingPage'
 import ClaimManagerPage from '@/pages/ClaimManagerPage'
 import ClaimManagerCasePage from '@/pages/ClaimManagerCasePage'
+import ClaimManagerAppListPage from '@/pages/ClaimManagerAppListPage'
 import ClaimProcessPage from '@/pages/ClaimProcessPage'
 import PartnerManagementPage from '@/pages/PartnerManagementPage'
 import FeatureTreePage from '@/pages/FeatureTreePage'
@@ -75,8 +76,9 @@ export default function AppRouter() {
         <Route path="/fleet-reporting" element={<FleetReportingPage />} />
         <Route path="/fleet-management" element={<FleetManagementPage />} />
         <Route path="/claim-manager" element={<ClaimManagerMarketingPage />} />
-        <Route path="/claim-manager-app" element={<ClaimManagerPage />} />
+        <Route path="/claim-manager-app" element={<ClaimManagerAppListPage />} />
         <Route path="/claim-manager-case" element={<ClaimManagerCasePage />} />
+        <Route path="/claim-manager-case/:claimNumber" element={<ClaimManagerCasePage />} />
         <Route path="/claim-process" element={<ClaimProcessPage />} />
         <Route path="/partner-management" element={<PartnerManagementPage />} />
         <Route path="/feature-tree" element={<FeatureTreePage />} />
