@@ -121,6 +121,231 @@ export const DEMO_CLAIMS: StoredClaimData[] = [
     incidentTime: '2025-01-02 10:35',
     address: 'Hamburg, Altona',
     description: 'Parkrempler, Lackschaden.'
+  },
+  {
+    claimNumber: 'CLM-2025-0013',
+    firstName: 'Lena',
+    lastName: 'Hartmann',
+    licensePlate: 'B-LH 7721',
+    incidentTime: '2025-01-01 14:10',
+    address: 'Berlin, Charlottenburg',
+    description: 'Seitenschaden beim Ausparken.'
+  },
+  {
+    claimNumber: 'CLM-2025-0014',
+    firstName: 'Max',
+    lastName: 'Peters',
+    licensePlate: 'M-MP 5512',
+    incidentTime: '2024-12-29 19:35',
+    address: 'München, Schwabing',
+    description: 'Frontschaden nach Auffahrunfall.'
+  },
+  {
+    claimNumber: 'CLM-2025-0015',
+    firstName: 'Julia',
+    lastName: 'Brandt',
+    licensePlate: 'HH-JB 8093',
+    incidentTime: '2024-12-28 07:50',
+    address: 'Hamburg, Wandsbek',
+    description: 'Glasschaden, Steinschlag Windschutzscheibe.'
+  },
+  {
+    claimNumber: 'CLM-2025-0016',
+    firstName: 'Daniel',
+    lastName: 'Kuhn',
+    licensePlate: 'F-DK 3340',
+    incidentTime: '2024-12-27 16:05',
+    address: 'Frankfurt, Gallus',
+    description: 'Heckschaden durch Rückfahrunfall.'
+  },
+  {
+    claimNumber: 'CLM-2025-0017',
+    firstName: 'Sara',
+    lastName: 'Vogel',
+    licensePlate: 'S-SV 6802',
+    incidentTime: '2024-12-26 11:25',
+    address: 'Stuttgart, Bad Cannstatt',
+    description: 'Seitliche Kollision im Kreisverkehr.'
+  },
+  {
+    claimNumber: 'CLM-2025-0018',
+    firstName: 'Philipp',
+    lastName: 'Kaiser',
+    licensePlate: 'K-PK 2049',
+    incidentTime: '2024-12-24 18:45',
+    address: 'Köln, Deutz',
+    description: 'Parkschaden am Heckstoßfänger.'
+  },
+  {
+    claimNumber: 'CLM-2025-0019',
+    firstName: 'Mara',
+    lastName: 'Bauer',
+    licensePlate: 'D-MB 9130',
+    incidentTime: '2024-12-23 09:15',
+    address: 'Düsseldorf, Pempelfort',
+    description: 'Spiegelkontakt in enger Straße.'
+  },
+  {
+    claimNumber: 'CLM-2025-0020',
+    firstName: 'Tim',
+    lastName: 'Scholz',
+    licensePlate: 'N-TS 4411',
+    incidentTime: '2024-12-22 13:40',
+    address: 'Nürnberg, Südstadt',
+    description: 'Seitenschaden, Lackkratzer.'
+  },
+  {
+    claimNumber: 'CLM-2025-0021',
+    firstName: 'Anna',
+    lastName: 'Dietrich',
+    licensePlate: 'H-AD 5567',
+    incidentTime: '2024-12-21 08:20',
+    address: 'Hannover, List',
+    description: 'Frontschaden durch Wildwechsel.'
+  },
+  {
+    claimNumber: 'CLM-2025-0022',
+    firstName: 'Nils',
+    lastName: 'Friedrich',
+    licensePlate: 'HB-NF 2308',
+    incidentTime: '2024-12-20 17:10',
+    address: 'Bremen, Oberneuland',
+    description: 'Parkrempler, Stoßfänger vorne.'
+  },
+  {
+    claimNumber: 'CLM-2025-0023',
+    firstName: 'Claudia',
+    lastName: 'Winter',
+    licensePlate: 'L-CW 7194',
+    incidentTime: '2024-12-19 12:55',
+    address: 'Leipzig, Plagwitz',
+    description: 'Seitenschaden an der Tür.'
+  },
+  {
+    claimNumber: 'CLM-2025-0024',
+    firstName: 'Jan',
+    lastName: 'Zimmer',
+    licensePlate: 'B-JZ 6655',
+    incidentTime: '2024-12-18 07:30',
+    address: 'Berlin, Mitte',
+    description: 'Heckschaden im Berufsverkehr.'
+  },
+  {
+    claimNumber: 'CLM-2025-0025',
+    firstName: 'Miriam',
+    lastName: 'Koch',
+    licensePlate: 'M-MK 4004',
+    incidentTime: '2024-12-17 15:00',
+    address: 'München, Moosach',
+    description: 'Glasschaden, Riss in der Scheibe.'
+  },
+  {
+    claimNumber: 'CLM-2025-0026',
+    firstName: 'Sebastian',
+    lastName: 'Lenz',
+    licensePlate: 'HH-SL 1022',
+    incidentTime: '2024-12-16 10:05',
+    address: 'Hamburg, Eimsbuettel',
+    description: 'Kratzer an der Seite, unbekannter Verursacher.'
+  },
+  {
+    claimNumber: 'CLM-2025-0027',
+    firstName: 'Laura',
+    lastName: 'Krause',
+    licensePlate: 'F-LK 7729',
+    incidentTime: '2024-12-15 18:30',
+    address: 'Frankfurt, Sachsenhausen',
+    description: 'Anprall an Bordstein, Felgenschaden.'
+  },
+  {
+    claimNumber: 'CLM-2025-0028',
+    firstName: 'Jonas',
+    lastName: 'Meier',
+    licensePlate: 'S-JM 4488',
+    incidentTime: '2024-12-14 14:15',
+    address: 'Stuttgart, Degerloch',
+    description: 'Seitliche Kollision beim Einfädeln.'
+  },
+  {
+    claimNumber: 'CLM-2025-0029',
+    firstName: 'Elena',
+    lastName: 'Lorenz',
+    licensePlate: 'K-EL 3377',
+    incidentTime: '2024-12-13 09:50',
+    address: 'Köln, Lindenthal',
+    description: 'Parkschaden an der Stoßstange.'
+  },
+  {
+    claimNumber: 'CLM-2025-0030',
+    firstName: 'Paul',
+    lastName: 'Maurer',
+    licensePlate: 'D-PM 9801',
+    incidentTime: '2024-12-12 07:05',
+    address: 'Duesseldorf, Bilk',
+    description: 'Heckschaden beim Rangieren.'
+  },
+  {
+    claimNumber: 'CLM-2025-0031',
+    firstName: 'Tina',
+    lastName: 'Schubert',
+    licensePlate: 'N-TS 5042',
+    incidentTime: '2024-12-11 16:20',
+    address: 'Nuernberg, Erlenstegen',
+    description: 'Seitenschaden, Kontakt mit Leitplanke.'
+  },
+  {
+    claimNumber: 'CLM-2025-0032',
+    firstName: 'Niklas',
+    lastName: 'Otto',
+    licensePlate: 'H-NO 6120',
+    incidentTime: '2024-12-10 11:40',
+    address: 'Hannover, Nordstadt',
+    description: 'Frontschaden, Auffahrunfall an Ampel.'
+  },
+  {
+    claimNumber: 'CLM-2025-0033',
+    firstName: 'Isabel',
+    lastName: 'Seitz',
+    licensePlate: 'HB-IS 2209',
+    incidentTime: '2024-12-09 08:55',
+    address: 'Bremen, Findorff',
+    description: 'Glasschaden, Steinschlag.'
+  },
+  {
+    claimNumber: 'CLM-2025-0034',
+    firstName: 'Markus',
+    lastName: 'Haase',
+    licensePlate: 'L-MH 7733',
+    incidentTime: '2024-12-08 19:10',
+    address: 'Leipzig, Gohlis',
+    description: 'Seitliche Kollision, Lackschaden.'
+  },
+  {
+    claimNumber: 'CLM-2025-0035',
+    firstName: 'Svenja',
+    lastName: 'Arnold',
+    licensePlate: 'B-SA 4450',
+    incidentTime: '2024-12-07 13:25',
+    address: 'Berlin, Prenzlauer Berg',
+    description: 'Parkschaden, Kratzer hinten.'
+  },
+  {
+    claimNumber: 'CLM-2025-0036',
+    firstName: 'David',
+    lastName: 'Franke',
+    licensePlate: 'M-DF 8812',
+    incidentTime: '2024-12-06 10:10',
+    address: 'Muenchen, Sendling',
+    description: 'Heckschaden durch Auffahrunfall.'
+  },
+  {
+    claimNumber: 'CLM-2025-0037',
+    firstName: 'Klara',
+    lastName: 'Hein',
+    licensePlate: 'HH-KH 3099',
+    incidentTime: '2024-12-05 17:55',
+    address: 'Hamburg, Barmbek',
+    description: 'Seitenschaden beim Einparken.'
   }
 ]
 
