@@ -2746,6 +2746,70 @@ export const translations: Record<Lang, TranslationTree> = {
     partnerManagement: {
       title: 'Partner Management',
       subtitle: 'Partnernetzwerke, Dokumente und Live-Kommunikation je Schadenfall.',
+      overview: {
+        title: 'Partner Management',
+        subtitle: 'Übersicht der Netzwerkbereiche mit direktem Zugriff.',
+        items: {
+          repair: {
+            title: 'Reparaturnetzwerke',
+            description: 'Werkstattpartner, Status und SLA je Schadenfall.'
+          },
+          assistance: {
+            title: 'Assistenz / Abschleppen / Bergen',
+            description: 'Pannenhilfe, Abschlepp- und Bergungspartner.'
+          },
+          rental: {
+            title: 'Mietwagenpartner',
+            description: 'Fahrzeugersatz, Verfügbarkeit und Konditionen.'
+          },
+          surveyors: {
+            title: 'Gutachternetzwerke',
+            description: 'Sachverständige, Kapazitäten und Berichte.'
+          },
+          majorLoss: {
+            title: 'Partner für Großschäden',
+            description: 'Spezialisten für Großschadenereignisse.'
+          },
+          parts: {
+            title: 'Ersatzteilpartner',
+            description: 'Teilelieferanten, Lieferzeiten und Verfügbarkeit.'
+          }
+        }
+      },
+      network: {
+        action: 'Netzwerk verwalten',
+        cards: {
+          overview: {
+            title: 'Netzwerkübersicht',
+            subtitle: 'Partnerstruktur, Regionen und Leistungsbereiche.'
+          },
+          quality: {
+            title: 'Qualität & SLA',
+            subtitle: 'Reaktionszeiten, KPIs und Compliance.'
+          },
+          documents: {
+            title: 'Dokumente & Nachweise',
+            subtitle: 'Rahmenverträge, Zertifikate und Nachweise.'
+          },
+          billing: {
+            title: 'Abrechnung & Kosten',
+            subtitle: 'Preise, Konditionen und Status.'
+          },
+          status: {
+            title: 'Status & Auslastung',
+            subtitle: 'Kapazitäten und aktuelle Verfügbarkeit.'
+          },
+          communication: {
+            title: 'Kommunikation',
+            subtitle: 'Abstimmungen, Rückfragen und Updates.'
+          },
+          openItems: {
+            title: 'Offene Punkte',
+            subtitle: 'Klärungen, Freigaben und nächste Schritte.'
+          }
+        },
+        placeholder: 'Inhalte folgen.'
+      },
       actions: {
         addPartner: 'Partner hinzufügen'
       },
@@ -4755,6 +4819,70 @@ export const translations: Record<Lang, TranslationTree> = {
     partnerManagement: {
       title: 'Partner management',
       subtitle: 'Partner networks, documents, and live claim communication.',
+      overview: {
+        title: 'Partner management',
+        subtitle: 'Network overview with direct access to each area.',
+        items: {
+          repair: {
+            title: 'Repair networks',
+            description: 'Workshops, status, and SLAs per claim.'
+          },
+          assistance: {
+            title: 'Assistance / towing / recovery',
+            description: 'Roadside help, towing, and recovery partners.'
+          },
+          rental: {
+            title: 'Rental car partners',
+            description: 'Replacement vehicles, availability, and rates.'
+          },
+          surveyors: {
+            title: 'Surveyor networks',
+            description: 'Experts, capacity, and reporting.'
+          },
+          majorLoss: {
+            title: 'Major loss partners',
+            description: 'Specialists for major loss events.'
+          },
+          parts: {
+            title: 'Spare parts partners',
+            description: 'Suppliers, lead times, and availability.'
+          }
+        }
+      },
+      network: {
+        action: 'Manage network',
+        cards: {
+          overview: {
+            title: 'Network overview',
+            subtitle: 'Partner structure, regions, and capabilities.'
+          },
+          quality: {
+            title: 'Quality & SLA',
+            subtitle: 'Response times, KPIs, and compliance.'
+          },
+          documents: {
+            title: 'Documents & evidence',
+            subtitle: 'Framework contracts, certificates, and proof.'
+          },
+          billing: {
+            title: 'Billing & costs',
+            subtitle: 'Rates, conditions, and status.'
+          },
+          status: {
+            title: 'Status & utilization',
+            subtitle: 'Capacity and availability.'
+          },
+          communication: {
+            title: 'Communication',
+            subtitle: 'Alignment, questions, and updates.'
+          },
+          openItems: {
+            title: 'Open items',
+            subtitle: 'Clarifications, approvals, and next steps.'
+          }
+        },
+        placeholder: 'Content coming next.'
+      },
       actions: {
         addPartner: 'Add partner'
       },

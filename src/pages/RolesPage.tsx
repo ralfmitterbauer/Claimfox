@@ -40,7 +40,7 @@ type RoleItem = {
 
 const OVERVIEW_ITEMS: RoleItem[] = [
   { key: 'claims', route: '/claim-manager', ctaKey: 'roles.cards.claims.cta' },
-  { key: 'partner', route: '/partner-management' },
+  { key: 'partner', route: '/partner-management-overview' },
   { key: 'reporting', route: '/marketing' },
   { key: 'logistics', route: '/logistics', ctaKey: 'roles.cards.logistics.cta' },
   { key: 'fleetManagement', route: '/fleet-management' },

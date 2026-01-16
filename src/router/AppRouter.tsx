@@ -18,6 +18,12 @@ import ClaimManagerCasePage from '@/pages/ClaimManagerCasePage'
 import ClaimManagerAppListPage from '@/pages/ClaimManagerAppListPage'
 import ClaimProcessPage from '@/pages/ClaimProcessPage'
 import PartnerManagementPage from '@/pages/PartnerManagementPage'
+import PartnerManagementOverviewPage from '@/pages/PartnerManagementOverviewPage'
+import PartnerManagementAssistancePage from '@/pages/PartnerManagementAssistancePage'
+import PartnerManagementRentalPage from '@/pages/PartnerManagementRentalPage'
+import PartnerManagementSurveyorsPage from '@/pages/PartnerManagementSurveyorsPage'
+import PartnerManagementMajorLossPage from '@/pages/PartnerManagementMajorLossPage'
+import PartnerManagementPartsPage from '@/pages/PartnerManagementPartsPage'
 import FeatureTreePage from '@/pages/FeatureTreePage'
 import GetQuotePage from '@/pages/GetQuotePage'
 import LogisticsLandingPage from '@/pages/LogisticsLandingPage'
@@ -81,7 +87,13 @@ export default function AppRouter() {
         <Route path="/claim-manager-case" element={<ClaimManagerCasePage />} />
         <Route path="/claim-manager-case/:claimNumber" element={<ClaimManagerCasePage />} />
         <Route path="/claim-process" element={<ClaimProcessPage />} />
+        <Route path="/partner-management-overview" element={<PartnerManagementOverviewPage />} />
         <Route path="/partner-management" element={<PartnerManagementPage />} />
+        <Route path="/partner-management-assistance" element={<PartnerManagementAssistancePage />} />
+        <Route path="/partner-management-rental" element={<PartnerManagementRentalPage />} />
+        <Route path="/partner-management-surveyors" element={<PartnerManagementSurveyorsPage />} />
+        <Route path="/partner-management-major-loss" element={<PartnerManagementMajorLossPage />} />
+        <Route path="/partner-management-parts" element={<PartnerManagementPartsPage />} />
         <Route path="/feature-tree" element={<FeatureTreePage />} />
         <Route path="/get-quote" element={<GetQuotePage />} />
         <Route path="/logistics" element={<LogisticsLandingPage />} />
