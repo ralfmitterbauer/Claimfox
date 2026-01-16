@@ -404,6 +404,276 @@ const BASE_CLAIMS: StoredClaimData[] = [
     incidentTime: '10.12.2025 17:55',
     address: 'Hamburg, Barmbek',
     description: 'Seitenschaden beim Einparken.'
+  },
+  {
+    claimNumber: 'SE-770487',
+    firstName: 'Maja',
+    lastName: 'Johansson',
+    licensePlate: 'S-MJ 4821',
+    incidentTime: '09.12.2025 08:45',
+    address: 'Stockholm, Sodermalm',
+    description: 'Frontschaden bei starkem Bremsmanöver.'
+  },
+  {
+    claimNumber: 'NO-216739',
+    firstName: 'Lars',
+    lastName: 'Hagen',
+    licensePlate: 'N-LH 2204',
+    incidentTime: '08.12.2025 13:20',
+    address: 'Oslo, Grunerlokka',
+    description: 'Seitliche Kollision in enger Straße.'
+  },
+  {
+    claimNumber: 'CH-126225',
+    firstName: 'Nina',
+    lastName: 'Keller',
+    licensePlate: 'ZH-NK 9012',
+    incidentTime: '07.12.2025 17:05',
+    address: 'Zuerich, Kreis 4',
+    description: 'Glasschaden, Steinschlag Autobahn.'
+  },
+  {
+    claimNumber: 'AT-877572',
+    firstName: 'Paul',
+    lastName: 'Egger',
+    licensePlate: 'W-PE 8844',
+    incidentTime: '06.12.2025 09:50',
+    address: 'Wien, Leopoldstadt',
+    description: 'Heckschaden beim Einparken.'
+  },
+  {
+    claimNumber: 'NL-388389',
+    firstName: 'Emma',
+    lastName: 'van Dijk',
+    licensePlate: 'NL-ED 3301',
+    incidentTime: '05.12.2025 12:15',
+    address: 'Amsterdam, Centrum',
+    description: 'Seitenschaden durch Radfahrer.'
+  },
+  {
+    claimNumber: 'BE-356787',
+    firstName: 'Lucas',
+    lastName: 'Peeters',
+    licensePlate: 'B-LP 7780',
+    incidentTime: '04.12.2025 18:40',
+    address: 'Brussels, Ixelles',
+    description: 'Parkschaden an Stoßstange.'
+  },
+  {
+    claimNumber: 'FR-334053',
+    firstName: 'Claire',
+    lastName: 'Moreau',
+    licensePlate: 'F-CM 1109',
+    incidentTime: '03.12.2025 07:25',
+    address: 'Paris, La Defense',
+    description: 'Frontschaden im Berufsverkehr.'
+  },
+  {
+    claimNumber: 'ES-246316',
+    firstName: 'Sergio',
+    lastName: 'Lopez',
+    licensePlate: 'E-SL 4502',
+    incidentTime: '02.12.2025 16:10',
+    address: 'Madrid, Salamanca',
+    description: 'Seitliche Kollision im Kreisverkehr.'
+  },
+  {
+    claimNumber: 'PT-872246',
+    firstName: 'Ines',
+    lastName: 'Santos',
+    licensePlate: 'P-IS 9022',
+    incidentTime: '01.12.2025 10:35',
+    address: 'Lisbon, Belem',
+    description: 'Heckschaden durch Auffahrunfall.'
+  },
+  {
+    claimNumber: 'IT-207473',
+    firstName: 'Marco',
+    lastName: 'Rossi',
+    licensePlate: 'I-MR 7711',
+    incidentTime: '30.11.2025 14:50',
+    address: 'Milan, Porta Nuova',
+    description: 'Parkschaden, Lackkratzer.'
+  },
+  {
+    claimNumber: 'DK-809570',
+    firstName: 'Freja',
+    lastName: 'Larsen',
+    licensePlate: 'DK-FL 8088',
+    incidentTime: '29.11.2025 08:05',
+    address: 'Copenhagen, Vesterbro',
+    description: 'Glasschaden, Scheibe gerissen.'
+  },
+  {
+    claimNumber: 'FI-876646',
+    firstName: 'Aino',
+    lastName: 'Virtanen',
+    licensePlate: 'FIN-AV 6230',
+    incidentTime: '28.11.2025 11:25',
+    address: 'Helsinki, Kamppi',
+    description: 'Seitenschaden an der Tür.'
+  },
+  {
+    claimNumber: 'PL-671858',
+    firstName: 'Kasia',
+    lastName: 'Nowak',
+    licensePlate: 'PL-KN 5521',
+    incidentTime: '27.11.2025 15:40',
+    address: 'Warsaw, Mokotow',
+    description: 'Frontschaden, Auffahrunfall.'
+  },
+  {
+    claimNumber: 'CZ-191161',
+    firstName: 'Petr',
+    lastName: 'Novak',
+    licensePlate: 'CZ-PN 3499',
+    incidentTime: '26.11.2025 19:10',
+    address: 'Prague, Karlin',
+    description: 'Seitlicher Kontakt beim Abbiegen.'
+  },
+  {
+    claimNumber: 'SK-719176',
+    firstName: 'Marek',
+    lastName: 'Kovac',
+    licensePlate: 'SK-MK 9011',
+    incidentTime: '25.11.2025 07:45',
+    address: 'Bratislava, Ruzinov',
+    description: 'Heckschaden beim Rangieren.'
+  },
+  {
+    claimNumber: 'HU-542417',
+    firstName: 'Eszter',
+    lastName: 'Nagy',
+    licensePlate: 'HU-EN 7842',
+    incidentTime: '24.11.2025 12:30',
+    address: 'Budapest, Buda',
+    description: 'Parkschaden, Stoßfänger hinten.'
+  },
+  {
+    claimNumber: 'RO-133326',
+    firstName: 'Andrei',
+    lastName: 'Popescu',
+    licensePlate: 'RO-AP 6631',
+    incidentTime: '23.11.2025 17:55',
+    address: 'Bucharest, Sector 1',
+    description: 'Seitenschaden, Kontakt mit Leitplanke.'
+  },
+  {
+    claimNumber: 'BG-131244',
+    firstName: 'Viktor',
+    lastName: 'Ivanov',
+    licensePlate: 'BG-VI 2207',
+    incidentTime: '22.11.2025 09:15',
+    address: 'Sofia, Lozenets',
+    description: 'Glasschaden, Steinschlag.'
+  },
+  {
+    claimNumber: 'HR-198246',
+    firstName: 'Ana',
+    lastName: 'Horvat',
+    licensePlate: 'HR-AH 7799',
+    incidentTime: '21.11.2025 13:05',
+    address: 'Zagreb, Tresnjevka',
+    description: 'Frontschaden, Auffahrunfall.'
+  },
+  {
+    claimNumber: 'SI-329258',
+    firstName: 'Luka',
+    lastName: 'Kranjc',
+    licensePlate: 'SI-LK 4520',
+    incidentTime: '20.11.2025 16:35',
+    address: 'Ljubljana, Center',
+    description: 'Parkschaden, Kratzer seitlich.'
+  },
+  {
+    claimNumber: 'EE-343962',
+    firstName: 'Maarja',
+    lastName: 'Tamm',
+    licensePlate: 'EE-MT 3308',
+    incidentTime: '19.11.2025 08:40',
+    address: 'Tallinn, Kesklinn',
+    description: 'Heckschaden im Stadtverkehr.'
+  },
+  {
+    claimNumber: 'LV-629903',
+    firstName: 'Janis',
+    lastName: 'Ozols',
+    licensePlate: 'LV-JO 1190',
+    incidentTime: '18.11.2025 11:10',
+    address: 'Riga, Centrs',
+    description: 'Seitenschaden, Kotflügel beschädigt.'
+  },
+  {
+    claimNumber: 'LT-731262',
+    firstName: 'Egle',
+    lastName: 'Kazlauskiene',
+    licensePlate: 'LT-EK 4482',
+    incidentTime: '17.11.2025 14:20',
+    address: 'Vilnius, Senamiestis',
+    description: 'Frontschaden an Ampel.'
+  },
+  {
+    claimNumber: 'GR-127824',
+    firstName: 'Nikos',
+    lastName: 'Papadopoulos',
+    licensePlate: 'GR-NP 7703',
+    incidentTime: '16.11.2025 18:45',
+    address: 'Athens, Kolonaki',
+    description: 'Glasschaden, Scheibe gerissen.'
+  },
+  {
+    claimNumber: 'TR-688508',
+    firstName: 'Elif',
+    lastName: 'Yilmaz',
+    licensePlate: 'TR-EY 5051',
+    incidentTime: '15.11.2025 09:50',
+    address: 'Istanbul, Besiktas',
+    description: 'Seitliche Kollision beim Spurwechsel.'
+  },
+  {
+    claimNumber: 'AE-308496',
+    firstName: 'Omar',
+    lastName: 'Hassan',
+    licensePlate: 'UAE-OH 8841',
+    incidentTime: '14.11.2025 12:05',
+    address: 'Dubai, Marina',
+    description: 'Parkschaden an Stoßstange.'
+  },
+  {
+    claimNumber: 'QA-850800',
+    firstName: 'Mariam',
+    lastName: 'Al Nuaimi',
+    licensePlate: 'QA-MN 7740',
+    incidentTime: '13.11.2025 15:30',
+    address: 'Doha, West Bay',
+    description: 'Heckschaden beim Rangieren.'
+  },
+  {
+    claimNumber: 'US-781453',
+    firstName: 'Olivia',
+    lastName: 'Brown',
+    licensePlate: 'US-OB 5204',
+    incidentTime: '12.11.2025 07:55',
+    address: 'New York, Midtown',
+    description: 'Frontschaden im Stadtverkehr.'
+  },
+  {
+    claimNumber: 'CA-835392',
+    firstName: 'Ethan',
+    lastName: 'Martin',
+    licensePlate: 'CA-EM 3303',
+    incidentTime: '11.11.2025 10:15',
+    address: 'Toronto, Downtown',
+    description: 'Seitenschaden, Lackkratzer.'
+  },
+  {
+    claimNumber: 'AU-671412',
+    firstName: 'Chloe',
+    lastName: 'Wilson',
+    licensePlate: 'AU-CW 8891',
+    incidentTime: '10.11.2025 14:35',
+    address: 'Sydney, CBD',
+    description: 'Glasschaden, Steinschlag.'
   }
 ]
 
