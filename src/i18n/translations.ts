@@ -2219,6 +2219,25 @@ export const translations: Record<Lang, TranslationTree> = {
             date: 'Ereignis'
           }
         },
+        filters: {
+          status: 'Status',
+          type: 'Schadenart',
+          all: 'Alle'
+        },
+        damageTypes: {
+          rearCollision: 'Heckschaden',
+          frontCollision: 'Frontschaden',
+          sideCollision: 'Seitenschaden',
+          parkingDamage: 'Parkschaden',
+          glassDamage: 'Glasschaden',
+          wildlife: 'Wildunfall',
+          mirrorContact: 'Spiegelkontakt',
+          hailDamage: 'Hagelschaden',
+          theft: 'Diebstahl',
+          waterDamage: 'Wasserschaden',
+          fireDamage: 'Brandschaden',
+          vandalism: 'Vandalismus'
+        },
         statusOptions: {
           intake: 'Eingang',
           review: 'Prüfung',
@@ -2315,6 +2334,7 @@ export const translations: Record<Lang, TranslationTree> = {
           exclusion: 'Ausschlüsse',
           exclusionValue: 'Glasbruch ausgeschlossen',
           covered: 'Gedeckt',
+          partial: 'Teilgedeckt',
           notCovered: 'Nicht gedeckt',
           note: 'Risikoanalyse zeigt volle Deckung für Reparatur und Mietwagen.'
         },
@@ -4197,6 +4217,25 @@ export const translations: Record<Lang, TranslationTree> = {
             date: 'Incident'
           }
         },
+        filters: {
+          status: 'Status',
+          type: 'Damage type',
+          all: 'All'
+        },
+        damageTypes: {
+          rearCollision: 'Rear collision',
+          frontCollision: 'Front collision',
+          sideCollision: 'Side collision',
+          parkingDamage: 'Parking damage',
+          glassDamage: 'Glass damage',
+          wildlife: 'Wildlife impact',
+          mirrorContact: 'Mirror contact',
+          hailDamage: 'Hail damage',
+          theft: 'Theft',
+          waterDamage: 'Water damage',
+          fireDamage: 'Fire damage',
+          vandalism: 'Vandalism'
+        },
         statusOptions: {
           intake: 'Intake',
           review: 'Review',
@@ -4293,6 +4332,7 @@ export const translations: Record<Lang, TranslationTree> = {
           exclusion: 'Exclusions',
           exclusionValue: 'Glass breakage excluded',
           covered: 'Covered',
+          partial: 'Partially covered',
           notCovered: 'Not covered',
           note: 'Coverage analysis confirms repair and rental expenses.'
         },

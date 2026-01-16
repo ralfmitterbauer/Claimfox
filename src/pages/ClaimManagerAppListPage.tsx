@@ -26,12 +26,28 @@ export default function ClaimManagerAppListPage() {
   const navigate = useNavigate()
   const storedClaims = useMemo(() => loadClaims(), [])
   const assistantData = useMemo<StoredClaimData | undefined>(() => loadAssistantClaim(), [])
+  const [statusFilter, setStatusFilter] = React.useState<string>('all')
+  const [typeFilter, setTypeFilter] = React.useState<string>('all')
 
   const caseList = useMemo(() => {
     if (storedClaims.length) return storedClaims
     if (assistantData) return [assistantData]
     return DEMO_CLAIMS
   }, [assistantData, storedClaims])
+
+  const statusOptions = useMemo(() => ['intake', 'review', 'approval', 'repair', 'closure'], [])
+  const typeOptions = useMemo(() => {
+    const keys = caseList.map((claim) => claim.damageTypeKey).filter(Boolean) as string[]
+    return Array.from(new Set(keys))
+  }, [caseList])
+
+  const filteredList = useMemo(() => {
+    return caseList.filter((claim) => {
+      const matchesStatus = statusFilter === 'all' || claim.statusKey === statusFilter
+      const matchesType = typeFilter === 'all' || claim.damageTypeKey === typeFilter
+      return matchesStatus && matchesType
+    })
+  }, [caseList, statusFilter, typeFilter])
 
   return (
     <section style={{ minHeight: '100vh', width: '100%', color: '#0e0d1c' }}>
@@ -69,7 +85,49 @@ export default function ClaimManagerAppListPage() {
                 {t('header.logout')}
               </Button>
             </div>
-            {caseList.length ? (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', minWidth: '200px' }}>
+                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimManager.app.filters.status')}</span>
+                <select
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                  style={{
+                    borderRadius: '999px',
+                    border: '1px solid #d9d9d9',
+                    padding: '0.45rem 0.9rem',
+                    background: '#ffffff'
+                  }}
+                >
+                  <option value="all">{t('claimManager.app.filters.all')}</option>
+                  {statusOptions.map((key) => (
+                    <option key={key} value={key}>
+                      {t(`claimManager.app.statusOptions.${key}`)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', minWidth: '220px' }}>
+                <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimManager.app.filters.type')}</span>
+                <select
+                  value={typeFilter}
+                  onChange={(event) => setTypeFilter(event.target.value)}
+                  style={{
+                    borderRadius: '999px',
+                    border: '1px solid #d9d9d9',
+                    padding: '0.45rem 0.9rem',
+                    background: '#ffffff'
+                  }}
+                >
+                  <option value="all">{t('claimManager.app.filters.all')}</option>
+                  {typeOptions.map((key) => (
+                    <option key={key} value={key}>
+                      {t(`claimManager.app.damageTypes.${key}`)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            {filteredList.length ? (
               <div style={{ overflowX: 'auto' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '640px' }}>
                   <thead>
@@ -92,7 +150,7 @@ export default function ClaimManagerAppListPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {caseList.map((claim, index) => (
+                    {filteredList.map((claim, index) => (
                       <tr
                         key={claim.claimNumber ?? `claim-${index}`}
                         onClick={() =>

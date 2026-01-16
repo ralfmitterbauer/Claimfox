@@ -1,6 +1,42 @@
 export const STORAGE_KEY = 'claimfox_claim_assistant'
 export const CLAIMS_LIST_KEY = 'claimfox_claims_list'
 
+import claimDamage1 from '@/assets/images/claim_damage_1.png'
+import claimDamage2 from '@/assets/images/claim_damage_2.png'
+import claimDamage3 from '@/assets/images/claim_damage_3.png'
+import claimDamage4 from '@/assets/images/claim_damage_4.png'
+
+export type ClaimStatusKey = 'intake' | 'review' | 'approval' | 'repair' | 'closure'
+export type CostStatus = 'pending' | 'approved' | 'rejected'
+
+export type ClaimCostItem = {
+  id: string
+  labelKey: string
+  amount: number
+  status: CostStatus
+  note: string
+}
+
+export type ClaimCoverage = {
+  policyNumber: string
+  term: string
+  limit: string
+  exclusion: string
+  covered: boolean
+  note: string
+}
+
+export type ClaimKpiValues = {
+  totalIncurred: string
+  reserve: string
+  approved: string
+  openItems: string
+  deductible: string
+  coverage: string
+  fraudRisk: string
+  handlingTime: string
+}
+
 export type StoredClaimData = {
   claimNumber?: string
   firstName?: string
@@ -9,11 +45,33 @@ export type StoredClaimData = {
   incidentTime?: string
   address?: string
   description?: string
+  damageTypeKey?: string
+  statusKey?: ClaimStatusKey
+  kpiValues?: ClaimKpiValues
+  costItems?: ClaimCostItem[]
+  coverage?: ClaimCoverage
   photoCount?: number
   mediaItems?: Array<{ type: 'image' | 'video'; src: string }>
 }
 
-export const DEMO_CLAIMS: StoredClaimData[] = [
+const DAMAGE_MEDIA = [claimDamage1, claimDamage2, claimDamage3, claimDamage4]
+const STATUS_KEYS: ClaimStatusKey[] = ['intake', 'review', 'approval', 'repair', 'closure']
+const DAMAGE_TYPE_KEYS = [
+  'rearCollision',
+  'frontCollision',
+  'sideCollision',
+  'parkingDamage',
+  'glassDamage',
+  'wildlife',
+  'mirrorContact',
+  'hailDamage',
+  'theft',
+  'waterDamage',
+  'fireDamage',
+  'vandalism'
+]
+
+const BASE_CLAIMS: StoredClaimData[] = [
   {
     claimNumber: 'CLM-2025-0001',
     firstName: 'Mira',
@@ -348,6 +406,91 @@ export const DEMO_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden beim Einparken.'
   }
 ]
+
+function formatEuro(value: number) {
+  return new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(value)
+}
+
+function buildMedia(orderSeed: number) {
+  return Array.from({ length: 4 }, (_, index) => {
+    const imageIndex = (orderSeed + index) % DAMAGE_MEDIA.length
+    return { type: 'image' as const, src: DAMAGE_MEDIA[imageIndex] }
+  })
+}
+
+function buildCostItems(seed: number): ClaimCostItem[] {
+  const base = 1100 + seed * 85
+  return [
+    {
+      id: `c-${seed}-1`,
+      labelKey: 'bodywork',
+      amount: base,
+      status: seed % 3 === 0 ? 'approved' : 'pending',
+      note: seed % 4 === 0 ? 'Freigabe angefordert.' : ''
+    },
+    {
+      id: `c-${seed}-2`,
+      labelKey: 'paint',
+      amount: base * 0.35,
+      status: seed % 4 === 0 ? 'rejected' : 'approved',
+      note: seed % 4 === 0 ? 'Alternativangebot prüfen.' : ''
+    },
+    {
+      id: `c-${seed}-3`,
+      labelKey: 'rental',
+      amount: 180 + seed * 12,
+      status: seed % 5 === 0 ? 'pending' : 'approved',
+      note: seed % 5 === 0 ? 'Nachweise fehlen.' : ''
+    }
+  ]
+}
+
+function buildCoverage(seed: number): ClaimCoverage {
+  const covered = seed % 6 !== 0
+  return {
+    policyNumber: `POL-${2024 + (seed % 2)}-${8000 + seed}`,
+    term: covered ? '01.01.2025 - 31.12.2025' : '01.07.2024 - 30.06.2025',
+    limit: `Deckungssumme ${formatEuro(50000 + seed * 900)}`,
+    exclusion: covered ? 'Keine Ausschlüsse relevant' : 'Abzug aufgrund Sonderregelung',
+    covered,
+    note: covered ? 'Deckung bestätigt, Freigabe möglich.' : 'Teilweise gedeckt, Review erforderlich.'
+  }
+}
+
+function buildKpis(seed: number): ClaimKpiValues {
+  const total = 2400 + seed * 190
+  const reserve = Math.round(total * 0.28)
+  const approved = Math.round(total * 0.45)
+  const deductible = 150 + (seed % 5) * 100
+  const fraudLevels = ['Niedrig', 'Mittel', 'Hoch']
+  const coverage = seed % 6 === 0 ? 'Teilgedeckt' : 'Gedeckt'
+  return {
+    totalIncurred: formatEuro(total),
+    reserve: formatEuro(reserve),
+    approved: formatEuro(approved),
+    openItems: `${2 + (seed % 5)}`,
+    deductible: formatEuro(deductible),
+    coverage,
+    fraudRisk: fraudLevels[seed % fraudLevels.length],
+    handlingTime: `${3 + (seed % 7)} Tage`
+  }
+}
+
+export const DEMO_CLAIMS: StoredClaimData[] = BASE_CLAIMS.map((claim, index) => ({
+  ...claim,
+  damageTypeKey: DAMAGE_TYPE_KEYS[index % DAMAGE_TYPE_KEYS.length],
+  statusKey: STATUS_KEYS[index % STATUS_KEYS.length],
+  kpiValues: buildKpis(index + 1),
+  costItems: buildCostItems(index + 1),
+  coverage: buildCoverage(index + 1),
+  mediaItems: buildMedia(index + 1),
+  photoCount: 4
+}))
 
 export function loadClaims() {
   if (typeof window === 'undefined') return []

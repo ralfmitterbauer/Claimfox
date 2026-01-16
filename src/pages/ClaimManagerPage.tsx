@@ -186,6 +186,18 @@ type ClaimAssistantData = {
   incidentTime?: string
   address?: string
   description?: string
+  damageTypeKey?: string
+  statusKey?: (typeof timelineSteps)[number]
+  kpiValues?: Partial<Record<(typeof KPI_KEYS)[number], string>>
+  costItems?: CostItem[]
+  coverage?: {
+    policyNumber: string
+    term: string
+    limit: string
+    exclusion: string
+    covered: boolean
+    note: string
+  }
   photoCount?: number
   mediaItems?: Array<{ type: 'image' | 'video'; src: string }>
 }
@@ -204,8 +216,10 @@ export default function ClaimManagerPage({
   onBack
 }: ClaimManagerPageProps) {
   const { t } = useI18n()
-  const [claimStatus, setClaimStatus] = useState<(typeof timelineSteps)[number]>('review')
-  const [costItems, setCostItems] = useState<CostItem[]>(initialCosts)
+  const [claimStatus, setClaimStatus] = useState<(typeof timelineSteps)[number]>(
+    assistantData?.statusKey ?? 'review'
+  )
+  const [costItems, setCostItems] = useState<CostItem[]>(assistantData?.costItems ?? initialCosts)
   const [selectedPartner, setSelectedPartner] = useState<string>(partnerOptions[0].id)
   const [partnerModalOpen, setPartnerModalOpen] = useState(false)
   const [surveyorModalOpen, setSurveyorModalOpen] = useState(false)
@@ -222,21 +236,47 @@ export default function ClaimManagerPage({
   const partner = partnerOptions.find((item) => item.id === selectedPartner) ?? partnerOptions[0]
   const surveyor = surveyorOptions.find((item) => item.id === selectedSurveyor) ?? surveyorOptions[0]
 
+  useEffect(() => {
+    if (!assistantData) return
+    if (assistantData.statusKey) {
+      setClaimStatus(assistantData.statusKey)
+    }
+    if (assistantData.costItems?.length) {
+      setCostItems(assistantData.costItems)
+    } else {
+      setCostItems(initialCosts)
+    }
+  }, [assistantData])
+
   const kpiData = useMemo(
     () =>
       KPI_KEYS.map((key) => ({
         key,
-        value: t(`claimManager.app.kpiValues.${key}`)
+        value: assistantData?.kpiValues?.[key] ?? t(`claimManager.app.kpiValues.${key}`)
       })),
-    [t]
+    [assistantData, t]
   )
 
   const detailValues = useMemo(
     () => ({
-      type: t('claimManager.app.details.values.type'),
+      type: assistantData?.damageTypeKey
+        ? t(`claimManager.app.damageTypes.${assistantData.damageTypeKey}`)
+        : t('claimManager.app.details.values.type'),
       location: assistantData?.address || t('claimManager.app.details.values.location'),
       vehicle: t('claimManager.app.details.values.vehicle'),
       summary: assistantData?.description || t('claimManager.app.details.values.summary')
+    }),
+    [assistantData, t]
+  )
+
+  const coverageValues = useMemo(
+    () => ({
+      policyNumber: assistantData?.coverage?.policyNumber || t('claimManager.app.coverage.policyValue'),
+      term: assistantData?.coverage?.term || t('claimManager.app.coverage.termValue'),
+      limit: assistantData?.coverage?.limit || t('claimManager.app.coverage.limitValue'),
+      exclusion: assistantData?.coverage?.exclusion || t('claimManager.app.coverage.exclusionValue'),
+      covered: assistantData?.coverage?.covered ?? true,
+      note: assistantData?.coverage?.note || t('claimManager.app.coverage.note')
     }),
     [assistantData, t]
   )
@@ -428,16 +468,16 @@ export default function ClaimManagerPage({
               <h2 style={{ marginTop: 0, marginBottom: '1rem', fontSize: '1.5rem', fontWeight: 600 }}>{t('claimManager.app.coverage.title')}</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', color: TEXT_COLORS.secondary }}>
                 <span>
-                  {t('claimManager.app.coverage.policyNumber')}: <strong>{t('claimManager.app.coverage.policyValue')}</strong>
+                  {t('claimManager.app.coverage.policyNumber')}: <strong>{coverageValues.policyNumber}</strong>
                 </span>
                 <span>
-                  {t('claimManager.app.coverage.term')}: {t('claimManager.app.coverage.termValue')}
+                  {t('claimManager.app.coverage.term')}: {coverageValues.term}
                 </span>
                 <span>
-                  {t('claimManager.app.coverage.limit')}: {t('claimManager.app.coverage.limitValue')}
+                  {t('claimManager.app.coverage.limit')}: {coverageValues.limit}
                 </span>
                 <span>
-                  {t('claimManager.app.coverage.exclusion')}: {t('claimManager.app.coverage.exclusionValue')}
+                  {t('claimManager.app.coverage.exclusion')}: {coverageValues.exclusion}
                 </span>
               </div>
               <div
@@ -446,13 +486,13 @@ export default function ClaimManagerPage({
                   display: 'inline-flex',
                   padding: '0.35rem 1.25rem',
                   borderRadius: '999px',
-                  background: '#16A34A',
+                  background: coverageValues.covered ? '#16A34A' : '#ef4444',
                   fontWeight: 700
                 }}
               >
-                {t('claimManager.app.coverage.covered')}
+                {coverageValues.covered ? t('claimManager.app.coverage.covered') : t('claimManager.app.coverage.partial')}
               </div>
-              <p style={{ marginTop: '0.85rem', color: TEXT_COLORS.secondary }}>{t('claimManager.app.coverage.note')}</p>
+              <p style={{ marginTop: '0.85rem', color: TEXT_COLORS.secondary }}>{coverageValues.note}</p>
             </Card>
           </div>
 
