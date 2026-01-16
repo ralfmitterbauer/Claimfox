@@ -116,12 +116,12 @@ export default function ClaimProcessPage() {
   const locale = lang === 'de' ? 'de-DE' : 'en-US'
   const now = useMemo(() => new Date(), [])
   const dateLabel = useMemo(
-    () => now.toLocaleDateString(locale, { day: '2-digit', month: '2-digit', year: 'numeric' }),
-    [now, locale]
+    () => now.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+    [now]
   )
   const timeLabel = useMemo(
-    () => now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }),
-    [now, locale]
+    () => now.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+    [now]
   )
   const messageId = useRef(0)
   const [messages, setMessages] = useState<ChatMessage[]>(() => [

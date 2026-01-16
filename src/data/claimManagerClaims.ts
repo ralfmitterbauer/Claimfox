@@ -1,5 +1,7 @@
 export const STORAGE_KEY = 'claimfox_claim_assistant'
 export const CLAIMS_LIST_KEY = 'claimfox_claims_list'
+const CLAIMS_VERSION_KEY = 'claimfox_claims_list_version'
+const CLAIMS_VERSION = '2'
 
 import claimDamage1 from '@/assets/images/claim_damage_1.png'
 import claimDamage2 from '@/assets/images/claim_damage_2.png'
@@ -416,6 +418,15 @@ function formatEuro(value: number) {
   }).format(value)
 }
 
+function getSeedFromClaimNumber(claimNumber?: string, fallback = 1) {
+  if (!claimNumber) return fallback
+  const digits = claimNumber.replace(/\D/g, '')
+  const seed = digits
+    .split('')
+    .reduce((sum, digit) => sum + Number(digit || 0), 0)
+  return seed || fallback
+}
+
 function buildMedia(orderSeed: number) {
   return Array.from({ length: 4 }, (_, index) => {
     const imageIndex = (orderSeed + index) % DAMAGE_MEDIA.length
@@ -481,25 +492,42 @@ function buildKpis(seed: number): ClaimKpiValues {
   }
 }
 
-export const DEMO_CLAIMS: StoredClaimData[] = BASE_CLAIMS.map((claim, index) => ({
-  ...claim,
-  damageTypeKey: DAMAGE_TYPE_KEYS[index % DAMAGE_TYPE_KEYS.length],
-  statusKey: STATUS_KEYS[index % STATUS_KEYS.length],
-  kpiValues: buildKpis(index + 1),
-  costItems: buildCostItems(index + 1),
-  coverage: buildCoverage(index + 1),
-  mediaItems: buildMedia(index + 1),
-  photoCount: 4
-}))
+function enrichClaimData(claim: StoredClaimData, indexSeed: number) {
+  const seed = getSeedFromClaimNumber(claim.claimNumber, indexSeed)
+  return {
+    ...claim,
+    damageTypeKey: claim.damageTypeKey ?? DAMAGE_TYPE_KEYS[seed % DAMAGE_TYPE_KEYS.length],
+    statusKey: claim.statusKey ?? STATUS_KEYS[seed % STATUS_KEYS.length],
+    kpiValues: claim.kpiValues ?? buildKpis(seed),
+    costItems: claim.costItems ?? buildCostItems(seed),
+    coverage: claim.coverage ?? buildCoverage(seed),
+    mediaItems: claim.mediaItems?.length ? claim.mediaItems : buildMedia(seed),
+    photoCount: 4
+  }
+}
+
+export const DEMO_CLAIMS: StoredClaimData[] = BASE_CLAIMS.map((claim, index) =>
+  enrichClaimData(claim, index + 1)
+)
+
+function resetStoredClaimsIfNeeded() {
+  if (typeof window === 'undefined') return
+  const version = window.localStorage.getItem(CLAIMS_VERSION_KEY)
+  if (version === CLAIMS_VERSION) return
+  window.localStorage.removeItem(CLAIMS_LIST_KEY)
+  window.localStorage.setItem(CLAIMS_VERSION_KEY, CLAIMS_VERSION)
+}
 
 export function loadClaims() {
   if (typeof window === 'undefined') return []
+  resetStoredClaimsIfNeeded()
   try {
     const raw = window.localStorage.getItem(CLAIMS_LIST_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw) as StoredClaimData[]
     if (!Array.isArray(parsed)) return []
-    const merged = [...parsed, ...DEMO_CLAIMS]
+    const enriched = parsed.map((claim, index) => enrichClaimData(claim, index + 1))
+    const merged = [...enriched, ...DEMO_CLAIMS]
     const seen = new Set<string>()
     return merged.filter((claim) => {
       const id = claim.claimNumber || ''
@@ -517,7 +545,8 @@ export function loadAssistantClaim() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return undefined
-    return JSON.parse(raw) as StoredClaimData
+    const parsed = JSON.parse(raw) as StoredClaimData
+    return enrichClaimData(parsed, 1)
   } catch {
     return undefined
   }
