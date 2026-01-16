@@ -2226,7 +2226,8 @@ export const translations: Record<Lang, TranslationTree> = {
         filters: {
           status: 'Status',
           type: 'Schadenart',
-          all: 'Alle'
+          all: 'Alle',
+          reset: 'Filter zurücksetzen'
         },
         damageTypes: {
           rearCollision: 'Heckschaden',
@@ -2240,7 +2241,13 @@ export const translations: Record<Lang, TranslationTree> = {
           theft: 'Diebstahl',
           waterDamage: 'Wasserschaden',
           fireDamage: 'Brandschaden',
-          vandalism: 'Vandalismus'
+          vandalism: 'Vandalismus',
+          stormDamage: 'Sturmschaden',
+          engineDamage: 'Motorschaden',
+          tireDamage: 'Reifenschaden',
+          cargoDamage: 'Ladungsschaden',
+          liabilityDamage: 'Haftpflichtschaden',
+          animalDamage: 'Tierschaden'
         },
         statusOptions: {
           intake: 'Eingang',
@@ -4228,7 +4235,8 @@ export const translations: Record<Lang, TranslationTree> = {
         filters: {
           status: 'Status',
           type: 'Damage type',
-          all: 'All'
+          all: 'All',
+          reset: 'Reset filters'
         },
         damageTypes: {
           rearCollision: 'Rear collision',
@@ -4242,7 +4250,13 @@ export const translations: Record<Lang, TranslationTree> = {
           theft: 'Theft',
           waterDamage: 'Water damage',
           fireDamage: 'Fire damage',
-          vandalism: 'Vandalism'
+          vandalism: 'Vandalism',
+          stormDamage: 'Storm damage',
+          engineDamage: 'Engine damage',
+          tireDamage: 'Tire damage',
+          cargoDamage: 'Cargo damage',
+          liabilityDamage: 'Liability damage',
+          animalDamage: 'Animal damage'
         },
         statusOptions: {
           intake: 'Intake',

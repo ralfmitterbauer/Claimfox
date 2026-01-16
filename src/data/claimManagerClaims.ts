@@ -68,7 +68,13 @@ const DAMAGE_TYPE_KEYS = [
   'theft',
   'waterDamage',
   'fireDamage',
-  'vandalism'
+  'vandalism',
+  'stormDamage',
+  'engineDamage',
+  'tireDamage',
+  'cargoDamage',
+  'liabilityDamage',
+  'animalDamage'
 ]
 
 const BASE_CLAIMS: StoredClaimData[] = [

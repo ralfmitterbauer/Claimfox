@@ -85,7 +85,7 @@ export default function ClaimManagerAppListPage() {
                 {t('header.logout')}
               </Button>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'flex-end' }}>
               <label style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem', minWidth: '200px' }}>
                 <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimManager.app.filters.status')}</span>
                 <select
@@ -126,6 +126,24 @@ export default function ClaimManagerAppListPage() {
                   ))}
                 </select>
               </label>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setStatusFilter('all')
+                  setTypeFilter('all')
+                }}
+                style={{
+                  background: '#ffffff',
+                  color: '#0e0d1c',
+                  borderRadius: '999px',
+                  border: '1px solid #d9d9d9',
+                  height: '40px',
+                  padding: '0 1.25rem',
+                  fontWeight: 600
+                }}
+              >
+                {t('claimManager.app.filters.reset')}
+              </Button>
             </div>
             {filteredList.length ? (
               <div style={{ overflowX: 'auto' }}>
