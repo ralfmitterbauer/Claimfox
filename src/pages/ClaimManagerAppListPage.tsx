@@ -42,7 +42,11 @@ export default function ClaimManagerAppListPage() {
         }}
       >
         <div className="roles-hero-inner">
-          <Header title={t('roles.title')} subtitle={t('roles.subtitle')} subtitleColor="rgba(255,255,255,0.82)" />
+          <Header
+            title={t('claimManager.app.listHeader.title')}
+            subtitle={t('claimManager.app.listHeader.subtitle')}
+            subtitleColor="rgba(255,255,255,0.82)"
+          />
         </div>
       </div>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', padding: '32px 1.25rem 4rem' }}>
