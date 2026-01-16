@@ -15,15 +15,19 @@ export type ClaimCostItem = {
   amount: number
   status: CostStatus
   note: string
+  noteEn?: string
 }
 
 export type ClaimCoverage = {
   policyNumber: string
   term: string
   limit: string
+  limitEn?: string
   exclusion: string
+  exclusionEn?: string
   covered: boolean
   note: string
+  noteEn?: string
 }
 
 export type ClaimKpiValues = {
@@ -33,8 +37,11 @@ export type ClaimKpiValues = {
   openItems: string
   deductible: string
   coverage: string
+  coverageEn?: string
   fraudRisk: string
+  fraudRiskEn?: string
   handlingTime: string
+  handlingTimeEn?: string
 }
 
 export type StoredClaimData = {
@@ -44,7 +51,9 @@ export type StoredClaimData = {
   licensePlate?: string
   incidentTime?: string
   address?: string
+  addressEn?: string
   description?: string
+  descriptionEn?: string
   damageTypeKey?: string
   statusKey?: ClaimStatusKey
   kpiValues?: ClaimKpiValues
@@ -76,6 +85,84 @@ const DAMAGE_TYPE_KEYS = [
   'liabilityDamage',
   'animalDamage'
 ]
+
+const DAMAGE_DESCRIPTIONS: Record<
+  (typeof DAMAGE_TYPE_KEYS)[number],
+  { de: string; en: string }
+> = {
+  rearCollision: {
+    de: 'Heckaufprall im Stop-and-Go, Stoßfänger und Rücklicht beschädigt.',
+    en: 'Rear-end impact in stop-and-go traffic, bumper and tail light damaged.'
+  },
+  frontCollision: {
+    de: 'Frontkollision an Kreuzung, Kühlergrill und Stoßfänger betroffen.',
+    en: 'Front collision at an intersection, grille and bumper affected.'
+  },
+  sideCollision: {
+    de: 'Seitliche Kollision beim Spurwechsel, Tür und Kotflügel beschädigt.',
+    en: 'Side impact during lane change, door and fender damaged.'
+  },
+  parkingDamage: {
+    de: 'Parkschaden mit Kratzern und Dellen am Heck.',
+    en: 'Parking damage with scratches and dents at the rear.'
+  },
+  glassDamage: {
+    de: 'Steinschlag an der Frontscheibe, Rissbildung sichtbar.',
+    en: 'Stone chip on the windshield, visible cracking.'
+  },
+  wildlife: {
+    de: 'Wildunfall auf Landstraße, Frontschaden am Fahrzeug.',
+    en: 'Wildlife collision on a rural road, front damage to the vehicle.'
+  },
+  mirrorContact: {
+    de: 'Spiegelkontakt in Engstelle, Spiegelgehäuse gebrochen.',
+    en: 'Mirror contact in a narrow section, mirror housing cracked.'
+  },
+  hailDamage: {
+    de: 'Hagelschaden mit Dellen auf Motorhaube und Dach.',
+    en: 'Hail damage with dents on hood and roof.'
+  },
+  theft: {
+    de: 'Diebstahl von Anbauteilen, Fahrzeug gesichert abgestellt.',
+    en: 'Theft of exterior parts, vehicle parked and secured.'
+  },
+  waterDamage: {
+    de: 'Wasserschaden nach Starkregen, Elektronik betroffen.',
+    en: 'Water damage after heavy rain, electronics affected.'
+  },
+  fireDamage: {
+    de: 'Brandschaden im Motorraum, Kabelbaum beschädigt.',
+    en: 'Fire damage in the engine bay, wiring harness damaged.'
+  },
+  vandalism: {
+    de: 'Vandalismusschaden, Lack zerkratzt und Scheibe beschädigt.',
+    en: 'Vandalism damage, paint scratched and window damaged.'
+  },
+  stormDamage: {
+    de: 'Sturmschaden durch herabfallende Äste, Dach beschädigt.',
+    en: 'Storm damage from falling branches, roof damaged.'
+  },
+  engineDamage: {
+    de: 'Motorschaden nach Warnmeldung, Fahrzeug abgeschleppt.',
+    en: 'Engine damage after warning alert, vehicle towed.'
+  },
+  tireDamage: {
+    de: 'Reifenschaden durch Fremdkörper, Felge beschädigt.',
+    en: 'Tire damage due to debris, rim damaged.'
+  },
+  cargoDamage: {
+    de: 'Ladungsschaden bei Transport, Verpackung beschädigt.',
+    en: 'Cargo damage during transport, packaging damaged.'
+  },
+  liabilityDamage: {
+    de: 'Haftpflichtschaden durch Fremdschaden, Anspruch geprüft.',
+    en: 'Liability claim due to third-party damage, claim under review.'
+  },
+  animalDamage: {
+    de: 'Tierschaden am Fahrzeug, Kotflügel beschädigt.',
+    en: 'Animal damage to the vehicle, fender damaged.'
+  }
+}
 
 const BASE_CLAIMS: StoredClaimData[] = [
   {
@@ -716,21 +803,24 @@ function buildCostItems(seed: number): ClaimCostItem[] {
       labelKey: 'bodywork',
       amount: base,
       status: seed % 3 === 0 ? 'approved' : 'pending',
-      note: seed % 4 === 0 ? 'Freigabe angefordert.' : ''
+      note: seed % 4 === 0 ? 'Freigabe angefordert.' : '',
+      noteEn: seed % 4 === 0 ? 'Approval requested.' : ''
     },
     {
       id: `c-${seed}-2`,
       labelKey: 'paint',
       amount: base * 0.35,
       status: seed % 4 === 0 ? 'rejected' : 'approved',
-      note: seed % 4 === 0 ? 'Alternativangebot prüfen.' : ''
+      note: seed % 4 === 0 ? 'Alternativangebot prüfen.' : '',
+      noteEn: seed % 4 === 0 ? 'Review alternative quote.' : ''
     },
     {
       id: `c-${seed}-3`,
       labelKey: 'rental',
       amount: 180 + seed * 12,
       status: seed % 5 === 0 ? 'pending' : 'approved',
-      note: seed % 5 === 0 ? 'Nachweise fehlen.' : ''
+      note: seed % 5 === 0 ? 'Nachweise fehlen.' : '',
+      noteEn: seed % 5 === 0 ? 'Missing receipts.' : ''
     }
   ]
 }
@@ -740,10 +830,13 @@ function buildCoverage(seed: number): ClaimCoverage {
   return {
     policyNumber: `POL-${2024 + (seed % 2)}-${8000 + seed}`,
     term: covered ? '01.01.2025 - 31.12.2025' : '01.07.2024 - 30.06.2025',
-    limit: `Deckungssumme ${formatEuro(50000 + seed * 900)}`,
+    limit: formatEuro(50000 + seed * 900),
+    limitEn: formatEuro(50000 + seed * 900),
     exclusion: covered ? 'Keine Ausschlüsse relevant' : 'Abzug aufgrund Sonderregelung',
+    exclusionEn: covered ? 'No exclusions applicable' : 'Deduction due to special clause',
     covered,
-    note: covered ? 'Deckung bestätigt, Freigabe möglich.' : 'Teilweise gedeckt, Review erforderlich.'
+    note: covered ? 'Deckung bestätigt, Freigabe möglich.' : 'Teilweise gedeckt, Review erforderlich.',
+    noteEn: covered ? 'Coverage confirmed, approval possible.' : 'Partially covered, review required.'
   }
 }
 
@@ -752,8 +845,10 @@ function buildKpis(seed: number): ClaimKpiValues {
   const reserve = Math.round(total * 0.28)
   const approved = Math.round(total * 0.45)
   const deductible = 150 + (seed % 5) * 100
-  const fraudLevels = ['Niedrig', 'Mittel', 'Hoch']
+  const fraudLevels = ['Niedrig', 'Mittel', 'Hoch'] as const
+  const fraudLevelsEn = ['Low', 'Medium', 'High'] as const
   const coverage = seed % 6 === 0 ? 'Teilgedeckt' : 'Gedeckt'
+  const coverageEn = seed % 6 === 0 ? 'Partially covered' : 'Covered'
   return {
     totalIncurred: formatEuro(total),
     reserve: formatEuro(reserve),
@@ -761,20 +856,39 @@ function buildKpis(seed: number): ClaimKpiValues {
     openItems: `${2 + (seed % 5)}`,
     deductible: formatEuro(deductible),
     coverage,
+    coverageEn,
     fraudRisk: fraudLevels[seed % fraudLevels.length],
-    handlingTime: `${3 + (seed % 7)} Tage`
+    fraudRiskEn: fraudLevelsEn[seed % fraudLevelsEn.length],
+    handlingTime: `${3 + (seed % 7)} Tage`,
+    handlingTimeEn: `${3 + (seed % 7)} days`
   }
 }
 
 function enrichClaimData(claim: StoredClaimData, indexSeed: number) {
   const seed = getSeedFromClaimNumber(claim.claimNumber, indexSeed)
+  const damageTypeKey = claim.damageTypeKey ?? DAMAGE_TYPE_KEYS[seed % DAMAGE_TYPE_KEYS.length]
+  const localizedDescription = DAMAGE_DESCRIPTIONS[damageTypeKey]
+  const baseKpis = buildKpis(seed)
+  const baseCoverage = buildCoverage(seed)
+  const baseCosts = buildCostItems(seed)
+  const mergedKpis = claim.kpiValues ? { ...baseKpis, ...claim.kpiValues } : baseKpis
+  const mergedCoverage = claim.coverage ? { ...baseCoverage, ...claim.coverage } : baseCoverage
+  const mergedCosts = claim.costItems?.length
+    ? claim.costItems.map((item, index) => ({
+        ...baseCosts[index],
+        ...item,
+        noteEn: item.noteEn ?? baseCosts[index]?.noteEn
+      }))
+    : baseCosts
   return {
     ...claim,
-    damageTypeKey: claim.damageTypeKey ?? DAMAGE_TYPE_KEYS[seed % DAMAGE_TYPE_KEYS.length],
+    damageTypeKey,
     statusKey: claim.statusKey ?? STATUS_KEYS[seed % STATUS_KEYS.length],
-    kpiValues: claim.kpiValues ?? buildKpis(seed),
-    costItems: claim.costItems ?? buildCostItems(seed),
-    coverage: claim.coverage ?? buildCoverage(seed),
+    addressEn: claim.addressEn ?? claim.address,
+    descriptionEn: claim.descriptionEn ?? localizedDescription?.en ?? claim.description,
+    kpiValues: mergedKpis,
+    costItems: mergedCosts,
+    coverage: mergedCoverage,
     mediaItems: claim.mediaItems?.length ? claim.mediaItems : buildMedia(seed),
     photoCount: 4
   }

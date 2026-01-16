@@ -15,6 +15,7 @@ type CostItem = {
   amount: number
   status: CostStatus
   note: string
+  noteEn?: string
 }
 
 type PartnerOption = {
@@ -185,18 +186,27 @@ type ClaimAssistantData = {
   licensePlate?: string
   incidentTime?: string
   address?: string
+  addressEn?: string
   description?: string
+  descriptionEn?: string
   damageTypeKey?: string
   statusKey?: (typeof timelineSteps)[number]
-  kpiValues?: Partial<Record<(typeof KPI_KEYS)[number], string>>
+  kpiValues?: Partial<Record<(typeof KPI_KEYS)[number], string>> & {
+    coverageEn?: string
+    fraudRiskEn?: string
+    handlingTimeEn?: string
+  }
   costItems?: CostItem[]
   coverage?: {
     policyNumber: string
     term: string
     limit: string
+    limitEn?: string
     exclusion: string
+    exclusionEn?: string
     covered: boolean
     note: string
+    noteEn?: string
   }
   photoCount?: number
   mediaItems?: Array<{ type: 'image' | 'video'; src: string }>
@@ -215,7 +225,8 @@ export default function ClaimManagerPage({
   fullWidth = false,
   onBack
 }: ClaimManagerPageProps) {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const isEnglish = lang === 'en'
   const [claimStatus, setClaimStatus] = useState<(typeof timelineSteps)[number]>(
     assistantData?.statusKey ?? 'review'
   )
@@ -242,19 +253,45 @@ export default function ClaimManagerPage({
       setClaimStatus(assistantData.statusKey)
     }
     if (assistantData.costItems?.length) {
-      setCostItems(assistantData.costItems)
+      const localized = assistantData.costItems.map((item) => ({
+        ...item,
+        note: isEnglish ? item.noteEn ?? item.note : item.note
+      }))
+      setCostItems(localized)
     } else {
       setCostItems(initialCosts)
     }
-  }, [assistantData])
+  }, [assistantData, isEnglish])
+
+  function resolveKpiValue(key: (typeof KPI_KEYS)[number]) {
+    if (!assistantData?.kpiValues) {
+      return t(`claimManager.app.kpiValues.${key}`)
+    }
+    if (key === 'coverage') {
+      return isEnglish
+        ? assistantData.kpiValues.coverageEn ?? assistantData.kpiValues.coverage ?? t('claimManager.app.kpiValues.coverage')
+        : assistantData.kpiValues.coverage ?? t('claimManager.app.kpiValues.coverage')
+    }
+    if (key === 'fraudRisk') {
+      return isEnglish
+        ? assistantData.kpiValues.fraudRiskEn ?? assistantData.kpiValues.fraudRisk ?? t('claimManager.app.kpiValues.fraudRisk')
+        : assistantData.kpiValues.fraudRisk ?? t('claimManager.app.kpiValues.fraudRisk')
+    }
+    if (key === 'handlingTime') {
+      return isEnglish
+        ? assistantData.kpiValues.handlingTimeEn ?? assistantData.kpiValues.handlingTime ?? t('claimManager.app.kpiValues.handlingTime')
+        : assistantData.kpiValues.handlingTime ?? t('claimManager.app.kpiValues.handlingTime')
+    }
+    return assistantData.kpiValues[key] ?? t(`claimManager.app.kpiValues.${key}`)
+  }
 
   const kpiData = useMemo(
     () =>
       KPI_KEYS.map((key) => ({
         key,
-        value: assistantData?.kpiValues?.[key] ?? t(`claimManager.app.kpiValues.${key}`)
+        value: resolveKpiValue(key)
       })),
-    [assistantData, t]
+    [assistantData, isEnglish, t]
   )
 
   const detailValues = useMemo(
@@ -262,23 +299,33 @@ export default function ClaimManagerPage({
       type: assistantData?.damageTypeKey
         ? t(`claimManager.app.damageTypes.${assistantData.damageTypeKey}`)
         : t('claimManager.app.details.values.type'),
-      location: assistantData?.address || t('claimManager.app.details.values.location'),
+      location: isEnglish
+        ? assistantData?.addressEn || assistantData?.address || t('claimManager.app.details.values.location')
+        : assistantData?.address || t('claimManager.app.details.values.location'),
       vehicle: t('claimManager.app.details.values.vehicle'),
-      summary: assistantData?.description || t('claimManager.app.details.values.summary')
+      summary: isEnglish
+        ? assistantData?.descriptionEn || assistantData?.description || t('claimManager.app.details.values.summary')
+        : assistantData?.description || t('claimManager.app.details.values.summary')
     }),
-    [assistantData, t]
+    [assistantData, isEnglish, t]
   )
 
   const coverageValues = useMemo(
     () => ({
       policyNumber: assistantData?.coverage?.policyNumber || t('claimManager.app.coverage.policyValue'),
       term: assistantData?.coverage?.term || t('claimManager.app.coverage.termValue'),
-      limit: assistantData?.coverage?.limit || t('claimManager.app.coverage.limitValue'),
-      exclusion: assistantData?.coverage?.exclusion || t('claimManager.app.coverage.exclusionValue'),
+      limit: isEnglish
+        ? assistantData?.coverage?.limitEn || assistantData?.coverage?.limit || t('claimManager.app.coverage.limitValue')
+        : assistantData?.coverage?.limit || t('claimManager.app.coverage.limitValue'),
+      exclusion: isEnglish
+        ? assistantData?.coverage?.exclusionEn || assistantData?.coverage?.exclusion || t('claimManager.app.coverage.exclusionValue')
+        : assistantData?.coverage?.exclusion || t('claimManager.app.coverage.exclusionValue'),
       covered: assistantData?.coverage?.covered ?? true,
-      note: assistantData?.coverage?.note || t('claimManager.app.coverage.note')
+      note: isEnglish
+        ? assistantData?.coverage?.noteEn || assistantData?.coverage?.note || t('claimManager.app.coverage.note')
+        : assistantData?.coverage?.note || t('claimManager.app.coverage.note')
     }),
-    [assistantData, t]
+    [assistantData, isEnglish, t]
   )
 
   function handleCostChange(id: string, field: keyof CostItem, value: string) {
