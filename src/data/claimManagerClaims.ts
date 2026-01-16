@@ -1,7 +1,5 @@
 export const STORAGE_KEY = 'claimfox_claim_assistant'
 export const CLAIMS_LIST_KEY = 'claimfox_claims_list'
-const CLAIMS_VERSION_KEY = 'claimfox_claims_list_version'
-const CLAIMS_VERSION = '2'
 
 import claimDamage1 from '@/assets/images/claim_damage_1.png'
 import claimDamage2 from '@/assets/images/claim_damage_2.png'
@@ -75,7 +73,7 @@ const DAMAGE_TYPE_KEYS = [
 
 const BASE_CLAIMS: StoredClaimData[] = [
   {
-    claimNumber: 'CLM-2026-519414',
+    claimNumber: 'DE-519414',
     firstName: 'Mira',
     lastName: 'Schuster',
     licensePlate: 'HH-MS 2451',
@@ -84,7 +82,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Auffahrunfall im Stadtverkehr, Stoßfänger beschädigt.'
   },
   {
-    claimNumber: 'CLM-2026-402781',
+    claimNumber: 'AT-402781',
     firstName: 'Tobias',
     lastName: 'Neumann',
     licensePlate: 'B-TN 9876',
@@ -93,7 +91,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitlicher Kontakt beim Spurwechsel, Kratzer Tür.'
   },
   {
-    claimNumber: 'CLM-2026-788205',
+    claimNumber: 'CH-788205',
     firstName: 'Lea',
     lastName: 'Bergmann',
     licensePlate: 'M-LB 3307',
@@ -102,7 +100,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Glasschaden, Steinschlag auf Autobahn.'
   },
   {
-    claimNumber: 'CLM-2026-905672',
+    claimNumber: 'NL-905672',
     firstName: 'Jonas',
     lastName: 'Keller',
     licensePlate: 'K-JK 4112',
@@ -111,7 +109,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkschaden, Stoßfänger hinten eingedrückt.'
   },
   {
-    claimNumber: 'CLM-2026-134982',
+    claimNumber: 'FR-134982',
     firstName: 'Sofia',
     lastName: 'Lang',
     licensePlate: 'F-SL 7788',
@@ -120,7 +118,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Auffahrunfall, Rücklicht beschädigt.'
   },
   {
-    claimNumber: 'CLM-2026-667430',
+    claimNumber: 'IT-667430',
     firstName: 'Leon',
     lastName: 'Wagner',
     licensePlate: 'S-LW 5420',
@@ -129,7 +127,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Spiegelkontakt an Engstelle, Gehäuse gebrochen.'
   },
   {
-    claimNumber: 'CLM-2026-842197',
+    claimNumber: 'ES-842197',
     firstName: 'Nora',
     lastName: 'Hoffmann',
     licensePlate: 'D-NH 2003',
@@ -138,7 +136,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Frontschaden durch Wildwechsel, Stoßfänger defekt.'
   },
   {
-    claimNumber: 'CLM-2026-275604',
+    claimNumber: 'PL-275604',
     firstName: 'Paul',
     lastName: 'Schneider',
     licensePlate: 'HB-PS 1189',
@@ -147,7 +145,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden, Bordsteinberührung.'
   },
   {
-    claimNumber: 'CLM-2026-590738',
+    claimNumber: 'BE-590738',
     firstName: 'Hannah',
     lastName: 'Richter',
     licensePlate: 'L-HR 6044',
@@ -156,7 +154,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Heckschaden, Rückfahrunfall.'
   },
   {
-    claimNumber: 'CLM-2026-316905',
+    claimNumber: 'DK-316905',
     firstName: 'Felix',
     lastName: 'Krüger',
     licensePlate: 'H-FK 9901',
@@ -165,7 +163,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Glasschaden, Frontscheibe gerissen.'
   },
   {
-    claimNumber: 'CLM-2026-740815',
+    claimNumber: 'SE-740815',
     firstName: 'Clara',
     lastName: 'Becker',
     licensePlate: 'N-CB 3310',
@@ -174,7 +172,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitlicher Kontakt, Kotflügel beschädigt.'
   },
   {
-    claimNumber: 'CLM-2026-982450',
+    claimNumber: 'NO-982450',
     firstName: 'Emil',
     lastName: 'Seidel',
     licensePlate: 'HH-ES 2477',
@@ -183,7 +181,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkrempler, Lackschaden.'
   },
   {
-    claimNumber: 'CLM-2026-158932',
+    claimNumber: 'FI-158932',
     firstName: 'Lena',
     lastName: 'Hartmann',
     licensePlate: 'B-LH 7721',
@@ -192,7 +190,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden beim Ausparken.'
   },
   {
-    claimNumber: 'CLM-2026-673521',
+    claimNumber: 'CZ-673521',
     firstName: 'Max',
     lastName: 'Peters',
     licensePlate: 'M-MP 5512',
@@ -201,7 +199,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Frontschaden nach Auffahrunfall.'
   },
   {
-    claimNumber: 'CLM-2026-491807',
+    claimNumber: 'SK-491807',
     firstName: 'Julia',
     lastName: 'Brandt',
     licensePlate: 'HH-JB 8093',
@@ -210,7 +208,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Glasschaden, Steinschlag Windschutzscheibe.'
   },
   {
-    claimNumber: 'CLM-2026-738206',
+    claimNumber: 'HU-738206',
     firstName: 'Daniel',
     lastName: 'Kuhn',
     licensePlate: 'F-DK 3340',
@@ -219,7 +217,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Heckschaden durch Rückfahrunfall.'
   },
   {
-    claimNumber: 'CLM-2026-205947',
+    claimNumber: 'RO-205947',
     firstName: 'Sara',
     lastName: 'Vogel',
     licensePlate: 'S-SV 6802',
@@ -228,7 +226,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitliche Kollision im Kreisverkehr.'
   },
   {
-    claimNumber: 'CLM-2026-894312',
+    claimNumber: 'BG-894312',
     firstName: 'Philipp',
     lastName: 'Kaiser',
     licensePlate: 'K-PK 2049',
@@ -237,7 +235,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkschaden am Heckstoßfänger.'
   },
   {
-    claimNumber: 'CLM-2026-560189',
+    claimNumber: 'HR-560189',
     firstName: 'Mara',
     lastName: 'Bauer',
     licensePlate: 'D-MB 9130',
@@ -246,7 +244,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Spiegelkontakt in enger Straße.'
   },
   {
-    claimNumber: 'CLM-2026-317504',
+    claimNumber: 'SI-317504',
     firstName: 'Tim',
     lastName: 'Scholz',
     licensePlate: 'N-TS 4411',
@@ -255,7 +253,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden, Lackkratzer.'
   },
   {
-    claimNumber: 'CLM-2026-709833',
+    claimNumber: 'PT-709833',
     firstName: 'Anna',
     lastName: 'Dietrich',
     licensePlate: 'H-AD 5567',
@@ -264,7 +262,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Frontschaden durch Wildwechsel.'
   },
   {
-    claimNumber: 'CLM-2026-485902',
+    claimNumber: 'IE-485902',
     firstName: 'Nils',
     lastName: 'Friedrich',
     licensePlate: 'HB-NF 2308',
@@ -273,7 +271,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkrempler, Stoßfänger vorne.'
   },
   {
-    claimNumber: 'CLM-2026-932750',
+    claimNumber: 'UK-932750',
     firstName: 'Claudia',
     lastName: 'Winter',
     licensePlate: 'L-CW 7194',
@@ -282,7 +280,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden an der Tür.'
   },
   {
-    claimNumber: 'CLM-2026-624089',
+    claimNumber: 'LU-624089',
     firstName: 'Jan',
     lastName: 'Zimmer',
     licensePlate: 'B-JZ 6655',
@@ -291,7 +289,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Heckschaden im Berufsverkehr.'
   },
   {
-    claimNumber: 'CLM-2026-410376',
+    claimNumber: 'EE-410376',
     firstName: 'Miriam',
     lastName: 'Koch',
     licensePlate: 'M-MK 4004',
@@ -300,7 +298,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Glasschaden, Riss in der Scheibe.'
   },
   {
-    claimNumber: 'CLM-2026-857209',
+    claimNumber: 'LV-857209',
     firstName: 'Sebastian',
     lastName: 'Lenz',
     licensePlate: 'HH-SL 1022',
@@ -309,7 +307,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Kratzer an der Seite, unbekannter Verursacher.'
   },
   {
-    claimNumber: 'CLM-2026-304915',
+    claimNumber: 'LT-304915',
     firstName: 'Laura',
     lastName: 'Krause',
     licensePlate: 'F-LK 7729',
@@ -318,7 +316,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Anprall an Bordstein, Felgenschaden.'
   },
   {
-    claimNumber: 'CLM-2026-698412',
+    claimNumber: 'GR-698412',
     firstName: 'Jonas',
     lastName: 'Meier',
     licensePlate: 'S-JM 4488',
@@ -327,7 +325,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitliche Kollision beim Einfädeln.'
   },
   {
-    claimNumber: 'CLM-2026-521780',
+    claimNumber: 'TR-521780',
     firstName: 'Elena',
     lastName: 'Lorenz',
     licensePlate: 'K-EL 3377',
@@ -336,7 +334,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkschaden an der Stoßstange.'
   },
   {
-    claimNumber: 'CLM-2026-745093',
+    claimNumber: 'AE-745093',
     firstName: 'Paul',
     lastName: 'Maurer',
     licensePlate: 'D-PM 9801',
@@ -345,7 +343,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Heckschaden beim Rangieren.'
   },
   {
-    claimNumber: 'CLM-2026-268047',
+    claimNumber: 'QA-268047',
     firstName: 'Tina',
     lastName: 'Schubert',
     licensePlate: 'N-TS 5042',
@@ -354,7 +352,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitenschaden, Kontakt mit Leitplanke.'
   },
   {
-    claimNumber: 'CLM-2026-907421',
+    claimNumber: 'US-907421',
     firstName: 'Niklas',
     lastName: 'Otto',
     licensePlate: 'H-NO 6120',
@@ -363,7 +361,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Frontschaden, Auffahrunfall an Ampel.'
   },
   {
-    claimNumber: 'CLM-2026-453680',
+    claimNumber: 'CA-453680',
     firstName: 'Isabel',
     lastName: 'Seitz',
     licensePlate: 'HB-IS 2209',
@@ -372,7 +370,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Glasschaden, Steinschlag.'
   },
   {
-    claimNumber: 'CLM-2026-830591',
+    claimNumber: 'AU-830591',
     firstName: 'Markus',
     lastName: 'Haase',
     licensePlate: 'L-MH 7733',
@@ -381,7 +379,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Seitliche Kollision, Lackschaden.'
   },
   {
-    claimNumber: 'CLM-2026-592704',
+    claimNumber: 'NZ-592704',
     firstName: 'Svenja',
     lastName: 'Arnold',
     licensePlate: 'B-SA 4450',
@@ -390,7 +388,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Parkschaden, Kratzer hinten.'
   },
   {
-    claimNumber: 'CLM-2026-174509',
+    claimNumber: 'JP-174509',
     firstName: 'David',
     lastName: 'Franke',
     licensePlate: 'M-DF 8812',
@@ -399,7 +397,7 @@ const BASE_CLAIMS: StoredClaimData[] = [
     description: 'Heckschaden durch Auffahrunfall.'
   },
   {
-    claimNumber: 'CLM-2026-681230',
+    claimNumber: 'SG-681230',
     firstName: 'Klara',
     lastName: 'Hein',
     licensePlate: 'HH-KH 3099',
@@ -510,17 +508,8 @@ export const DEMO_CLAIMS: StoredClaimData[] = BASE_CLAIMS.map((claim, index) =>
   enrichClaimData(claim, index + 1)
 )
 
-function resetStoredClaimsIfNeeded() {
-  if (typeof window === 'undefined') return
-  const version = window.localStorage.getItem(CLAIMS_VERSION_KEY)
-  if (version === CLAIMS_VERSION) return
-  window.localStorage.removeItem(CLAIMS_LIST_KEY)
-  window.localStorage.setItem(CLAIMS_VERSION_KEY, CLAIMS_VERSION)
-}
-
 export function loadClaims() {
   if (typeof window === 'undefined') return []
-  resetStoredClaimsIfNeeded()
   try {
     const raw = window.localStorage.getItem(CLAIMS_LIST_KEY)
     if (!raw) return []
