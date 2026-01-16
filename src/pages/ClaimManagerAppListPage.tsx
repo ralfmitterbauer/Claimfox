@@ -7,7 +7,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import {
   DEMO_CLAIMS,
   loadAssistantClaim,
-  loadClaims,
+  loadStoredClaimsRaw,
   StoredClaimData
 } from '@/data/claimManagerClaims'
 import HeroBlockBackground from '@/assets/images/hero_block_1.png'
@@ -24,13 +24,13 @@ const CARD_STYLE: React.CSSProperties = {
 export default function ClaimManagerAppListPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
-  const storedClaims = useMemo(() => loadClaims(), [])
+  const storedClaims = useMemo(() => loadStoredClaimsRaw(), [])
   const assistantData = useMemo<StoredClaimData | undefined>(() => loadAssistantClaim(), [])
   const [statusFilter, setStatusFilter] = React.useState<string>('all')
   const [typeFilter, setTypeFilter] = React.useState<string>('all')
 
   const caseList = useMemo(() => {
-    const combined = [...storedClaims, ...DEMO_CLAIMS]
+    const combined = [...DEMO_CLAIMS, ...storedClaims]
     if (assistantData) {
       combined.unshift(assistantData)
     }

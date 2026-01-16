@@ -4,7 +4,7 @@ import ClaimManagerPage from '@/pages/ClaimManagerPage'
 import {
   DEMO_CLAIMS,
   loadAssistantClaim,
-  loadClaims,
+  loadStoredClaimsRaw,
   StoredClaimData
 } from '@/data/claimManagerClaims'
 import Header from '@/components/ui/Header'
@@ -15,11 +15,11 @@ export default function ClaimManagerCasePage() {
   const navigate = useNavigate()
   const { t } = useI18n()
   const { claimNumber } = useParams()
-  const storedClaims = useMemo(() => loadClaims(), [])
+  const storedClaims = useMemo(() => loadStoredClaimsRaw(), [])
   const assistantData = useMemo<StoredClaimData | undefined>(() => loadAssistantClaim(), [])
 
   const caseList = useMemo(() => {
-    const combined = [...storedClaims, ...DEMO_CLAIMS]
+    const combined = [...DEMO_CLAIMS, ...storedClaims]
     if (assistantData) {
       combined.unshift(assistantData)
     }

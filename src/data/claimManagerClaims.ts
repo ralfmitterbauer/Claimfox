@@ -805,6 +805,18 @@ export function loadClaims() {
   }
 }
 
+export function loadStoredClaimsRaw() {
+  if (typeof window === 'undefined') return []
+  try {
+    const raw = window.localStorage.getItem(CLAIMS_LIST_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw) as StoredClaimData[]
+    return Array.isArray(parsed) ? parsed : []
+  } catch {
+    return []
+  }
+}
+
 export function loadAssistantClaim() {
   if (typeof window === 'undefined') return undefined
   try {
