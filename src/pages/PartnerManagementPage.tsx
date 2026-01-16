@@ -3,6 +3,7 @@ import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
+import HeroBlockBackground from '@/assets/images/hero_block_1.png'
 
 type PartnerType = 'workshop' | 'surveyor' | 'towing'
 
@@ -76,14 +77,35 @@ export default function PartnerManagementPage() {
   const getTypeLabel = (type: PartnerType) => t(`partnerManagement.partnerTypes.${type}`)
 
   return (
-    <section className="page" style={{ gap: '1.75rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-        <Header
-          title={t('partnerManagement.title')}
-          subtitle={t('partnerManagement.subtitle')}
-          subtitleColor="#65748b"
-          actions={<Button variant="secondary">{t('partnerManagement.actions.addPartner')}</Button>}
-        />
+    <section style={{ minHeight: '100vh', width: '100%', color: '#0e0d1c' }}>
+      <div
+        className="roles-hero"
+        style={{
+          backgroundImage: `linear-gradient(135deg, rgba(7, 20, 74, 0.9) 0%, rgba(11, 45, 122, 0.9) 100%), url(${HeroBlockBackground})`
+        }}
+      >
+        <div className="roles-hero-inner">
+          <Header
+            title={t('partnerManagement.title')}
+            subtitle={t('partnerManagement.subtitle')}
+            subtitleColor="rgba(255,255,255,0.82)"
+          />
+        </div>
+      </div>
+      <div
+        style={{
+          width: '100%',
+          maxWidth: '100%',
+          margin: '0 auto',
+          padding: '32px 1.25rem 4rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1.75rem'
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant="secondary">{t('partnerManagement.actions.addPartner')}</Button>
+        </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
           <Card variant="glass" title={t('partnerManagement.selection.title')} subtitle={t('partnerManagement.selection.subtitle')}>
