@@ -5,9 +5,102 @@ import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import HomeHeroBackground from '@/assets/images/Home1.png'
 import HomeHeroCardImage from '@/assets/images/iaas_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
+import { useI18n } from '@/i18n/I18nContext'
 
 export default function HomePage() {
   const navigate = useNavigate()
+  const { lang, setLang } = useI18n()
+  const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
+
+  const copy = {
+    nav: {
+      insurance: lang === 'en' ? 'Insurance' : 'Versicherungen',
+      broker: lang === 'en' ? 'Broker' : 'Makler',
+      logistics: lang === 'en' ? 'Logistics' : 'Logistik',
+      fleet: lang === 'en' ? 'Fleet' : 'Flotte',
+      partner: lang === 'en' ? 'Partners' : 'Partner',
+      login: lang === 'en' ? 'Login' : 'Anmelden'
+    },
+    heroTitle:
+      lang === 'en'
+        ? 'The AI-driven Insurance Platform for Logistics, Transport & Mobility.'
+        : 'Die KI-basierte Versicherungsplattform für Logistik, Transport und Mobilität.',
+    heroBody:
+      lang === 'en'
+        ? 'Insurfox connects insurers, brokers, and customers across the value chain with a single AI-native platform for underwriting, claims and governance.'
+        : 'Insurfox verbindet Versicherer, Makler und Kunden entlang der Wertschöpfungskette über eine AI-native Plattform für Underwriting, Claims und Governance.',
+    valueTitle:
+      lang === 'en'
+        ? 'Connected insurance operations with AI-native infrastructure.'
+        : 'Vernetzte Versicherungsprozesse mit AI-nativer Infrastruktur.',
+    valueBody:
+      lang === 'en'
+        ? 'A unified system that reduces complexity, improves claims performance, and enables scalable digital collaboration.'
+        : 'Ein integriertes System, das Komplexität reduziert, Schadenprozesse optimiert und skalierbare Zusammenarbeit ermöglicht.',
+    valueCards: [
+      {
+        title: lang === 'en' ? 'One platform, multi access' : 'Eine Plattform, alle Akteure',
+        body:
+          lang === 'en'
+            ? 'Insurers, brokers, and logistics customers collaborate in one system with role-based access.'
+            : 'Versicherer, Makler und Logistikunternehmen arbeiten in einem System mit rollenbasiertem Zugriff.'
+      },
+      {
+        title: lang === 'en' ? 'AI-supported decision support' : 'KI-gestützte Entscheidungsunterstützung',
+        body:
+          lang === 'en'
+            ? 'Risk assessment, fraud signals, and portfolio insights with human oversight.'
+            : 'Risikobewertung, Fraud-Signale und Portfolio-Insights mit Human-in-the-Loop.'
+      },
+      {
+        title: lang === 'en' ? 'Transparent claims operations' : 'Transparente Schadenprozesse',
+        body:
+          lang === 'en'
+            ? 'Real-time visibility into claims, costs, and performance across all stakeholders.'
+            : 'Echtzeit-Transparenz über Schäden, Kosten und Performance für alle Stakeholder.'
+      }
+    ],
+    productKicker: lang === 'en' ? 'Product & Platform' : 'Produkt & Plattform',
+    productTitle:
+      lang === 'en'
+        ? 'Insurance products delivered through a unified AI-native platform.'
+        : 'Versicherungsprodukte in einer einheitlichen AI-native Plattform.',
+    productBody:
+      lang === 'en'
+        ? 'Carrier liability, fleet and cargo insurance with API-first integration, digital distribution and claims management.'
+        : 'Frachtführerhaftung, Flotte und Cargo mit API-first Integration, digitaler Distribution und Schadenmanagement.',
+    trustTitle:
+      lang === 'en'
+        ? 'Governance, data control and audit readiness built in.'
+        : 'Governance, Datenkontrolle und Audit-Readiness integriert.',
+    trustBody:
+      lang === 'en'
+        ? 'Decision support remains with insurers while Insurfox ensures traceability, security and compliance.'
+        : 'Die Entscheidungshoheit bleibt beim Versicherer, während Insurfox Nachvollziehbarkeit, Sicherheit und Compliance sicherstellt.',
+    trustItems: [
+      {
+        title: lang === 'en' ? 'Data sovereignty' : 'Data Sovereignty',
+        body:
+          lang === 'en'
+            ? 'No external AI providers, no uncontrolled data transfer.'
+            : 'Keine externen KI-Anbieter, kein unkontrollierter Datenabfluss.'
+      },
+      {
+        title: lang === 'en' ? 'Audit-ready' : 'Audit-Ready',
+        body:
+          lang === 'en'
+            ? 'Documented processes, model lifecycle governance and traceable outputs.'
+            : 'Dokumentierte Prozesse, Model Lifecycle Governance und nachvollziehbare Outputs.'
+      },
+      {
+        title: lang === 'en' ? 'Scalable collaboration' : 'Skalierbare Zusammenarbeit',
+        body:
+          lang === 'en'
+            ? 'Multi-tenant architecture for regulated insurance markets.'
+            : 'Multi-Tenant-Architektur für regulierte Versicherungsmärkte.'
+      }
+    ]
+  }
 
   return (
     <main className="home-marketing">
@@ -17,17 +110,25 @@ export default function HomePage() {
             <img src={InsurfoxLogo} alt="Insurfox" className="home-marketing-logo" />
           </button>
           <nav className="home-marketing-nav">
-            <button type="button" onClick={() => navigate('/insurance')}>Versicherungen</button>
-            <button type="button" onClick={() => navigate('/broker-portal')}>Makler</button>
-            <button type="button" onClick={() => navigate('/logistics')}>Logistik</button>
-            <button type="button" onClick={() => navigate('/fleet-management')}>Flotte</button>
-            <button type="button" onClick={() => navigate('/partner-management-overview')}>Partner</button>
+            <button type="button" onClick={() => navigate('/insurance')}>{copy.nav.insurance}</button>
+            <button type="button" onClick={() => navigate('/broker-portal')}>{copy.nav.broker}</button>
+            <button type="button" onClick={() => navigate('/logistics')}>{copy.nav.logistics}</button>
+            <button type="button" onClick={() => navigate('/fleet-management')}>{copy.nav.fleet}</button>
+            <button type="button" onClick={() => navigate('/partner-management-overview')}>{copy.nav.partner}</button>
+            <div className="home-marketing-lang-switch" role="group" aria-label="Language switch">
+              <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
+                DE
+              </button>
+              <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>
+                EN
+              </button>
+            </div>
             <Button onClick={() => navigate('/login')} className="home-marketing-login" style={{ padding: '0.5rem 1.1rem' }}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c1.8-3.5 5-6 8-6s6.2 2.5 8 6" />
               </svg>
-              <span className="home-marketing-login-text">Anmelden</span>
+              <span className="home-marketing-login-text">{copy.nav.login}</span>
             </Button>
             <button type="button" className="home-marketing-menu" aria-label="Menü öffnen">
               <span />
@@ -42,49 +143,37 @@ export default function HomePage() {
         <div className="home-hero-inner">
           <div className="home-hero-content">
             <span className="home-hero-kicker">Insurfox AI IaaS</span>
-            <h1>AI-native Insurance-IaaS für regulierte Märkte.</h1>
-            <p>
-              Eine integrierte Plattform für Versicherer, Logistik und Mobility – mit Governance-by-Design,
-              End-to-End-Prozessen und klarer Kontrolle über Daten, Modelle und Entscheidungen.
-            </p>
+            <h1>{copy.heroTitle}</h1>
+            <p>{copy.heroBody}</p>
           </div>
-          <div className="home-hero-card">
+          <button type="button" className="home-hero-card" onClick={() => setIsHeroPreviewOpen(true)} aria-label="Bildvorschau öffnen">
             <img src={HomeHeroCardImage} alt="Insurfox AI IaaS" />
-          </div>
+          </button>
         </div>
         <span className="home-hero-accent" aria-hidden />
       </section>
 
       <section className="home-value">
         <div className="home-section-header">
-          <h2>Digitale Versicherungsprozesse – einfach orchestriert.</h2>
-          <p>Die Insurfox Plattform verbindet Underwriting, Claims, Partnersteuerung und Governance in einem System.</p>
+          <h2>{copy.valueTitle}</h2>
+          <p>{copy.valueBody}</p>
         </div>
         <div className="home-value-grid">
-          <div className="home-value-card">
-            <h3>End-to-End Prozesse</h3>
-            <p>Quote-to-Policy, Claims und Renewal mit einheitlichen Workflows, SLA-Tracking und Audit Trails.</p>
-          </div>
-          <div className="home-value-card">
-            <h3>AI-Entscheidungsunterstützung</h3>
-            <p>Risikoindikationen, Fraud-Signale und Kostenprognosen – immer mit Human-in-the-Loop.</p>
-          </div>
-          <div className="home-value-card">
-            <h3>Partnernetzwerke</h3>
-            <p>Werkstatt-, Gutachter- und Abschleppnetzwerke inklusive Live-Kommunikation je Schadenfall.</p>
-          </div>
+          {copy.valueCards.map((card) => (
+            <div key={card.title} className="home-value-card">
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="home-product">
         <div className="home-product-card">
           <div>
-            <span className="home-product-kicker">Produkt & Plattform</span>
-            <h2>Versicherungsprodukte in einer AI-native IaaS.</h2>
-            <p>
-              Frachtführerhaftung, Flotte, Mobility und Spezialrisiken – modular, mandatierbar und vollständig
-              integrierbar über APIs.
-            </p>
+            <span className="home-product-kicker">{copy.productKicker}</span>
+            <h2>{copy.productTitle}</h2>
+            <p>{copy.productBody}</p>
             <div className="home-product-actions">
               <Button onClick={() => navigate('/get-quote')}>Angebot anfragen</Button>
               <Button variant="secondary" onClick={() => navigate('/insurfox-whitepaper')}>
@@ -100,27 +189,29 @@ export default function HomePage() {
 
       <section className="home-trust">
         <div className="home-trust-card">
-          <h2>Compliance, Sicherheit und Skalierung.</h2>
-          <p>
-            Rollenbasierte Zugriffe, Tenant-Isolation, Audit Logging und sensitive Data Controls – direkt in der
-            Architektur verankert.
-          </p>
+          <h2>{copy.trustTitle}</h2>
+          <p>{copy.trustBody}</p>
           <div className="home-trust-grid">
-            <div>
-              <strong>Data Sovereignty</strong>
-              <span>Keine externen KI-Systeme, kein Datenabfluss.</span>
-            </div>
-            <div>
-              <strong>Audit Readiness</strong>
-              <span>Vollständige Nachvollziehbarkeit für Aufsicht & Compliance.</span>
-            </div>
-            <div>
-              <strong>Scalable Ops</strong>
-              <span>Mandantenfähig und bereit für internationale Märkte.</span>
-            </div>
+            {copy.trustItems.map((item) => (
+              <div key={item.title}>
+                <strong>{item.title}</strong>
+                <span>{item.body}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
+
+      {isHeroPreviewOpen && (
+        <div className="hero-image-modal" role="dialog" aria-modal="true">
+          <button type="button" className="hero-image-modal__close" onClick={() => setIsHeroPreviewOpen(false)} aria-label="Schließen">
+            ×
+          </button>
+          <div className="hero-image-modal__content">
+            <img src={HomeHeroCardImage} alt="Insurfox AI IaaS" />
+          </div>
+        </div>
+      )}
     </main>
   )
 }

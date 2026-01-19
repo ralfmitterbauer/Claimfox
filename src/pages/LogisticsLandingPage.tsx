@@ -59,6 +59,7 @@ const PREVIEW_VALUE_KEYS = ['eta', 'temp', 'customs'] as const
 export default function LogisticsLandingPage() {
   const { t } = useI18n()
   const navigate = useNavigate()
+  const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
   return (
     <section
@@ -116,8 +117,12 @@ export default function LogisticsLandingPage() {
                 aspectRatio: '1 / 1',
                 maxWidth: '420px',
                 width: '100%',
-                justifySelf: 'end'
+                justifySelf: 'end',
+                cursor: 'pointer'
               }}
+              onClick={() => setIsHeroPreviewOpen(true)}
+              role="button"
+              aria-label="Bildvorschau öffnen"
             >
               <img src={LogisticsHeroImage} alt="Logistikportal" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </div>
@@ -195,6 +200,17 @@ export default function LogisticsLandingPage() {
           </Card>
         </div>
       </div>
+
+      {isHeroPreviewOpen && (
+        <div className="hero-image-modal" role="dialog" aria-modal="true">
+          <button type="button" className="hero-image-modal__close" onClick={() => setIsHeroPreviewOpen(false)} aria-label="Schließen">
+            ×
+          </button>
+          <div className="hero-image-modal__content">
+            <img src={LogisticsHeroImage} alt="Logistikportal" />
+          </div>
+        </div>
+      )}
     </section>
   )
 }

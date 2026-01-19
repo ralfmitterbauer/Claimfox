@@ -4,6 +4,7 @@ import InsuranceHeroImage from '@/assets/images/insurance_processes.png'
 
 export default function InsuranceLandingPage() {
   const { lang } = useI18n()
+  const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
   const copy = {
     title: lang === 'en' ? 'Insurance Processes, End-to-End.' : 'Versicherungsprozesse – Ende zu Ende.',
@@ -92,8 +93,12 @@ export default function InsuranceLandingPage() {
                 aspectRatio: '1 / 1',
                 maxWidth: '420px',
                 width: '100%',
-                justifySelf: 'end'
+                justifySelf: 'end',
+                cursor: 'pointer'
               }}
+              onClick={() => setIsHeroPreviewOpen(true)}
+              role="button"
+              aria-label="Bildvorschau öffnen"
             >
               <img src={InsuranceHeroImage} alt="Insurance processes" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
             </div>
@@ -125,6 +130,17 @@ export default function InsuranceLandingPage() {
           ))}
         </div>
       </div>
+
+      {isHeroPreviewOpen && (
+        <div className="hero-image-modal" role="dialog" aria-modal="true">
+          <button type="button" className="hero-image-modal__close" onClick={() => setIsHeroPreviewOpen(false)} aria-label="Schließen">
+            ×
+          </button>
+          <div className="hero-image-modal__content">
+            <img src={InsuranceHeroImage} alt="Insurance processes" />
+          </div>
+        </div>
+      )}
     </section>
   )
 }
