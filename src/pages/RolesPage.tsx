@@ -128,10 +128,12 @@ export default function RolesPage() {
 
   function renderSection(title: string, items: RoleItem[]) {
     return (
-      <div className="roles-section">
-        <h2 style={{ margin: 0 }}>{title}</h2>
-        <div className="roles-grid">
-          {items.map((item) => renderCard(item))}
+      <div className="roles-section-panel">
+        <div className="roles-section">
+          <h2 style={{ margin: 0 }}>{title}</h2>
+          <div className="roles-grid">
+            {items.map((item) => renderCard(item))}
+          </div>
         </div>
       </div>
     )
@@ -139,27 +141,33 @@ export default function RolesPage() {
 
   function renderOverview() {
     return (
-      <div className="roles-section">
-        <h2 style={{ margin: 0 }}>{t('roles.sections.overview')}</h2>
-        <div className="roles-subsection">
-          <h3>{t('roles.overviewGroups.insurance')}</h3>
-          <div className="roles-grid">
-            {['claims', 'partner'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+      <div className="roles-section-panel">
+        <div className="roles-section">
+          <h2 style={{ margin: 0 }}>{t('roles.sections.overview')}</h2>
+          <div className="roles-subsection">
+            <h3>{t('roles.overviewGroups.insurance')}</h3>
+            <div className="roles-grid">
+              {['claims', 'partner'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+            </div>
           </div>
-        </div>
-        <div className="roles-subsection">
-          <h3>{t('roles.overviewGroups.fleet')}</h3>
-          <div className="roles-grid">
-            {['reporting', 'fleetManagement'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+          <div className="roles-subsection">
+            <h3>{t('roles.overviewGroups.fleet')}</h3>
+            <div className="roles-grid">
+              {['reporting', 'fleetManagement'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+            </div>
           </div>
-        </div>
-        <div className="roles-subsection">
-          <h3>{t('roles.overviewGroups.logistics')}</h3>
-          <div className="roles-grid">{['logistics'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}</div>
-        </div>
-        <div className="roles-subsection">
-          <h3>{t('roles.overviewGroups.broker')}</h3>
-          <div className="roles-grid">{['brokerPortal'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}</div>
+          <div className="roles-subsection">
+            <h3>{t('roles.overviewGroups.logistics')}</h3>
+            <div className="roles-grid">
+              {['logistics'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+            </div>
+          </div>
+          <div className="roles-subsection">
+            <h3>{t('roles.overviewGroups.broker')}</h3>
+            <div className="roles-grid">
+              {['brokerPortal'].map((key) => renderCard(OVERVIEW_ITEMS.find((item) => item.key === key)!))}
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -186,16 +194,18 @@ export default function RolesPage() {
         <div className="roles-divider" />
         {renderSection(t('roles.sections.processes'), PROCESS_ITEMS)}
         <div className="roles-divider" />
-        <div className="roles-section">
-          <h2 style={{ margin: 0 }}>
-            <button
-              type="button"
-              className="roles-section-link"
-              onClick={() => navigate('/internal-docs')}
-            >
-              {t('roles.sections.internalDocs')}
-            </button>
-          </h2>
+        <div className="roles-section-panel">
+          <div className="roles-section">
+            <h2 style={{ margin: 0 }}>
+              <button
+                type="button"
+                className="roles-section-link"
+                onClick={() => navigate('/internal-docs')}
+              >
+                {t('roles.sections.internalDocs')}
+              </button>
+            </h2>
+          </div>
         </div>
       </div>
     </section>
