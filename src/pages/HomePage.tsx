@@ -2,7 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
-import HomeHeroImage from '@/assets/images/iaas_home.png'
+import HomeHeroBackground from '@/assets/images/Home1.png'
+import HomeHeroCardImage from '@/assets/images/iaas_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
 
 export default function HomePage() {
@@ -26,7 +27,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="home-hero" style={{ backgroundImage: `url(${HomeHeroImage})` }}>
+      <section className="home-hero" style={{ backgroundImage: `url(${HomeHeroBackground})` }}>
         <div className="home-hero-inner">
           <div className="home-hero-content">
             <span className="home-hero-kicker">Insurfox AI IaaS</span>
@@ -35,6 +36,9 @@ export default function HomePage() {
               Eine integrierte Plattform für Versicherer, Logistik und Mobility – mit Governance-by-Design,
               End-to-End-Prozessen und klarer Kontrolle über Daten, Modelle und Entscheidungen.
             </p>
+          </div>
+          <div className="home-hero-card">
+            <img src={HomeHeroCardImage} alt="Insurfox AI IaaS" />
           </div>
         </div>
         <span className="home-hero-accent" aria-hidden />
