@@ -252,13 +252,15 @@ export default function BrokerPortalLandingPage() {
               }}
             >
               <div style={{ textAlign: 'left' }}>
+                <p style={{ margin: 0, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.72)' }}>
+                  Insurfox AI IaaS
+                </p>
                 <h1
                   style={{
-                    margin: 0,
+                    margin: '0.75rem 0 0',
                     color: 'var(--insurfox-orange)',
-                    fontSize: 'clamp(2.6rem, 4vw, 3.6rem)',
-                    lineHeight: 1.25,
-                    letterSpacing: '0.02em'
+                    fontSize: 'clamp(2.8rem, 5vw, 3.8rem)',
+                    fontWeight: 700
                   }}
                 >
                   {t('brokerPortal.title')}
@@ -268,8 +270,7 @@ export default function BrokerPortalLandingPage() {
                     marginTop: '1rem',
                     maxWidth: '720px',
                     color: 'rgba(255,255,255,0.82)',
-                    fontSize: '1.08rem',
-                    lineHeight: 1.6
+                    fontSize: '1.2rem'
                   }}
                 >
                   {t('brokerLanding.heroSubline')}
