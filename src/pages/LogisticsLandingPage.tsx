@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
+import HomeHeroBackground from '@/assets/images/Home1.png'
 import LogisticsHeroImage from '@/assets/images/logistik_portal.png'
 
 const KPI_KEYS = ['liveShipments', 'coverageRate', 'openIncidents', 'etaDeviation'] as const
@@ -61,6 +62,19 @@ export default function LogisticsLandingPage() {
   const navigate = useNavigate()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
+  const roleCards = [
+    {
+      title: t('roles.cards.logistics.title'),
+      body: t('roles.cards.logistics.description'),
+      route: '/logistics'
+    },
+    {
+      title: t('roles.cards.fleetManagement.title'),
+      body: t('roles.cards.fleetManagement.description'),
+      route: '/fleet-management'
+    }
+  ]
+
   return (
     <section
       style={{
@@ -74,7 +88,9 @@ export default function LogisticsLandingPage() {
         <div
           style={{
             position: 'relative',
-            background: '#0b1b5a',
+            backgroundImage: `url(${HomeHeroBackground})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             padding: '3.5rem clamp(1.5rem, 4vw, 3.25rem)',
             color: '#ffffff',
             boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
@@ -128,6 +144,44 @@ export default function LogisticsLandingPage() {
             </div>
           </div>
           <span style={{ position: 'absolute', left: 0, bottom: 0, width: 260, height: 4, background: '#d4380d' }} />
+        </div>
+
+        <div style={{ display: 'grid', gap: '1.5rem' }}>
+          <div>
+            <h2 style={{ margin: '0 0 0.5rem', color: 'var(--insurfox-orange)' }}>
+              {t('roles.overviewGroups.logistics')}
+            </h2>
+            <p style={{ margin: 0, color: '#475569' }}>
+              {t('roles.subtitle')}
+            </p>
+          </div>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+              gap: '1.5rem'
+            }}
+          >
+            {roleCards.map((card) => (
+              <button
+                key={card.title}
+                type="button"
+                onClick={() => navigate(card.route)}
+                style={{
+                  textAlign: 'left',
+                  background: '#ffffff',
+                  borderRadius: '20px',
+                  padding: '1.5rem',
+                  border: '1px solid rgba(148, 163, 184, 0.16)',
+                  boxShadow: '0 16px 32px rgba(15, 23, 42, 0.08)',
+                  cursor: 'pointer'
+                }}
+              >
+                <h3 style={{ margin: '0 0 0.5rem', color: 'var(--insurfox-orange)' }}>{card.title}</h3>
+                <p style={{ margin: 0, color: '#475569', lineHeight: 1.55 }}>{card.body}</p>
+              </button>
+            ))}
+          </div>
         </div>
 
         <div
