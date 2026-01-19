@@ -2,7 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import HeroBlockBackground from '@/assets/images/hero_block_1.png'
+import HomeHeroBackground from '@/assets/images/Home1.png'
+import BrokerPortalHeroImage from '@/assets/images/makler_portal.png'
 
 const featureKeys = ['crm', 'tender', 'ai', 'insights', 'workflows', 'compliance'] as const
 const trustKeys = ['crm', 'tender', 'ai'] as const
@@ -211,56 +212,76 @@ export default function BrokerPortalLandingPage() {
         >
           <div
             style={{
-              textAlign: 'center',
-              backgroundImage: `linear-gradient(135deg, rgba(7, 20, 74, 0.9) 0%, rgba(11, 45, 122, 0.9) 100%), url(${HeroBlockBackground})`,
+              position: 'relative',
+              backgroundImage: `linear-gradient(135deg, rgba(7, 20, 74, 0.9) 0%, rgba(11, 45, 122, 0.9) 100%), url(${HomeHeroBackground})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              padding: '2.5rem clamp(1rem, 4vw, 3rem)',
+              padding: '3.5rem clamp(1.5rem, 4vw, 3.25rem)',
               color: '#ffffff',
               boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
               width: '100vw',
               marginLeft: 'calc(50% - 50vw)'
             }}
           >
-            <div style={{ width: '100%', maxWidth: '1280px', margin: '0 auto' }}>
-              <h1
-                style={{
-                  margin: 0,
-                  color: '#ffffff',
-                  fontSize: 'clamp(2.6rem, 4vw, 3.6rem)',
-                  lineHeight: 1.25,
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase'
-                }}
-              >
-                {t('brokerPortal.title')}
-              </h1>
-              <p
-                style={{
-                  marginTop: '1rem',
-                  maxWidth: '740px',
-                  marginInline: 'auto',
-                  color: 'rgba(255,255,255,0.82)',
-                  fontSize: '1.08rem',
-                  lineHeight: 1.6
-                }}
-              >
-                {t('brokerLanding.heroSubline')}
-              </p>
+            <div
+              style={{
+                width: '100%',
+                maxWidth: '1280px',
+                margin: '0 auto',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                gap: '2.5rem',
+                alignItems: 'center'
+              }}
+            >
+              <div style={{ textAlign: 'left' }}>
+                <h1
+                  style={{
+                    margin: 0,
+                    color: '#ffffff',
+                    fontSize: 'clamp(2.6rem, 4vw, 3.6rem)',
+                    lineHeight: 1.25,
+                    letterSpacing: '0.02em'
+                  }}
+                >
+                  {t('brokerPortal.title')}
+                </h1>
+                <p
+                  style={{
+                    marginTop: '1rem',
+                    maxWidth: '720px',
+                    color: 'rgba(255,255,255,0.82)',
+                    fontSize: '1.08rem',
+                    lineHeight: 1.6
+                  }}
+                >
+                  {t('brokerLanding.heroSubline')}
+                </p>
+              </div>
               <div
                 style={{
-                  marginTop: '1.5rem',
+                  background: '#ffffff',
+                  borderRadius: '24px',
+                  padding: '1.5rem',
                   display: 'flex',
-                  flexWrap: 'wrap',
+                  alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '0.75rem'
+                  boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
+                  border: '1px solid rgba(148, 163, 184, 0.2)',
+                  aspectRatio: '1 / 1',
+                  maxWidth: '420px',
+                  width: '100%',
+                  justifySelf: 'end'
                 }}
               >
-                {trustKeys.map((key) => (
-                  <GlassChip key={key} label={t(`brokerLanding.trust.${key}`)} icon={trustIcons[key]} weight={650} />
-                ))}
+                <img
+                  src={BrokerPortalHeroImage}
+                  alt="Maklerportal"
+                  style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
+                />
               </div>
             </div>
+            <span style={{ position: 'absolute', left: 0, bottom: 0, width: 260, height: 4, background: '#d4380d' }} />
           </div>
 
           <SectionDivider />
