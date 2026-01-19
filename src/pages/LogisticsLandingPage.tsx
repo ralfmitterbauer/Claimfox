@@ -148,7 +148,9 @@ export default function LogisticsLandingPage() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {featureIcons[key]}
                   <div>
-                    <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.15rem' }}>{t(`logisticsLanding.cards.${key}.title`)}</h3>
+                    <h3 style={{ margin: '0 0 0.35rem', fontSize: '1.15rem', color: 'var(--insurfox-orange)' }}>
+                      {t(`logisticsLanding.cards.${key}.title`)}
+                    </h3>
                     <p style={{ margin: 0, color: '#475569' }}>{t(`logisticsLanding.cards.${key}.body`)}</p>
                   </div>
                 </div>

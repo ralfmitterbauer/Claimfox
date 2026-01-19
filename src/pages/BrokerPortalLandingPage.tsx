@@ -238,7 +238,7 @@ export default function BrokerPortalLandingPage() {
                 <h1
                   style={{
                     margin: 0,
-                    color: '#ffffff',
+                    color: 'var(--insurfox-orange)',
                     fontSize: 'clamp(2.6rem, 4vw, 3.6rem)',
                     lineHeight: 1.25,
                     letterSpacing: '0.02em'
