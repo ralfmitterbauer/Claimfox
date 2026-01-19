@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import HomeHeroImage from '@/assets/images/Home1.png'
-import HomeHeroOverlay from '@/assets/images/Home2.png'
+import HomeHeroOverlay from '@/assets/images/plattform_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
 
 export default function HomePage() {
@@ -34,8 +34,10 @@ export default function HomePage() {
             End-to-End-Prozessen und klarer Kontrolle über Daten, Modelle und Entscheidungen.
           </p>
         </div>
-        <div className="home-hero-media">
-          <img src={HomeHeroImage} alt="Insurfox Plattform" className="home-hero-image" />
+        <div
+          className="home-hero-media"
+          style={{ backgroundImage: `url(${HomeHeroImage})` }}
+        >
           <img src={HomeHeroOverlay} alt="" aria-hidden className="home-hero-overlay" />
         </div>
       </section>
