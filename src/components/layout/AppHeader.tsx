@@ -1,15 +1,9 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import logoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
+import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import type { Lang } from '@/i18n/translations'
 import { useAuth } from '@/features/auth/AuthContext'
-import './AppHeader.css'
-
-const LANGUAGES: Array<{ label: string; value: Lang }> = [
-  { label: 'DE', value: 'de' },
-  { label: 'EN', value: 'en' }
-]
 
 export default function AppHeader() {
   const navigate = useNavigate()
@@ -36,46 +30,43 @@ export default function AppHeader() {
   ]
 
   return (
-    <header className="app-header">
-      <div className="app-header__inner">
-        <Link to="/home" className="app-header__logo" aria-label="Insurfox">
-          <img src={logoDark} alt="Insurfox" />
-        </Link>
-
-        <nav className="app-header__nav" aria-label="Primary">
+    <header className="home-marketing-header">
+      <div className="home-marketing-header-inner">
+        <button type="button" onClick={() => navigate('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
+          <img src={logoDark} alt="Insurfox" className="home-marketing-logo" />
+        </button>
+        <nav className="home-marketing-nav">
           {navItems.map((item) => (
             <button key={item.route} type="button" onClick={() => navigate(item.route)}>
               {item.label}
             </button>
           ))}
-          <button type="button" className="app-header__menu" aria-label="Menü öffnen">
+          <div className="home-marketing-lang-switch" role="group" aria-label="Language switch">
+            <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
+              DE
+            </button>
+            <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>
+              EN
+            </button>
+          </div>
+          <Button
+            onClick={handleAuthClick}
+            className="home-marketing-login"
+            style={{ padding: '0.5rem 1.1rem' }}
+            disableHover
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="8" r="4" />
+              <path d="M4 20c1.8-3.5 5-6 8-6s6.2 2.5 8 6" />
+            </svg>
+            <span className="home-marketing-login-text">{authLabel}</span>
+          </Button>
+          <button type="button" className="home-marketing-menu" aria-label="Menü öffnen">
             <span />
             <span />
             <span />
           </button>
         </nav>
-
-        <div className="app-header__actions">
-          <div className="app-header__lang-switch" role="group" aria-label="Language switch">
-            {LANGUAGES.map((language) => {
-              const isActive = language.value === lang
-              return (
-                <button
-                  key={language.value}
-                  type="button"
-                  className={`app-header__lang-btn${isActive ? ' is-active' : ''}`}
-                  aria-pressed={isActive}
-                  onClick={() => setLang(language.value)}
-                >
-                  {language.label}
-                </button>
-              )
-            })}
-          </div>
-          <button type="button" className="app-header__auth-btn" onClick={handleAuthClick}>
-            {authLabel}
-          </button>
-        </div>
       </div>
     </header>
   )
