@@ -24,7 +24,7 @@ export default function LoginPage() {
   }, [])
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/roles', { replace: true })
+    if (isAuthenticated) navigate('/home', { replace: true })
   }, [isAuthenticated, navigate])
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -40,7 +40,7 @@ export default function LoginPage() {
     try {
       const success = login(username, password)
       if (success) {
-        navigate('/roles', { replace: true })
+        navigate('/home', { replace: true })
       } else {
         setError(t('login.invalid'))
       }

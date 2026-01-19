@@ -60,24 +60,20 @@ import InternalDocsOverviewPage from '@/pages/InternalDocsOverviewPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
-  return <Navigate to={isAuthenticated ? '/roles' : '/home'} replace />
+  return <Navigate to={isAuthenticated ? '/home' : '/login'} replace />
 }
 
 export default function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route element={<FullscreenBgLayout showHeader={false} />}>
-        <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
       </Route>
-      <Route
-        element={
-          <ProtectedRoute>
-            <FullscreenBgLayout showHeader />
-          </ProtectedRoute>
-        }
-      >
+      <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
+        <Route path="/home" element={<HomePage />} />
+      </Route>
+      <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
         <Route path="/roles" element={<RolesPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/broker-portal" element={<BrokerPortalLandingPage />} />
