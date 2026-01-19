@@ -15,9 +15,11 @@ export default function HomePage() {
         <div className="home-marketing-header-inner">
           <img src={InsurfoxLogo} alt="Insurfox" className="home-marketing-logo" />
           <nav className="home-marketing-nav">
-            <button type="button" onClick={() => navigate('/roles')}>Plattform</button>
-            <button type="button" onClick={() => navigate('/get-quote')}>Angebot</button>
-            <button type="button" onClick={() => navigate('/claim-manager')}>Schadenmanager</button>
+            <button type="button" onClick={() => navigate('/roles')}>Versicherungen</button>
+            <button type="button" onClick={() => navigate('/broker-portal')}>Makler</button>
+            <button type="button" onClick={() => navigate('/logistics')}>Logistik</button>
+            <button type="button" onClick={() => navigate('/fleet-management')}>Flotte</button>
+            <button type="button" onClick={() => navigate('/partner-management-overview')}>Partner</button>
             <Button onClick={() => navigate('/login')} style={{ padding: '0.6rem 1.4rem' }}>
               Anmelden
             </Button>
@@ -34,10 +36,7 @@ export default function HomePage() {
             End-to-End-Prozessen und klarer Kontrolle über Daten, Modelle und Entscheidungen.
           </p>
         </div>
-        <div
-          className="home-hero-media"
-          style={{ backgroundImage: `url(${HomeHeroImage})` }}
-        >
+        <div className="home-hero-media">
           <img src={HomeHeroOverlay} alt="" aria-hidden className="home-hero-overlay" />
         </div>
       </section>
