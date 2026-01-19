@@ -298,6 +298,10 @@ h6 {
   cursor: pointer;
 }
 
+.home-marketing-logo-button:hover {
+  background: none;
+}
+
 .home-marketing-menu {
   display: none;
   width: 38px;
@@ -384,6 +388,10 @@ h6 {
   width: 100%;
   justify-self: end;
   cursor: pointer;
+}
+
+.home-hero-card:hover {
+  box-shadow: 0 30px 70px rgba(11, 28, 108, 0.25);
 }
 
 .home-hero-card img {

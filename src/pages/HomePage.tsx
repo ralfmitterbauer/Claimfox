@@ -6,10 +6,12 @@ import HomeHeroBackground from '@/assets/images/Home1.png'
 import HomeHeroCardImage from '@/assets/images/iaas_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
 import { useI18n } from '@/i18n/I18nContext'
+import { useAuth } from '@/features/auth/AuthContext'
 
 export default function HomePage() {
   const navigate = useNavigate()
   const { lang, setLang } = useI18n()
+  const { isAuthenticated, logout } = useAuth()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
   const copy = {
@@ -19,7 +21,8 @@ export default function HomePage() {
       logistics: lang === 'en' ? 'Logistics' : 'Logistik',
       fleet: lang === 'en' ? 'Fleet' : 'Flotte',
       partner: lang === 'en' ? 'Partners' : 'Partner',
-      login: lang === 'en' ? 'Login' : 'Anmelden'
+      login: lang === 'en' ? 'Login' : 'Anmelden',
+      logout: lang === 'en' ? 'Logout' : 'Abmelden'
     },
     heroTitle:
       lang === 'en'
@@ -123,12 +126,23 @@ export default function HomePage() {
                 EN
               </button>
             </div>
-            <Button onClick={() => navigate('/login')} className="home-marketing-login" style={{ padding: '0.5rem 1.1rem' }}>
+            <Button
+              onClick={() => {
+                if (isAuthenticated) {
+                  logout()
+                  navigate('/login')
+                  return
+                }
+                navigate('/login')
+              }}
+              className="home-marketing-login"
+              style={{ padding: '0.5rem 1.1rem' }}
+            >
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 20c1.8-3.5 5-6 8-6s6.2 2.5 8 6" />
               </svg>
-              <span className="home-marketing-login-text">{copy.nav.login}</span>
+              <span className="home-marketing-login-text">{isAuthenticated ? copy.nav.logout : copy.nav.login}</span>
             </Button>
             <button type="button" className="home-marketing-menu" aria-label="Menü öffnen">
               <span />
