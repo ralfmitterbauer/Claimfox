@@ -32,26 +32,6 @@ export default function HomePage() {
             Eine integrierte Plattform für Versicherer, Logistik und Mobility – mit Governance-by-Design,
             End-to-End-Prozessen und klarer Kontrolle über Daten, Modelle und Entscheidungen.
           </p>
-          <div className="home-hero-actions">
-            <Button onClick={() => navigate('/roles')}>Live-Demo öffnen</Button>
-            <Button variant="secondary" onClick={() => navigate('/governance/strategic-deep-dive')}>
-              Deep Dive
-            </Button>
-          </div>
-          <div className="home-hero-metrics">
-            <div>
-              <strong>Multi-Stakeholder</strong>
-              <span>Versicherer, Partner, Kunden</span>
-            </div>
-            <div>
-              <strong>Governance-by-Design</strong>
-              <span>EU AI Act ready</span>
-            </div>
-            <div>
-              <strong>Event-driven</strong>
-              <span>Status, Claims, Dokumente</span>
-            </div>
-          </div>
         </div>
         <div className="home-hero-media">
           <img src={HomeHeroImage} alt="Insurfox Plattform" />
