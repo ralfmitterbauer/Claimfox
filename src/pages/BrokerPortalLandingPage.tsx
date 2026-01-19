@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
+import HomeHeroBackground from '@/assets/images/Home1.png'
 import BrokerPortalHeroImage from '@/assets/images/makler_portal.png'
 
 const featureKeys = ['crm', 'tender', 'ai', 'insights', 'workflows', 'compliance'] as const
@@ -156,9 +157,25 @@ function GlassChip({ label, weight = 700, icon }: { label: string; weight?: numb
 }
 
 export default function BrokerPortalLandingPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const navigate = useNavigate()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
+
+  const brokerRoleCards = [
+    {
+      title: t('roles.cards.brokerPortal.title'),
+      body: t('roles.cards.brokerPortal.description'),
+      route: '/broker-portal'
+    },
+    {
+      title: lang === 'en' ? 'Broker CRM & Backoffice' : 'Makler-CRM & Backoffice',
+      body:
+        lang === 'en'
+          ? 'Tendering, CRM and reporting for broker portfolios and client communication.'
+          : 'Ausschreibungen, CRM und Reporting für Maklerportfolios und Kundenkommunikation.',
+      route: '/broker-crm'
+    }
+  ]
 
   return (
     <div
@@ -212,11 +229,13 @@ export default function BrokerPortalLandingPage() {
         >
           <div
             style={{
-            position: 'relative',
-            background: '#0b1b5a',
-            padding: '3.5rem clamp(1.5rem, 4vw, 3.25rem)',
-            color: '#ffffff',
-            boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
+              position: 'relative',
+              backgroundImage: `url(${HomeHeroBackground})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              padding: '3.5rem clamp(1.5rem, 4vw, 3.25rem)',
+              color: '#ffffff',
+              boxShadow: '0 30px 70px rgba(11, 28, 108, 0.25)',
               width: '100vw',
               marginLeft: 'calc(50% - 50vw)'
             }}
@@ -284,6 +303,46 @@ export default function BrokerPortalLandingPage() {
               </div>
             </div>
             <span style={{ position: 'absolute', left: 0, bottom: 0, width: 260, height: 4, background: '#d4380d' }} />
+          </div>
+
+          <SectionDivider />
+
+          <div style={{ display: 'grid', gap: '1.5rem' }}>
+            <div>
+              <h2 style={{ margin: '0 0 0.5rem', color: 'var(--insurfox-orange)' }}>
+                {t('roles.overviewGroups.broker')}
+              </h2>
+              <p style={{ margin: 0, color: '#475569' }}>
+                {t('roles.subtitle')}
+              </p>
+            </div>
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                gap: '1.5rem'
+              }}
+            >
+              {brokerRoleCards.map((card) => (
+                <button
+                  key={card.title}
+                  type="button"
+                  onClick={() => navigate(card.route)}
+                  style={{
+                    textAlign: 'left',
+                    background: '#ffffff',
+                    borderRadius: '20px',
+                    padding: '1.5rem',
+                    border: '1px solid rgba(148, 163, 184, 0.16)',
+                    boxShadow: '0 16px 32px rgba(15, 23, 42, 0.08)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <h3 style={{ margin: '0 0 0.5rem', color: 'var(--insurfox-orange)' }}>{card.title}</h3>
+                  <p style={{ margin: 0, color: '#475569', lineHeight: 1.55 }}>{card.body}</p>
+                </button>
+              ))}
+            </div>
           </div>
 
           <SectionDivider />
