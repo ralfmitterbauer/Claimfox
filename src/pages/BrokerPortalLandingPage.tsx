@@ -178,15 +178,15 @@ export default function BrokerPortalLandingPage() {
   ]
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        minHeight: '100vh',
-        overflow: 'hidden',
-        color: '#0f172a',
-        background: 'linear-gradient(180deg, #f7f7f8 0%, #ffffff 100%)'
-      }}
-    >
+      <div
+        style={{
+          position: 'relative',
+          minHeight: '100vh',
+          overflow: 'hidden',
+          color: '#0f172a',
+          background: 'linear-gradient(180deg, #f7f7f8 0%, #ffffff 100%)'
+        }}
+      >
       <div
         style={{
           position: 'absolute',
@@ -221,7 +221,7 @@ export default function BrokerPortalLandingPage() {
           style={{
             maxWidth: '1280px',
             margin: '0 auto',
-            padding: '48px clamp(1.5rem, 4vw, 4rem) 72px',
+            padding: '0 clamp(1.5rem, 4vw, 4rem) 72px',
             display: 'flex',
             flexDirection: 'column',
             gap: '3.5rem'

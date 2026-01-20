@@ -61,7 +61,7 @@ export default function PartnerLandingPage() {
       style={{
         minHeight: '100vh',
         width: '100%',
-        padding: '48px clamp(1rem, 4vw, 3rem) 4rem',
+        padding: '0 clamp(1rem, 4vw, 3rem) 4rem',
         color: '#0f172a'
       }}
     >
