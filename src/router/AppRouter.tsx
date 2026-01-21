@@ -57,6 +57,7 @@ import StoryblokTestPage from '@/pages/StoryblokTestPage'
 import LandingSitemapPage from '@/pages/LandingSitemapPage'
 import LandingToolsPage from '@/pages/LandingToolsPage'
 import InternalDocsOverviewPage from '@/pages/InternalDocsOverviewPage'
+import BusinessModelAntaresPage from '@/pages/BusinessModelAntaresPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -119,6 +120,7 @@ export default function AppRouter() {
         <Route path="/insurfox-whitepaper" element={<InsurfoxWhitepaperPage />} />
         <Route path="/requirements-catalog" element={<RequirementsCatalogPage />} />
         <Route path="/questions-qic" element={<QuestionsQicPage />} />
+        <Route path="/business-model-antares" element={<BusinessModelAntaresPage />} />
         <Route path="/setup" element={<SetupPage />} />
         <Route path="/storyblok-test" element={<StoryblokTestPage />} />
         <Route path="/landing/sitemap" element={<LandingSitemapPage />} />

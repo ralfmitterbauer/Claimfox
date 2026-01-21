@@ -1069,6 +1069,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Insurfox Whitepaper',
           description: 'AI-getriebene Versicherungsplattform für Logistik, Transport & Mobility.'
         },
+        businessModelAntares: {
+          title: 'Business Modell Antares',
+          description: 'Insurfox x Antares: Rollen, Wertschöpfung und Revenue-Logik im Co-Branding-Modell.'
+        },
         requirementsCatalog: {
           title: 'Anforderungskatalog',
           description: 'Short Version für die Zusammenarbeit mit Versicherungen auf der Insurfox AI IaaS Plattform.'
@@ -3149,6 +3153,10 @@ export const translations: Record<Lang, TranslationTree> = {
         insurfoxWhitepaper: {
           title: 'Insurfox Whitepaper',
           description: 'AI-driven insurance platform for logistics, transport, and mobility.'
+        },
+        businessModelAntares: {
+          title: 'Business Model Antares',
+          description: 'Insurfox x Antares: roles, value creation, and revenue logic in the co-branding model.'
         },
         requirementsCatalog: {
           title: 'Requirements Catalog',

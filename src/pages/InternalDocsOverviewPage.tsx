@@ -10,6 +10,7 @@ type RoleItem = {
     | 'regulatoryGovernance'
     | 'auditAppendix'
     | 'insurfoxWhitepaper'
+    | 'businessModelAntares'
     | 'strategicDeepDive'
     | 'requirementsCatalog'
     | 'whitepaper'
@@ -31,6 +32,7 @@ const GOVERNANCE_ITEMS: RoleItem[] = [
 
 const PRESENTATION_ITEMS: RoleItem[] = [
   { key: 'insurfoxWhitepaper', route: '/insurfox-whitepaper' },
+  { key: 'businessModelAntares', route: '/business-model-antares' },
   { key: 'strategicDeepDive', route: '/governance/strategic-deep-dive' },
   { key: 'requirementsCatalog', route: '/requirements-catalog' },
   { key: 'whitepaper', route: '/ai-whitepaper' },
