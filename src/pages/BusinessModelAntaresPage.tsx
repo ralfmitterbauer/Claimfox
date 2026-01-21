@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import Card from '@/components/ui/Card'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import AntaresHeroImage from '@/assets/images/insurfox_antares.png'
+import AntaresHeroImageDe from '@/assets/images/insurfox_antares_de.png'
 import { useI18n } from '@/i18n/I18nContext'
 
 function getModelContent(lang: 'de' | 'en') {
@@ -12,17 +13,23 @@ function getModelContent(lang: 'de' | 'en') {
     overview: {
       paragraphs: [
         'Insurfox establishes and manages a pan-European logistics and fleet insurance portfolio as a Managing General Agent (MGA), with Antares acting as sole capacity provider and lead underwriter.',
-        'The portfolio targets a structurally attractive segment of the European Non-Life market, addressing logistics, transport and fleet risks with standardized risk intake, controlled underwriting execution, predictable claims behaviour and recurring, broker-driven premium inflow.',
+        'The portfolio targets a structurally attractive segment of the European Non-Life market, addressing logistics, transport and fleet risks with standardized risk intake, controlled underwriting execution, predictable claims behaviour and recurring, broker-driven premium inflow.'
+      ],
+      highlight:
         "The objective is the delivery of a transparent, governable and profitable specialty portfolio, aligned with Lloyd's portfolio steering and capital efficiency principles."
-      ]
     },
     marketContext: {
       title: 'Market Context',
-      paragraphs: [
-        'The European fleet insurance market represents a multi-billion-euro premium pool, estimated at ~USD 13.2bn in 2024, with projected growth toward ~USD 26.7bn by 2032 (~9% CAGR).',
+      rows: [
+        { label: 'Market size 2024', value: '~USD 13.2bn', note: 'European fleet insurance' },
+        { label: 'Projected 2032', value: '~USD 26.7bn', note: 'Market expansion outlook' },
+        { label: 'Growth rate', value: '~9% CAGR', note: '2024-2032' }
+      ],
+      bullets: [
         "Logistics-related insurance (fleet, cargo, carrier's liability) is a core sub-segment of European Commercial P&C, driven by professional insureds, repeatable risk structures and high data availability.",
         'Premium flows are recurring and compounding, supported by fleet continuity, contractual logistics chains and high renewal ratios - creating a durable underwriting base.'
-      ]
+      ],
+      driversLabel: 'Key signals'
     },
     portfolioScope: {
       title: 'Portfolio Scope',
@@ -177,21 +184,27 @@ function getModelContent(lang: 'de' | 'en') {
     return {
       title: 'INSURFOX × ANTARES',
       subtitle: 'Europäisches Logistik- und Flottenversicherungsportfolio',
-      model: 'Investmentthese für Entscheider',
+      model: 'Business Modell',
       overview: {
         paragraphs: [
           'Insurfox etabliert und managt als Managing General Agent (MGA) ein paneuropäisches Logistik- und Flottenversicherungsportfolio, wobei Antares als alleiniger Kapazitätsgeber und Lead Underwriter agiert.',
-          'Das Portfolio adressiert ein strukturell attraktives Segment des europäischen Non-Life-Marktes und fokussiert Logistik-, Transport- und Flottenrisiken mit standardisierter Risikoannahme, kontrollierter Underwriting-Execution, vorhersehbarem Schadenverhalten und wiederkehrendem, brokergetriebenem Prämienzufluss.',
-          "Ziel ist ein transparentes, steuerbares und profitables Specialty-Portfolio im Einklang mit den Portfolio-Steering- und Kapitaleffizienz-Prinzipien von Lloyd's."
-        ]
+          'Das Portfolio adressiert ein strukturell attraktives Segment des europäischen Non-Life-Marktes und fokussiert Logistik-, Transport- und Flottenrisiken mit standardisierter Risikoannahme, kontrollierter Underwriting-Execution, vorhersehbarem Schadenverhalten und wiederkehrendem, brokergetriebenem Prämienzufluss.'
+        ],
+        highlight:
+          'Ziel ist ein transparentes, steuerbares und profitables Specialty-Portfolio im Einklang mit den Portfolio-Steering- und Kapitaleffizienz-Prinzipien von Lloyd’s.'
       },
       marketContext: {
         title: 'Marktkontext',
-        paragraphs: [
-          'Der europäische Flottenversicherungsmarkt umfasst einen mehrmilliardigen Prämienpool, geschätzt auf ca. USD 13,2 Mrd. (2024), mit Wachstum auf rund USD 26,7 Mrd. bis 2032 (~9 % CAGR).',
+        rows: [
+          { label: 'Marktvolumen 2024', value: '~USD 13,2 Mrd.', note: 'Europäische Flottenversicherung' },
+          { label: 'Prognose 2032', value: '~USD 26,7 Mrd.', note: 'Markt-Ausblick' },
+          { label: 'Wachstumsrate', value: '~9 % CAGR', note: '2024-2032' }
+        ],
+        bullets: [
           'Logistiknahe Versicherungen (Fleet, Cargo, Frachtführerhaftpflicht) bilden ein Kernsegment der europäischen Commercial P&C mit professionellen Versicherungsnehmern, wiederholbaren Risikostrukturen und hoher Datenverfügbarkeit.',
           'Prämienflüsse sind wiederkehrend und kumulativ, getragen durch Flottenkontinuität, vertragliche Logistikketten und hohe Erneuerungsquoten.'
-        ]
+        ],
+        driversLabel: 'Kernaussagen'
       },
       portfolioScope: {
         title: 'Portfolio-Umfang',
@@ -349,6 +362,7 @@ function getModelContent(lang: 'de' | 'en') {
 export default function BusinessModelAntaresPage() {
   const { lang } = useI18n()
   const content = useMemo(() => getModelContent(lang), [lang])
+  const heroImage = lang === 'de' ? AntaresHeroImageDe : AntaresHeroImage
 
   return (
     <section className="page insurfox-whitepaper-page antares-marketing-page">
@@ -376,19 +390,38 @@ export default function BusinessModelAntaresPage() {
               ))}
             </div>
             <div className="antares-hero-media">
-              <img src={AntaresHeroImage} alt="Insurfox x Antares" />
+              <img src={heroImage} alt="Insurfox x Antares" />
             </div>
           </Card>
         </div>
-        <div className="antares-highlight">{content.overview.paragraphs[2]}</div>
+        <div className="antares-highlight">{content.overview.highlight}</div>
         <section className="antares-section">
           <div className="antares-section-head">
             <h2>{content.marketContext.title}</h2>
           </div>
           <Card className="antares-card">
-            {content.marketContext.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <div className="antares-table">
+              <div className="antares-table-row antares-table-header">
+                <span>{lang === 'en' ? 'Metric' : 'Kennzahl'}</span>
+                <span>{lang === 'en' ? 'Value' : 'Wert'}</span>
+                <span>{lang === 'en' ? 'Note' : 'Hinweis'}</span>
+              </div>
+              {content.marketContext.rows.map((row) => (
+                <div key={row.label} className="antares-table-row">
+                  <span>{row.label}</span>
+                  <span>{row.value}</span>
+                  <span>{row.note}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+          <Card className="antares-card">
+            <h3>{content.marketContext.driversLabel}</h3>
+            <ul>
+              {content.marketContext.bullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </Card>
         </section>
         <section className="antares-section">
@@ -568,12 +601,23 @@ export default function BusinessModelAntaresPage() {
           {content.overview.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
+          <p>{content.overview.highlight}</p>
         </div>
         <div className="framework-print-section">
           <h2>{content.marketContext.title}</h2>
-          {content.marketContext.paragraphs.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+          <ul>
+            {content.marketContext.rows.map((row) => (
+              <li key={row.label}>
+                {row.label}: {row.value}
+              </li>
+            ))}
+          </ul>
+          <p>{content.marketContext.driversLabel}</p>
+          <ul>
+            {content.marketContext.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
         <div className="framework-print-section">
           <h2>{content.portfolioScope.title}</h2>
