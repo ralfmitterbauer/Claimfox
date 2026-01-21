@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import Card from '@/components/ui/Card'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import AntaresHeroImage from '@/assets/images/insurfox_antares.png'
-import AntaresHeroImageDe from '@/assets/images/insurfox_antares_de.png'
+import AntaresHeroImageDe from '@/assets/images/Poster-Antares-big.png'
 import { useI18n } from '@/i18n/I18nContext'
 
 function getModelContent(lang: 'de' | 'en') {
