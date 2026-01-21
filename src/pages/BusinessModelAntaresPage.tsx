@@ -391,6 +391,7 @@ export default function BusinessModelAntaresPage() {
         <div className="antares-print-cover">
           <img src={AntaresHeroImage} alt="Insurfox powered by Antares" />
         </div>
+        <div className="antares-print-spacer" aria-hidden="true" />
         <div className="antares-print-header">
           <img src={InsurfoxLogo} alt="Insurfox" />
         </div>
