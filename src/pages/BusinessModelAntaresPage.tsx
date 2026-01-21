@@ -276,7 +276,7 @@ function getModelContent(lang: 'de' | 'en') {
         antares: {
           title: 'Rolle von Antares',
           bullets: [
-            'Alleiniger Risikoträger',
+            'Alleiniger Risikoträger Insuerer/Reinsurer',
             'Lead Underwriting Authority',
             'Kapitalbereitstellung und Kapazitätssteuerung',
             'Finale Schadenentscheidung',
