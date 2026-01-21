@@ -106,7 +106,7 @@ function getModelContent(lang: 'de' | 'en') {
       insurfox: {
         title: 'Role of Insurfox (MGA)',
         bullets: [
-          'Portfolio construction and risk aggregation',
+          'Portfolio construction and risk management',
           'Broker onboarding and distribution management',
           'Policy issuance and contract administration',
           'Delegated underwriting within agreed authority',
@@ -292,7 +292,7 @@ function getModelContent(lang: 'de' | 'en') {
         insurfox: {
           title: 'Rolle von Insurfox (MGA)',
           bullets: [
-            'Portfolioaufbau und Risikoaggregation',
+            'Portfolioaufbau und Risikomanagement',
             'Broker-Onboarding und Distribution-Management',
             'Policierung und Vertragsadministration, Prolongierung, Editierung, Digitale Nachträge',
             'Delegiertes Underwriting im vereinbarten Rahmen',
@@ -360,7 +360,7 @@ function getModelContent(lang: 'de' | 'en') {
         },
         insurfox: {
           title: 'Insurfox',
-          bullets: ['Portfolioaufbau', 'Broker-Onboarding', 'Risikoaggregation', 'Operative Umsetzung']
+          bullets: ['Portfolioaufbau', 'Broker-Onboarding', 'Risikomanagement', 'Operative Umsetzung']
         }
       },
       coreStatement: {
