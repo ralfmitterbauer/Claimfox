@@ -1569,10 +1569,24 @@ h6 {
 .antares-image-button {
   border: none;
   padding: 0;
-  background: transparent;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0;
   cursor: pointer;
   display: block;
   width: 100%;
+  transition: none;
+}
+
+.antares-image-button:hover,
+.antares-image-button:active {
+  background: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.antares-image-button:focus-visible {
+  box-shadow: none !important;
 }
 
 .antares-hero-media img {
@@ -1589,13 +1603,14 @@ h6 {
   background: rgba(15, 23, 42, 0.72);
   display: grid;
   place-items: center;
+  overflow: auto;
+  padding: 2rem 1.5rem;
   z-index: 1000;
 }
 
 .antares-image-overlay-content {
   position: relative;
   width: min(92vw, 1100px);
-  height: min(90vh, 800px);
   display: grid;
   place-items: center;
   background: #0f172a;
@@ -1605,7 +1620,7 @@ h6 {
 
 .antares-image-overlay-content img {
   max-width: 100%;
-  max-height: 100%;
+  height: auto;
   object-fit: contain;
 }
 
@@ -2645,14 +2660,22 @@ h6 {
   }
 
   .antares-marketing-page {
-    padding-top: 22mm;
+    padding-top: 0;
+  }
+
+  .antares-hero {
+    margin-top: 22mm;
   }
 
   .antares-hero-media {
     display: none;
   }
 
-  .antares-section,
+  .antares-section {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
   .antares-card,
   .antares-hero,
   .antares-highlight,
@@ -2685,6 +2708,33 @@ h6 {
 
   .antares-hero-card {
     padding: 1.4rem;
+  }
+
+  .antares-marketing-page .antares-card {
+    background: #ffffff !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08) !important;
+  }
+
+  .antares-marketing-page .antares-hero-card {
+    background: #ffffff !important;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1) !important;
+  }
+
+  .antares-marketing-page .antares-highlight {
+    background: #fff7f1 !important;
+  }
+
+  .antares-marketing-page .antares-table-row {
+    background: #ffffff !important;
+  }
+
+  .antares-marketing-page .antares-table-header {
+    background: #0f172a !important;
+    color: #ffffff !important;
+  }
+
+  .antares-marketing-page .antares-core-card {
+    background: linear-gradient(120deg, #111827 0%, #1f2a5f 100%) !important;
   }
 
   .regulatory-framework-page {
