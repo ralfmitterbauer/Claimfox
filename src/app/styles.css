@@ -1527,7 +1527,7 @@ h6 {
 .antares-hero {
   padding: 0 24px;
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
   align-items: stretch;
 }
@@ -1538,14 +1538,33 @@ h6 {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.98) 100%);
 }
 
+.antares-hero-content h2 {
+  margin: 0 0 1rem;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
 .antares-hero-card p {
   margin: 0 0 0.9rem;
   color: #475569;
   line-height: 1.7;
 }
 
-.antares-highlight {
+.antares-hero-media {
   margin-top: 1rem;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.antares-hero-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.antares-highlight {
+  margin: 0 24px;
   padding: 1rem 1.2rem;
   border-left: 3px solid #f05a22;
   background: #fff7f1;
@@ -1628,6 +1647,25 @@ h6 {
   line-height: 1.7;
 }
 
+.antares-metric-card {
+  display: grid;
+  gap: 0.6rem;
+  align-items: center;
+  text-align: left;
+  background: #f8fafc;
+}
+
+.antares-metric-card span {
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+}
+
+.antares-metric-card strong {
+  color: #0f172a;
+  font-size: 1.25rem;
+}
 .antares-ai-card {
   background: linear-gradient(135deg, rgba(248, 250, 252, 0.96) 0%, #ffffff 100%);
 }

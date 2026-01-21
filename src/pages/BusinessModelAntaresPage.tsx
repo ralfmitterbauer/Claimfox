@@ -1,95 +1,27 @@
 import React, { useMemo } from 'react'
 import Card from '@/components/ui/Card'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
+import AntaresHeroImage from '@/assets/images/insurfox_antares.png'
 import { useI18n } from '@/i18n/I18nContext'
 
 function getModelContent(lang: 'de' | 'en') {
   const enContent = {
-    title: 'Business Model: Insurfox x Antares',
-    subtitle: 'A Controlled European Logistics Insurance Portfolio',
-    model: 'MGA Partnership with AI-Enabled Portfolio Governance',
+    title: 'INSURFOX x ANTARES',
+    subtitle: 'European Logistics and Fleet Insurance Portfolio',
+    model: 'Executive Investment Proposition',
     overview: {
-      title: 'Executive Overview',
       paragraphs: [
-        'Insurfox operates as a Managing General Agent (MGA), originating, underwriting and managing a pan-European logistics insurance portfolio, with Antares acting as sole risk carrier and lead underwriter.',
-        'The partnership is designed to deliver predictable portfolio performance, controlled growth and full transparency, supported by AI-enabled underwriting, policierung and claims governance.'
-      ],
-      emphasis: 'The Insurfox AI IaaS is not the product - it is the operating capability that ensures portfolio quality, control and scalability.'
+        'Insurfox establishes and manages a pan-European logistics and fleet insurance portfolio as a Managing General Agent (MGA), with Antares acting as sole capacity provider and lead underwriter.',
+        'The portfolio targets a structurally attractive segment of the European Non-Life market, addressing logistics, transport and fleet risks with standardized risk intake, controlled underwriting execution, predictable claims behaviour and recurring, broker-driven premium inflow.',
+        "The objective is the delivery of a transparent, governable and profitable specialty portfolio, aligned with Lloyd's portfolio steering and capital efficiency principles."
+      ]
     },
-    strategicRationale: {
-      title: 'Strategic Rationale',
-      bullets: [
-        'Fragmented broker submissions',
-        'Inconsistent risk data',
-        'Limited portfolio visibility',
-        'Volatile loss ratios driven by isolated risk underwriting'
-      ],
-      note:
-        'Insurfox resolves these structural inefficiencies by aggregating logistics risks into a standardized, continuously monitored portfolio, supported by AI-driven data normalization, scoring and process control. This enables Antares to underwrite a managed portfolio, not fragmented individual risks.'
-    },
-    governance: {
-      title: 'Role Allocation and Governance',
-      antares: {
-        title: 'Antares - Risk Carrier and Capital Steward',
-        bullets: [
-          'Underwriting appetite and guidelines',
-          'Pricing parameters',
-          'Capacity allocation',
-          'Reinsurance strategy',
-          'Final claims authority',
-          'Continuous, structured portfolio reporting and ultimate risk ownership'
-        ]
-      },
-      insurfox: {
-        title: 'Insurfox - Managing General Agent (MGA)',
-        bullets: [
-          'Portfolio construction and risk aggregation',
-          'Broker onboarding and distribution management',
-          'Policierung and contract administration',
-          'Delegated underwriting within defined authority',
-          'Delegated claims handling within agreed limits',
-          'Ongoing portfolio monitoring and reporting',
-          'AI IaaS ensures consistency, speed and control across operations'
-        ]
-      }
-    },
-    aiModel: {
-      title: 'How AI Strengthens the MGA Model (Not Replaces It)',
-      resultLabel: 'Result',
-      items: [
-        {
-          title: '01. Standardized Risk Origination',
-          bullets: ['Standardized risk objects', 'Consistent exposure definitions', 'Structured data formats'],
-          result: 'Clean, comparable risks across brokers and geographies.'
-        },
-        {
-          title: '02. Controlled Underwriting Execution',
-          bullets: [
-            'Apply agreed underwriting rules consistently',
-            'Score risk characteristics',
-            'Flag deviations and exceptions'
-          ],
-          result: 'Underwriting discipline at portfolio level, not dependent on individual underwriters.'
-        },
-        {
-          title: '03. Predictable Policierung',
-          bullets: [
-            'Automated validation of policy data',
-            'Consistency checks against underwriting intent',
-            'Reduction of manual corrections'
-          ],
-          result: 'Faster, error-free policy issuance without altering tariff logic.'
-        },
-        {
-          title: '04. Claims Governance and Loss Control',
-          bullets: ['Structured FNOL intake', 'Early severity and complexity scoring', 'Routing by governance rules'],
-          result: 'Lower handling cost, faster settlements, controlled severity development.'
-        },
-        {
-          title: '05. Portfolio Transparency and Steering',
-          bullets: ['Real-time portfolio KPIs', 'Loss development monitoring', 'Broker and segment insights'],
-          result: 'Antares underwrites a portfolio that is continuously observable and steerable.'
-        }
+    marketContext: {
+      title: 'Market Context',
+      paragraphs: [
+        'The European fleet insurance market represents a multi-billion-euro premium pool, estimated at ~USD 13.2bn (2024), with projected growth toward ~USD 26.7bn by 2032 (~9% CAGR).',
+        "Logistics-related insurance (fleet, cargo, carrier's liability) forms a core sub-segment of European Commercial P&C, characterized by professional insureds, repeatable risk structures and high data availability.",
+        'Premium flows are recurring and compounding, driven by fleet continuity, contractual logistics chains and high renewal ratios.'
       ]
     },
     portfolioScope: {
@@ -110,163 +42,168 @@ function getModelContent(lang: 'de' | 'en') {
           'Motor fleet insurance',
           "Carrier's liability",
           'Cargo insurance',
-          'Logistics combined covers',
-          'Ancillary lines (cyber, D&O, legal, equipment)'
+          'Logistics combined policies',
+          'Ancillary covers (cyber, D&O, legal expenses, equipment)'
         ]
       },
       geography: {
         title: 'Geography',
-        bullets: ['Germany (initial market)', "EU expansion via Lloyd's Europe"]
+        bullets: ['Germany (initial build-out)', "EU expansion via Lloyd's Europe framework"]
+      },
+      risk: {
+        title: 'Risk Characteristics',
+        bullets: [
+          'Professional insured base',
+          'Repetitive, homogeneous risk structures',
+          'High frequency / controlled severity loss patterns',
+          'Lower volatility compared to SME retail portfolios',
+          'Limited tail exposure'
+        ]
       }
     },
     premiumOutlook: {
-      title: 'Premium Development Outlook (GWP)',
+      title: 'Expected Premium Development (GWP)',
       rows: [
         { year: 'Year 1', conservative: 'EUR 3-5m', upside: 'EUR 7m' },
         { year: 'Year 2', conservative: 'EUR 10-15m', upside: 'EUR 20m' },
         { year: 'Year 3', conservative: 'EUR 25-40m', upside: 'EUR 50m+' }
       ],
-      bullets: ['Broker aggregation', 'Embedded fleet onboarding', 'High renewal retention', 'Portfolio compounding']
+      bullets: ['Broker aggregation', 'Embedded fleet onboarding', 'Standardized underwriting logic', 'Portfolio renewals'],
+      driversLabel: 'Growth drivers'
     },
     economics: {
       title: 'Target Portfolio Economics',
       metrics: [
         { label: 'Gross Loss Ratio', value: '45-55%' },
         { label: 'Expense Ratio', value: '20-25%' },
-        { label: 'Combined Ratio', value: '<= 80%' }
-      ],
-      note: 'AI-supported governance reduces leakage, volatility and operational cost.'
+        { label: 'Combined Ratio', value: '<= 80%' },
+        { label: 'Claims Frequency', value: 'Medium' },
+        { label: 'Claims Severity', value: 'Controlled' },
+        { label: 'Tail Risk', value: 'Limited' }
+      ]
+    },
+    operatingModel: {
+      title: 'Operating Model',
+      antares: {
+        title: 'Role of Antares',
+        bullets: [
+          'Sole risk carrier',
+          'Lead underwriting authority',
+          'Capital provision and capacity steering',
+          'Final claims decision authority',
+          'Portfolio-level governance and oversight'
+        ]
+      },
+      insurfox: {
+        title: 'Role of Insurfox (MGA)',
+        bullets: [
+          'Portfolio construction and risk aggregation',
+          'Broker onboarding and distribution management',
+          'Policierung and contract administration',
+          'Delegated underwriting within agreed authority',
+          'Delegated claims handling for low-value claims (subject to data completeness)',
+          'Ongoing portfolio monitoring and reporting'
+        ]
+      }
     },
     claims: {
       title: 'Claims Governance Framework',
       bullets: [
-        'Antares remains final claims authority',
-        'Optional delegated authority up to EUR 10,000, subject to complete digital claim data, structured FNOL, and predefined escalation rules',
-        'Large or complex claims are handled with loss adjusters'
+        'Antares retains final claims authority',
+        'Optional delegated authority up to EUR 10,000, subject to complete structured digital FNOL and predefined escalation rules',
+        'Loss adjusters mandated for large or complex claims'
       ]
     },
+    qualityControl: {
+      title: 'Portfolio Quality Control',
+      traditional: {
+        title: 'Traditional broker portfolios',
+        bullets: [
+          'Inconsistent submissions',
+          'PDF-based risk data',
+          'Fragmented exposure',
+          'Limited transparency',
+          'Volatile loss ratios'
+        ]
+      },
+      insurfox: {
+        title: 'Insurfox MGA portfolio',
+        bullets: [
+          'Standardized risk objects',
+          'Clean exposure data',
+          'Continuous monitoring',
+          'Unified underwriting rules',
+          'Portfolio-level reporting'
+        ]
+      },
+      result: 'Antares receives one aggregated, continuously governed portfolio, not isolated broker risks.'
+    },
     strategicValue: {
-      title: 'Strategic Value for Antares',
+      title: 'Strategic Value to Antares',
       bullets: [
-        'Sole capacity provider',
-        'Lead underwriting position',
-        'Portfolio-level transparency',
-        'Predictable capital deployment',
-        'Scalable premium pipeline',
-        'Long-term MGA partnership'
-      ],
-      operatingTitle: 'The AI-enabled operating model ensures',
-      operatingBullets: ['Underwriting discipline', 'Cost efficiency', 'Portfolio stability', 'Scalability across markets']
+        'Exclusive capacity position',
+        'Lead underwriting role',
+        'Full portfolio transparency',
+        'Recurring premium pipeline',
+        'Capital-efficient deployment',
+        'Scalable European expansion',
+        'Long-term MGA partnership model'
+      ]
+    },
+    decision: {
+      title: 'Decision Framework',
+      antares: {
+        title: 'Antares',
+        bullets: ['Capacity appetite', 'Target loss ratio corridor', 'Initial line size', 'Governance and reporting cadence']
+      },
+      insurfox: {
+        title: 'Insurfox',
+        bullets: ['Portfolio build-out', 'Broker onboarding', 'Risk aggregation', 'Operational execution']
+      }
     },
     coreStatement: {
-      title: 'Core Statement',
-      text: 'Insurfox, acting as Managing General Agent, delivers a scalable and governable European logistics insurance portfolio, with AI-enabled underwriting and claims execution supporting Antares capital and risk objectives.'
+      title: 'Core Positioning',
+      paragraphs: [
+        'Insurfox operates as MGA, delivering a scalable and controlled European logistics insurance portfolio.',
+        'Antares provides capital, underwriting authority and risk leadership.'
+      ]
     },
     labels: {
-      premiumTable: {
-        year: 'Year',
-        conservative: 'Conservative',
-        upside: 'Upside'
-      },
-      premiumDrivers: 'Growth is driven by'
+      premiumTable: { year: 'Year', conservative: 'Conservative', upside: 'Upside' }
     }
   }
 
   if (lang === 'de') {
     return {
-      title: 'Business Model: Insurfox x Antares',
-      subtitle: 'Ein kontrolliertes europaeisches Logistik-Versicherungsportfolio',
-      model: 'MGA-Partnerschaft mit KI-gestuetzter Portfolio-Governance',
+      title: 'INSURFOX x ANTARES',
+      subtitle: 'Europaeisches Logistik- und Flottenversicherungsportfolio',
+      model: 'Investmentthese fuer Entscheider',
       overview: {
-        title: 'Executive Overview',
         paragraphs: [
-          'Insurfox agiert als Managing General Agent (MGA) und originiert, zeichnet und managt ein paneuropaeisches Logistik-Versicherungsportfolio, wobei Antares als alleiniger Risikotraeger und Lead Underwriter fungiert.',
-          'Die Partnerschaft ist darauf ausgelegt, vorhersehbare Portfolio-Performance, kontrolliertes Wachstum und volle Transparenz zu liefern, unterstuetzt durch KI-gestuetztes Underwriting, Policierung und Claims-Governance.'
-        ],
-        emphasis:
-          'Die Insurfox AI IaaS ist nicht das Produkt - sie ist die operative Faehigkeit, die Portfolioqualitaet, Kontrolle und Skalierbarkeit sicherstellt.'
+          'Insurfox etabliert und managt als Managing General Agent (MGA) ein paneuropaeisches Logistik- und Flottenversicherungsportfolio, wobei Antares als alleiniger Kapazitaetsgeber und Lead Underwriter agiert.',
+          'Das Portfolio adressiert ein strukturell attraktives Segment des europaeischen Non-Life-Marktes und fokussiert Logistik-, Transport- und Flottenrisiken mit standardisierter Risikoannahme, kontrollierter Underwriting-Execution, vorhersehbarem Schadenverhalten und wiederkehrendem, brokergetriebenem Praemienzufluss.',
+          "Ziel ist ein transparentes, steuerbares und profitables Specialty-Portfolio im Einklang mit den Portfolio-Steering- und Kapitaleffizienz-Prinzipien von Lloyd's."
+        ]
       },
-      strategicRationale: {
-        title: 'Strategische Begruendung',
-        bullets: [
-          'Fragmentierte Broker-Submissions',
-          'Inkonsistente Risikodaten',
-          'Begrenzte Portfolio-Sichtbarkeit',
-          'Volatile Loss Ratios durch isoliertes Risk Underwriting'
-        ],
-        note:
-          'Insurfox behebt diese strukturellen Ineffizienzen, indem Logistikrisiken zu einem standardisierten, kontinuierlich ueberwachten Portfolio aggregiert werden, unterstuetzt durch KI-basierte Daten-Normalisierung, Scoring und Prozesskontrolle. Damit zeichnet Antares ein gesteuertes Portfolio statt fragmentierter Einzelrisiken.'
-      },
-      governance: {
-        title: 'Rollenverteilung und Governance',
-        antares: {
-          title: 'Antares - Risikotraeger und Kapital-Steward',
-          bullets: [
-            'Underwriting-Appetit und Guidelines',
-            'Pricing-Parameter',
-            'Kapazitaetsallokation',
-            'Rueckversicherungsstrategie',
-            'Finale Claims Authority',
-            'Kontinuierliches, strukturiertes Portfolio-Reporting und finale Risikohoheit'
-          ]
-        },
-        insurfox: {
-          title: 'Insurfox - Managing General Agent (MGA)',
-          bullets: [
-            'Portfolioaufbau und Risikoaggregation',
-            'Broker-Onboarding und Distribution-Management',
-            'Policierung und Vertragsadministration',
-            'Delegiertes Underwriting im definierten Rahmen',
-            'Delegierte Schadenbearbeitung innerhalb vereinbarter Limits',
-            'Laufendes Portfoliomonitoring und Reporting',
-            'AI IaaS sichert Konsistenz, Geschwindigkeit und Kontrolle in den Prozessen'
-          ]
-        }
-      },
-      aiModel: {
-        title: 'Wie KI das MGA-Modell staerkt (und nicht ersetzt)',
-        resultLabel: 'Ergebnis',
-        items: [
-          {
-            title: '01. Standardisierte Risiko-Originierung',
-            bullets: ['Standardisierte Risikoobjekte', 'Konsistente Exposures', 'Strukturierte Datenformate'],
-            result: 'Saubere, vergleichbare Risiken ueber Broker und Laender hinweg.'
-          },
-          {
-            title: '02. Kontrollierte Underwriting-Execution',
-            bullets: [
-              'Konsequente Anwendung vereinbarter Underwriting-Regeln',
-              'Scoring der Risikomerkmale',
-              'Markierung von Abweichungen und Ausnahmen'
-            ],
-            result: 'Underwriting-Disziplin auf Portfolioebene, nicht abhaengig von Einzelentscheidern.'
-          },
-          {
-            title: '03. Vorhersehbare Policierung',
-            bullets: [
-              'Automatisierte Validierung von Policendaten',
-              'Konsistenzchecks gegen die Underwriting-Intention',
-              'Reduktion manueller Korrekturen'
-            ],
-            result: 'Schnelle, fehlerfreie Policierung ohne Aenderung der Tariflogik.'
-          },
-          {
-            title: '04. Claims Governance und Loss Control',
-            bullets: ['Strukturierte FNOL-Aufnahme', 'Fruehes Severity- und Complexity-Scoring', 'Routing nach Governance-Regeln'],
-            result: 'Niedrigere Handling-Kosten, schnellere Regulierung, kontrollierte Severity-Entwicklung.'
-          },
-          {
-            title: '05. Portfolio-Transparenz und Steuerung',
-            bullets: ['Echtzeit-Portfolio-KPIs', 'Monitoring der Loss Development', 'Broker- und Segment-Insights'],
-            result: 'Antares zeichnet ein Portfolio, das kontinuierlich beobachtbar und steuerbar ist.'
-          }
+      marketContext: {
+        title: 'Marktkontext',
+        paragraphs: [
+          'Der europaeische Flottenversicherungsmarkt umfasst einen mehrmilliardigen Praemienpool, geschaetzt auf ca. USD 13,2 Mrd. (2024) mit Wachstum auf ca. USD 26,7 Mrd. bis 2032 (~9% CAGR).',
+          "Logistiknahe Versicherungen (Fleet, Cargo, Frachtfuehrerhaftpflicht) bilden ein zentrales Teilsegment der europaeischen Commercial P&C mit professionellen Versicherungsnehmern, wiederholbaren Risikostrukturen und hoher Datenverfuegbarkeit.",
+          'Praemienfluesse sind wiederkehrend und kumulativ, getrieben durch Flottenkontinuitaet, vertragliche Logistikketten und hohe Renewal-Raten.'
         ]
       },
       portfolioScope: {
-        title: 'Portfolio Scope',
+        title: 'Portfolio-Umfang',
         insureds: {
           title: 'Zielkunden',
-          bullets: ['Logistikunternehmen', 'Spediteure', 'Transportunternehmen', 'Flottenbetreiber', 'Mobilitaets- und Subunternehmernetzwerke']
+          bullets: [
+            'Logistikunternehmen',
+            'Spediteure',
+            'Transportunternehmen',
+            'Flottenbetreiber',
+            'Mobilitaets- und Subunternehmernetzwerke'
+          ]
         },
         lines: {
           title: 'Versicherungslinien',
@@ -274,65 +211,134 @@ function getModelContent(lang: 'de' | 'en') {
             'Kfz-Flottenversicherung',
             'Frachtfuehrerhaftpflicht',
             'Transportversicherung',
-            'Logistik-Kombideckungen',
-            'Zusatzlinien (Cyber, D&O, Rechtsschutz, Equipment)'
+            'Logistik-Kombipolicen',
+            'Zusatzdeckungen (Cyber, D&O, Rechtsschutz, Equipment)'
           ]
         },
         geography: {
           title: 'Geografie',
-          bullets: ['Deutschland (Startmarkt)', "EU-Expansion ueber Lloyd's Europe"]
+          bullets: ['Deutschland (Initialaufbau)', "EU-Expansion ueber das Lloyd's-Europe-Framework"]
+        },
+        risk: {
+          title: 'Risikoprofil',
+          bullets: [
+            'Professioneller Versicherungsnehmerstamm',
+            'Repetitive, homogene Risikostrukturen',
+            'Hohe Frequenz bei kontrollierter Schadenhoehe',
+            'Geringere Volatilitaet gegenueber SME-Retail-Portfolios',
+            'Begrenzte Tail-Exposure'
+          ]
         }
       },
       premiumOutlook: {
-        title: 'Praemienentwicklung (GWP)',
+        title: 'Erwartete Praemienentwicklung (GWP)',
         rows: [
           { year: 'Jahr 1', conservative: 'EUR 3-5m', upside: 'EUR 7m' },
           { year: 'Jahr 2', conservative: 'EUR 10-15m', upside: 'EUR 20m' },
           { year: 'Jahr 3', conservative: 'EUR 25-40m', upside: 'EUR 50m+' }
         ],
-        bullets: ['Broker-Aggregation', 'Embedded Fleet Onboarding', 'Hohe Renewal-Retention', 'Portfolio-Compounding']
+        bullets: ['Broker-Aggregation', 'Embedded Fleet Onboarding', 'Standardisierte Underwriting-Logik', 'Portfolio-Renewals'],
+        driversLabel: 'Wachstumstreiber'
       },
       economics: {
         title: 'Zielportfolio-Oekonomie',
         metrics: [
           { label: 'Gross Loss Ratio', value: '45-55%' },
           { label: 'Expense Ratio', value: '20-25%' },
-          { label: 'Combined Ratio', value: '<= 80%' }
-        ],
-        note: 'KI-gestuetzte Governance reduziert Leakage, Volatilitaet und operative Kosten.'
+          { label: 'Combined Ratio', value: '<= 80%' },
+          { label: 'Claims Frequency', value: 'Mittel' },
+          { label: 'Claims Severity', value: 'Kontrolliert' },
+          { label: 'Tail Risk', value: 'Begrenzt' }
+        ]
+      },
+      operatingModel: {
+        title: 'Betriebsmodell',
+        antares: {
+          title: 'Rolle von Antares',
+          bullets: [
+            'Alleiniger Risikotraeger',
+            'Lead Underwriting Authority',
+            'Kapitalbereitstellung und Kapazitaetssteuerung',
+            'Finale Claims-Entscheidung',
+            'Portfolio-Governance und Aufsicht'
+          ]
+        },
+        insurfox: {
+          title: 'Rolle von Insurfox (MGA)',
+          bullets: [
+            'Portfolioaufbau und Risikoaggregation',
+            'Broker-Onboarding und Distribution-Management',
+            'Policierung und Vertragsadministration',
+            'Delegiertes Underwriting im vereinbarten Rahmen',
+            'Delegierte Schadenbearbeitung fuer Low-Value-Claims (bei Datenvollstaendigkeit)',
+            'Laufendes Portfoliomonitoring und Reporting'
+          ]
+        }
       },
       claims: {
-        title: 'Claims Governance Framework',
+        title: 'Schaden-Governance-Framework',
         bullets: [
-          'Antares bleibt finale Claims Authority',
-          'Optionale delegierte Authority bis EUR 10,000, vorbehaltlich vollstaendiger digitaler Schadenunterlagen, strukturierter FNOL und vordefinierter Eskalationsregeln',
-          'Grosse oder komplexe Schaeden werden mit Loss Adjusters abgewickelt'
+          'Antares behaelt die finale Claims Authority',
+          'Optionale Delegation bis EUR 10.000 bei vollstaendiger strukturierter digitaler FNOL und vordefinierten Eskalationsregeln',
+          'Loss Adjusters fuer grosse oder komplexe Schaeden'
         ]
+      },
+      qualityControl: {
+        title: 'Portfolio-Qualitaetskontrolle',
+        traditional: {
+          title: 'Traditionelle Brokerportfolios',
+          bullets: [
+            'Inkonsistente Submissions',
+            'PDF-basierte Risikodaten',
+            'Fragmentierte Exposure',
+            'Begrenzte Transparenz',
+            'Volatile Loss Ratios'
+          ]
+        },
+        insurfox: {
+          title: 'Insurfox MGA Portfolio',
+          bullets: [
+            'Standardisierte Risikoobjekte',
+            'Saubere Exposure-Daten',
+            'Kontinuierliches Monitoring',
+            'Einheitliche Underwriting-Regeln',
+            'Reporting auf Portfolioebene'
+          ]
+        },
+        result: 'Antares erhaelt ein aggregiertes, kontinuierlich gesteuertes Portfolio - keine isolierten Broker-Risiken.'
       },
       strategicValue: {
         title: 'Strategischer Wert fuer Antares',
         bullets: [
-          'Alleiniger Kapazitaetsgeber',
-          'Lead Underwriting Position',
-          'Portfolio-Transparenz auf Portfolioebene',
-          'Vorhersehbare Kapitalallokation',
-          'Skalierbare Praemien-Pipeline',
-          'Langfristige MGA-Partnerschaft'
-        ],
-        operatingTitle: 'Das KI-gestuetzte Operating Model stellt sicher',
-        operatingBullets: ['Underwriting-Disziplin', 'Kosteneffizienz', 'Portfolio-Stabilitaet', 'Skalierbarkeit ueber Maerkte']
+          'Exklusive Kapazitaetsposition',
+          'Lead Underwriting Rolle',
+          'Vollstaendige Portfolio-Transparenz',
+          'Wiederkehrende Praemien-Pipeline',
+          'Kapitaleffiziente Allokation',
+          'Skalierbare europaweite Expansion',
+          'Langfristiges MGA-Partnerschaftsmodell'
+        ]
+      },
+      decision: {
+        title: 'Entscheidungsrahmen',
+        antares: {
+          title: 'Antares',
+          bullets: ['Kapazitaetsappetit', 'Ziel-Loss-Ratio-Korridor', 'Initiale Line Size', 'Governance- und Reporting-Kadenz']
+        },
+        insurfox: {
+          title: 'Insurfox',
+          bullets: ['Portfolioaufbau', 'Broker-Onboarding', 'Risikoaggregation', 'Operative Umsetzung']
+        }
       },
       coreStatement: {
-        title: 'Core Statement',
-        text: 'Insurfox agiert als Managing General Agent und liefert ein skalierbares und steuerbares europaeisches Logistik-Versicherungsportfolio, mit KI-gestuetztem Underwriting und Claims-Execution zur Unterstuetzung der Kapital- und Risikoziele von Antares.'
+        title: 'Kernpositionierung',
+        paragraphs: [
+          'Insurfox agiert als MGA und liefert ein skalierbares und kontrolliertes europaeisches Logistik-Versicherungsportfolio.',
+          'Antares stellt Kapital, Underwriting Authority und Risiko-Fuehrung bereit.'
+        ]
       },
       labels: {
-        premiumTable: {
-          year: 'Jahr',
-          conservative: 'Konservativ',
-          upside: 'Upside'
-        },
-        premiumDrivers: 'Wachstum wird getrieben durch'
+        premiumTable: { year: 'Jahr', conservative: 'Konservativ', upside: 'Upside' }
       }
     }
   }
@@ -349,10 +355,9 @@ export default function BusinessModelAntaresPage() {
       <div className="insurfox-whitepaper-shell">
         <div className="framework-header-row insurfox-whitepaper-header antares-header">
           <div className="antares-header-copy">
-            <span className="antares-eyebrow">{content.overview.title}</span>
+            <span className="antares-eyebrow">{content.model}</span>
             <h1 className="antares-title">{content.title}</h1>
             <p className="antares-subtitle">{content.subtitle}</p>
-            <p className="antares-model">{content.model}</p>
           </div>
           <button
             type="button"
@@ -364,72 +369,34 @@ export default function BusinessModelAntaresPage() {
         </div>
         <div className="antares-hero">
           <Card className="antares-hero-card">
-            {content.overview.paragraphs.map((paragraph) => (
+            <div className="antares-hero-content">
+              <h2>{content.model}</h2>
+              {content.overview.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="antares-hero-media">
+              <img src={AntaresHeroImage} alt="Insurfox x Antares" />
+            </div>
+          </Card>
+        </div>
+        <div className="antares-highlight">{content.overview.paragraphs[2]}</div>
+        <section className="antares-section">
+          <div className="antares-section-head">
+            <h2>{content.marketContext.title}</h2>
+          </div>
+          <Card className="antares-card">
+            {content.marketContext.paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
-            <div className="antares-highlight">{content.overview.emphasis}</div>
           </Card>
-          <div className="antares-hero-aside">
-            <Card className="antares-hero-callout">
-              <h3>{content.strategicRationale.title}</h3>
-              <ul>
-                {content.strategicRationale.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <p className="antares-note">{content.strategicRationale.note}</p>
-            </Card>
-          </div>
-        </div>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.governance.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-two">
-            <Card className="antares-card">
-              <h3>{content.governance.antares.title}</h3>
-              <ul>
-                {content.governance.antares.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-            <Card className="antares-card">
-              <h3>{content.governance.insurfox.title}</h3>
-              <ul>
-                {content.governance.insurfox.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-          </div>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.aiModel.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-three">
-            {content.aiModel.items.map((item) => (
-              <Card key={item.title} className="antares-card antares-ai-card">
-                <h3>{item.title}</h3>
-                <ul>
-                  {item.bullets.map((bullet) => (
-                    <li key={bullet}>{bullet}</li>
-                  ))}
-                </ul>
-                <div className="antares-result">
-                  <strong>{content.aiModel.resultLabel}:</strong> {item.result}
-                </div>
-              </Card>
-            ))}
-          </div>
         </section>
         <section className="antares-section">
           <div className="antares-section-head">
             <h2>{content.portfolioScope.title}</h2>
           </div>
           <div className="antares-grid antares-grid-two">
-            {[content.portfolioScope.insureds, content.portfolioScope.lines, content.portfolioScope.geography].map(
+            {[content.portfolioScope.insureds, content.portfolioScope.lines, content.portfolioScope.geography, content.portfolioScope.risk].map(
               (section) => (
                 <Card key={section.title} className="antares-card antares-scope-card">
                   <h3>{section.title}</h3>
@@ -464,7 +431,7 @@ export default function BusinessModelAntaresPage() {
             </div>
           </Card>
           <Card className="antares-card">
-            <h3>{content.labels.premiumDrivers}</h3>
+            <h3>{content.premiumOutlook.driversLabel}</h3>
             <ul>
               {content.premiumOutlook.bullets.map((item) => (
                 <li key={item}>{item}</li>
@@ -476,19 +443,35 @@ export default function BusinessModelAntaresPage() {
           <div className="antares-section-head">
             <h2>{content.economics.title}</h2>
           </div>
+          <div className="antares-grid antares-grid-three">
+            {content.economics.metrics.map((metric) => (
+              <Card key={metric.label} className="antares-card antares-metric-card">
+                <span>{metric.label}</span>
+                <strong>{metric.value}</strong>
+              </Card>
+            ))}
+          </div>
+        </section>
+        <section className="antares-section">
+          <div className="antares-section-head">
+            <h2>{content.operatingModel.title}</h2>
+          </div>
           <div className="antares-grid antares-grid-two">
             <Card className="antares-card">
-              <div className="antares-metrics">
-                {content.economics.metrics.map((metric) => (
-                  <div key={metric.label} className="antares-metric">
-                    <span>{metric.label}</span>
-                    <strong>{metric.value}</strong>
-                  </div>
+              <h3>{content.operatingModel.antares.title}</h3>
+              <ul>
+                {content.operatingModel.antares.bullets.map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
-              </div>
+              </ul>
             </Card>
-            <Card className="antares-card antares-note-card">
-              <p>{content.economics.note}</p>
+            <Card className="antares-card">
+              <h3>{content.operatingModel.insurfox.title}</h3>
+              <ul>
+                {content.operatingModel.insurfox.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
             </Card>
           </div>
         </section>
@@ -506,20 +489,59 @@ export default function BusinessModelAntaresPage() {
         </section>
         <section className="antares-section">
           <div className="antares-section-head">
-            <h2>{content.strategicValue.title}</h2>
+            <h2>{content.qualityControl.title}</h2>
           </div>
           <div className="antares-grid antares-grid-two">
             <Card className="antares-card">
+              <h3>{content.qualityControl.traditional.title}</h3>
               <ul>
-                {content.strategicValue.bullets.map((item) => (
+                {content.qualityControl.traditional.bullets.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
             </Card>
             <Card className="antares-card">
-              <h3>{content.strategicValue.operatingTitle}</h3>
+              <h3>{content.qualityControl.insurfox.title}</h3>
               <ul>
-                {content.strategicValue.operatingBullets.map((item) => (
+                {content.qualityControl.insurfox.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </Card>
+          </div>
+          <Card className="antares-card antares-statement-card">
+            <p>{content.qualityControl.result}</p>
+          </Card>
+        </section>
+        <section className="antares-section">
+          <div className="antares-section-head">
+            <h2>{content.strategicValue.title}</h2>
+          </div>
+          <Card className="antares-card">
+            <ul>
+              {content.strategicValue.bullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </Card>
+        </section>
+        <section className="antares-section">
+          <div className="antares-section-head">
+            <h2>{content.decision.title}</h2>
+          </div>
+          <div className="antares-grid antares-grid-two">
+            <Card className="antares-card">
+              <h3>{content.decision.antares.title}</h3>
+              <ul>
+                {content.decision.antares.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </Card>
+            <Card className="antares-card">
+              <h3>{content.decision.insurfox.title}</h3>
+              <ul>
+                {content.decision.insurfox.bullets.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
@@ -529,7 +551,9 @@ export default function BusinessModelAntaresPage() {
         <section className="antares-section">
           <Card className="antares-card antares-core-card">
             <h2>{content.coreStatement.title}</h2>
-            <p>{content.coreStatement.text}</p>
+            {content.coreStatement.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </Card>
         </section>
       </div>
@@ -541,50 +565,14 @@ export default function BusinessModelAntaresPage() {
         <p className="framework-print-subtitle">{content.subtitle}</p>
         <p className="framework-print-subtitle">{content.model}</p>
         <div className="framework-print-section">
-          <h2>{content.overview.title}</h2>
           {content.overview.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
-          <p>{content.overview.emphasis}</p>
         </div>
         <div className="framework-print-section">
-          <h2>{content.strategicRationale.title}</h2>
-          <ul>
-            {content.strategicRationale.bullets.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <p>{content.strategicRationale.note}</p>
-        </div>
-        <div className="framework-print-section">
-          <h2>{content.governance.title}</h2>
-          <p>{content.governance.antares.title}</p>
-          <ul>
-            {content.governance.antares.bullets.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-          <p>{content.governance.insurfox.title}</p>
-          <ul>
-            {content.governance.insurfox.bullets.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-        <div className="framework-print-section">
-          <h2>{content.aiModel.title}</h2>
-          {content.aiModel.items.map((item) => (
-            <div key={item.title}>
-              <p>{item.title}</p>
-              <ul>
-                {item.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-              <p>
-                {content.aiModel.resultLabel}: {item.result}
-              </p>
-            </div>
+          <h2>{content.marketContext.title}</h2>
+          {content.marketContext.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
         <div className="framework-print-section">
@@ -607,6 +595,12 @@ export default function BusinessModelAntaresPage() {
               <li key={item}>{item}</li>
             ))}
           </ul>
+          <p>{content.portfolioScope.risk.title}</p>
+          <ul>
+            {content.portfolioScope.risk.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
         <div className="framework-print-section">
           <h2>{content.premiumOutlook.title}</h2>
@@ -617,7 +611,7 @@ export default function BusinessModelAntaresPage() {
               </li>
             ))}
           </ul>
-          <p>{content.labels.premiumDrivers}</p>
+          <p>{content.premiumOutlook.driversLabel}</p>
           <ul>
             {content.premiumOutlook.bullets.map((item) => (
               <li key={item}>{item}</li>
@@ -633,7 +627,21 @@ export default function BusinessModelAntaresPage() {
               </li>
             ))}
           </ul>
-          <p>{content.economics.note}</p>
+        </div>
+        <div className="framework-print-section">
+          <h2>{content.operatingModel.title}</h2>
+          <p>{content.operatingModel.antares.title}</p>
+          <ul>
+            {content.operatingModel.antares.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p>{content.operatingModel.insurfox.title}</p>
+          <ul>
+            {content.operatingModel.insurfox.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
         <div className="framework-print-section">
           <h2>{content.claims.title}</h2>
@@ -644,22 +652,49 @@ export default function BusinessModelAntaresPage() {
           </ul>
         </div>
         <div className="framework-print-section">
+          <h2>{content.qualityControl.title}</h2>
+          <p>{content.qualityControl.traditional.title}</p>
+          <ul>
+            {content.qualityControl.traditional.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p>{content.qualityControl.insurfox.title}</p>
+          <ul>
+            {content.qualityControl.insurfox.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p>{content.qualityControl.result}</p>
+        </div>
+        <div className="framework-print-section">
           <h2>{content.strategicValue.title}</h2>
           <ul>
             {content.strategicValue.bullets.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <p>{content.strategicValue.operatingTitle}</p>
+        </div>
+        <div className="framework-print-section">
+          <h2>{content.decision.title}</h2>
+          <p>{content.decision.antares.title}</p>
           <ul>
-            {content.strategicValue.operatingBullets.map((item) => (
+            {content.decision.antares.bullets.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+          <p>{content.decision.insurfox.title}</p>
+          <ul>
+            {content.decision.insurfox.bullets.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </div>
         <div className="framework-print-section">
           <h2>{content.coreStatement.title}</h2>
-          <p>{content.coreStatement.text}</p>
+          {content.coreStatement.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </div>
       </div>
     </section>
