@@ -2537,6 +2537,25 @@ h6 {
     display: flex;
   }
 
+  .antares-section,
+  .antares-card,
+  .antares-hero,
+  .antares-highlight,
+  .antares-table-row {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .antares-grid,
+  .antares-grid-two,
+  .antares-grid-three {
+    grid-template-columns: 1fr;
+  }
+
+  .antares-table-row {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
   .regulatory-framework-page {
     max-width: none;
     margin: 0;
