@@ -2502,11 +2502,11 @@ h6 {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 14mm 20mm 20mm 20mm;
+    margin: 0;
   }
 
   @page :first {
-    margin: 6mm 20mm 20mm 20mm;
+    margin: 0;
   }
 
   body {
@@ -2530,7 +2530,11 @@ h6 {
   }
 
   .framework-print {
-    display: block;
+    display: none;
+  }
+
+  .insurfox-whitepaper-shell {
+    display: flex;
   }
 
   .regulatory-framework-page {
@@ -2547,10 +2551,6 @@ h6 {
     padding: 0;
     gap: 0;
     background: none;
-  }
-
-  .insurfox-whitepaper-shell {
-    display: none;
   }
 }
 
