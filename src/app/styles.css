@@ -1511,6 +1511,10 @@ h6 {
   letter-spacing: -0.01em;
 }
 
+.antares-title-accent {
+  color: var(--insurfox-orange);
+}
+
 .antares-subtitle {
   margin: 0;
   font-size: 1.2rem;

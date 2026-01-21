@@ -6,7 +6,7 @@ import { useI18n } from '@/i18n/I18nContext'
 
 function getModelContent(lang: 'de' | 'en') {
   const enContent = {
-    title: 'INSURFOX × ANTARES',
+    title: 'INSURFOX powered by ANTARES',
     subtitle: 'European Logistics & Fleet Insurance Portfolio',
     model: 'Executive Investment Proposition',
     overview: {
@@ -184,7 +184,7 @@ function getModelContent(lang: 'de' | 'en') {
 
   if (lang === 'de') {
     return {
-      title: 'INSURFOX × ANTARES',
+      title: 'INSURFOX powered by ANTARES',
       subtitle: 'Europäisches Logistik- und Flottenversicherungsportfolio',
       model: 'Business Modell',
       overview: {
@@ -379,7 +379,7 @@ export default function BusinessModelAntaresPage() {
         <div className="framework-header-row insurfox-whitepaper-header antares-header">
           <div className="antares-header-copy">
             <span className="antares-eyebrow">{content.model}</span>
-            <h1 className="antares-title">{content.title}</h1>
+            <h1 className="antares-title antares-title-accent">{content.title}</h1>
             <p className="antares-subtitle">{content.subtitle}</p>
           </div>
           <button
@@ -471,6 +471,9 @@ export default function BusinessModelAntaresPage() {
                 </div>
               ))}
             </div>
+            {content.premiumOutlook.note && (
+              <p className="antares-note">{content.premiumOutlook.note}</p>
+            )}
           </Card>
           <Card className="antares-card">
             <h3>{content.premiumOutlook.driversLabel}</h3>
@@ -479,9 +482,6 @@ export default function BusinessModelAntaresPage() {
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            {content.premiumOutlook.note && (
-              <p className="antares-note">{content.premiumOutlook.note}</p>
-            )}
           </Card>
         </section>
         <section className="antares-section">
