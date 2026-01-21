@@ -17,75 +17,185 @@ function getModelContent(lang: 'de' | 'en') {
       title: 'Business Modell Antares',
       subtitle: 'Business Model: Insurfox x Antares',
       intro: [
-        'Insurfox betreibt eine KI-getriebene Versicherungsinfrastruktur (AI IaaS) für Logistik, Transport und Mobilität, während Antares als regulierter Versicherungsträger fungiert.',
-        'Im Co-Branding-Modell "Insurfox - powered by Antares" sind Verantwortlichkeiten klar getrennt.'
+        'Ich analysiere nüchtern, regulatorisch sauber und investorenfähig die drei Rollen: Insurfox als Broker, Insurfox als Assekuradeur (MGA), Insurfox als Versicherer.',
+        "Zusätzlich folgen die empfohlene Zielrolle samt Begründung und warum Lloyd's / Antares strukturell sinnvoll bleibt."
       ],
       sections: [
         {
           id: '01',
-          title: 'Rolle von Antares',
-          bullets: [
-            "Versicherer, Rückversicherer und Underwriter über Lloyd's / Lloyd's Europe",
-            'Alleiniger Risikoträger',
-            'Stellt Versicherungskapazität, maßgeschneiderte Policen und Bedingungen bereit',
-            'Finaler Entscheidungsträger für Schadenregulierung, optional delegierbar für Low-Value-Claims bei vollständig digital bereitgestellten Daten via Insurfox'
-          ]
+          title: 'Insurfox als Broker',
+          paragraphs: ['Status quo.']
         },
         {
           id: '02',
-          title: 'Rolle von Insurfox',
+          title: 'Regulatorische Einordnung (Broker)',
           bullets: [
-            'Lizenzierter Versicherungsmakler (EU)',
-            'Betreibt die KI-gestützte B2B-Plattform',
-            'Steuert Distribution, Maklerzugang und Kundenbeziehungen',
-            'Digitalisiert und automatisiert Policierung, Vertrags- und Portfoliomanagement, Schadenbearbeitung, Verlängerungen und Endorsements',
-            'Liefert native KI-Fähigkeiten für Risikobewertung, Scoring, Prozessorchestrierung und Analytics',
-            'Vernetzt Versicherer, Makler, Kunden und Partner über eine API-first, cloud-native Architektur'
+            'IDD-regulierte Versicherungsvermittlung (EU)',
+            'Keine Risikotragung',
+            'Keine Zeichnungshoheit',
+            'Kein Solvency-II-Kapital'
           ]
         },
         {
           id: '03',
-          title: 'Value Creation Logic',
-          paragraphs: [
-            'Antares fokussiert sich auf Risiko, Kapital und Underwriting-Exzellenz.',
-            'Insurfox fokussiert sich auf Technologie, KI, Distribution und operative Effizienz.',
-            'Diese Trennung ermöglicht:'
-          ],
+          title: 'Vorteile (Broker)',
           bullets: [
-            'schnellere Innovation ohne regulatorische Reibung',
-            'skalierbare digitale Distribution',
-            'niedrigere operative Kosten für Versicherer',
-            'verbesserte Underwriting- und Claims-Performance'
+            'Niedrige regulatorische Eintrittsbarrieren',
+            'Schnelle Marktfähigkeit',
+            'Geringes Haftungs- und Kapitalrisiko',
+            'Flexibilität in der Produktgestaltung (über Partner)'
           ]
         },
         {
           id: '04',
-          title: 'Ergebnis',
-          paragraphs: [
-            'Das Ergebnis ist eine transparente, effiziente und skalierbare Versicherungsinfrastruktur, die für komplexe Logistik- und Transportrisiken optimiert ist.'
+          title: 'Nachteile (strategisch)',
+          bullets: [
+            'Geringe Wertschöpfungstiefe',
+            'Abhängigkeit von Versicherern',
+            'Keine Kontrolle über Policierung und Claims',
+            'Begrenzte Margen',
+            'Für Investoren: kein struktureller Moat'
           ]
         },
         {
           id: '05',
-          title: 'Revenue Logic (Investor View)',
-          bullets: [
-            'Plattform- und KI-Nutzungsgebühren (IaaS-Modell)',
-            'Broker- und distributionsbezogene Erlöse',
-            'Potentieller Revenue Share durch verbesserte Underwriting- und Claims-Effizienz',
-            'Starke Plattformhebel durch Multi-Tenant-Skalierung'
-          ]
+          title: 'Fazit Broker',
+          paragraphs: ['Broker ist ein guter Startpunkt, aber kein Endzustand für Insurfox.']
         },
         {
           id: '06',
-          title: 'One-Sentence Investor Summary',
-          paragraphs: [
-            '"Insurfox provides the AI-powered insurance platform and distribution layer, while Antares supplies regulated risk capacity - together enabling scalable, digital insurance without replacing legacy systems."'
-          ]
+          title: 'Insurfox als Assekuradeur / MGA',
+          paragraphs: ['Realistisch und optimal im aktuellen Marktumfeld.']
         },
         {
           id: '07',
-          title: 'Whitepaper Antares',
-          paragraphs: ['Whitepaper Antares']
+          title: 'Regulatorische Einordnung (MGA)',
+          bullets: [
+            'IDD + MGA-/Coverholder-Struktur',
+            'Zeichnung im Auftrag eines Risikoträgers',
+            'Delegierte Policierung und Claims Authority',
+            'Kein eigenes Risiko'
+          ]
+        },
+        {
+          id: '08',
+          title: 'Was Insurfox als MGA übernehmen kann',
+          bullets: [
+            'Policierung: Erstellung und Verwaltung der Policen',
+            'Policierung: Anwendung definierter Underwriting Guidelines',
+            'Policierung: Nutzung von AI zur Entscheidungsunterstützung',
+            'Tarif bleibt beim Carrier',
+            'Underwriting: Zeichnungsentscheidungen bis definierte Limits',
+            'Portfolio-Steuerung: Ablehnung und Annahme im Rahmen der Authority',
+            'Claims: FNOL und Schadenmanagement',
+            'Claims: Settlement bis definierte Beträge',
+            'Claims: Vollständige digitale Übergabe an Carrier'
+          ]
+        },
+        {
+          id: '09',
+          title: 'Regulatorische Voraussetzungen (realistisch erfüllbar)',
+          bullets: [
+            'MGA-/Coverholder-Zulassung',
+            "Delegation Agreement mit Antares / Lloyd's",
+            'Klare Governance-Struktur',
+            'Human-in-the-loop',
+            'Audit- und Reporting-Fähigkeit',
+            'Trennung von Tech und Entscheidung',
+            'Die Insurfox AI ist hier ein Enabler, kein Regulator-Risiko'
+          ]
+        },
+        {
+          id: '10',
+          title: 'Vorteile der MGA-Rolle',
+          bullets: [
+            'Hohe Margen (ohne Kapitalbindung)',
+            'Kontrolle über Policierung und Claims',
+            'Schnelle Produktinnovation',
+            'Starke Position gegenüber Carriern',
+            'Attraktiv für Investoren',
+            'Skalierbar international'
+          ]
+        },
+        {
+          id: '11',
+          title: 'Fazit MGA',
+          paragraphs: ['MGA ist das Sweet-Spot-Modell zwischen Broker und Versicherer.']
+        },
+        {
+          id: '12',
+          title: 'Insurfox als Versicherer',
+          paragraphs: ['Theoretisch möglich, strategisch riskant.']
+        },
+        {
+          id: '13',
+          title: 'Regulatorische Einordnung (Versicherer)',
+          bullets: [
+            'Solvency II',
+            'Hohe Eigenmittel',
+            'Aufsicht (BaFin, FINMA, etc.)',
+            'Langsame Produktänderungen'
+          ]
+        },
+        {
+          id: '14',
+          title: 'Was Insurfox dann wäre',
+          bullets: ['Risikoträger', 'Kapitalintensiv', 'Stark reguliert', 'Politisch und regulatorisch exponiert']
+        },
+        {
+          id: '15',
+          title: 'Nachteile',
+          bullets: [
+            'Massive Kapitalbindung',
+            'Geringe Flexibilität',
+            'Fokus verschiebt sich von Innovation zu Kapitalmanagement',
+            'Geringe Exit-Flexibilität',
+            'Tech wird Nebensache'
+          ]
+        },
+        {
+          id: '16',
+          title: 'Fazit Versicherer',
+          paragraphs: ['Versicherer zu werden wäre ein strategischer Fehler für Insurfox.']
+        },
+        {
+          id: '17',
+          title: 'Empfohlene Zielrolle für Insurfox',
+          paragraphs: [
+            'Insurfox als Assekuradeur / MGA mit starker Underwriting Authority.',
+            'Insurfox kontrolliert Prozesse, nicht Kapital.'
+          ]
+        },
+        {
+          id: '18',
+          title: 'Begründung',
+          bullets: [
+            'Maximale Wertschöpfung',
+            'Kein eigenes Risiko',
+            "Nutzung von Lloyd's / Antares Kapital",
+            'Schnelle Skalierung',
+            'International replizierbar',
+            'Investorenfähig',
+            'Regulatorisch sauber'
+          ]
+        },
+        {
+          id: '19',
+          title: "Antares / Lloyd's bleiben",
+          bullets: ['Risikoträger', 'Kapitalgeber', 'Rückversicherungsstruktur', 'Finaler Risikohalter']
+        },
+        {
+          id: '20',
+          title: 'Insurfox wird',
+          paragraphs: ['Insurfox sitzt zwischen Markt und Kapital - genau dort entsteht der Wert.'],
+          bullets: ['Zeichnende Instanz', 'Policierungseinheit', 'Claims-Manager', 'Portfolio-Steuerer']
+        },
+        {
+          id: '21',
+          title: 'Investor Summary (1 Slide)',
+          paragraphs: [
+            "Insurfox is best positioned as a Managing General Agent: controlling underwriting and policy issuance, while capital and risk remain with Lloyd's-backed carriers."
+          ]
         }
       ]
     }
@@ -95,75 +205,177 @@ function getModelContent(lang: 'de' | 'en') {
     title: 'Business Model Antares',
     subtitle: 'Business Model: Insurfox x Antares',
     intro: [
-      'Insurfox operates an AI-driven insurance infrastructure platform (AI IaaS) for logistics, transport and mobility, while Antares acts as the regulated insurance backbone.',
-      'Within the co-branding model "Insurfox - powered by Antares", responsibilities are clearly separated.'
+      'I analyze the three roles in a neutral, compliant, and investor-ready way: Insurfox as broker, Insurfox as MGA, Insurfox as insurer.',
+      "This includes the recommended target role with rationale and why Lloyd's / Antares remains structurally sensible."
     ],
     sections: [
       {
         id: '01',
-        title: 'Role of Antares',
-        bullets: [
-          "Acts as insurer, reinsurer and underwriter via Lloyd's / Lloyd's Europe",
-          'Is the sole risk carrier',
-          'Provides insurance capacity, bespoke policies and conditions',
-          'Acts as final decision-maker for claims settlement, with optional delegation for low-value claims if full data is provided digitally via Insurfox'
-        ]
+        title: 'Insurfox as Broker',
+        paragraphs: ['Status quo.']
       },
       {
         id: '02',
-        title: 'Role of Insurfox',
+        title: 'Regulatory Classification (Broker)',
         bullets: [
-          'Acts as a licensed insurance broker (EU)',
-          'Operates the AI-powered B2B platform',
-          'Manages distribution, broker access and customer relationships',
-          'Digitizes and automates policy issuance, contract and portfolio management, claims handling, renewals and endorsements',
-          'Delivers native AI capabilities for risk assessment, scoring, process orchestration and analytics',
-          'Connects insurers, brokers, customers and partners via an API-first, cloud-native architecture'
+          'IDD-regulated insurance mediation (EU)',
+          'No risk-bearing',
+          'No binding authority',
+          'No Solvency II capital'
         ]
       },
       {
         id: '03',
-        title: 'Value Creation Logic',
-        paragraphs: [
-          'Antares focuses on risk, capital and underwriting excellence.',
-          'Insurfox focuses on technology, AI, distribution and operational efficiency.',
-          'This separation allows:'
-        ],
+        title: 'Advantages (Broker)',
         bullets: [
-          'faster innovation without regulatory friction',
-          'scalable digital distribution',
-          'lower operational cost for insurers',
-          'improved underwriting and claims performance'
+          'Low regulatory entry barriers',
+          'Fast time-to-market',
+          'Low liability and capital exposure',
+          'Flexible product design (via partners)'
         ]
       },
       {
         id: '04',
-        title: 'Result',
-        paragraphs: [
-          'The result is a transparent, efficient and scalable insurance infrastructure, purpose-built for complex logistics and transport risks.'
+        title: 'Disadvantages (Strategic)',
+        bullets: [
+          'Limited value capture',
+          'Dependence on carriers',
+          'No control over policy issuance and claims',
+          'Limited margins',
+          'For investors: no structural moat'
         ]
       },
       {
         id: '05',
-        title: 'Revenue Logic (Investor View)',
-        bullets: [
-          'Platform and AI usage fees (IaaS model)',
-          'Broker and distribution-related revenues',
-          'Potential revenue share linked to improved underwriting and claims efficiency',
-          'Strong platform leverage through multi-tenant scalability'
-        ]
+        title: 'Broker Conclusion',
+        paragraphs: ['Broker is a strong starting point, but not an end state for Insurfox.']
       },
-        {
-          id: '06',
-          title: 'One-Sentence Investor Summary',
-          paragraphs: [
-            '"Insurfox provides the AI-powered insurance platform and distribution layer, while Antares supplies regulated risk capacity - together enabling scalable, digital insurance without replacing legacy systems."'
-          ]
-        },
+      {
+        id: '06',
+        title: 'Insurfox as MGA',
+        paragraphs: ['Realistic and optimal in the current market structure.']
+      },
       {
         id: '07',
-        title: 'Whitepaper Antares',
-        paragraphs: ['Whitepaper Antares']
+        title: 'Regulatory Classification (MGA)',
+        bullets: [
+          'IDD + MGA/Coverholder structure',
+          'Binding authority on behalf of a risk carrier',
+          'Delegated policy issuance and claims authority',
+          'No own risk'
+        ]
+      },
+      {
+        id: '08',
+        title: 'What Insurfox Can Take Over as MGA',
+        bullets: [
+          'Policy issuance: creation and administration of policies',
+          'Policy issuance: apply defined underwriting guidelines',
+          'Policy issuance: use AI for decision support',
+          'Tariff remains with the carrier',
+          'Underwriting: binding decisions within defined limits',
+          'Portfolio steering: accept/decline within authority',
+          'Claims: FNOL and claims handling',
+          'Claims: settlement up to defined amounts',
+          'Claims: full digital handover to carrier'
+        ]
+      },
+      {
+        id: '09',
+        title: 'Regulatory Preconditions (Realistic)',
+        bullets: [
+          'MGA/Coverholder authorization',
+          "Delegation agreement with Antares / Lloyd's",
+          'Clear governance structure',
+          'Human-in-the-loop',
+          'Audit and reporting capability',
+          'Separation of tech and decision-making',
+          'Insurfox AI is an enabler here, not a regulatory risk'
+        ]
+      },
+      {
+        id: '10',
+        title: 'Advantages of the MGA Role',
+        bullets: [
+          'High margins without capital lock-up',
+          'Control over policy issuance and claims',
+          'Fast product innovation',
+          'Strong position versus carriers',
+          'Investor attractive',
+          'Internationally scalable'
+        ]
+      },
+      {
+        id: '11',
+        title: 'MGA Conclusion',
+        paragraphs: ['MGA is the sweet-spot model between broker and insurer.']
+      },
+      {
+        id: '12',
+        title: 'Insurfox as Insurer',
+        paragraphs: ['Theoretically possible, strategically risky.']
+      },
+      {
+        id: '13',
+        title: 'Regulatory Classification (Insurer)',
+        bullets: ['Solvency II', 'High own funds', 'Supervision (BaFin, FINMA, etc.)', 'Slow product changes']
+      },
+      {
+        id: '14',
+        title: 'What Insurfox Would Then Be',
+        bullets: ['Risk carrier', 'Capital intensive', 'Heavily regulated', 'Politically and regulatorily exposed']
+      },
+      {
+        id: '15',
+        title: 'Disadvantages',
+        bullets: [
+          'Massive capital tie-up',
+          'Low flexibility',
+          'Focus shifts from innovation to capital management',
+          'Limited exit flexibility',
+          'Tech becomes secondary'
+        ]
+      },
+      {
+        id: '16',
+        title: 'Insurer Conclusion',
+        paragraphs: ['Becoming an insurer would be a strategic mistake for Insurfox.']
+      },
+      {
+        id: '17',
+        title: 'Recommended Target Role for Insurfox',
+        paragraphs: ['Insurfox as MGA with strong underwriting authority.', 'Insurfox controls processes, not capital.']
+      },
+      {
+        id: '18',
+        title: 'Rationale',
+        bullets: [
+          'Maximum value capture',
+          'No own risk',
+          "Use of Lloyd's / Antares capital",
+          'Fast scaling',
+          'Internationally replicable',
+          'Investor ready',
+          'Regulatorily sound'
+        ]
+      },
+      {
+        id: '19',
+        title: "Antares / Lloyd's Remain",
+        bullets: ['Risk carrier', 'Capital provider', 'Reinsurance structure', 'Final risk holder']
+      },
+      {
+        id: '20',
+        title: 'Insurfox Becomes',
+        paragraphs: ['Insurfox sits between market and capital - that is where value is created.'],
+        bullets: ['Binding authority', 'Policy issuance unit', 'Claims manager', 'Portfolio steward']
+      },
+      {
+        id: '21',
+        title: 'Investor Summary (1 Slide)',
+        paragraphs: [
+          "Insurfox is best positioned as a Managing General Agent: controlling underwriting and policy issuance, while capital and risk remain with Lloyd's-backed carriers."
+        ]
       }
     ]
   }
