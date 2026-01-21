@@ -1565,7 +1565,7 @@ h6 {
 .antares-hero-media img {
   width: 100%;
   height: auto;
-  max-height: 360px;
+  max-height: 520px;
   display: block;
   object-fit: contain;
 }
