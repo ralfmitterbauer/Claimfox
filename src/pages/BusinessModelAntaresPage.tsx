@@ -21,9 +21,12 @@ function getModelContent(lang: 'de' | 'en') {
     marketContext: {
       title: 'Market Context',
       rows: [
-        { label: 'Market size 2024', value: '~USD 13.2bn', note: 'European fleet insurance' },
-        { label: 'Projected 2032', value: '~USD 26.7bn', note: 'Market expansion outlook' },
-        { label: 'Growth rate', value: '~9% CAGR', note: '2024-2032' }
+        { label: 'Fleet Insurance Market Volume (2024)', value: '~USD 13.2bn', reference: 'European commercial motor & fleet' },
+        { label: 'Fleet Market Outlook (2032)', value: '~USD 26.7bn', reference: 'Projected market size' },
+        { label: 'Fleet Growth Rate (CAGR)', value: '~9%', reference: '2024-2032' },
+        { label: "Logistics & Transport Composite (Fleet + Cargo + Carrier's Liability + Ancillary)", value: '~USD 30-40bn', reference: 'European Commercial P&C composite' },
+        { label: 'Composite Attach Rate (Ancillary Lines)', value: '20-40% of base premium', reference: 'Cyber, D&O, Legal, Equipment' },
+        { label: 'Premium Characteristics', value: 'Recurring & Compounding', reference: 'Fleet-based, contract-driven' }
       ],
       bullets: [
         "Logistics-related insurance (fleet, cargo, carrier's liability) is a core sub-segment of European Commercial P&C, driven by professional insureds, repeatable risk structures and high data availability.",
@@ -196,9 +199,12 @@ function getModelContent(lang: 'de' | 'en') {
       marketContext: {
         title: 'Marktkontext',
         rows: [
-          { label: 'Marktvolumen 2024', value: '~USD 13,2 Mrd.', note: 'Europäische Flottenversicherung' },
-          { label: 'Prognose 2032', value: '~USD 26,7 Mrd.', note: 'Markt-Ausblick' },
-          { label: 'Wachstumsrate', value: '~9 % CAGR', note: '2024-2032' }
+          { label: 'Flottenversicherung Marktvolumen (2024)', value: '~USD 13,2 Mrd.', reference: 'Europäischer Commercial Motor & Fleet' },
+          { label: 'Flottenmarkt Ausblick (2032)', value: '~USD 26,7 Mrd.', reference: 'Prognostizierte Marktgröße' },
+          { label: 'Flotten Wachstumsrate (CAGR)', value: '~9 %', reference: '2024-2032' },
+          { label: 'Logistik- und Transport-Composite (Fleet + Cargo + Frachtführerhaftpflicht + Zusatzlinien)', value: '~USD 30-40 Mrd.', reference: 'European Commercial P&C Composite' },
+          { label: 'Composite Attach Rate (Zusatzlinien)', value: '20-40 % der Basisprämie', reference: 'Cyber, D&O, Rechtsschutz, Equipment' },
+          { label: 'Prämiencharakteristik', value: 'Wiederkehrend & kumulativ', reference: 'Flottenbasiert, vertragsgetrieben' }
         ],
         bullets: [
           'Logistiknahe Versicherungen (Fleet, Cargo, Frachtführerhaftpflicht) bilden ein Kernsegment der europäischen Commercial P&C mit professionellen Versicherungsnehmern, wiederholbaren Risikostrukturen und hoher Datenverfügbarkeit.',
@@ -407,13 +413,13 @@ export default function BusinessModelAntaresPage() {
               <div className="antares-table-row antares-table-header">
                 <span>{lang === 'en' ? 'Metric' : 'Kennzahl'}</span>
                 <span>{lang === 'en' ? 'Value' : 'Wert'}</span>
-                <span>{lang === 'en' ? 'Note' : 'Hinweis'}</span>
+                <span>{lang === 'en' ? 'Reference' : 'Referenz'}</span>
               </div>
               {content.marketContext.rows.map((row) => (
                 <div key={row.label} className="antares-table-row">
                   <span>{row.label}</span>
                   <span>{row.value}</span>
-                  <span>{row.note}</span>
+                  <span>{row.reference}</span>
                 </div>
               ))}
             </div>
