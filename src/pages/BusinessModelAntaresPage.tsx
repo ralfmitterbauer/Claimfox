@@ -392,14 +392,16 @@ export default function BusinessModelAntaresPage() {
   const handlePdfDownload = async () => {
     const downloadLang = resolvedLang === 'en' ? 'en' : 'de'
     const baseUrl = import.meta.env.VITE_PDF_BASE_URL || ''
-    const response = await fetch(
-      `${baseUrl}/api/pdf/business-model-antares?lang=${downloadLang}`
-    )
-    if (!response.ok) {
-      throw new Error('PDF download failed')
+    const response = await fetch(`${baseUrl}/api/pdf/business-model-antares?lang=${downloadLang}`)
+    const contentType = response.headers.get('content-type') || ''
+    if (!response.ok || !contentType.includes('application/pdf')) {
+      const errorText = await response.text().catch(() => '')
+      throw new Error(errorText || 'PDF download failed')
     }
-    const blob = await response.blob()
-    const url = window.URL.createObjectURL(blob)
+    const buffer = await response.arrayBuffer()
+    const url = window.URL.createObjectURL(
+      new Blob([buffer], { type: 'application/pdf' })
+    )
     const anchor = document.createElement('a')
     anchor.href = url
     anchor.download = `insurfox-antares-business-model-${downloadLang}.pdf`
@@ -435,7 +437,14 @@ export default function BusinessModelAntaresPage() {
                   type="button"
                   className="framework-download"
                   onClick={() => {
-                    handlePdfDownload().catch(() => {})
+                    handlePdfDownload().catch((error) => {
+                      window.alert(
+                        resolvedLang === 'en'
+                          ? 'PDF generation failed. Please check the PDF server.'
+                          : 'PDF-Generierung fehlgeschlagen. Bitte den PDF-Server prüfen.'
+                      )
+                      console.error(error)
+                    })
                   }}
                 >
                   {resolvedLang === 'en' ? 'Download PDF' : 'PDF herunterladen'}

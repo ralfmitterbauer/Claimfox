@@ -78,7 +78,8 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="insurfox-antares-business-model-${lang}.pdf"`,
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
+        'Content-Length': pdfBuffer.length
       })
       res.end(pdfBuffer)
     } catch (error) {
