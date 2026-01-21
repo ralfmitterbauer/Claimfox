@@ -2610,16 +2610,14 @@ h6 {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 24mm 0 0 0;
-  }
-
-  @page :first {
     margin: 0;
   }
 
   html,
   body {
     background: #ffffff !important;
+    margin: 0;
+    padding: 0;
   }
 
   * {
@@ -2649,12 +2647,13 @@ h6 {
   }
 
   .insurfox-whitepaper-shell {
-    display: flex;
+    display: block;
   }
 
   .antares-print-cover {
     display: block;
-    height: 100vh;
+    width: 100%;
+    height: 297mm;
     page-break-after: always;
     break-after: page;
     position: relative;
@@ -2663,15 +2662,33 @@ h6 {
     overflow: hidden;
   }
 
+  .antares-print-cover img {
+    object-fit: contain;
+  }
+
+  .antares-print-body {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
   .antares-print-header {
-    display: flex;
-    padding: 6mm 24px 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    display: table-header-group;
+  }
+
+  .antares-print-header-row {
+    display: table-row;
+  }
+
+  .antares-print-header-cell {
+    display: table-cell;
+    padding: 10mm 16mm 6mm;
+    vertical-align: middle;
     background: #ffffff !important;
-    z-index: 10;
+  }
+
+  .antares-print-content {
+    display: table-row-group;
   }
 
   .antares-marketing-page {
@@ -2684,6 +2701,10 @@ h6 {
 
   .antares-hero-media {
     display: none;
+  }
+
+  .antares-image-overlay {
+    display: none !important;
   }
 
   .antares-section {

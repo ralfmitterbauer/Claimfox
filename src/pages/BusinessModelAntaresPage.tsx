@@ -173,7 +173,7 @@ function getModelContent(lang: 'de' | 'en') {
       },
       insurfox: {
         title: 'Insurfox',
-        bullets: ['Portfolio build-out', 'Broker onboarding', 'Risk aggregation', 'Operational execution']
+        bullets: ['Portfolio build-out', 'Broker onboarding', 'Risk management', 'Operational execution']
       }
     },
     coreStatement: {
@@ -391,251 +391,258 @@ export default function BusinessModelAntaresPage() {
         <div className="antares-print-cover">
           <img src={AntaresHeroImage} alt="Insurfox powered by Antares" />
         </div>
-        <div className="antares-print-spacer" aria-hidden="true" />
-        <div className="antares-print-header">
-          <img src={InsurfoxLogo} alt="Insurfox" />
-        </div>
-        <div className="framework-header-row insurfox-whitepaper-header antares-header">
-          <div className="antares-header-copy">
-            <span className="antares-eyebrow">{content.model}</span>
-            <h1 className="antares-title antares-title-accent">{content.title}</h1>
-            <p className="antares-subtitle">{content.subtitle}</p>
-          </div>
-          <button
-            type="button"
-            className="framework-download"
-            onClick={() => window.print()}
-          >
-            {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
-          </button>
-        </div>
-        <div className="antares-hero">
-          <Card className="antares-hero-card antares-hero-split">
-            <div className="antares-hero-content">
-              <h2>{content.model}</h2>
-              {content.overview.paragraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
+        <div className="antares-print-body">
+          <div className="antares-print-header">
+            <div className="antares-print-header-row">
+              <div className="antares-print-header-cell">
+                <img src={InsurfoxLogo} alt="Insurfox" />
+              </div>
             </div>
-            <div className="antares-hero-media">
+          </div>
+          <div className="antares-print-content">
+            <div className="framework-header-row insurfox-whitepaper-header antares-header">
+              <div className="antares-header-copy">
+                <span className="antares-eyebrow">{content.model}</span>
+                <h1 className="antares-title antares-title-accent">{content.title}</h1>
+                <p className="antares-subtitle">{content.subtitle}</p>
+              </div>
               <button
                 type="button"
-                className="antares-image-button"
-                onClick={() => setIsPreviewOpen(true)}
+                className="framework-download"
+                onClick={() => window.print()}
               >
-                <img src={AntaresHeroImage} alt="Insurfox powered by Antares" />
+                {lang === 'en' ? 'Download PDF' : 'PDF herunterladen'}
               </button>
             </div>
-          </Card>
-        </div>
-        <div className="antares-highlight">{content.overview.highlight}</div>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.marketContext.title}</h2>
-          </div>
-          <Card className="antares-card">
-            <div className="antares-table">
-              <div className="antares-table-row antares-table-header">
-                <span>{lang === 'en' ? 'Metric' : 'Kennzahl'}</span>
-                <span>{lang === 'en' ? 'Value' : 'Wert'}</span>
-                <span>{lang === 'en' ? 'Reference' : 'Referenz'}</span>
-              </div>
-              {content.marketContext.rows.map((row) => (
-                <div key={row.label} className="antares-table-row">
-                  <span>{row.label}</span>
-                  <span>{row.value}</span>
-                  <span>{row.reference}</span>
+            <div className="antares-hero">
+              <Card className="antares-hero-card antares-hero-split">
+                <div className="antares-hero-content">
+                  <h2>{content.model}</h2>
+                  {content.overview.paragraphs.map((paragraph) => (
+                    <p key={paragraph}>{paragraph}</p>
+                  ))}
                 </div>
-              ))}
+                <div className="antares-hero-media">
+                  <button
+                    type="button"
+                    className="antares-image-button"
+                    onClick={() => setIsPreviewOpen(true)}
+                  >
+                    <img src={AntaresHeroImage} alt="Insurfox powered by Antares" />
+                  </button>
+                </div>
+              </Card>
             </div>
-          </Card>
-          <Card className="antares-card">
-            <h3>{content.marketContext.driversLabel}</h3>
-            <ul>
-              {content.marketContext.bullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.portfolioScope.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-two">
-            {[content.portfolioScope.insureds, content.portfolioScope.lines, content.portfolioScope.geography, content.portfolioScope.risk].map(
-              (section) => (
-                <Card key={section.title} className="antares-card antares-scope-card">
-                  <h3>{section.title}</h3>
+            <div className="antares-highlight">{content.overview.highlight}</div>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.marketContext.title}</h2>
+              </div>
+              <Card className="antares-card">
+                <div className="antares-table">
+                  <div className="antares-table-row antares-table-header">
+                    <span>{lang === 'en' ? 'Metric' : 'Kennzahl'}</span>
+                    <span>{lang === 'en' ? 'Value' : 'Wert'}</span>
+                    <span>{lang === 'en' ? 'Reference' : 'Referenz'}</span>
+                  </div>
+                  {content.marketContext.rows.map((row) => (
+                    <div key={row.label} className="antares-table-row">
+                      <span>{row.label}</span>
+                      <span>{row.value}</span>
+                      <span>{row.reference}</span>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+              <Card className="antares-card">
+                <h3>{content.marketContext.driversLabel}</h3>
+                <ul>
+                  {content.marketContext.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.portfolioScope.title}</h2>
+              </div>
+              <div className="antares-grid antares-grid-two">
+                {[content.portfolioScope.insureds, content.portfolioScope.lines, content.portfolioScope.geography, content.portfolioScope.risk].map(
+                  (section) => (
+                    <Card key={section.title} className="antares-card antares-scope-card">
+                      <h3>{section.title}</h3>
+                      <ul>
+                        {section.bullets.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </Card>
+                  )
+                )}
+              </div>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.premiumOutlook.title}</h2>
+              </div>
+              <Card className="antares-card">
+                <div className="antares-table">
+                  <div className="antares-table-row antares-table-header">
+                    <span>{content.labels.premiumTable.year}</span>
+                    <span>{content.labels.premiumTable.conservative}</span>
+                    <span>{content.labels.premiumTable.upside}</span>
+                  </div>
+                  {content.premiumOutlook.rows.map((row) => (
+                    <div key={row.year} className="antares-table-row">
+                      <span>{row.year}</span>
+                      <span>{row.conservative}</span>
+                      <span>{row.upside}</span>
+                    </div>
+                  ))}
+                </div>
+                {content.premiumOutlook.note && (
+                  <p className="antares-note">{content.premiumOutlook.note}</p>
+                )}
+              </Card>
+              <Card className="antares-card">
+                <h3>{content.premiumOutlook.driversLabel}</h3>
+                <ul>
+                  {content.premiumOutlook.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.economics.title}</h2>
+              </div>
+              <div className="antares-grid antares-grid-three">
+                {content.economics.metrics.map((metric) => (
+                  <Card key={metric.label} className="antares-card antares-metric-card">
+                    <span>{metric.label}</span>
+                    <strong>{metric.value}</strong>
+                  </Card>
+                ))}
+              </div>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.operatingModel.title}</h2>
+              </div>
+              <div className="antares-grid antares-grid-two">
+                <Card className="antares-card">
+                  <h3>{content.operatingModel.antares.title}</h3>
                   <ul>
-                    {section.bullets.map((item) => (
+                    {content.operatingModel.antares.bullets.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
                 </Card>
-              )
-            )}
-          </div>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.premiumOutlook.title}</h2>
-          </div>
-          <Card className="antares-card">
-            <div className="antares-table">
-              <div className="antares-table-row antares-table-header">
-                <span>{content.labels.premiumTable.year}</span>
-                <span>{content.labels.premiumTable.conservative}</span>
-                <span>{content.labels.premiumTable.upside}</span>
+                <Card className="antares-card">
+                  <h3>{content.operatingModel.insurfox.title}</h3>
+                  <ul>
+                    {content.operatingModel.insurfox.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </Card>
               </div>
-              {content.premiumOutlook.rows.map((row) => (
-                <div key={row.year} className="antares-table-row">
-                  <span>{row.year}</span>
-                  <span>{row.conservative}</span>
-                  <span>{row.upside}</span>
-                </div>
-              ))}
-            </div>
-            {content.premiumOutlook.note && (
-              <p className="antares-note">{content.premiumOutlook.note}</p>
-            )}
-          </Card>
-          <Card className="antares-card">
-            <h3>{content.premiumOutlook.driversLabel}</h3>
-            <ul>
-              {content.premiumOutlook.bullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.economics.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-three">
-            {content.economics.metrics.map((metric) => (
-              <Card key={metric.label} className="antares-card antares-metric-card">
-                <span>{metric.label}</span>
-                <strong>{metric.value}</strong>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.leadAssignment.title}</h2>
+              </div>
+              <Card className="antares-card">
+                {content.leadAssignment.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
               </Card>
-            ))}
-          </div>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.operatingModel.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-two">
-            <Card className="antares-card">
-              <h3>{content.operatingModel.antares.title}</h3>
-              <ul>
-                {content.operatingModel.antares.bullets.map((item) => (
-                  <li key={item}>{item}</li>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.claims.title}</h2>
+              </div>
+              <Card className="antares-card">
+                <ul>
+                  {content.claims.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.qualityControl.title}</h2>
+              </div>
+              <div className="antares-grid antares-grid-two">
+                <Card className="antares-card">
+                  <h3>{content.qualityControl.traditional.title}</h3>
+                  <ul>
+                    {content.qualityControl.traditional.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </Card>
+                <Card className="antares-card">
+                  <h3>{content.qualityControl.insurfox.title}</h3>
+                  <ul>
+                    {content.qualityControl.insurfox.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </Card>
+              </div>
+              <Card className="antares-card antares-statement-card">
+                <p>{content.qualityControl.result}</p>
+              </Card>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.strategicValue.title}</h2>
+              </div>
+              <Card className="antares-card">
+                <ul>
+                  {content.strategicValue.bullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </Card>
+            </section>
+            <section className="antares-section">
+              <div className="antares-section-head">
+                <h2>{content.decision.title}</h2>
+              </div>
+              <div className="antares-grid antares-grid-two">
+                <Card className="antares-card">
+                  <h3>{content.decision.antares.title}</h3>
+                  <ul>
+                    {content.decision.antares.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </Card>
+                <Card className="antares-card">
+                  <h3>{content.decision.insurfox.title}</h3>
+                  <ul>
+                    {content.decision.insurfox.bullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </Card>
+              </div>
+            </section>
+            <section className="antares-section">
+              <Card className="antares-card antares-core-card">
+                <h2>{content.coreStatement.title}</h2>
+                {content.coreStatement.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
                 ))}
-              </ul>
-            </Card>
-            <Card className="antares-card">
-              <h3>{content.operatingModel.insurfox.title}</h3>
-              <ul>
-                {content.operatingModel.insurfox.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
+              </Card>
+            </section>
           </div>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.leadAssignment.title}</h2>
-          </div>
-          <Card className="antares-card">
-            {content.leadAssignment.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.claims.title}</h2>
-          </div>
-          <Card className="antares-card">
-            <ul>
-              {content.claims.bullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.qualityControl.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-two">
-            <Card className="antares-card">
-              <h3>{content.qualityControl.traditional.title}</h3>
-              <ul>
-                {content.qualityControl.traditional.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-            <Card className="antares-card">
-              <h3>{content.qualityControl.insurfox.title}</h3>
-              <ul>
-                {content.qualityControl.insurfox.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-          </div>
-          <Card className="antares-card antares-statement-card">
-            <p>{content.qualityControl.result}</p>
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.strategicValue.title}</h2>
-          </div>
-          <Card className="antares-card">
-            <ul>
-              {content.strategicValue.bullets.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Card>
-        </section>
-        <section className="antares-section">
-          <div className="antares-section-head">
-            <h2>{content.decision.title}</h2>
-          </div>
-          <div className="antares-grid antares-grid-two">
-            <Card className="antares-card">
-              <h3>{content.decision.antares.title}</h3>
-              <ul>
-                {content.decision.antares.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-            <Card className="antares-card">
-              <h3>{content.decision.insurfox.title}</h3>
-              <ul>
-                {content.decision.insurfox.bullets.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </Card>
-          </div>
-        </section>
-        <section className="antares-section">
-          <Card className="antares-card antares-core-card">
-            <h2>{content.coreStatement.title}</h2>
-            {content.coreStatement.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </Card>
-        </section>
+        </div>
       </div>
       <div className="framework-print">
         <div className="framework-print-header">
