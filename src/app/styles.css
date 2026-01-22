@@ -2682,37 +2682,36 @@ h6 {
     border-collapse: collapse;
   }
 
-  .antares-print-layout {
+  .antares-print-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--print-header-height);
     display: block;
+    z-index: 10;
+    pointer-events: none;
   }
 
-  .antares-screen-layout {
-    display: none;
-  }
-
-  .antares-print-page {
-    break-before: page;
-    page-break-before: always;
-  }
-
-  .antares-print-page:first-of-type {
-    break-before: auto;
-    page-break-before: auto;
-  }
-
-  .antares-print-page-header {
+  .antares-print-header-row {
     display: block;
-    padding: 20mm var(--print-side) 6mm;
+    width: 100%;
+    height: 100%;
+    padding: 6mm var(--print-side) 0;
+    box-sizing: border-box;
   }
 
-  .antares-print-page-header img {
-    height: 48px;
-    width: auto;
+  .antares-print-header-cell {
+    display: flex;
+    align-items: flex-start;
+    height: 100%;
+    background: transparent !important;
+  }
+
+  .antares-print-content {
     display: block;
-  }
-
-  .antares-print-page-content {
-    padding: 0 var(--print-side) 0;
+    padding: var(--print-header-height) var(--print-side) 0;
+    box-sizing: border-box;
   }
 
   .antares-marketing-page {
