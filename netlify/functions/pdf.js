@@ -39,6 +39,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         document_type: 'pdf',
         document_url: documentUrl,
+        javascript: true,
+        javascript_delay: 1200,
         test: testMode
       })
     })
