@@ -30,6 +30,7 @@ type RoleItem = {
     | 'strategicDeepDive'
     | 'insurfoxWhitepaper'
     | 'businessModelAntares'
+    | 'businessModelAntaresTest'
     | 'requirementsCatalog'
     | 'questionsQic'
     | 'setup'
@@ -66,6 +67,7 @@ const GOVERNANCE_ITEMS: RoleItem[] = [
 const PRESENTATION_ITEMS: RoleItem[] = [
   { key: 'insurfoxWhitepaper', route: '/insurfox-whitepaper' },
   { key: 'businessModelAntares', route: '/business-model-antares' },
+  { key: 'businessModelAntaresTest', route: '/business-model-antares-test' },
   { key: 'strategicDeepDive', route: '/governance/strategic-deep-dive' },
   { key: 'requirementsCatalog', route: '/requirements-catalog' },
   { key: 'whitepaper', route: '/ai-whitepaper' },

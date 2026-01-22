@@ -1073,6 +1073,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Business Modell Antares',
           description: 'Insurfox x Antares: Rollen, Wertschöpfung und Revenue-Logik im Co-Branding-Modell.'
         },
+        businessModelAntaresTest: {
+          title: 'Business Modell Antares (Test)',
+          description: 'Testseite für den PDF-Export des Business Modell Antares.'
+        },
         requirementsCatalog: {
           title: 'Anforderungskatalog',
           description: 'Short Version für die Zusammenarbeit mit Versicherungen auf der Insurfox AI IaaS Plattform.'
@@ -3157,6 +3161,10 @@ export const translations: Record<Lang, TranslationTree> = {
         businessModelAntares: {
           title: 'Business Model Antares',
           description: 'Insurfox x Antares: roles, value creation, and revenue logic in the co-branding model.'
+        },
+        businessModelAntaresTest: {
+          title: 'Business Model Antares (Test)',
+          description: 'Test page for the Business Model Antares PDF export.'
         },
         requirementsCatalog: {
           title: 'Requirements Catalog',
