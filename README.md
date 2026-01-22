@@ -22,6 +22,10 @@
 - Endpoint: `GET /api/pdf/business-model-antares?lang=de|en`
 - Frontend uses `VITE_PDF_BASE_URL` to reach the API (set in `.env.development`).
 
+## Netlify PDF (live)
+- Live uses a Netlify Function at `/.netlify/functions/pdf-business-model-antares`.
+- The public endpoint stays `GET /api/pdf/business-model-antares?lang=de|en` via redirect.
+
 ## CV PDF export
 1. Generate the PDF:
    ```bash

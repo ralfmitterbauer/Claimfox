@@ -1,6 +1,12 @@
 [build]
   command = "npm run build"
   publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/pdf/business-model-antares"
+  to = "/.netlify/functions/pdf-business-model-antares"
+  status = 200
 
 [[redirects]]
   from = "/*"

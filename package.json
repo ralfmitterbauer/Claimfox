@@ -12,7 +12,9 @@
     "pdf": "node scripts/render-pdf.mjs"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^123.0.0",
     "puppeteer": "^23.6.0",
+    "puppeteer-core": "^23.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.1"
