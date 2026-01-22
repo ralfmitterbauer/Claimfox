@@ -20,6 +20,6 @@ export function formatMoneyExactEUR(value: number, locale: string) {
 export function formatPercent(value: number, locale: string) {
   return new Intl.NumberFormat(locale, {
     style: 'percent',
-    maximumFractionDigits: 2
+    maximumFractionDigits: 1
   }).format(value)
 }

@@ -24,6 +24,7 @@ exports.handler = async (event) => {
     const siteOrigin = getRequiredEnv('SITE_ORIGIN')
     const route = event.queryStringParameters?.route || '/business-model-antares-test'
     const lang = event.queryStringParameters?.lang || 'de'
+    const filename = event.queryStringParameters?.filename
     const testMode = process.env.DOCRAPTOR_TEST_MODE === 'true'
 
     const documentUrl = buildDocUrl(siteOrigin, route, lang)
@@ -66,7 +67,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="insurfox-antares-business-model-${lang}.pdf"`
+        'Content-Disposition': `attachment; filename="${filename || `insurfox-antares-business-model-${lang}.pdf`}"`
       },
       body: pdfBuffer.toString('base64'),
       isBase64Encoded: true

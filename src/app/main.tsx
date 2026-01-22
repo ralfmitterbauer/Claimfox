@@ -4,6 +4,7 @@ import App from './App'
 import './styles.css'
 import '../styles/insurfox-tokens.css'
 import '../styles/enterprise-leads.css'
+import '../styles/enterprise-leads.print.css'
 
 const root = document.getElementById('root')
 

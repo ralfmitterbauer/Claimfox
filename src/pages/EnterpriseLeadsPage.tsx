@@ -1,276 +1,233 @@
-import React, { useMemo, useState } from 'react'
-import { leads } from '@/data/leads'
+import React, { useMemo } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { markets } from '@/data/markets'
-import { buildLeadMetrics } from '@/lib/calc'
+import { leads } from '@/data/leads'
+import { buildLeadRows } from '@/lib/calc'
 import { formatMoneyCompactEUR, formatMoneyExactEUR, formatPercent } from '@/lib/format'
-import HeroSplit from '@/components/HeroSplit'
-import DotsPattern from '@/components/DotsPattern'
-import SectionSplit from '@/components/SectionSplit'
-import FeatureCards from '@/components/FeatureCards'
-import DarkBenefitSection from '@/components/DarkBenefitSection'
-import ChartsTopLeads from '@/components/ChartsTopLeads'
-import ChartsGermanyVsEurope from '@/components/ChartsGermanyVsEurope'
-import ChartsCategoryMix from '@/components/ChartsCategoryMix'
-import LeadsTable from '@/components/LeadsTable'
-import LeadDrawer from '@/components/LeadDrawer'
-import SourcesDrawer from '@/components/SourcesDrawer'
-import heroImage from '@/assets/images/hero_block_1.png'
-import marketImage from '@/assets/images/logistik_portal.png'
-import modelImage from '@/assets/images/insurance_processes.png'
-import thanksImage from '@/assets/images/partner_insurance.png'
-import { useI18n } from '@/i18n/I18nContext'
+import { enterpriseStrings } from '@/i18n/strings'
+import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
-const sources = [
-  {
-    id: 'anchors',
-    title: 'Market Anchors (Mid-Case)',
-    publisher: 'Insurfox',
-    year: 2024,
-    documentType: 'Internal model',
-    lastVerified: '2026-01-22',
-    url: 'TBD'
-  }
-]
+type Lang = 'de' | 'en'
+
+const defaultLang: Lang = 'de'
+
+function getLang(params: URLSearchParams): Lang {
+  const value = params.get('lang')
+  return value === 'en' ? 'en' : 'de'
+}
+
+function buildDocRaptorUrl(route: string, filename: string) {
+  return `/.netlify/functions/pdf?${new URLSearchParams({ route, filename }).toString()}`
+}
 
 export default function EnterpriseLeadsPage() {
-  const { lang } = useI18n()
-  const [region, setRegion] = useState<'DE' | 'EU'>('DE')
-  const [category, setCategory] = useState<'All' | 'Operator' | 'Platform' | 'Broker'>('All')
-  const [search, setSearch] = useState('')
-  const [drawerLead, setDrawerLead] = useState<typeof leads[number] | undefined>()
-  const [sourcesOpen, setSourcesOpen] = useState(false)
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const lang = getLang(searchParams)
+  const isPrint = searchParams.get('print') === '1'
   const locale = lang === 'de' ? 'de-DE' : 'en-GB'
+  const copy = enterpriseStrings[lang]
 
-  const leadMetrics = useMemo(() => buildLeadMetrics(leads), [])
-  const marketValue = region === 'DE' ? markets.DE : markets.EU
+  const { rows, totals } = useMemo(() => buildLeadRows(leads), [])
 
-  const filteredLeads = leadMetrics.filter((lead) => {
-    if (category !== 'All' && lead.category !== category) {
-      return false
-    }
-    if (search && !lead.name.toLowerCase().includes(search.toLowerCase())) {
-      return false
-    }
-    return true
-  })
+  const totalExposurePercentDE = totals.exposureDE / markets.DE
+  const totalExposurePercentEU = totals.exposureEU / markets.EU
 
-  const totalExposure = filteredLeads.reduce((sum, lead) => {
-    return sum + (region === 'DE' ? lead.exposureDE : lead.exposureEU)
-  }, 0)
+  const topLeadsEU = rows.slice(0, 10).map((lead) => ({
+    name: lead.name,
+    value: lead.exposureEU
+  }))
 
-  const topLeadData = [...filteredLeads]
-    .sort((a, b) => (region === 'DE' ? b.exposureDE - a.exposureDE : b.exposureEU - a.exposureEU))
-    .slice(0, 8)
-    .map((lead) => ({
-      name: lead.name,
-      value: region === 'DE' ? lead.exposureDE : lead.exposureEU
-    }))
-
-  const categoryMix = [
-    {
-      label: 'Exposure Mix',
-      direct: filteredLeads.filter((lead) => lead.exposureType === 'Direct').length,
-      indirect: filteredLeads.filter((lead) => lead.exposureType === 'Indirect').length,
-      brokered: filteredLeads.filter((lead) => lead.exposureType === 'Brokered').length
-    }
-  ]
-
-  const compareData = [
+  const marketChart = [
     { label: 'DE', value: markets.DE },
-    { label: 'EU', value: markets.EU }
+    { label: 'EEA', value: markets.EU }
   ]
 
-  function handleExport(type: 'kpi' | 'table' | 'sources') {
-    const timestamp = new Date().toISOString()
-    if (type === 'kpi') {
-      const payload = {
-        region,
-        market: marketValue,
-        totalExposure,
-        timestamp
-      }
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `enterprise-leads-kpis-${region}.json`
-      link.click()
-      URL.revokeObjectURL(url)
-      return
-    }
-    if (type === 'table') {
-      const headers = ['Lead', 'Category', 'Exposure DE', 'Exposure EU', 'Share DE', 'Share EU', 'Exposure Type']
-      const rows = filteredLeads.map((lead) => [
-        lead.name,
-        lead.category,
-        formatMoneyCompactEUR(lead.exposureDE, locale),
-        formatMoneyCompactEUR(lead.exposureEU, locale),
-        formatPercent(lead.shareDE, locale),
-        formatPercent(lead.shareEU, locale),
-        lead.exposureType
-      ].join(','))
-      const csv = [headers.join(','), ...rows].join('\n')
-      const blob = new Blob([csv], { type: 'text/csv' })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `enterprise-leads-${region}.csv`
-      link.click()
-      URL.revokeObjectURL(url)
-      return
-    }
-    const sourceHeaders = ['Title', 'Publisher', 'Year', 'Document Type', 'Last Verified', 'URL']
-    const sourceRows = sources.map((source) =>
-      [source.title, source.publisher, `${source.year}`, source.documentType, source.lastVerified, source.url || 'TBD']
-        .join(',')
-    )
-    const csv = [sourceHeaders.join(','), ...sourceRows].join('\n')
-    const blob = new Blob([csv], { type: 'text/csv' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = 'enterprise-leads-sources.csv'
-    link.click()
-    URL.revokeObjectURL(url)
+  function setLang(next: Lang) {
+    const params = new URLSearchParams(searchParams)
+    params.set('lang', next)
+    navigate({ search: params.toString() }, { replace: true })
+  }
+
+  function exportPdf() {
+    const route = `/enterprise-leads-intelligence?print=1&lang=${lang}`
+    const filename = lang === 'de'
+      ? 'insurfox-business-plan-part1-de.pdf'
+      : 'insurfox-business-plan-part1-en.pdf'
+    window.location.href = buildDocRaptorUrl(route, filename)
   }
 
   return (
-    <section className="page enterprise-leads-page">
-      <div className="enterprise-container">
-        <nav className="enterprise-nav" aria-label="Primary">
-          <a href="#overview">Overview</a>
-          <a href="#market">Market</a>
-          <a href="#model">Model</a>
-          <a href="#data">Data</a>
-          <a href="#methodology">Methodology</a>
-          <a href="#thanks">Thanks</a>
-        </nav>
-        <div id="overview">
-          <HeroSplit
-            title="Enterprise Lead Intelligence"
-            subtitle="Model-based exposure mapping for fleet, freight and composite insurance. Exposure is not premium, not revenue."
-            locale={locale}
-            pills={[
-              { label: 'DE Market', value: markets.DE },
-              { label: 'EU Market', value: markets.EU },
-              { label: 'Leads', value: filteredLeads.length, format: 'count' },
-              { label: 'Total Exposure', value: totalExposure || marketValue }
-            ]}
-            region={region}
-            onRegionChange={setRegion}
-            onExport={handleExport}
-            imageUrl={heroImage}
-          />
+    <section className={`page enterprise-plan ${isPrint ? 'is-print' : ''}`}>
+      <header className="enterprise-header no-print">
+        <div className="enterprise-header-title">{copy.title}</div>
+        <div className="enterprise-header-actions">
+          <button
+            type="button"
+            className={lang === 'de' ? 'is-active' : ''}
+            onClick={() => setLang('de')}
+            aria-pressed={lang === 'de'}
+          >
+            DE
+          </button>
+          <button
+            type="button"
+            className={lang === 'en' ? 'is-active' : ''}
+            onClick={() => setLang('en')}
+            aria-pressed={lang === 'en'}
+          >
+            EN
+          </button>
+          <button type="button" onClick={exportPdf}>
+            Export PDF
+          </button>
         </div>
+      </header>
 
-        <div id="market">
-          <SectionSplit
-          title="Market / Opportunity"
-          body="Germany and EEA anchors provide a top-down corridor for fleet and logistics exposure. Exposure calculations are model-based and not equivalent to premium or revenue."
-          imageUrl={marketImage}
-          />
+      <section className="slide slide-cover">
+        <div>
+          <h1>{copy.title}</h1>
+          <p className="subtitle">{copy.subtitle}</p>
+          <p className="disclaimer">{copy.disclaimer}</p>
+          <div className="kpi-grid">
+            <div className="card">
+              <span>{copy.kpis.deMarket}</span>
+              <strong title={formatMoneyExactEUR(markets.DE, locale)}>
+                {formatMoneyCompactEUR(markets.DE, locale)}
+              </strong>
+            </div>
+            <div className="card">
+              <span>{copy.kpis.euMarket}</span>
+              <strong title={formatMoneyExactEUR(markets.EU, locale)}>
+                {formatMoneyCompactEUR(markets.EU, locale)}
+              </strong>
+            </div>
+            <div className="card">
+              <span>{copy.kpis.leads}</span>
+              <strong>{rows.length}</strong>
+            </div>
+            <div className="card">
+              <span>{copy.kpis.totalExposureEU}</span>
+              <strong title={formatMoneyExactEUR(totals.exposureEU, locale)}>
+                {formatMoneyCompactEUR(totals.exposureEU, locale)}
+              </strong>
+            </div>
+          </div>
+          <div className="chart-card">
+            <h3>{copy.charts.marketScale}</h3>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart data={marketChart}>
+                <XAxis dataKey="label" />
+                <YAxis hide />
+                <Tooltip formatter={(value: number) => formatMoneyCompactEUR(value, locale)} />
+                <Bar dataKey="value" fill="var(--ix-chart-1)" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+      </section>
 
-        <FeatureCards
-          features={[
-            {
-              number: '01',
-              title: 'Market Anchors',
-              body: 'DE and EU anchors provide a consistent base for exposure estimates.'
-            },
-            {
-              number: '02',
-              title: 'Segmentation',
-              body: 'Operators, Platforms, Brokers with explicit exposure type mapping.'
-            }
-          ]}
-        />
-
-        <div id="model">
-          <DarkBenefitSection
-          title="Solution / Model"
-          benefits={[
-            { title: 'Direct Exposure', body: 'Operators with asset-based exposure and fleet risk.' },
-            { title: 'Indirect Exposure', body: 'Platforms reflecting network-driven risk.' },
-            { title: 'Brokered Exposure', body: 'Structured volume via risk advisors.' }
-          ]}
-          imageUrl={modelImage}
-          />
+      <section className="slide">
+        <h2>{copy.marketAnchors.title}</h2>
+        <p className="section-intro">{copy.marketAnchors.intro}</p>
+        <div className="card table-card">
+          <table className="enterprise-table">
+            <thead>
+              <tr>
+                <th>{copy.marketAnchors.columns.region}</th>
+                <th className="num">{copy.marketAnchors.columns.market}</th>
+                <th>{copy.marketAnchors.columns.definition}</th>
+                <th>{copy.marketAnchors.columns.note}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{copy.marketAnchors.rows.de.region}</td>
+                <td className="num">{formatMoneyCompactEUR(markets.DE, locale)}</td>
+                <td>{copy.marketAnchors.rows.de.definition}</td>
+                <td>{copy.marketAnchors.rows.de.note}</td>
+              </tr>
+              <tr>
+                <td>{copy.marketAnchors.rows.eu.region}</td>
+                <td className="num">{formatMoneyCompactEUR(markets.EU, locale)}</td>
+                <td>{copy.marketAnchors.rows.eu.definition}</td>
+                <td>{copy.marketAnchors.rows.eu.note}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <ul className="bullets">
+          {copy.marketAnchors.bullets.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
 
-        <section className="data-section" id="data">
-          <div className="filter-bar">
-            {(['All', 'Operator', 'Platform', 'Broker'] as const).map((item) => (
-              <button
-                key={item}
-                type="button"
-                className={`filter-chip ${category === item ? 'is-active' : ''}`}
-                onClick={() => setCategory(item)}
-                aria-pressed={category === item}
-              >
-                {item}
-              </button>
-            ))}
-            <input
-              type="search"
-              placeholder="Search lead"
-              aria-label="Search lead"
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              className="filter-chip"
-            />
-            <button type="button" className="filter-chip" onClick={() => setSourcesOpen(true)}>
-              Sources
-            </button>
-          </div>
+      <section className="slide">
+        <h2>{copy.leads.title}</h2>
+        <div className="card table-card">
+          <table className="enterprise-table">
+            <thead>
+              <tr>
+                <th>{copy.leads.columns.lead}</th>
+                <th>{copy.leads.columns.category}</th>
+                <th className="num">{copy.leads.columns.shareDE}</th>
+                <th className="num">{copy.leads.columns.exposureDE}</th>
+                <th className="num">{copy.leads.columns.shareEU}</th>
+                <th className="num">{copy.leads.columns.exposureEU}</th>
+                <th>{copy.leads.columns.type}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((lead) => (
+                <tr key={lead.id}>
+                  <td>{lead.name}</td>
+                  <td><span className="badge">{lead.category}</span></td>
+                  <td className="num">{formatPercent(lead.shareDE, locale)}</td>
+                  <td className="num">{formatMoneyCompactEUR(lead.exposureDE, locale)}</td>
+                  <td className="num">{formatPercent(lead.shareEU, locale)}</td>
+                  <td className="num">{formatMoneyCompactEUR(lead.exposureEU, locale)}</td>
+                  <td><span className="badge">{lead.exposureType}</span></td>
+                </tr>
+              ))}
+              <tr className="total-row">
+                <td colSpan={3}>{copy.leads.total}</td>
+                <td className="num">
+                  {formatMoneyCompactEUR(totals.exposureDE, locale)}
+                  <span className="muted">{formatPercent(totalExposurePercentDE, locale)}</span>
+                </td>
+                <td />
+                <td className="num">
+                  {formatMoneyCompactEUR(totals.exposureEU, locale)}
+                  <span className="muted">{formatPercent(totalExposurePercentEU, locale)}</span>
+                </td>
+                <td />
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div className="chart-card">
+          <h3>{copy.charts.topLeads}</h3>
+          <ResponsiveContainer width="100%" height={240}>
+            <BarChart data={topLeadsEU} layout="vertical" margin={{ left: 20, right: 20 }}>
+              <XAxis type="number" hide />
+              <YAxis dataKey="name" type="category" width={160} />
+              <Tooltip formatter={(value: number) => formatMoneyCompactEUR(value, locale)} />
+              <Bar dataKey="value" fill="var(--ix-chart-2)" radius={[6, 6, 6, 6]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </section>
 
-          <div className="charts-grid">
-            <ChartsTopLeads data={topLeadData} locale={locale} />
-            <ChartsGermanyVsEurope data={compareData} locale={locale} />
-            <ChartsCategoryMix data={categoryMix} />
-          </div>
-
-          <div className="card">
-            <h3>Enterprise Leads</h3>
-            <p className="disclaimer">
-              Indicative annual insurance exposure (model-based). Exposure is not premium, not revenue.
-            </p>
-          </div>
-          <LeadsTable leads={filteredLeads} locale={locale} onSelect={setDrawerLead} />
-        </section>
-
-        <section className="section-split" id="methodology">
-          <div>
-            <h2>Methodology & Compliance</h2>
-            <p>
-              Top-down anchors combined with lead segmentation. Public company-level premium data is
-              not disclosed. Exposure ≠ premium ≠ revenue.
-            </p>
-            <ul>
-              <li>Operators = Direct exposure</li>
-              <li>Platforms = Indirect exposure</li>
-              <li>Brokers = Brokered exposure</li>
-            </ul>
-          </div>
-          <div className="visual-card">
-            <img src={marketImage} alt="" />
-          </div>
-        </section>
-
-        <section className="thanks-section" id="thanks">
-          <DotsPattern className="hero-dots" />
-          <div>
-            <h2>Thank you</h2>
-            <p className="disclaimer">contact@insurfox.com · placeholder</p>
-          </div>
-          <div className="thanks-visual">
-            <img src={thanksImage} alt="" />
-          </div>
-        </section>
-      </div>
-
-      <LeadDrawer lead={drawerLead} locale={locale} onClose={() => setDrawerLead(undefined)} />
-      <SourcesDrawer open={sourcesOpen} sources={sources} onClose={() => setSourcesOpen(false)} />
+      <section className="slide">
+        <h2>{copy.methodology.title}</h2>
+        <ul className="bullets">
+          {copy.methodology.bullets.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+        <footer className="footer">{copy.footer}</footer>
+      </section>
     </section>
   )
 }
