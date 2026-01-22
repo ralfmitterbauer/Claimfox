@@ -6,7 +6,7 @@
     "dev": "node scripts/dev.mjs",
     "dev:client": "vite",
     "dev:pdf": "node server/index.mjs",
-    "build": "vite build && node scripts/render-business-model-pdf.mjs",
+    "build": "vite build",
     "preview": "vite preview",
     "start": "node server/index.mjs",
     "pdf": "node scripts/render-pdf.mjs"
