@@ -395,7 +395,7 @@ export default function BusinessModelAntaresPage() {
     const baseUrl = import.meta.env.VITE_PDF_BASE_URL || ''
     if (!baseUrl) {
       const anchor = document.createElement('a')
-      anchor.href = `/pdfs/insurfox-antares-business-model-${downloadLang}.pdf`
+      anchor.href = `/pdfs/insurfox-antares-business-model-${downloadLang}.pdf?v=${Date.now()}`
       anchor.download = `insurfox-antares-business-model-${downloadLang}.pdf`
       document.body.appendChild(anchor)
       anchor.click()

@@ -90,7 +90,12 @@ async function renderPdf(lang) {
       pdfDir,
       `insurfox-antares-business-model-${lang}.pdf`
     )
+    if (!pdfBuffer || pdfBuffer.length === 0) {
+      throw new Error(`PDF render failed for ${lang}: empty buffer`)
+    }
     await fs.writeFile(outputPath, pdfBuffer)
+    const stats = await fs.stat(outputPath)
+    console.log(`[pdf] wrote ${outputPath} (${stats.size} bytes)`)
   } finally {
     await browser.close()
   }
