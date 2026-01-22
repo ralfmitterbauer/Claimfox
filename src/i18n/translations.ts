@@ -1081,6 +1081,10 @@ export const translations: Record<Lang, TranslationTree> = {
           title: 'Market Overview Logistics',
           description: 'Investor- und Carrier-grade Marktübersicht für Flotte, Logistik und Fracht.'
         },
+        enterpriseLeadIntelligence: {
+          title: 'Enterprise Lead Intelligence',
+          description: 'Premium Lead- und Exposuresicht für Flotte, Logistik und Fracht.'
+        },
         requirementsCatalog: {
           title: 'Anforderungskatalog',
           description: 'Short Version für die Zusammenarbeit mit Versicherungen auf der Insurfox AI IaaS Plattform.'
@@ -3173,6 +3177,10 @@ export const translations: Record<Lang, TranslationTree> = {
         marketOverviewLogistics: {
           title: 'Market Overview Logistics',
           description: 'Investor and carrier-grade market overview for fleet, logistics, and freight.'
+        },
+        enterpriseLeadIntelligence: {
+          title: 'Enterprise Lead Intelligence',
+          description: 'Premium lead and exposure intelligence for fleet, logistics, and freight.'
         },
         requirementsCatalog: {
           title: 'Requirements Catalog',
