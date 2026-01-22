@@ -2691,7 +2691,7 @@ h6 {
 
   .antares-print-header-cell {
     display: table-cell;
-    padding: 15mm var(--print-side) 8mm;
+    padding: 15mm var(--print-side) 6mm;
     vertical-align: middle;
     background: transparent !important;
   }
