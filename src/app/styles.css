@@ -2617,7 +2617,7 @@ h6 {
     --print-side: 18mm;
     --print-gap: 6mm;
     --print-section: 8mm;
-    --print-header-height: 28mm;
+    --print-header-height: 34mm;
   }
 
   html,
@@ -2699,7 +2699,7 @@ h6 {
   .antares-print-header-cell {
     display: flex;
     align-items: center;
-    padding: 12mm var(--print-side) 6mm;
+    padding: 10mm var(--print-side) 6mm;
     background: transparent !important;
   }
 
