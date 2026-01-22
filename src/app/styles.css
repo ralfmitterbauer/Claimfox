@@ -2682,36 +2682,40 @@ h6 {
     border-collapse: collapse;
   }
 
-  .antares-print-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--print-header-height);
+  .antares-print-layout {
     display: block;
-    z-index: 10;
-    pointer-events: none;
   }
 
-  .antares-print-header-row {
-    display: block;
-    width: 100%;
-    height: 100%;
-    padding: 6mm var(--print-side) 0;
-    box-sizing: border-box;
+  .antares-screen-layout {
+    display: none;
   }
 
-  .antares-print-header-cell {
-    display: flex;
-    align-items: flex-start;
-    height: 100%;
-    background: transparent !important;
+  .antares-print-body {
+    display: none;
   }
 
-  .antares-print-content {
+  .antares-print-page {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .antares-print-page:first-of-type {
+    break-before: auto;
+    page-break-before: auto;
+  }
+
+  .antares-print-page-header {
+    padding: 20mm var(--print-side) 6mm;
+  }
+
+  .antares-print-page-header img {
+    height: 48px;
+    width: auto;
     display: block;
-    padding: var(--print-header-height) var(--print-side) 0;
-    box-sizing: border-box;
+  }
+
+  .antares-print-page-content {
+    padding: 0 var(--print-side) 0;
   }
 
   .antares-marketing-page {
