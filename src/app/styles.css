@@ -2617,6 +2617,7 @@ h6 {
     --print-side: 18mm;
     --print-gap: 6mm;
     --print-section: 8mm;
+    --print-header-height: 32mm;
   }
 
   html,
@@ -2682,23 +2683,29 @@ h6 {
   }
 
   .antares-print-header {
-    display: table-header-group;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    z-index: 10;
   }
 
   .antares-print-header-row {
-    display: table-row;
+    display: flex;
+    width: 100%;
   }
 
   .antares-print-header-cell {
-    display: table-cell;
+    display: flex;
+    align-items: center;
     padding: 15mm var(--print-side) 6mm;
-    vertical-align: middle;
     background: transparent !important;
   }
 
   .antares-print-content {
-    display: table-row-group;
-    padding: 0 var(--print-side);
+    display: block;
+    padding: var(--print-header-height) var(--print-side) 0;
   }
 
   .antares-marketing-page {
