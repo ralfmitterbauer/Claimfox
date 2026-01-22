@@ -22,9 +22,14 @@ export async function handler(event) {
       lang
     )}`
 
+    const executablePath = await chromium.executablePath()
+    if (!executablePath) {
+      throw new Error('Chromium executable not found in Netlify runtime.')
+    }
+
     const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      args: [...chromium.args, '--disable-dev-shm-usage'],
+      executablePath,
       headless: chromium.headless,
       defaultViewport: chromium.defaultViewport
     })
@@ -33,7 +38,7 @@ export async function handler(event) {
     try {
       const page = await browser.newPage()
       await page.emulateMediaType('print')
-      await page.goto(targetUrl, { waitUntil: ['load', 'networkidle0'] })
+      await page.goto(targetUrl, { waitUntil: ['load', 'networkidle0'], timeout: 60000 })
       await page.evaluate(() => document.fonts?.ready)
       pdfBuffer = await page.pdf({
         format: 'A4',
@@ -61,11 +66,17 @@ export async function handler(event) {
       body: buffer.toString('base64')
     }
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    const stack = error instanceof Error && error.stack ? error.stack : undefined
     console.error('PDF render failed', error)
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify({ error: 'PDF render failed' })
+      body: JSON.stringify({
+        error: 'PDF render failed',
+        message,
+        stack
+      })
     }
   }
 }
