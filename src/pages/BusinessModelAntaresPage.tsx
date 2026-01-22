@@ -425,6 +425,9 @@ export default function BusinessModelAntaresPage() {
   return (
     <section className="page insurfox-whitepaper-page antares-marketing-page">
       <div className="insurfox-whitepaper-shell">
+        <div className="antares-print-cover">
+          <img src={AntaresCoverImage} alt="Insurfox powered by Antares" />
+        </div>
         <div className="antares-print-body">
           <div className="antares-print-header">
             <div className="antares-print-header-row">
@@ -434,9 +437,6 @@ export default function BusinessModelAntaresPage() {
             </div>
           </div>
           <div className="antares-print-content">
-            <div className="antares-print-cover">
-              <img src={AntaresCoverImage} alt="Insurfox powered by Antares" />
-            </div>
             <div className="framework-header-row insurfox-whitepaper-header antares-header">
               <div className="antares-header-copy">
                 <span className="antares-eyebrow">{content.model}</span>
@@ -482,7 +482,7 @@ export default function BusinessModelAntaresPage() {
               </Card>
             </div>
             <div className="antares-highlight">{content.overview.highlight}</div>
-            <section className="antares-section">
+            <section className="antares-section antares-section-market">
               <div className="antares-section-head">
                 <h2>{content.marketContext.title}</h2>
               </div>
@@ -511,7 +511,7 @@ export default function BusinessModelAntaresPage() {
                 </ul>
               </Card>
             </section>
-            <section className="antares-section">
+            <section className="antares-section antares-section-portfolio">
               <div className="antares-section-head">
                 <h2>{content.portfolioScope.title}</h2>
               </div>
