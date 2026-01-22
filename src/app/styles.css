@@ -2762,10 +2762,19 @@ h6 {
     margin-top: 3cm;
   }
 
+  .antares-highlight {
+    display: none;
+  }
+
   .antares-section-head {
     margin-top: 0.85rem;
     break-after: avoid;
     page-break-after: avoid;
+  }
+
+  .antares-section-market {
+    break-before: avoid;
+    page-break-before: avoid;
   }
 
   .antares-section-market .antares-section-head {
