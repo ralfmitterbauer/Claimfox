@@ -2617,7 +2617,7 @@ h6 {
     --print-side: 18mm;
     --print-gap: 6mm;
     --print-section: 8mm;
-    --print-header-height: 20mm;
+    --print-header-height: 28mm;
   }
 
   html,
@@ -2697,7 +2697,7 @@ h6 {
     display: block;
     width: 100%;
     height: 100%;
-    padding: 4mm var(--print-side) 0;
+    padding: 6mm var(--print-side) 0;
     box-sizing: border-box;
   }
 
