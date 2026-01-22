@@ -2610,10 +2610,6 @@ h6 {
 @media print {
   @page {
     size: A4 portrait;
-    margin: 15mm 0 0 0;
-  }
-
-  @page :first {
     margin: 0;
   }
 
@@ -2621,7 +2617,7 @@ h6 {
     --print-side: 18mm;
     --print-gap: 6mm;
     --print-section: 8mm;
-    --print-header-height: 15mm;
+    --print-header-height: 34mm;
   }
 
   html,
@@ -2701,7 +2697,7 @@ h6 {
     display: block;
     width: 100%;
     height: 100%;
-    padding: 5mm var(--print-side) 0;
+    padding: 10mm var(--print-side) 0;
     box-sizing: border-box;
   }
 
@@ -2714,7 +2710,7 @@ h6 {
 
   .antares-print-content {
     display: block;
-    padding: 0 var(--print-side);
+    padding: var(--print-header-height) var(--print-side) 0;
     box-sizing: border-box;
   }
 
