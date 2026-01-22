@@ -50,7 +50,9 @@ export default function EnterpriseLeadsPage() {
   }
 
   function exportPdf() {
-    const route = `/enterprise-leads-intelligence?print=1&lang=${lang}`
+    const route = lang === 'de'
+      ? '/enterprise-leads-intelligence/print/de'
+      : '/enterprise-leads-intelligence/print/en'
     const filename = lang === 'de'
       ? 'insurfox-business-plan-part1-de.pdf'
       : 'insurfox-business-plan-part1-en.pdf'
