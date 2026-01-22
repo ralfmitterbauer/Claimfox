@@ -59,7 +59,7 @@ import LandingToolsPage from '@/pages/LandingToolsPage'
 import InternalDocsOverviewPage from '@/pages/InternalDocsOverviewPage'
 import BusinessModelAntaresPage from '@/pages/BusinessModelAntaresPage'
 import MarketOverviewPage from '@/pages/MarketOverviewPage'
-import MarketLeadsPage from '@/pages/MarketLeadsPage'
+import EnterpriseLeadsPage from '@/pages/EnterpriseLeadsPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -125,7 +125,7 @@ export default function AppRouter() {
         <Route path="/business-model-antares" element={<BusinessModelAntaresPage />} />
         <Route path="/business-model-antares-test" element={<BusinessModelAntaresPage />} />
         <Route path="/market-overview-logistics" element={<MarketOverviewPage />} />
-        <Route path="/market-leads-intelligence" element={<MarketLeadsPage />} />
+        <Route path="/enterprise-leads-intelligence" element={<EnterpriseLeadsPage />} />
         <Route path="/setup" element={<SetupPage />} />
         <Route path="/storyblok-test" element={<StoryblokTestPage />} />
         <Route path="/landing/sitemap" element={<LandingSitemapPage />} />

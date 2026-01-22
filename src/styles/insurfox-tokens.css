@@ -1,0 +1,26 @@
+:root {
+  --ix-bg: var(--surface, initial);
+  --ix-surface: var(--surface, initial);
+  --ix-surface-2: var(--surface-2, var(--surface, initial));
+  --ix-border: var(--border, var(--muted, initial));
+  --ix-text: var(--text, initial);
+  --ix-text-muted: var(--muted, initial);
+
+  --ix-primary: var(--insurfox-orange, var(--primary, initial));
+  --ix-primary-600: var(--primary-600, var(--insurfox-orange, var(--ix-primary)));
+  --ix-primary-100: var(--primary-100, var(--ix-surface-2));
+
+  --ix-success: var(--success, var(--blue-light, initial));
+  --ix-warning: var(--warning, var(--insurfox-orange, initial));
+  --ix-danger: var(--danger, var(--blue-dark, initial));
+
+  --ix-chart-1: var(--ix-primary);
+  --ix-chart-2: var(--ix-primary-600);
+  --ix-chart-3: var(--ix-success);
+  --ix-chart-4: var(--ix-warning);
+
+  --ix-radius-lg: 16px;
+  --ix-radius-xl: 24px;
+  --ix-shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --ix-shadow-card: 0 6px 18px rgba(0, 0, 0, 0.1);
+}

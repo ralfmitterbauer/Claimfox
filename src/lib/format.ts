@@ -1,14 +1,15 @@
-export function formatMoneyCompact(value: number, locale: string) {
+export function formatMoneyCompactEUR(value: number, locale: string) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'EUR',
     notation: 'compact',
     compactDisplay: 'short',
-    maximumFractionDigits: 2
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 0
   }).format(value)
 }
 
-export function formatMoneyFull(value: number, locale: string) {
+export function formatMoneyExactEUR(value: number, locale: string) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: 'EUR',

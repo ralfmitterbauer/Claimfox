@@ -7,9 +7,9 @@ export type LeadItem = {
   name: string
   category: LeadCategory
   exposureType: ExposureType
-  shareDE?: number
-  shareEU?: number
-  notes: {
+  shareDE: number
+  shareEU: number
+  notes?: {
     de: string
     en: string
   }
@@ -21,139 +21,111 @@ export const leads: LeadItem[] = [
     name: 'DB Schenker',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Großflottenbetreiber; Marktanteil TBD.',
-      en: 'Large fleet operator; market share TBD.'
-    }
+    shareDE: 0.09,
+    shareEU: 0.06
   },
   {
     id: 'dsv',
     name: 'DSV',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Spedition und Logistik; Marktanteil TBD.',
-      en: 'Freight forwarding & logistics; share TBD.'
-    }
+    shareDE: 0.06,
+    shareEU: 0.09
   },
   {
     id: 'dachser',
     name: 'DACHSER',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Logistiknetzwerk; Marktanteil TBD.',
-      en: 'Logistics network; share TBD.'
-    }
+    shareDE: 0.045,
+    shareEU: 0.03
   },
   {
     id: 'hellmann',
     name: 'Hellmann',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Globaler Logistikdienstleister; Marktanteil TBD.',
-      en: 'Global logistics provider; share TBD.'
-    }
+    shareDE: 0.025,
+    shareEU: 0.02
   },
   {
     id: 'mosolf',
     name: 'MOSOLF',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Automotive Logistik; Marktanteil TBD.',
-      en: 'Automotive logistics; share TBD.'
-    }
+    shareDE: 0.015,
+    shareEU: 0.018
   },
   {
     id: 'schockemoehle',
     name: 'Schockemöhle',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Logistik/Transport; Marktanteil TBD.',
-      en: 'Logistics/transport; share TBD.'
-    }
+    shareDE: 0.012,
+    shareEU: 0.01
   },
   {
     id: 'zufall',
-    name: 'Zufall',
+    name: 'Zufall Logistik',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Regionaler Logistikverbund; Marktanteil TBD.',
-      en: 'Regional logistics network; share TBD.'
-    }
+    shareDE: 0.006,
+    shareEU: 0.002
   },
   {
     id: 'walther',
-    name: 'Walther',
+    name: 'Walther Logistik',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Transport/Logistik; Marktanteil TBD.',
-      en: 'Transport/logistics; share TBD.'
-    }
+    shareDE: 0.004,
+    shareEU: 0.002
   },
   {
     id: 'wanning',
-    name: 'Wanning',
+    name: 'Wanning Logistik',
     category: 'Operator',
     exposureType: 'Direct',
-    notes: {
-      de: 'Transport/Spedition; Marktanteil TBD.',
-      en: 'Transport/freight; share TBD.'
-    }
+    shareDE: 0.003,
+    shareEU: 0.001
   },
   {
     id: 'transporeon',
     name: 'Transporeon',
     category: 'Platform',
     exposureType: 'Indirect',
-    notes: {
-      de: 'Plattformbasiert; Marktanteil TBD.',
-      en: 'Platform-based; share TBD.'
-    }
+    shareDE: 0.08,
+    shareEU: 0.1
   },
   {
     id: 'timocom',
     name: 'TIMOCOM',
     category: 'Platform',
     exposureType: 'Indirect',
-    notes: {
-      de: 'Transportplattform; Marktanteil TBD.',
-      en: 'Transport platform; share TBD.'
-    }
+    shareDE: 0.12,
+    shareEU: 0.07
   },
   {
     id: 'nacora',
     name: 'NACORA',
     category: 'Broker',
     exposureType: 'Brokered',
-    notes: {
-      de: 'Brokered exposure; Marktanteil TBD.',
-      en: 'Brokered exposure; share TBD.'
-    }
+    shareDE: 0.03,
+    shareEU: 0.04
   },
   {
     id: 'ggw',
-    name: 'GGW',
+    name: 'GGW Group',
     category: 'Broker',
     exposureType: 'Brokered',
-    notes: {
-      de: 'Spezialmakler; Marktanteil TBD.',
-      en: 'Specialty broker; share TBD.'
-    }
+    shareDE: 0.03,
+    shareEU: 0.04
   },
   {
     id: 'wecoya',
     name: 'Wecoya',
     category: 'Broker',
     exposureType: 'Brokered',
-    notes: {
-      de: 'Brokered/structured exposure; Marktanteil TBD.',
-      en: 'Brokered/structured exposure; share TBD.'
-    }
+    shareDE: 0.02,
+    shareEU: 0.05
   }
 ]

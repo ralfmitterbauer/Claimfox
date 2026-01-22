@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './insurfox-tokens.css'
 import './styles.css'
+import '../styles/insurfox-tokens.css'
+import '../styles/enterprise-leads.css'
 
 const root = document.getElementById('root')
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { formatMoneyCompact, formatMoneyFull } from '@/lib/format'
+import { formatMoneyCompactEUR, formatMoneyExactEUR } from '@/lib/format'
 
 type Props = {
   label: string
@@ -16,17 +16,17 @@ export default function KpiCard({ label, value, locale, note, onInfo, isPercent,
     ? 'TBD'
     : isCount
       ? new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)
-      : isPercent
-        ? new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 2 }).format(value)
-        : formatMoneyCompact(value, locale)
+    : isPercent
+      ? new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 2 }).format(value)
+        : formatMoneyCompactEUR(value, locale)
 
   const fullValue = value === undefined
     ? undefined
     : isCount
       ? new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(value)
-      : isPercent
-        ? new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 2 }).format(value)
-        : formatMoneyFull(value, locale)
+    : isPercent
+      ? new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 2 }).format(value)
+        : formatMoneyExactEUR(value, locale)
 
   return (
     <article className="ix-card ix-kpi-card" aria-label={label}>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 type Source = {
   id: string
@@ -17,29 +17,42 @@ type Props = {
 }
 
 export default function SourcesDrawer({ open, sources, onClose }: Props) {
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if (event.key === 'Escape') onClose()
+    }
+    if (open) {
+      window.addEventListener('keydown', onKey)
+    }
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+
+  if (!open) return null
+
   return (
-    <aside className={`ix-drawer ix-sources ${open ? 'is-open' : ''}`} aria-live="polite">
-      <div className="ix-drawer-header">
-        <div>
-          <h3>Sources & Verification</h3>
-          <p>Audit-ready sources</p>
-        </div>
-        <button type="button" onClick={onClose} aria-label="Close">
-          ✕
-        </button>
-      </div>
-      <div className="ix-drawer-body">
+    <>
+      <div className="drawer-backdrop" onClick={onClose} />
+      <aside className="drawer" aria-live="polite">
+        <header>
+          <div>
+            <h3>Sources & Verification</h3>
+            <p className="disclaimer">Audit-ready source placeholders</p>
+          </div>
+          <button type="button" className="filter-chip" onClick={onClose} aria-label="Close">
+            ✕
+          </button>
+        </header>
         {sources.map((source) => (
-          <div key={source.id} className="ix-source-row">
+          <div key={source.id} className="card" style={{ marginTop: '1rem' }}>
             <strong>{source.title}</strong>
-            <span>{source.publisher}</span>
-            <span>{source.documentType}</span>
-            <span>{source.year}</span>
-            <span>Last verified: {source.lastVerified}</span>
-            <span>URL: {source.url || 'TBD'}</span>
+            <p>{source.publisher}</p>
+            <p>{source.documentType}</p>
+            <p>{source.year}</p>
+            <p>Last verified: {source.lastVerified}</p>
+            <p>URL: {source.url || 'TBD'}</p>
           </div>
         ))}
-      </div>
-    </aside>
+      </aside>
+    </>
   )
 }
