@@ -68,7 +68,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     gap: 3rem;
-    align-items: center;
+    align-items: stretch;
   }
 
   .enterprise-hero-copy h1 {
@@ -77,22 +77,25 @@
     color: var(--ix-text);
   }
 
-  .enterprise-hero-copy .subtitle {
-    color: var(--ix-text-muted);
-    font-size: 1.05rem;
-    margin: 0 0 1rem;
+  .enterprise-hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
   }
 
-  .enterprise-hero-copy .disclaimer {
+  .enterprise-hero-copy .hero-summary {
     color: var(--ix-text-muted);
-    font-size: 0.85rem;
-    margin: 0 0 1.6rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0 0 1.8rem;
+    max-width: 720px;
   }
 
   .enterprise-hero-media {
-    border-radius: var(--ix-radius-xl);
+    border-radius: 0;
     overflow: hidden;
-    border: 1px solid var(--ix-border);
+    border: 1px solid var(--blue-dark);
   }
 
   .enterprise-hero-media img {
@@ -100,6 +103,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    border-radius: 0;
   }
 
   .enterprise-hero-chart {

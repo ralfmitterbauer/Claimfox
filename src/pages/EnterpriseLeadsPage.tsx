@@ -68,8 +68,19 @@ export default function EnterpriseLeadsPage() {
         <div className="enterprise-hero">
           <div className="enterprise-hero-copy">
             <h1>{copy.cover.title}</h1>
-            <p className="subtitle">{copy.cover.subtitle}</p>
-            <p className="disclaimer">{copy.disclaimer}</p>
+            <p className="hero-summary">
+              Im Fokus steht ein strukturierter Marktüberblick für gewerbliche Flotten- und
+              Logistikrisiken in Deutschland und der EEA, mit Zielsegmenten in Spedition,
+              Kontrakt- und Speziallogistik sowie Automotive- und Transportflotten. Das
+              modellierte Markt-Exposure beträgt rund 24 Mrd. € in Deutschland und rund
+              250 Mrd. € in der EEA. Exposure ist ausdrücklich nicht gleich Prämie, Umsatz
+              oder Beitrag. Die Modellierung basiert auf risikorelevanten Treibern wie
+              Fahrzeugbeständen, Transport- und Warenwerten, Einsatzprofilen sowie
+              Schadenfrequenz und -höhe. Ziel ist Transparenz über Risikoprofile als
+              Grundlage für Portfolio-Steuerung, Kapazitätsallokation und
+              Zeichnungsentscheidungen in einer partnerschaftlichen Zusammenarbeit
+              zwischen Versicherer und Insurfox.
+            </p>
             <div className="kpi-grid">
               <div className="card">
                 <span>{copy.kpis.deMarket}</span>
