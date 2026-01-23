@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { enterpriseStrings } from '@/i18n/strings'
 import { useI18n } from '@/i18n/I18nContext'
@@ -20,8 +20,11 @@ export default function EnterpriseLeadsPage() {
   const mapImage = lang === 'en' ? KarteDeEuEn : KarteDeEu
   const industryImage = lang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
   const slidesRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const totalSlides = 2
+  const [scale, setScale] = useState(1)
+  const [headerHeight, setHeaderHeight] = useState(0)
   const compositionRows = [
     { label: 'Motor (Kraftfahrt)', value: '€ 34.015 bn' },
     { label: 'Property (Sach)', value: '€ 11.306 bn' },
@@ -52,19 +55,47 @@ export default function EnterpriseLeadsPage() {
   function goToSlide(nextIndex: number) {
     const safeIndex = Math.max(0, Math.min(totalSlides - 1, nextIndex))
     setActiveIndex(safeIndex)
-    if (!slidesRef.current) {
-      return
-    }
-    const slideWidth = slidesRef.current.clientWidth
-    slidesRef.current.scrollTo({
-      left: slideWidth * safeIndex,
-      behavior: 'smooth'
-    })
   }
 
+  useEffect(() => {
+    if (isPrint) {
+      return
+    }
+    document.body.classList.add('enterprise-fullscreen')
+    return () => {
+      document.body.classList.remove('enterprise-fullscreen')
+    }
+  }, [isPrint])
+
+  useEffect(() => {
+    if (isPrint) {
+      return
+    }
+    const PAGE_WIDTH = 1122
+    const PAGE_HEIGHT = 793
+    const updateScale = () => {
+      const currentHeaderHeight = headerRef.current?.offsetHeight ?? 0
+      const availableWidth = window.innerWidth
+      const availableHeight = window.innerHeight - currentHeaderHeight
+      const nextScale = Math.min(
+        availableWidth / PAGE_WIDTH,
+        availableHeight / PAGE_HEIGHT,
+        1
+      )
+      setHeaderHeight(currentHeaderHeight)
+      setScale(nextScale)
+    }
+    updateScale()
+    window.addEventListener('resize', updateScale)
+    return () => window.removeEventListener('resize', updateScale)
+  }, [isPrint])
+
   return (
-    <section className={`page enterprise-plan ${isPrint ? 'is-print' : ''}`}>
-      <header className="enterprise-header no-print">
+    <section
+      className={`page enterprise-plan ${isPrint ? 'is-print' : ''}`}
+      style={{ '--enterprise-header-height': `${headerHeight}px` } as React.CSSProperties}
+    >
+      <header ref={headerRef} className="enterprise-header no-print">
         <div className="enterprise-header-title">Insurfox / Antares</div>
         <div className="enterprise-header-actions">
           <button type="button" className="enterprise-download" onClick={exportPdf}>
@@ -73,75 +104,123 @@ export default function EnterpriseLeadsPage() {
         </div>
       </header>
 
-      <div className="enterprise-slides" ref={slidesRef}>
-        <section className="slide slide-cover enterprise-section">
-          <div className="enterprise-hero">
-            <div className="enterprise-hero-copy">
-              <h1>{copy.cover.title}</h1>
-              <p className="hero-summary">{copy.cover.summary}</p>
-              <div className="enterprise-map">
-                <img src={mapImage} alt={copy.marketImageAlt} />
-              </div>
-            </div>
-            <div className="enterprise-partners">
-              <img src={industryImage} alt="Logistik Industrie" />
-              <div className="enterprise-tables">
-                <div className="enterprise-table-card">
-                  <h3>Germany — Specific Insurance Market Composition (Selected Lines)</h3>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Line of Business</th>
-                        <th className="num">Market Volume</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {compositionRows.map((row) => (
-                        <tr key={row.label}>
-                          <td>{row.label}</td>
-                          <td className="num">{row.value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+      <div className="enterprise-stage">
+        <div
+          className="enterprise-canvas"
+          style={{ transform: isPrint ? 'none' : `scale(${scale})` }}
+        >
+          <div
+            className="enterprise-slides"
+            ref={slidesRef}
+            style={{ transform: `translateX(-${activeIndex * 1122}px)` }}
+          >
+            <section className="enterprise-page slide-cover enterprise-section">
+              <div className="enterprise-hero">
+                <div className="enterprise-hero-copy">
+                  <h1>{copy.cover.title}</h1>
+                  <p className="hero-summary">{copy.cover.summary}</p>
+                  <div className="enterprise-map">
+                    <img src={mapImage} alt={copy.marketImageAlt} />
+                  </div>
                 </div>
-                <div className="enterprise-table-card">
-                  <h3>Logistics Stack — Insurance-Relevant Anchors (Germany, indicative volumes)</h3>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Insurance Segment</th>
-                        <th className="num">Market Volume</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {stackRows.map((row) => (
-                        <tr key={row.label}>
-                          <td>{row.label}</td>
-                          <td className="num">{row.value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                <div className="enterprise-partners">
+                  <img src={industryImage} alt="Logistik Industrie" />
                 </div>
               </div>
-              <p className="enterprise-note">
-                Volumes shown represent gross written premium equivalents by line of business in Germany. Figures are indicative and provided for structural market context.
-              </p>
-            </div>
-          </div>
-        </section>
+            </section>
 
-        <section className="slide enterprise-section enterprise-market">
-          <div className="enterprise-market-grid">
-            <div className="enterprise-market-poster">
-              <img src={PosterAntares} alt="Insurfox Poster" />
-            </div>
-            <div className="enterprise-market-map">
-              <img src={mapImage} alt={copy.marketImageAlt} />
-            </div>
+            <section className="enterprise-page enterprise-section enterprise-market">
+              <div className="enterprise-page-top">
+                <div className="enterprise-page-poster">
+                  <img src={PosterAntares} alt="Insurfox Poster" />
+                </div>
+                <div className="enterprise-page-spacer" aria-hidden="true" />
+              </div>
+              <div className="enterprise-page-bottom">
+                <div className="enterprise-grid-5">
+                  <div className="enterprise-table-card">
+                    <h3>Germany — Non-Life Market Composition (selected lines)</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Line of Business</th>
+                          <th className="num">Market Volume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {compositionRows.map((row) => (
+                          <tr key={row.label}>
+                            <td>{row.label}</td>
+                            <td className="num">{row.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="enterprise-table-card">
+                    <h3>Logistics Stack — Insurance-Relevant Anchors (Germany, indicative volumes)</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Insurance Segment</th>
+                          <th className="num">Market Volume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {stackRows.map((row) => (
+                          <tr key={row.label}>
+                            <td>{row.label}</td>
+                            <td className="num">{row.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="enterprise-map-card">
+                    <img src={mapImage} alt={copy.marketImageAlt} />
+                  </div>
+                  <div className="enterprise-table-card">
+                    <h3>EEA — Non-Life GWP (Solvency II, 2021)</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Line of Business</th>
+                          <th className="num">Market Volume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Motor vehicle liability</td><td className="num">€ 68.511 bn</td></tr>
+                        <tr><td>Other motor</td><td className="num">€ 57.203 bn</td></tr>
+                        <tr><td>Property (Fire & other damage)</td><td className="num">€ 101.823 bn</td></tr>
+                        <tr><td>General liability</td><td className="num">€ 42.442 bn</td></tr>
+                        <tr><td>Medical expense</td><td className="num">€ 113.123 bn</td></tr>
+                        <tr className="total-row"><td>Total non-life</td><td className="num">€ 457.220 bn</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="enterprise-table-card">
+                    <h3>Europe — P&C Premiums by Main Business Line (2020)</h3>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Line of Business</th>
+                          <th className="num">Market Volume</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>Motor</td><td className="num">~€ 149 bn (36%)</td></tr>
+                        <tr><td>Property</td><td className="num">~€ 113 bn (27%)</td></tr>
+                        <tr><td>General liability</td><td className="num">~€ 50 bn (12%)</td></tr>
+                        <tr><td>Other</td><td className="num">~€ 105 bn (25%)</td></tr>
+                        <tr className="total-row"><td>Total P&C</td><td className="num">€ 419 bn (100%)</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
+        </div>
       </div>
 
       <div className="enterprise-nav no-print" aria-hidden="true">

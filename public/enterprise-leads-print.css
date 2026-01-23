@@ -3,7 +3,7 @@
    ============================ */
 @page {
   size: A4 landscape;
-  margin: 12mm;
+  margin: 0;
 }
 
 :root {
@@ -45,45 +45,26 @@ img {
    2) Base Typography
    ============================ */
 h1 {
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 700;
   margin: 0 0 8px;
-  color: var(--ix-primary);
+  color: var(--ix-text);
 }
 
 h2 {
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0 0 10px;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: var(--ix-text-muted);
-  margin: 0 0 10px;
-}
-
-.disclaimer {
-  font-size: 11px;
-  color: var(--ix-text-muted);
-  margin: 0 0 16px;
-}
-
-.section-intro {
-  color: var(--ix-text-muted);
-  margin: 0 0 10px;
-}
-
-.accent-line {
-  height: 1px;
-  width: 56px;
-  background: var(--ix-primary);
-  margin: 8px 0 12px;
 }
 
 .hero-summary {
   color: var(--ix-text-muted);
   margin: 0 0 12px;
+}
+
+.section-intro {
+  color: var(--ix-text-muted);
+  margin: 0 0 10px;
 }
 
 /* ============================
@@ -94,47 +75,104 @@ h2 {
 }
 
 .slide {
-  display: block;
-  padding: 2mm 0;
+  width: 297mm;
+  height: 210mm;
+  padding: 12mm;
+  page-break-after: always;
+  break-after: page;
+}
+
+.slide:last-child {
+  page-break-after: auto;
+  break-after: auto;
 }
 
 .cover-split {
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
+  gap: 12mm;
+  height: 100%;
+}
+
+.cover-text,
+.cover-media {
+  width: 50%;
 }
 
 .cover-text {
-  width: 50%;
-  padding-right: 12mm;
-}
-
-.cover-media {
-  width: 50%;
-  border: 3px solid var(--blue-dark, var(--ix-text));
-  padding: 6px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-}
-
-.cover-media .antares-poster {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
 }
 
 .cover-map {
-  margin-top: 12px;
+  margin-top: auto;
 }
 
 .cover-map img {
   width: 100%;
   height: auto;
-  max-height: 60mm;
-  display: block;
-  border: 1px solid var(--ix-border);
+  max-height: 70mm;
+  object-fit: contain;
 }
 
+.cover-media {
+  display: flex;
+  align-items: flex-start;
+}
+
+.cover-media img {
+  width: 100%;
+  height: auto;
+  max-height: 150mm;
+  object-fit: contain;
+}
+
+/* ============================
+   4) Page 2 Layout
+   ============================ */
+.enterprise-page-top {
+  display: flex;
+  gap: 8mm;
+  height: 45%;
+}
+
+.enterprise-page-poster,
+.enterprise-page-spacer {
+  width: 50%;
+}
+
+.enterprise-page-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.enterprise-page-bottom {
+  height: 55%;
+  display: flex;
+  align-items: stretch;
+}
+
+.enterprise-grid-5 {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.enterprise-grid-5 > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.enterprise-map-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ============================
+   5) Table Styling
+   ============================ */
 .enterprise-table-card {
   border: 1px solid var(--ix-border);
   padding: 4px 6px;
@@ -158,108 +196,9 @@ h2 {
   border-bottom: 1px solid var(--ix-border);
 }
 
-.enterprise-table-row {
-  display: flex;
-  gap: 6px;
-}
-
-.enterprise-table-row .enterprise-table-card {
-  width: 50%;
-}
-
-.enterprise-note {
-  margin: 0;
-  font-size: 9px;
-  color: var(--ix-text-muted);
-}
-
-/* ============================
-   4) KPI Styling
-   ============================ */
-.kpi-row {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 -6px 4px;
-}
-
-.kpi-row .card {
-  border: 1px solid var(--ix-border);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: var(--ix-surface);
-  margin: 0 6px 12px;
-  flex: 1 1 180px;
-}
-
-.card span {
-  display: block;
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ix-text-muted);
-}
-
-.card strong {
-  display: block;
-  font-size: 24px;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
-.chart-card,
-.table-card {
-  border: 1px solid var(--ix-border);
-  border-radius: 10px;
-  background: var(--ix-surface);
-  padding: 10px 12px;
-}
-
-.table-card {
-  padding: 0;
-  overflow: hidden;
-}
-
-/* ============================
-   5) Table Styling
-   ============================ */
-.table-wrap {
-  width: 100%;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 11px;
-}
-
-th,
-td {
-  padding: 7px 10px;
-  border-bottom: 1px solid var(--ix-border);
-  text-align: left;
-  vertical-align: top;
-}
-
-th {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--ix-text-muted);
-  background: var(--ix-surface-2);
-}
-
 .num {
   text-align: right;
   font-variant-numeric: tabular-nums;
-}
-
-.badge {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 999px;
-  border: 1px solid var(--ix-border);
-  color: var(--ix-text);
-  font-size: 10px;
 }
 
 .total-row td {
@@ -268,62 +207,18 @@ th {
 }
 
 /* ============================
-   6) Utility Classes
+   6) Utility
    ============================ */
-.bullets {
-  margin: 10px 0 0;
-  padding-left: 18px;
+.enterprise-note {
+  margin: 0;
+  font-size: 9px;
   color: var(--ix-text-muted);
-  font-size: 11px;
-}
-
-.footer {
-  margin-top: 12px;
-  font-size: 10px;
-  color: var(--ix-text-muted);
-  display: flex;
-  justify-content: space-between;
-}
-
-.muted {
-  color: var(--ix-text-muted);
-}
-
-.bars {
-  margin-top: 10px;
-  display: flex;
-}
-
-.bar {
-  flex: 1 1 auto;
-  height: 6px;
-  background: var(--ix-surface-2);
-}
-
-.bar + .bar {
-  margin-left: 6px;
-}
-
-.bar span {
-  display: block;
-  height: 100%;
-  background: var(--ix-primary);
 }
 
 /* ============================
    7) Print Rules
    ============================ */
 @media print {
-  .slide {
-    page-break-after: always;
-    break-after: page;
-  }
-
-  .slide:last-child {
-    page-break-after: auto;
-    break-after: auto;
-  }
-
   .card,
   .table-card,
   table,
@@ -336,55 +231,5 @@ th {
 
   thead {
     display: table-header-group;
-  }
-
-  .cover-split {
-    align-items: stretch;
-  }
-
-  /* Footer fallback per slide */
-  .slide::after {
-    content: "Business Plan – Part 1 · Confidential";
-    display: block;
-    margin-top: 12px;
-    font-size: 10px;
-    color: var(--ix-text-muted);
-    text-align: right;
-  }
-}
-
-/* ============================
-   8) Screen Layout (Web)
-   ============================ */
-@media screen {
-  body {
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  h1 {
-    font-size: 42px;
-  }
-
-  h2 {
-    font-size: 26px;
-  }
-
-  .slide {
-    padding: 6vw;
-    border-bottom: 1px solid var(--ix-border);
-  }
-
-  .web-hero {
-    padding: 6vw;
-  }
-
-  .cover-split {
-    gap: 4vw;
-  }
-
-  .cover-text,
-  .cover-media {
-    width: 50%;
   }
 }

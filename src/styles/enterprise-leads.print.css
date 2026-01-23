@@ -1,7 +1,7 @@
 @media print {
   @page {
     size: A4 landscape;
-    margin: 12mm;
+    margin: 0;
   }
 
   .no-print {
@@ -38,5 +38,42 @@
 
   .enterprise-plan {
     padding: 0;
+  }
+
+  .enterprise-stage {
+    height: auto;
+  }
+
+  .enterprise-canvas {
+    transform: none !important;
+    width: auto;
+    height: auto;
+  }
+
+  .enterprise-slides {
+    display: block;
+    width: auto;
+    height: auto;
+    transform: none !important;
+  }
+
+  .enterprise-page {
+    width: 297mm;
+    height: 210mm;
+    padding: 12mm;
+    page-break-after: always;
+  }
+
+  .enterprise-page:last-child {
+    page-break-after: auto;
+  }
+
+  .enterprise-grid-5 {
+    display: flex;
+    gap: 6px;
+  }
+
+  .enterprise-grid-5 > * {
+    flex: 1 1 0;
   }
 }
