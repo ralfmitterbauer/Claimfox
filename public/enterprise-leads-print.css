@@ -114,7 +114,7 @@ h2 {
   padding: 6px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .cover-media .antares-poster {
@@ -130,32 +130,41 @@ h2 {
 .cover-map img {
   width: 100%;
   height: auto;
-  max-height: 45mm;
+  max-height: 60mm;
   display: block;
   border: 1px solid var(--ix-border);
 }
 
 .enterprise-table-card {
   border: 1px solid var(--ix-border);
-  padding: 6px 8px;
+  padding: 4px 6px;
   background: var(--ix-surface);
 }
 
 .enterprise-table-card h3 {
   margin: 0 0 6px;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .enterprise-table-card table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 10px;
+  font-size: 9px;
 }
 
 .enterprise-table-card th,
 .enterprise-table-card td {
-  padding: 4px 6px;
+  padding: 3px 4px;
   border-bottom: 1px solid var(--ix-border);
+}
+
+.enterprise-table-row {
+  display: flex;
+  gap: 6px;
+}
+
+.enterprise-table-row .enterprise-table-card {
+  width: 50%;
 }
 
 .enterprise-note {

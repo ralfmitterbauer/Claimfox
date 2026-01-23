@@ -131,7 +131,7 @@
   .enterprise-map img {
     width: 100%;
     height: auto;
-    max-height: 44vh;
+    max-height: 52vh;
     object-fit: contain;
     display: block;
     border: none;
@@ -147,10 +147,34 @@
   .enterprise-partners img {
     width: 100%;
     height: auto;
-    max-height: 34vh;
+    max-height: 52vh;
     object-fit: contain;
     align-self: flex-start;
     border: none;
+  }
+
+  .enterprise-tables {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .enterprise-table-card {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .enterprise-table-card h3 {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .enterprise-table-card table {
+    font-size: 0.7rem;
+  }
+
+  .enterprise-table-card th,
+  .enterprise-table-card td {
+    padding: 0.35rem 0.4rem;
   }
 
   .enterprise-table-card {

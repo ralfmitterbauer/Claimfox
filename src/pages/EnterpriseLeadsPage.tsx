@@ -85,43 +85,45 @@ export default function EnterpriseLeadsPage() {
             </div>
             <div className="enterprise-partners">
               <img src={industryImage} alt="Logistik Industrie" />
-              <div className="enterprise-table-card">
-                <h3>Germany — Specific Insurance Market Composition (Selected Lines)</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Line of Business</th>
-                      <th className="num">Market Volume</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {compositionRows.map((row) => (
-                      <tr key={row.label}>
-                        <td>{row.label}</td>
-                        <td className="num">{row.value}</td>
+              <div className="enterprise-tables">
+                <div className="enterprise-table-card">
+                  <h3>Germany — Specific Insurance Market Composition (Selected Lines)</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Line of Business</th>
+                        <th className="num">Market Volume</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="enterprise-table-card">
-                <h3>Logistics Stack — Insurance-Relevant Anchors (Germany, indicative volumes)</h3>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Insurance Segment</th>
-                      <th className="num">Market Volume</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {stackRows.map((row) => (
-                      <tr key={row.label}>
-                        <td>{row.label}</td>
-                        <td className="num">{row.value}</td>
+                    </thead>
+                    <tbody>
+                      {compositionRows.map((row) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td className="num">{row.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="enterprise-table-card">
+                  <h3>Logistics Stack — Insurance-Relevant Anchors (Germany, indicative volumes)</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Insurance Segment</th>
+                        <th className="num">Market Volume</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {stackRows.map((row) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td className="num">{row.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
               <p className="enterprise-note">
                 Volumes shown represent gross written premium equivalents by line of business in Germany. Figures are indicative and provided for structural market context.
