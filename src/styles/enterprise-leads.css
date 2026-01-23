@@ -93,14 +93,14 @@
 
   .enterprise-cover-top {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-    gap: 10mm;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 14mm;
     height: 50%;
     align-items: stretch;
   }
 
   .enterprise-hero-copy h1 {
-    font-size: 30px;
+    font-size: 34px;
     margin: 0 0 10px;
     color: var(--ix-text);
   }
@@ -112,7 +112,7 @@
 
   .enterprise-hero-copy .hero-summary {
     color: var(--ix-text-muted);
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     line-height: 1.7;
     margin: 0 0 12px;
   }
@@ -193,8 +193,8 @@
 
   .enterprise-grid-5 {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(0, 1.4fr) minmax(0, 1.05fr) minmax(0, 1.05fr);
+    gap: 14px;
     width: 100%;
     height: 100%;
     align-items: stretch;

@@ -22,7 +22,7 @@ export default function EnterpriseLeadsPage() {
   const slidesRef = useRef<HTMLDivElement>(null)
   const headerRef = useRef<HTMLElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
-  const totalSlides = 2
+  const totalSlides = isPrint ? 2 : 1
   const [scale, setScale] = useState(1)
   const [headerHeight, setHeaderHeight] = useState(0)
   const compositionRows = [
@@ -211,13 +211,15 @@ export default function EnterpriseLeadsPage() {
               </div>
             </section>
 
-            <section className="enterprise-page enterprise-section enterprise-market">
-              <div className="enterprise-page-top enterprise-page-full">
-                <div className="enterprise-page-poster">
-                  <img src={PosterAntares} alt="Insurfox Poster" />
+            {isPrint && (
+              <section className="enterprise-page enterprise-section enterprise-market">
+                <div className="enterprise-page-top enterprise-page-full">
+                  <div className="enterprise-page-poster">
+                    <img src={PosterAntares} alt="Insurfox Poster" />
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            )}
           </div>
         </div>
       </div>
