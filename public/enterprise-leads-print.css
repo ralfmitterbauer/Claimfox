@@ -81,6 +81,11 @@ h2 {
   margin: 8px 0 12px;
 }
 
+.hero-summary {
+  color: var(--ix-text-muted);
+  margin: 0 0 12px;
+}
+
 /* ============================
    3) Slide Layout
    ============================ */
@@ -105,12 +110,24 @@ h2 {
 
 .cover-media {
   width: 50%;
+  border: 3px solid var(--blue-dark, var(--ix-text));
 }
 
 .cover-media .antares-poster {
   width: 100%;
   height: auto;
   object-fit: contain;
+}
+
+.cover-map {
+  margin-top: 12px;
+}
+
+.cover-map img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--ix-border);
 }
 
 /* ============================

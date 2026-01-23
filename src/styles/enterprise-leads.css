@@ -68,7 +68,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
     gap: 3rem;
-    align-items: stretch;
+    align-items: start;
   }
 
   .enterprise-hero-copy h1 {
@@ -80,7 +80,7 @@
   .enterprise-hero-copy {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     height: 100%;
   }
 
@@ -95,7 +95,7 @@
   .enterprise-hero-media {
     border-radius: 0;
     overflow: hidden;
-    border: 1px solid var(--blue-dark);
+    border: 3px solid var(--blue-dark);
   }
 
   .enterprise-hero-media img {
@@ -104,6 +104,17 @@
     object-fit: cover;
     display: block;
     border-radius: 0;
+  }
+
+  .enterprise-market {
+    padding-top: 0;
+  }
+
+  .enterprise-market-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--ix-border);
   }
 
   .enterprise-hero-chart {
