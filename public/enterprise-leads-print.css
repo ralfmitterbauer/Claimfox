@@ -180,7 +180,7 @@ h2 {
    5) Table Styling
    ============================ */
 .enterprise-table-card {
-  border: 1px solid var(--ix-border);
+  border: 2px solid #281c65;
   padding: 4px 6px;
   background: var(--ix-surface);
 }
@@ -188,6 +188,7 @@ h2 {
 .enterprise-table-card h3 {
   margin: 0 0 6px;
   font-size: 9px;
+  color: var(--insurfox-orange, var(--ix-primary));
 }
 
 .enterprise-table-card table {
