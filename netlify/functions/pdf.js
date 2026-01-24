@@ -15,6 +15,10 @@ function resolveDocumentUrl(route) {
     mappedRoute = '/enterprise-leads-print.de.html'
   } else if (route === '/enterprise-leads-intelligence/print/en') {
     mappedRoute = '/enterprise-leads-print.en.html'
+  } else if (route === '/premium-corridor/print/de') {
+    mappedRoute = '/premium-corridor-print.de.html'
+  } else if (route === '/premium-corridor/print/en') {
+    mappedRoute = '/premium-corridor-print.en.html'
   }
   const normalizedRoute = mappedRoute.startsWith('/') ? mappedRoute : `/${mappedRoute}`
   return new URL(normalizedRoute, origin).toString()

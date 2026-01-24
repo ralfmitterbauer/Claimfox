@@ -18,6 +18,16 @@
   status = 200
 
 [[redirects]]
+  from = "/premium-corridor/print/de"
+  to = "/premium-corridor-print.de.html"
+  status = 200
+
+[[redirects]]
+  from = "/premium-corridor/print/en"
+  to = "/premium-corridor-print.en.html"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
