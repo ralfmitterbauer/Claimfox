@@ -311,34 +311,39 @@ export default function EnterpriseLeadsPage() {
                       <strong>{formatPercent(baseFactor)}</strong>
                     </div>
                   </div>
-                  <div className="enterprise-premium-table">
-                    <h2>{premiumStrings.tableTitle}</h2>
-                    <table>
-                      <thead>
-                        <tr>
-                          {premiumStrings.tableColumns.map((col) => (
-                            <th key={col}>{col}</th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>{premiumStrings.marketDe}</td>
-                          <td className="num">{formatMoney(exposureDe * lowFactor)}</td>
-                          <td className="num">{formatMoney(exposureDe * baseFactor)}</td>
-                          <td className="num">{formatMoney(exposureDe * highFactor)}</td>
-                        </tr>
-                        <tr>
-                          <td>{premiumStrings.marketEea}</td>
-                          <td className="num">{formatMoney(exposureEea * lowFactor)}</td>
-                          <td className="num">{formatMoney(exposureEea * baseFactor)}</td>
-                          <td className="num">{formatMoney(exposureEea * highFactor)}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <div className="enterprise-premium-stack">
+                    <div className="enterprise-table-card enterprise-premium-table">
+                      <h3>{premiumStrings.tableTitle}</h3>
+                      <table>
+                        <thead>
+                          <tr>
+                            {premiumStrings.tableColumns.map((col) => (
+                              <th key={col}>{col}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{premiumStrings.marketDe}</td>
+                            <td className="num">{formatMoney(exposureDe * lowFactor)}</td>
+                            <td className="num">{formatMoney(exposureDe * baseFactor)}</td>
+                            <td className="num">{formatMoney(exposureDe * highFactor)}</td>
+                          </tr>
+                          <tr>
+                            <td>{premiumStrings.marketEea}</td>
+                            <td className="num">{formatMoney(exposureEea * lowFactor)}</td>
+                            <td className="num">{formatMoney(exposureEea * baseFactor)}</td>
+                            <td className="num">{formatMoney(exposureEea * highFactor)}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div className="enterprise-premium-image">
+                      <img src={industryImage} alt="Logistik Industrie" />
+                    </div>
                   </div>
                   <div className="enterprise-premium-charts">
-                    <div className="enterprise-premium-chart">
+                    <div className="enterprise-table-card enterprise-premium-chart">
                       <h3>{premiumStrings.chartDe}</h3>
                       <svg viewBox="0 0 160 120" role="img" aria-label="Germany premium corridor">
                         <rect className="bar bar-low" x="20" y="70" width="20" height="20" rx="3" />
@@ -347,7 +352,7 @@ export default function EnterpriseLeadsPage() {
                         <line className="axis" x1="15" y1="90" x2="145" y2="90" />
                       </svg>
                     </div>
-                    <div className="enterprise-premium-chart">
+                    <div className="enterprise-table-card enterprise-premium-chart">
                       <h3>{premiumStrings.chartEea}</h3>
                       <svg viewBox="0 0 160 120" role="img" aria-label="EEA premium corridor">
                         <rect className="bar bar-low" x="20" y="60" width="20" height="30" rx="3" />
