@@ -210,13 +210,20 @@
     display: flex;
   }
 
-  .enterprise-grid-5 {
+  .enterprise-grid-3 {
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.15fr) minmax(0, 1.7fr) minmax(0, 1.15fr) minmax(0, 1.15fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
     gap: 20px;
     width: 100%;
     height: auto;
     align-items: stretch;
+  }
+
+  .enterprise-table-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
   }
 
   .enterprise-map-card img {
