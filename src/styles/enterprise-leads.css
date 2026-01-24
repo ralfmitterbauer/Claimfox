@@ -456,6 +456,7 @@
     flex-direction: column;
     gap: 10px;
     height: 100%;
+    justify-content: space-between;
   }
 
   .enterprise-premium-chart {
@@ -463,6 +464,9 @@
     border: 2px solid #281c65;
     border-radius: 0;
     background: var(--ix-surface);
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .enterprise-premium-chart h3 {
@@ -520,6 +524,7 @@
     align-items: center;
     justify-content: center;
     padding: 12px;
+    flex: 1 1 0;
   }
 
   .enterprise-premium-logo-card img {
