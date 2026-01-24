@@ -153,6 +153,7 @@ export default function EnterpriseLeadsPage() {
                     </div>
                   </div>
                   <div className="enterprise-map-card">
+                    <h2>AI-IAAS B2B PLATFORM<br />For Insurance Operations<br />Enterprise-grade. Core-system agnostic.</h2>
                     <img src={mapImage} alt={copy.marketImageAlt} />
                   </div>
                   <div className="enterprise-table-stack">

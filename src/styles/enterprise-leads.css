@@ -226,6 +226,21 @@
     height: 100%;
   }
 
+  .enterprise-map-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .enterprise-map-card h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
   .enterprise-map-card img {
     width: 100%;
     height: 100%;
