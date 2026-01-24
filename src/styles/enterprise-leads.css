@@ -171,6 +171,14 @@
     color: var(--insurfox-orange, var(--ix-primary));
   }
 
+  .enterprise-table-card-left {
+    border-color: var(--insurfox-orange, var(--ix-primary));
+  }
+
+  .enterprise-table-card-left h3 {
+    color: var(--insurfox-orange, var(--ix-primary));
+  }
+
   .enterprise-table-stack {
     display: flex;
     flex-direction: column;
@@ -374,18 +382,20 @@
     grid-template-columns: 0.9fr 1.4fr 0.9fr;
     gap: 20px;
     flex: 1 1 auto;
+    align-items: stretch;
   }
 
   .enterprise-premium-kpis {
     display: grid;
     gap: 12px;
+    height: 100%;
   }
 
   .enterprise-premium-card {
-    border: 1px solid var(--ix-border);
-    border-radius: 14px;
+    border: 2px solid #281c65;
+    border-radius: 0;
     padding: 14px 16px;
-    background: var(--ix-surface-2);
+    background: var(--ix-surface);
   }
 
   .enterprise-premium-card span {
@@ -421,6 +431,9 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    border: 2px solid #281c65;
+    padding: 10px;
+    background: var(--ix-surface);
   }
 
   .enterprise-premium-image-title {
@@ -436,17 +449,20 @@
     height: 100%;
     object-fit: contain;
     display: block;
-    border: 2px solid #281c65;
   }
 
   .enterprise-premium-charts {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    height: 100%;
   }
 
   .enterprise-premium-chart {
     padding: 10px;
+    border: 2px solid #281c65;
+    border-radius: 0;
+    background: var(--ix-surface);
   }
 
   .enterprise-premium-chart h3 {
@@ -481,6 +497,9 @@
     gap: 10px;
     font-size: 0.7rem;
     color: var(--ix-text-muted);
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid var(--ix-border);
   }
 
   .enterprise-premium-legend .legend-item::before {
@@ -542,12 +561,12 @@
 
   .enterprise-nav-arrow {
     pointer-events: auto;
-    border: 1px solid var(--blue-dark);
-    background: var(--ix-surface);
-    color: var(--blue-dark);
-    width: 44px;
-    height: 44px;
-    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: #281c65;
+    font-size: 2rem;
+    width: auto;
+    height: auto;
     cursor: pointer;
   }
 
