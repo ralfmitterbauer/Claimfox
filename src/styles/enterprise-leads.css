@@ -172,10 +172,28 @@
     color: var(--insurfox-orange, var(--ix-primary));
   }
 
+  .enterprise-table-card-left h3 {
+    color: #281c65;
+  }
+
+  .enterprise-table-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    height: 100%;
+  }
+
+  .enterprise-table-stack .enterprise-table-card {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+  }
+
   .enterprise-table-card table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.7rem;
+    margin-top: auto;
   }
 
   .enterprise-table-card th,
