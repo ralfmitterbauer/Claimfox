@@ -133,7 +133,7 @@ export default function EnterpriseLeadsPage() {
                       </table>
                     </div>
                   <div className="enterprise-table-card enterprise-table-card-left">
-                    <h3>Logistic / Cargo</h3>
+                    <h3>Germany - Logistic / Cargo</h3>
                     <table>
                       <thead>
                         <tr>
@@ -185,7 +185,7 @@ export default function EnterpriseLeadsPage() {
                       </table>
                     </div>
                   <div className="enterprise-table-card enterprise-table-card-right">
-                    <h3>EEA - Logistic / Composit</h3>
+                    <h3>EEA - Logistic / Cargo</h3>
                     <table>
                       <thead>
                         <tr>
