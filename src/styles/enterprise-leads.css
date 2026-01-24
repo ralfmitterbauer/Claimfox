@@ -59,12 +59,13 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    width: 100%;
   }
 
   .enterprise-canvas {
     width: var(--page-width);
     height: var(--page-height);
-    transform-origin: top left;
+    transform-origin: center center;
     overflow: hidden;
   }
 
