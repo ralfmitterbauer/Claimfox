@@ -189,7 +189,7 @@ export default function EnterpriseLeadsPage() {
                 <h1>German and European Markets</h1>
                 <div className="enterprise-grid-3">
                   <div className="enterprise-table-stack">
-                  <div className="enterprise-table-card enterprise-table-card-left">
+                  <div className="enterprise-table-card">
                     <h3>German Market</h3>
                     <table>
                       <thead>
@@ -208,7 +208,7 @@ export default function EnterpriseLeadsPage() {
                         </tbody>
                       </table>
                     </div>
-                  <div className="enterprise-table-card enterprise-table-card-left">
+                  <div className="enterprise-table-card">
                     <h3>Germany - Logistic / Cargo</h3>
                     <table>
                       <thead>
@@ -241,7 +241,7 @@ export default function EnterpriseLeadsPage() {
                     <img src={mapImage} alt={copy.marketImageAlt} />
                   </div>
                   <div className="enterprise-table-stack">
-                  <div className="enterprise-table-card enterprise-table-card-right">
+                  <div className="enterprise-table-card">
                     <h3>EEA Market - GWP (Solvency II)</h3>
                     <table>
                       <thead>
@@ -260,7 +260,7 @@ export default function EnterpriseLeadsPage() {
                         </tbody>
                       </table>
                     </div>
-                  <div className="enterprise-table-card enterprise-table-card-right">
+                  <div className="enterprise-table-card">
                     <h3>EEA - Logistic / Cargo</h3>
                     <table>
                       <thead>
@@ -339,6 +339,7 @@ export default function EnterpriseLeadsPage() {
                       </table>
                     </div>
                     <div className="enterprise-premium-image">
+                      <h3 className="enterprise-premium-image-title">Partner and verified leads</h3>
                       <img src={industryImage} alt="Logistik Industrie" />
                     </div>
                   </div>

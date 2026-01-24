@@ -165,22 +165,10 @@
     padding: 0.6rem 0.8rem;
   }
 
-  .enterprise-table-card-left {
-    border-color: var(--insurfox-orange, var(--ix-primary));
-  }
-
-  .enterprise-table-card-right {
-    border-color: #281c65;
-  }
-
   .enterprise-table-card h3 {
     margin: 0 0 6px;
     font-size: 0.8rem;
     color: var(--insurfox-orange, var(--ix-primary));
-  }
-
-  .enterprise-table-card-left h3 {
-    color: #281c65;
   }
 
   .enterprise-table-stack {
@@ -431,6 +419,16 @@
   .enterprise-premium-image {
     flex: 1 1 auto;
     display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .enterprise-premium-image-title {
+    margin: 0;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #281c65;
   }
 
   .enterprise-premium-image img {
