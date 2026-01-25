@@ -1,0 +1,37 @@
+@media screen {
+  body.is-slide-route {
+    overflow: hidden;
+  }
+
+  .slide-canvas {
+    height: calc(100vh - var(--app-header-h, 0px));
+    height: calc(100dvh - var(--app-header-h, 0px));
+    min-height: calc(100vh - var(--app-header-h, 0px));
+    min-height: calc(100dvh - var(--app-header-h, 0px));
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 24px;
+    width: 100%;
+  }
+
+  .slide-board {
+    width: 1122px;
+    height: 793px;
+    transform-origin: center center;
+    overflow: hidden;
+  }
+}
+
+@media print {
+  .slide-canvas {
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .slide-board {
+    transform: none !important;
+  }
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logoDark from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import Button from '@/components/ui/Button'
@@ -6,6 +6,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useAuth } from '@/features/auth/AuthContext'
 
 export default function AppHeader() {
+  const headerRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
   const { lang, setLang, t } = useI18n()
   const { isAuthenticated, logout } = useAuth()
@@ -30,8 +31,33 @@ export default function AppHeader() {
     { label: t('header.nav.demo'), route: '/roles' }
   ]
 
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) {
+      return
+    }
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty('--app-header-h', `${header.offsetHeight}px`)
+    }
+
+    updateHeaderHeight()
+
+    let observer: ResizeObserver | null = null
+    if (typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(updateHeaderHeight)
+      observer.observe(header)
+    }
+
+    window.addEventListener('resize', updateHeaderHeight)
+    return () => {
+      window.removeEventListener('resize', updateHeaderHeight)
+      observer?.disconnect()
+    }
+  }, [])
+
   return (
-    <header className="home-marketing-header">
+    <header className="home-marketing-header" ref={headerRef}>
       <div className="home-marketing-header-inner">
         <button type="button" onClick={() => navigate('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
           <img src={logoDark} alt="Insurfox" className="home-marketing-logo" />

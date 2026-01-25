@@ -8,6 +8,8 @@ import KarteDeEuEn from '@/assets/images/karte_eu_de_englisch.png'
 import LogistikIndustrieDe from '@/assets/images/logistik_industrie_de.png'
 import LogistikIndustrieEn from '@/assets/images/logistik_industrie_en.png'
 import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
+import SlideCanvas from '@/components/SlideCanvas'
+import '@/styles/slide-canvas.css'
 
 function buildDocRaptorUrl(route: string, filename: string) {
   return `/.netlify/functions/pdf?${new URLSearchParams({ route, filename }).toString()}`
@@ -21,11 +23,8 @@ export default function EnterpriseLeadsPage() {
   const mapImage = lang === 'en' ? KarteDeEuEn : KarteDeEu
   const industryImage = lang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
   const slidesRef = useRef<HTMLDivElement>(null)
-  const headerRef = useRef<HTMLElement>(null)
   const [activeIndex, setActiveIndex] = useState(0)
   const totalSlides = 6
-  const [scale, setScale] = useState(1)
-  const [headerHeight, setHeaderHeight] = useState(0)
   const compositionRows = [
     { label: 'Motor (Kraftfahrt)', value: '€ 34.015 bn' },
     { label: 'Property (Sach)', value: '€ 11.306 bn' },
@@ -146,53 +145,20 @@ export default function EnterpriseLeadsPage() {
     if (isPrint) {
       return
     }
-    document.body.classList.add('enterprise-fullscreen')
+    document.body.classList.add('enterprise-fullscreen', 'is-slide-route')
     return () => {
-      document.body.classList.remove('enterprise-fullscreen')
+      document.body.classList.remove('enterprise-fullscreen', 'is-slide-route')
     }
-  }, [isPrint])
-
-  useEffect(() => {
-    if (isPrint) {
-      return
-    }
-    const PAGE_WIDTH = 1122
-    const PAGE_HEIGHT = 793
-    const updateScale = () => {
-      const currentHeaderHeight = headerRef.current?.offsetHeight ?? 0
-      const appHeaderHeight = document.querySelector<HTMLElement>('.home-marketing-header')?.offsetHeight ?? 0
-      const totalHeaderHeight = appHeaderHeight
-      const availableWidth = document.documentElement.clientWidth
-      const availableHeight = document.documentElement.clientHeight - totalHeaderHeight
-      const maxScale = 1.2
-      const nextScale = Math.min(
-        availableWidth / PAGE_WIDTH,
-        availableHeight / PAGE_HEIGHT,
-        maxScale
-      )
-      setHeaderHeight(totalHeaderHeight)
-      setScale(nextScale)
-    }
-    updateScale()
-    window.addEventListener('resize', updateScale)
-    return () => window.removeEventListener('resize', updateScale)
   }, [isPrint])
 
   return (
-    <section
-      className={`page enterprise-plan ${isPrint ? 'is-print' : ''}`}
-      style={{ '--enterprise-header-height': `${headerHeight}px` } as React.CSSProperties}
-    >
-      <div className="enterprise-stage">
+    <section className={`page enterprise-plan ${isPrint ? 'is-print' : ''}`}>
+      <SlideCanvas isPrint={isPrint} className="enterprise-slide-canvas">
         <div
-          className="enterprise-canvas"
-          style={{ transform: isPrint ? 'none' : `scale(${scale})` }}
+          className="enterprise-slides"
+          ref={slidesRef}
+          style={{ transform: `translateX(-${activeIndex * 1122}px)` }}
         >
-          <div
-            className="enterprise-slides"
-            ref={slidesRef}
-            style={{ transform: `translateX(-${activeIndex * 1122}px)` }}
-          >
             <section className="enterprise-page slide-cover enterprise-section">
               <div className="enterprise-grid-only">
                 <h1>German and European Markets</h1>
@@ -409,15 +375,18 @@ export default function EnterpriseLeadsPage() {
               </div>
             </section>
             <section className="enterprise-page enterprise-section enterprise-market">
-              <div className="enterprise-program-slide">
-                <div className="enterprise-program-header">
-                  <h1>Program Economics &amp; Revenue Mechanics (MGA View)</h1>
+              <div className="enterprise-program-slide bp3-slide">
+                <div className="bp3-header">
+                  <div>
+                    <h1>Program Economics &amp; Revenue Mechanics (MGA View)</h1>
+                    <p>Indicative economics (70% utilization). Carrier-aligned. Exposure ≠ premium ≠ revenue.</p>
+                  </div>
                 </div>
-                <div className="enterprise-program-grid">
-                  <div className="enterprise-program-column">
-                    <h2>Projected Gross Written Premium</h2>
-                    <p className="program-subtitle">(70% utilization, conservative base case)</p>
-                    <table>
+                <div className="bp3-grid">
+                  <div className="bp3-panel">
+                    <div className="bp3-cap">Projected Gross Written Premium</div>
+                    <div className="bp3-subtitle">(70% utilization, conservative base case)</div>
+                    <table className="bp3-table">
                       <thead>
                         <tr>
                           <th>Year</th>
@@ -429,49 +398,52 @@ export default function EnterpriseLeadsPage() {
                         <tr><td>Y2</td><td className="num">$19.8M</td></tr>
                         <tr><td>Y3</td><td className="num">$21.1M</td></tr>
                         <tr><td>Y4</td><td className="num">$50.9M</td></tr>
-                        <tr><td>Y5</td><td className="num">$102.8M</td></tr>
+                        <tr><td className="bp3-strong">Y5</td><td className="num bp3-strong">$102.8M</td></tr>
                       </tbody>
                     </table>
-                    <div className="program-notes">
+                    <div className="bp3-notes">
                       <p>Based on verified enterprise leads</p>
                       <p>Broker-led distribution</p>
                       <p>Regional expansion without change to underwriting limits</p>
                     </div>
                   </div>
-                  <div className="enterprise-program-column">
-                    <h2>MGA Economics</h2>
-                    <table>
+                  <div className="bp3-panel">
+                    <div className="bp3-cap">MGA Economics</div>
+                    <table className="bp3-table">
                       <tbody>
                         <tr><td>Base commission</td><td className="num">29.5%</td></tr>
                         <tr><td>Performance bonus</td><td className="num">up to 9.5%</td></tr>
-                        <tr><td>Total commission potential</td><td className="num">up to 39.0%</td></tr>
-                        <tr><td>Target loss ratio</td><td className="num">&lt; 27.5%</td></tr>
+                        <tr><td className="bp3-strong">Total commission potential</td><td className="num bp3-strong">up to 39.0%</td></tr>
+                        <tr><td className="bp3-strong">Target loss ratio</td><td className="num bp3-strong">&lt; 27.5%</td></tr>
                       </tbody>
                     </table>
-                    <ul className="program-bullets">
+                    <ul className="bp3-bullets">
                       <li>Capital-light MGA model</li>
                       <li>No balance sheet risk retained</li>
                       <li>Incentives aligned with portfolio performance</li>
                       <li>Linear scalability with premium growth</li>
                     </ul>
                   </div>
-                  <div className="enterprise-program-column">
-                    <h2>Portfolio Quality Signals</h2>
-                    <ul className="program-bullets">
+                  <div className="bp3-panel">
+                    <div className="bp3-cap">Portfolio Quality Signals</div>
+                    <ul className="bp3-bullets">
                       <li>Enterprise fleet, logistics &amp; cargo insureds</li>
                       <li>Tier-1 broker distribution</li>
                       <li>Trigger-based, parametric structures</li>
                       <li>Per-risk limit: $150,000</li>
                       <li>Stable frequency / low severity profile</li>
                     </ul>
-                    <div className="program-callout">
+                    <div className="bp3-callout">
                       High-margin MGA economics with controlled downside risk.
                     </div>
                   </div>
                 </div>
-                <div className="enterprise-program-footer">
-                  <span>Economics are carrier-aligned: underwriting authority is delegated,</span>
-                  <span>capital and risk remain with the insurer and reinsurance panel.</span>
+                <div className="bp3-footer">
+                  <div className="bp3-footer-rule" aria-hidden="true" />
+                  <div className="bp3-footer-text">
+                    <span>Economics are carrier-aligned: underwriting authority is delegated,</span>
+                    <span>capital and risk remain with the insurer and reinsurance panel.</span>
+                  </div>
                 </div>
               </div>
             </section>
@@ -496,9 +468,8 @@ export default function EnterpriseLeadsPage() {
                 </div>
               </div>
             </section>
-          </div>
         </div>
-      </div>
+      </SlideCanvas>
 
       <div className="enterprise-nav no-print" aria-hidden="true">
         <button
