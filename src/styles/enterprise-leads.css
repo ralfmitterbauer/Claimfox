@@ -544,9 +544,25 @@
 
   .enterprise-premium-assumptions ul {
     margin: 0;
-    padding-left: 18px;
+    padding-left: 0;
     color: var(--ix-text-muted);
     font-size: 0.8rem;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .enterprise-premium-assumptions li {
+    display: inline;
+  }
+
+  .enterprise-premium-assumptions li::after {
+    content: ',';
+  }
+
+  .enterprise-premium-assumptions li:last-child::after {
+    content: '';
   }
 
   .enterprise-program-slide {
