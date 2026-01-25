@@ -650,6 +650,151 @@
     gap: 2px;
   }
 
+  .bp3-slide {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: var(--ix-text);
+  }
+
+  .bp3-header {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bp3-header h1 {
+    margin: 0;
+    font-size: 1.7rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .bp3-header p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: var(--ix-text-muted);
+  }
+
+  .bp3-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    flex: 1 1 auto;
+    align-items: stretch;
+    margin-top: 10px;
+  }
+
+  .bp3-panel {
+    position: relative;
+    border: 1px solid var(--ix-border);
+    padding: 14px 16px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--ix-surface);
+  }
+
+  .bp3-panel::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 2px;
+    width: 100%;
+    background: var(--ix-primary);
+  }
+
+  .bp3-cap {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ix-text-muted);
+    font-weight: 600;
+  }
+
+  .bp3-subtitle {
+    font-size: 0.72rem;
+    color: var(--ix-text-muted);
+  }
+
+  .bp3-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+
+  .bp3-table th,
+  .bp3-table td {
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--ix-border);
+  }
+
+  .bp3-table th {
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.65rem;
+    color: var(--ix-text-muted);
+  }
+
+  .bp3-table td.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bp3-strong {
+    font-weight: 700;
+  }
+
+  .bp3-notes {
+    margin-top: auto;
+    font-size: 0.72rem;
+    color: var(--ix-text-muted);
+  }
+
+  .bp3-bullets {
+    margin: 0;
+    padding-left: 16px;
+    font-size: 0.78rem;
+    color: var(--ix-text-muted);
+  }
+
+  .bp3-callout {
+    margin-top: auto;
+    border: 1px solid var(--ix-border);
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    color: var(--ix-text);
+    position: relative;
+  }
+
+  .bp3-callout::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--ix-primary);
+  }
+
+  .bp3-footer {
+    margin-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.72rem;
+    color: var(--ix-text-muted);
+    font-style: italic;
+  }
+
+  .bp3-footer-rule {
+    height: 1px;
+    width: 100%;
+    background: var(--ix-border);
+  }
+
   .enterprise-map-card img {
     width: 100%;
     height: 100%;
