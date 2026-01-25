@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 type SlideCanvasProps = {
   children: React.ReactNode
@@ -21,6 +21,8 @@ export default function SlideCanvas({
   height = DEFAULT_HEIGHT
 }: SlideCanvasProps) {
   const [scale, setScale] = useState(1)
+  const canvasRef = useRef<HTMLDivElement>(null)
+  const boardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isPrint) {
@@ -33,11 +35,23 @@ export default function SlideCanvas({
       ) || 0
       const availableWidth = window.innerWidth || document.documentElement.clientWidth
       const availableHeight = (window.innerHeight || document.documentElement.clientHeight) - headerHeight
-      const nextScale = Math.min(
+
+      let nextScale = Math.min(
         availableWidth / width,
         availableHeight / height,
         MAX_SCALE
       )
+
+      const board = boardRef.current
+      const canvas = canvasRef.current
+      if (board && canvas) {
+        const boardHeight = board.getBoundingClientRect().height
+        const canvasHeight = canvas.clientHeight
+        if (boardHeight > 0 && canvasHeight > 0 && boardHeight > canvasHeight) {
+          nextScale = Math.min(nextScale, canvasHeight / boardHeight)
+        }
+      }
+
       setScale(Math.max(nextScale, MIN_SCALE))
     }
 
@@ -47,9 +61,10 @@ export default function SlideCanvas({
   }, [height, isPrint, width])
 
   return (
-    <div className={`slide-canvas ${className ?? ''}`}>
+    <div className={`slide-canvas ${className ?? ''}`} ref={canvasRef}>
       <div
         className="slide-board"
+        ref={boardRef}
         style={{ transform: isPrint ? 'none' : `scale(${scale})` }}
       >
         {children}

@@ -37,11 +37,20 @@ export default function AppHeader() {
       return
     }
 
+    const updateViewportVars = () => {
+      const vv = window.visualViewport
+      const viewportHeight = vv?.height ?? window.innerHeight
+      const viewportTop = vv?.offsetTop ?? 0
+      document.documentElement.style.setProperty('--vvh', `${viewportHeight}px`)
+      document.documentElement.style.setProperty('--vv-top', `${viewportTop}px`)
+    }
+
     const updateHeaderHeight = () => {
       document.documentElement.style.setProperty('--app-header-h', `${header.offsetHeight}px`)
     }
 
     updateHeaderHeight()
+    updateViewportVars()
 
     let observer: ResizeObserver | null = null
     if (typeof ResizeObserver !== 'undefined') {
@@ -49,9 +58,18 @@ export default function AppHeader() {
       observer.observe(header)
     }
 
-    window.addEventListener('resize', updateHeaderHeight)
+    const vv = window.visualViewport
+    const handleResize = () => {
+      updateHeaderHeight()
+      updateViewportVars()
+    }
+    window.addEventListener('resize', handleResize)
+    vv?.addEventListener('resize', updateViewportVars)
+    vv?.addEventListener('scroll', updateViewportVars)
     return () => {
-      window.removeEventListener('resize', updateHeaderHeight)
+      window.removeEventListener('resize', handleResize)
+      vv?.removeEventListener('resize', updateViewportVars)
+      vv?.removeEventListener('scroll', updateViewportVars)
       observer?.disconnect()
     }
   }, [])

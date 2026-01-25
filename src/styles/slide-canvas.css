@@ -4,15 +4,15 @@
   }
 
   .slide-canvas {
-    height: calc(100vh - var(--app-header-h, 0px));
-    height: calc(100dvh - var(--app-header-h, 0px));
-    min-height: calc(100vh - var(--app-header-h, 0px));
-    min-height: calc(100dvh - var(--app-header-h, 0px));
+    height: calc(var(--vvh, 100vh) - var(--app-header-h, 0px));
+    min-height: calc(var(--vvh, 100vh) - var(--app-header-h, 0px));
+    padding-top: max(0px, var(--vv-top, 0px));
     display: grid;
     place-items: center;
     overflow: hidden;
-    padding: 24px;
+    padding: 24px 24px 16px;
     width: 100%;
+    box-sizing: border-box;
   }
 
   .slide-board {
@@ -20,6 +20,15 @@
     height: 793px;
     transform-origin: center center;
     overflow: hidden;
+  }
+}
+
+@supports (height: 100dvh) {
+  @media screen {
+    .slide-canvas {
+      height: calc(100dvh - var(--app-header-h, 0px));
+      min-height: calc(100dvh - var(--app-header-h, 0px));
+    }
   }
 }
 
