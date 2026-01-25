@@ -67,6 +67,26 @@ type ProgramCopy = {
   footer: string[]
 }
 
+type GovernanceCopy = {
+  title: string
+  subline: string
+  leftTitle: string
+  leftItems: string[]
+  leftControlsTitle: string
+  leftControls: string[]
+  centerTitle: string
+  centerRows: { label: string; value: string }[]
+  rightTitle: string
+  rightStages: {
+    sources: string
+    validation: string
+    engine: string
+    memo: string
+    outputs: string
+  }
+  assurance: string
+}
+
 const compositionRows = [
   { label: 'Motor (Kraftfahrt)', value: 'EUR 34.015 bn' },
   { label: 'Property (Sach)', value: 'EUR 11.306 bn' },
@@ -246,6 +266,89 @@ const programContent: Record<Lang, ProgramCopy> = {
   }
 }
 
+const governanceContent: Record<Lang, GovernanceCopy> = {
+  de: {
+    title: 'Risiko-, Governance- & Delegated-Authority-Framework',
+    subline:
+      'Carrier-konforme Kontrollen: begrenzte Authority, auditierbare Entscheidungen, Kapital und Risiko verbleiben bei Versicherer und Rückversicherern.',
+    leftTitle: 'Delegated Authority Scope',
+    leftItems: [
+      'Underwriting-Authority delegiert an MGA innerhalb der Binder-Regeln',
+      'Tarife/Terms innerhalb genehmigter Pricing-Korridore',
+      'Per-Risiko-Limit: $150,000',
+      'Tages- und regionale Aggregate: unverändert',
+      'Parametrische, ereignisbasierte Produktlogik',
+      'Klare Abgrenzung von Rollen und Verantwortlichkeiten'
+    ],
+    leftControlsTitle: 'Controls',
+    leftControls: [
+      'Regel-Engine & Schwellenwerte',
+      'Threshold-Checks vor Bindung',
+      'Exception-Workflow mit Referral',
+      'Audit-Log für Entscheidungen'
+    ],
+    centerTitle: 'Governance & Controls',
+    centerRows: [
+      { label: 'Datenintegrität', value: 'Realtime-Validierung, Abgleich & Reconciliation' },
+      { label: 'Event-Definition', value: 'Deterministische Schwellen & Evidenzanforderungen' },
+      { label: 'Pricing-Governance', value: 'Korridor, Freigaben, Monitoring' },
+      { label: 'Claims-Governance', value: 'Payout-Regeln, Anti-Fraud, Audit-Trace' },
+      { label: 'Exposure & Aggregation', value: 'Akkumulationsmonitoring, Alerts' },
+      { label: 'Model-Risk-Management', value: 'AI-Templates, HITL-Gates, Versioning' }
+    ],
+    rightTitle: 'Realtime Trigger & Evidence Layer',
+    rightStages: {
+      sources: 'Quellen: Telematik/Fleet, TMS/Logistik, Weather/External, System-Logs',
+      validation: 'Validierung: Deduplizierung, Zeitstempel-Checks, SLA-Checks, Anomaly Flags',
+      engine: 'Trigger-Engine: deterministische Event-Schwellen',
+      memo: 'Decision Memo (AI): Underwriting-Template, Rationale, Empfehlung',
+      outputs: 'Outputs: Reporting Pack, Audit Evidence, Bordereaux, Reinsurer Reporting'
+    },
+    assurance:
+      'Carrier-konforme Governance: klar begrenzte Delegationsrechte, deterministische Trigger, auditierbare Entscheidungen und kontinuierliches Monitoring.'
+  },
+  en: {
+    title: 'Risk, Governance & Delegated Authority Framework',
+    subline:
+      'Carrier-aligned controls with real-time validation; capital and risk remain with insurer and reinsurers.',
+    leftTitle: 'Delegated Authority Scope',
+    leftItems: [
+      'Underwriting authority delegated to MGA within binder rules',
+      'Rates/terms within approved pricing corridors',
+      'Per-risk limit: $150,000',
+      'Daily and regional aggregates unchanged',
+      'Parametric, event-based product rules',
+      'Clear separation of roles and responsibilities'
+    ],
+    leftControlsTitle: 'Controls',
+    leftControls: [
+      'Rules engine and thresholds',
+      'Threshold checks before binding',
+      'Exception workflow with referral',
+      'Audit log for decisions'
+    ],
+    centerTitle: 'Governance & Controls',
+    centerRows: [
+      { label: 'Data integrity', value: 'Realtime validation, reconciliation' },
+      { label: 'Event definition', value: 'Deterministic thresholds, evidence requirements' },
+      { label: 'Pricing governance', value: 'Corridor, approvals, monitoring' },
+      { label: 'Claims governance', value: 'Payout rules, anti-fraud, audit trail' },
+      { label: 'Exposure & accumulation', value: 'Aggregation monitoring, alerts' },
+      { label: 'Model risk management', value: 'AI templates, HITL gates, versioning' }
+    ],
+    rightTitle: 'Realtime Trigger & Evidence Layer',
+    rightStages: {
+      sources: 'Sources: Telematics/Fleet, TMS/Logistics, Weather/External, System logs',
+      validation: 'Validation: dedup, timestamp checks, SLA checks, anomaly flags',
+      engine: 'Trigger engine: deterministic event thresholds',
+      memo: 'Decision memo (AI): underwriting template, rationale, recommendation',
+      outputs: 'Outputs: reporting pack, audit evidence, bordereaux, reinsurer reporting'
+    },
+    assurance:
+      'Carrier-aligned governance: bounded delegated authority, deterministic triggers, auditable decisioning and continuous monitoring.'
+  }
+}
+
 const formatMoney = (value: number, lang: Lang) => {
   if (lang === 'de') {
     return `${(value / 1e9).toLocaleString('de-DE', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Mrd. EUR`
@@ -336,6 +439,7 @@ export default function BciaDeckPage() {
     const premiumStrings = premiumContent[typedLang]
     const slide1 = slide1Labels[typedLang]
     const programStrings = programContent[typedLang]
+    const governanceStrings = governanceContent[typedLang]
     const industryImage = typedLang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
     const exposureDe = 12.9e9
     const exposureEea = 133.25e9
@@ -621,6 +725,71 @@ export default function BciaDeckPage() {
                 ))}
               </div>
             </div>
+          </div>
+        )
+      },
+      {
+        key: 'governance',
+        node: (
+          <div className="bp4-slide">
+            <div className="bp4-header">
+              <h1>{governanceStrings.title}</h1>
+              <p>{governanceStrings.subline}</p>
+            </div>
+            <div className="bp4-grid">
+              <div className="bp4-panel">
+                <div className="bp4-cap">{governanceStrings.leftTitle}</div>
+                <ul className="bp4-list">
+                  {governanceStrings.leftItems.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bp4-subcap">{governanceStrings.leftControlsTitle}</div>
+                <ul className="bp4-list bp4-list-compact">
+                  {governanceStrings.leftControls.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bp4-panel">
+                <div className="bp4-cap">{governanceStrings.centerTitle}</div>
+                <table className="bp4-table">
+                  <tbody>
+                    {governanceStrings.centerRows.map((row) => (
+                      <tr key={row.label}>
+                        <td>{row.label}</td>
+                        <td className="bp4-value">{row.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="bp4-panel">
+                <div className="bp4-cap">{governanceStrings.rightTitle}</div>
+                <div className="bp4-diagram">
+                  <svg width="260" height="180" role="img" aria-label={governanceStrings.rightTitle}>
+                    <rect className="bp4-diagram-box" x="10" y="10" width="240" height="160" />
+                    <line className="bp4-diagram-line" x1="30" y1="45" x2="230" y2="45" />
+                    <line className="bp4-diagram-line" x1="30" y1="80" x2="230" y2="80" />
+                    <line className="bp4-diagram-line" x1="30" y1="115" x2="230" y2="115" />
+                    <line className="bp4-diagram-line" x1="30" y1="150" x2="230" y2="150" />
+                    <text className="bp4-diagram-text" x="32" y="38">Sources</text>
+                    <text className="bp4-diagram-text" x="32" y="73">Validation</text>
+                    <text className="bp4-diagram-text" x="32" y="108">Trigger Engine</text>
+                    <text className="bp4-diagram-text" x="32" y="143">Decision Memo (AI)</text>
+                    <text className="bp4-diagram-text" x="32" y="168">Outputs</text>
+                  </svg>
+                  <div className="bp4-diagram-notes">
+                    <p>{governanceStrings.rightStages.sources}</p>
+                    <p>{governanceStrings.rightStages.validation}</p>
+                    <p>{governanceStrings.rightStages.engine}</p>
+                    <p>{governanceStrings.rightStages.memo}</p>
+                    <p>{governanceStrings.rightStages.outputs}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bp4-assurance">{governanceStrings.assurance}</div>
           </div>
         )
       }

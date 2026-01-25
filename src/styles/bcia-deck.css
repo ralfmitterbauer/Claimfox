@@ -702,9 +702,145 @@ body.bcia-print-mode .bcia-page {
   gap: 2px;
 }
 
+/* Slide 4 styles */
+.bcia-deck .bp4-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: var(--ix-text);
+  gap: 14px;
+}
+
+.bcia-deck .bp4-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.bcia-deck .bp4-header p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp4-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  flex: 1 1 auto;
+  align-items: stretch;
+}
+
+.bcia-deck .bp4-panel {
+  position: relative;
+  border: 1px solid var(--ix-border);
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--ix-surface);
+}
+
+.bcia-deck .bp4-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--ix-primary);
+}
+
+.bcia-deck .bp4-cap {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+}
+
+.bcia-deck .bp4-subcap {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.bcia-deck .bp4-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp4-list-compact {
+  font-size: 0.74rem;
+}
+
+.bcia-deck .bp4-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+
+.bcia-deck .bp4-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--ix-border);
+  vertical-align: top;
+}
+
+.bcia-deck .bp4-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ix-text);
+}
+
+.bcia-deck .bp4-diagram {
+  display: grid;
+  gap: 10px;
+}
+
+.bcia-deck .bp4-diagram-box {
+  fill: none;
+  stroke: var(--ix-border);
+  stroke-width: 1;
+}
+
+.bcia-deck .bp4-diagram-line {
+  stroke: var(--ix-border);
+  stroke-width: 1;
+}
+
+.bcia-deck .bp4-diagram-text {
+  fill: var(--ix-text);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.bcia-deck .bp4-diagram-notes {
+  display: grid;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp4-diagram-notes p {
+  margin: 0;
+}
+
+.bcia-deck .bp4-assurance {
+  border-top: 1px solid var(--ix-border);
+  padding-top: 8px;
+  font-size: 0.76rem;
+  color: var(--ix-text);
+  font-style: italic;
+}
+
 @media print {
   @page {
-    size: 297mm 210mm;
+    size: A4 landscape;
     margin: 0;
   }
 
@@ -768,6 +904,6 @@ body.bcia-print-mode .bcia-page {
 }
 
 @page {
-  size: 297mm 210mm;
+  size: A4 landscape;
   margin: 0;
 }
