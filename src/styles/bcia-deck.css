@@ -34,13 +34,17 @@
 }
 
 .bcia-slider {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.bcia-track {
   display: flex;
   width: 100%;
   height: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
+  transition: transform 0.45s ease;
 }
 
 .bcia-slide {
@@ -48,7 +52,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  scroll-snap-align: start;
 }
 
 .bcia-canvas {
@@ -664,16 +667,23 @@ body.bcia-deck-route {
     overflow: visible;
   }
 
-  .bcia-slider {
+  .bcia-track {
+    transform: none !important;
     flex-direction: column;
     align-items: center;
-    scroll-snap-type: none;
   }
 
   .bcia-slide {
     width: 297mm;
     height: 210mm;
     flex: 0 0 auto;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .bcia-slide:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 
   .bcia-canvas,

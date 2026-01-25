@@ -118,7 +118,6 @@ export default function BciaDeckPage() {
   const [headerHeight, setHeaderHeight] = useState(0)
   const [scale, setScale] = useState(1)
   const stageRef = useRef<HTMLDivElement | null>(null)
-  const sliderRef = useRef<HTMLDivElement | null>(null)
   const slideRefs = useRef<Array<HTMLDivElement | null>>([])
   const [activeIndex, setActiveIndex] = useState(0)
 
@@ -182,10 +181,6 @@ export default function BciaDeckPage() {
 
   const goToSlide = (index: number) => {
     const nextIndex = Math.max(0, Math.min(index, slides.length - 1))
-    const target = slideRefs.current[nextIndex]
-    if (sliderRef.current && target) {
-      sliderRef.current.scrollTo({ left: target.offsetLeft, behavior: 'smooth' })
-    }
     setActiveIndex(nextIndex)
   }
 
@@ -495,22 +490,24 @@ export default function BciaDeckPage() {
         >
           &lt;
         </button>
-        <div className="bcia-slider" ref={sliderRef}>
-          {slides.map((slide, index) => (
-            <div
-              key={slide.key}
-              className="bcia-slide"
-              ref={(node) => {
-                slideRefs.current[index] = node
-              }}
-            >
-              <div className="bcia-canvas" style={{ transform: `scale(${scale})` }}>
-                <div className="bcia-page">
-                  {slide.node}
+        <div className="bcia-slider">
+          <div className="bcia-track" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+            {slides.map((slide, index) => (
+              <div
+                key={slide.key}
+                className="bcia-slide"
+                ref={(node) => {
+                  slideRefs.current[index] = node
+                }}
+              >
+                <div className="bcia-canvas" style={{ transform: `scale(${scale})` }}>
+                  <div className="bcia-page">
+                    {slide.node}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <button
           type="button"
