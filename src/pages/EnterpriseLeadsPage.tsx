@@ -8,8 +8,8 @@ import '@/styles/enterprise-leads.css'
 
 const SLIDE_WIDTH = 1122
 
-function buildDocRaptorUrl(route: string, filename: string, lang: string) {
-  return `/.netlify/functions/pdf?${new URLSearchParams({ route, filename, lang }).toString()}`
+function buildDocRaptorUrl(deck: string, filename: string, lang: string) {
+  return `/.netlify/functions/pdf?${new URLSearchParams({ deck, filename, lang }).toString()}`
 }
 
 export default function EnterpriseLeadsPage() {
@@ -26,11 +26,14 @@ export default function EnterpriseLeadsPage() {
   const totalSlides = slides.length
 
   function exportPdf() {
-    const route = `/print/business-plan?print=1&lang=${lang}`
     const filename = lang === 'de'
       ? 'insurfox-business-plan-part1-de.pdf'
       : 'insurfox-business-plan-part1-en.pdf'
-    window.location.href = buildDocRaptorUrl(route, filename, lang)
+    const url = buildDocRaptorUrl('enterprise-leads', filename, lang)
+    const popup = window.open(url, '_blank', 'noopener,noreferrer')
+    if (!popup) {
+      window.location.href = url
+    }
   }
 
   function goToSlide(nextIndex: number) {

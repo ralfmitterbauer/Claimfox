@@ -61,7 +61,6 @@ import BusinessModelAntaresPage from '@/pages/BusinessModelAntaresPage'
 import MarketOverviewPage from '@/pages/MarketOverviewPage'
 import EnterpriseLeadsPage from '@/pages/EnterpriseLeadsPage'
 import PremiumCorridorPage from '@/pages/PremiumCorridorPage'
-import BusinessPlanPrintPage from '@/pages/BusinessPlanPrintPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -77,7 +76,6 @@ export default function AppRouter() {
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
-        <Route path="/print/business-plan" element={<BusinessPlanPrintPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
         <Route path="/roles" element={<RolesPage />} />

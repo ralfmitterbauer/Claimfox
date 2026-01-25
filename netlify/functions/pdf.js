@@ -18,12 +18,13 @@ exports.handler = async (event) => {
       }
     }
 
+    const deck = event.queryStringParameters?.deck || 'enterprise-leads'
     const lang = event.queryStringParameters?.lang === 'en' ? 'en' : 'de'
     const filename = event.queryStringParameters?.filename
     const testMode = process.env.DOCRAPTOR_TEST_MODE === 'true'
 
     const origin = process.env.SITE_ORIGIN || 'https://claimfox.app'
-    const documentUrl = new URL(`/print/business-plan?print=1&lang=${lang}`, origin).toString()
+    const documentUrl = new URL(`/${deck}-print.${lang}.html`, origin).toString()
 
     if (event.queryStringParameters?.debug === '1') {
       const response = await fetch(documentUrl, { redirect: 'follow' })
@@ -58,8 +59,6 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         document_type: 'pdf',
         document_url: documentUrl,
-        javascript: true,
-        javascript_delay: 1200,
         test: testMode
       })
     })
