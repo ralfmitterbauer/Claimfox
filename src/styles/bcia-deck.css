@@ -6,6 +6,12 @@
   background: var(--ix-bg);
   color: var(--ix-text);
   padding: 0 16px 16px;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.bcia-deck * {
+  box-sizing: border-box;
 }
 
 .bcia-toolbar {
@@ -26,6 +32,7 @@
 
 .bcia-stage {
   flex: 1;
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -38,6 +45,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  max-width: 100%;
 }
 
 .bcia-track {
@@ -78,7 +86,8 @@
   color: var(--blue-dark);
   font-size: 2rem;
   cursor: pointer;
-  z-index: 2;
+  z-index: 5;
+  pointer-events: auto;
 }
 
 .bcia-arrow-left {
@@ -695,7 +704,7 @@ body.bcia-print-mode .bcia-page {
 
 @media print {
   @page {
-    size: A4 landscape;
+    size: 297mm 210mm;
     margin: 0;
   }
 
@@ -749,5 +758,11 @@ body.bcia-print-mode .bcia-page {
   body {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+  }
+
+  html,
+  body {
+    width: 297mm;
+    height: 210mm;
   }
 }

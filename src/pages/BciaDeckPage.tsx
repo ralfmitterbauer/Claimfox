@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useI18n } from '@/i18n/I18nContext'
 import { enterpriseStrings } from '@/i18n/strings'
 import KarteDeEu from '@/assets/images/karte_de_eu.png'
@@ -188,11 +188,6 @@ export default function BciaDeckPage() {
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [activeIndex])
-
-  const goToSlide = (index: number) => {
-    const nextIndex = Math.max(0, Math.min(index, slides.length - 1))
-    setActiveIndex(nextIndex)
-  }
 
   const slides = useMemo<Slide[]>(() => {
     const copy = enterpriseStrings[typedLang]
@@ -483,6 +478,15 @@ export default function BciaDeckPage() {
       }
     ]
   }, [typedLang])
+
+  const totalSlides = slides.length
+
+  const goToSlide = useCallback((index: number) => {
+    setActiveIndex((current) => {
+      const nextIndex = Math.max(0, Math.min(index, totalSlides - 1))
+      return nextIndex === current ? current : nextIndex
+    })
+  }, [totalSlides])
 
   return (
     <section className="bcia-deck" style={{ '--bcia-header-h': `${headerHeight}px` } as React.CSSProperties}>
