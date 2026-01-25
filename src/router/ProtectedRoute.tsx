@@ -13,7 +13,8 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const isPrintMode = searchParams.get('print') === '1'
   const printAllowedRoutes = new Set([
     '/business-model-antares',
-    '/enterprise-leads-intelligence'
+    '/enterprise-leads-intelligence',
+    '/print/business-plan'
   ])
   const isPrintAllowed = isPrintMode && printAllowedRoutes.has(location.pathname)
 

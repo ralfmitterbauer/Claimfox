@@ -89,7 +89,7 @@
 
   .enterprise-slides {
     display: flex;
-    width: calc(var(--page-width) * 6);
+    width: calc(var(--page-width) * 4);
     height: var(--page-height);
     transition: transform 0.6s ease;
   }

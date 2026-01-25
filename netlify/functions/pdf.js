@@ -8,22 +8,6 @@ function getRequiredEnv(name) {
   return value
 }
 
-function resolveDocumentUrl(route) {
-  const origin = process.env.SITE_ORIGIN || 'https://claimfox.app'
-  let mappedRoute = route
-  if (route === '/enterprise-leads-intelligence/print/de') {
-    mappedRoute = '/enterprise-leads-print.de.html'
-  } else if (route === '/enterprise-leads-intelligence/print/en') {
-    mappedRoute = '/enterprise-leads-print.en.html'
-  } else if (route === '/premium-corridor/print/de') {
-    mappedRoute = '/premium-corridor-print.de.html'
-  } else if (route === '/premium-corridor/print/en') {
-    mappedRoute = '/premium-corridor-print.en.html'
-  }
-  const normalizedRoute = mappedRoute.startsWith('/') ? mappedRoute : `/${mappedRoute}`
-  return new URL(normalizedRoute, origin).toString()
-}
-
 exports.handler = async (event) => {
   try {
     if (event.httpMethod !== 'GET') {
@@ -34,11 +18,12 @@ exports.handler = async (event) => {
       }
     }
 
-    const routeParam = event.queryStringParameters?.route || '/business-model-antares-test'
+    const lang = event.queryStringParameters?.lang === 'en' ? 'en' : 'de'
     const filename = event.queryStringParameters?.filename
     const testMode = process.env.DOCRAPTOR_TEST_MODE === 'true'
 
-    const documentUrl = resolveDocumentUrl(routeParam)
+    const origin = process.env.SITE_ORIGIN || 'https://claimfox.app'
+    const documentUrl = new URL(`/print/business-plan?print=1&lang=${lang}`, origin).toString()
 
     if (event.queryStringParameters?.debug === '1') {
       const response = await fetch(documentUrl, { redirect: 'follow' })
@@ -73,6 +58,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         document_type: 'pdf',
         document_url: documentUrl,
+        javascript: true,
+        javascript_delay: 1200,
         test: testMode
       })
     })
@@ -101,7 +88,7 @@ exports.handler = async (event) => {
       statusCode: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `attachment; filename="${filename || 'insurfox-antares-business-model.pdf'}"`
+        'Content-Disposition': `attachment; filename="${filename || `insurfox-business-plan-${lang}.pdf`}"`
       },
       body: pdfBuffer.toString('base64'),
       isBase64Encoded: true
