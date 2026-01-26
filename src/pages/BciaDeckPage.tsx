@@ -1143,6 +1143,12 @@ export default function BciaDeckPage() {
             'Referral triggers when outside corridor / aggregation flags',
             'Audit trail & version control'
           ],
+          diagramLabels: {
+            inputs: 'Inputs',
+            model: 'Model',
+            corridor: 'Corridor',
+            note: 'Price + terms within limits'
+          },
           footnote:
             'Pricing and limits are carrier-aligned; authority operates within agreed binder and treaty guardrails.'
         }
@@ -1169,6 +1175,12 @@ export default function BciaDeckPage() {
             'Referral-Trigger bei Abweichung / Aggregations-Flags',
             'Audit Trail & Versionierung'
           ],
+          diagramLabels: {
+            inputs: 'Eingaben',
+            model: 'Modell',
+            corridor: 'Korridor',
+            note: 'Preis + Bedingungen innerhalb Limits'
+          },
           footnote:
             'Pricing und Limits sind carrier-konform; die Authority operiert innerhalb definierter Binder- und Treaty-Guardrails.'
         }
@@ -1836,12 +1848,12 @@ export default function BciaDeckPage() {
                     <rect x="178" y="16" width="70" height="28" className="bp0-box" />
                     <line x1="90" y1="30" x2="100" y2="30" className="bp0-line" />
                     <line x1="170" y1="30" x2="178" y2="30" className="bp0-line" />
-                    <text x="50" y="34" textAnchor="middle" className="bp0-text">Inputs</text>
-                    <text x="135" y="34" textAnchor="middle" className="bp0-text">Model</text>
-                    <text x="214" y="34" textAnchor="middle" className="bp0-text">Corridor</text>
+                    <text x="50" y="34" textAnchor="middle" className="bp0-text">{pricingStrings.diagramLabels.inputs}</text>
+                    <text x="135" y="34" textAnchor="middle" className="bp0-text">{pricingStrings.diagramLabels.model}</text>
+                    <text x="214" y="34" textAnchor="middle" className="bp0-text">{pricingStrings.diagramLabels.corridor}</text>
                     <line x1="20" y1="70" x2="240" y2="70" className="bp0-line" />
                     <text x="130" y="92" textAnchor="middle" className="bp0-text">
-                      {typedLang === 'en' ? 'Price + terms within limits' : 'Preis + Bedingungen innerhalb Limits'}
+                      {pricingStrings.diagramLabels.note}
                     </text>
                   </svg>
                 </div>

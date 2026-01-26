@@ -94,7 +94,7 @@
   color: var(--blue-dark);
   font-size: 2rem;
   cursor: pointer;
-  z-index: 5;
+  z-index: 20;
   pointer-events: auto;
 }
 
@@ -1188,6 +1188,33 @@ body.bcia-deck-route {
   color: var(--ix-text-muted);
 }
 
+.bcia-deck .bp7-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+}
+
+.bcia-deck .bp7-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--ix-border);
+}
+
+.bcia-deck .bp7-term {
+  font-weight: 600;
+}
+
+.bcia-deck .bp7-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bcia-deck .bp7-footer {
+  border-top: 1px solid var(--ix-border);
+  padding-top: 8px;
+  font-size: 0.72rem;
+  color: var(--ix-text-muted);
+}
+
 .bcia-deck .bp7-stack-box {
   fill: none;
   stroke: var(--ix-border);
@@ -1260,6 +1287,51 @@ body.bcia-deck-route {
   padding-left: 16px;
   font-size: 0.78rem;
   color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp8-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+}
+
+.bcia-deck .bp8-table th,
+.bcia-deck .bp8-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--ix-border);
+  text-align: left;
+}
+
+.bcia-deck .bp8-table th {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.65rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp8-band {
+  margin-top: 6px;
+  border: 1px solid var(--ix-border);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp8-band svg {
+  background: transparent;
+}
+
+.bcia-deck .bp8-band-base {
+  fill: var(--ix-border);
+  opacity: 0.6;
+}
+
+.bcia-deck .bp8-band-stress {
+  fill: var(--ix-primary);
+  opacity: 0.7;
 }
 
 .bcia-deck .bp8-strip {
@@ -1362,6 +1434,22 @@ body.bcia-deck-route {
   margin: 0;
   padding-left: 16px;
   font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp9-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.bcia-deck .bp9-strip span {
+  border: 1px solid var(--ix-border);
+  padding: 6px 10px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--ix-text-muted);
 }
 
