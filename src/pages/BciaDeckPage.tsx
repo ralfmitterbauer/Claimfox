@@ -142,6 +142,20 @@ type AppendixCopy = {
   reporting: string[]
 }
 
+type ProgramIntroCopy = {
+  title: string
+  subtitle: string
+  rolesTitle: string
+  roles: {
+    title: string
+    bullets: string[]
+    icon: string
+  }[]
+  diagramTitle: string
+  diagramBullets: string[]
+  statement: string
+}
+
 const compositionRows = [
   { label: 'Motor (Kraftfahrt)', value: 'EUR 34.015 bn' },
   { label: 'Property (Sach)', value: 'EUR 11.306 bn' },
@@ -625,6 +639,123 @@ const appendixContent: Record<Lang, AppendixCopy> = {
   }
 }
 
+const programIntroContent: Record<Lang, ProgramIntroCopy> = {
+  de: {
+    title: 'Program Structure & Governance Framework',
+    subtitle: 'Approved MGA & Coverholder operating under existing Antares binder',
+    rolesTitle: 'Roles & Responsibilities',
+    roles: [
+      {
+        title: 'Risk Carrier / Primary Insurer',
+        icon: 'C',
+        bullets: [
+          'Antares (via Lloyd’s / Lloyd’s Europe)',
+          'Stellt Policen aus',
+          'Trägt primäres Versicherungsrisiko',
+          'Regulatorische Verantwortung und Kapitalbereitstellung'
+        ]
+      },
+      {
+        title: 'Reinsurance Structure',
+        icon: 'R',
+        bullets: [
+          'Panel mehrerer Rückversicherer',
+          'Quota-Share und/oder Excess Layers',
+          'Portfolio-Risiko unter bestehenden Treaties',
+          'Kapazität regional skalierbar'
+        ]
+      },
+      {
+        title: 'Insurfox – MGA & Coverholder',
+        icon: 'M',
+        bullets: [
+          'Genehmigter MGA und Coverholder',
+          'Delegierte Zeichnungsautorität unter Binder',
+          'Pricing & Terms innerhalb Korridore',
+          'Kein Bilanzrisiko beim MGA'
+        ]
+      },
+      {
+        title: 'Insurfox Platform – Technology Layer',
+        icon: 'T',
+        bullets: [
+          'Broker- & Carrier-Portal',
+          'Lead Intake, Validierung, Eligibility',
+          'Realtime Datenaggregation & Trigger-Evidenz',
+          'Governance, Audit Trail, Bordereaux & Reporting'
+        ]
+      }
+    ],
+    diagramTitle: 'Structural Overview',
+    diagramBullets: [
+      'Bestehende globale Binder-Struktur',
+      'Inkrementelle regionale Expansion',
+      'Keine Änderung der Underwriting-Logik',
+      'Deterministische, parametrische Event-Definitionen',
+      'Carrier-aligned Governance-Framework'
+    ],
+    statement:
+      'Carrier-konforme Struktur: Die Zeichnungsvollmacht ist klar delegiert, Kapital und Risiko verbleiben bei Antares und dem Rückversicherungs-Panel, während Insurfox als genehmigter MGA agiert und die steuernde Technologie- und Governance-Ebene bereitstellt.'
+  },
+  en: {
+    title: 'Program Structure & Governance Framework',
+    subtitle: 'Approved MGA & Coverholder operating under existing Antares binder',
+    rolesTitle: 'Roles & Responsibilities',
+    roles: [
+      {
+        title: 'Risk Carrier / Primary Insurer',
+        icon: 'C',
+        bullets: [
+          'Antares (via Lloyd’s / Lloyd’s Europe)',
+          'Issues insurance policies',
+          'Retains primary insurance risk',
+          'Regulatory responsibility and capital provision'
+        ]
+      },
+      {
+        title: 'Reinsurance Structure',
+        icon: 'R',
+        bullets: [
+          'Panel of multiple reinsurance participants',
+          'Quota share and/or excess layers',
+          'Portfolio risk ceded under existing treaties',
+          'Capacity scalable per region'
+        ]
+      },
+      {
+        title: 'Insurfox – MGA & Coverholder',
+        icon: 'M',
+        bullets: [
+          'Approved MGA and Coverholder',
+          'Delegated underwriting authority under binder',
+          'Pricing and terms within agreed corridors',
+          'No balance sheet risk retained'
+        ]
+      },
+      {
+        title: 'Insurfox Platform – Technology Layer',
+        icon: 'T',
+        bullets: [
+          'Broker & carrier portal',
+          'Lead intake, validation and eligibility',
+          'Real-time data aggregation and trigger evidence',
+          'Governance, audit trail, bordereaux & reporting'
+        ]
+      }
+    ],
+    diagramTitle: 'Structural Overview',
+    diagramBullets: [
+      'Existing global binder structure',
+      'Incremental regional market expansion',
+      'No change to core underwriting logic',
+      'Deterministic, parametric event definitions',
+      'Carrier-aligned governance framework'
+    ],
+    statement:
+      'Carrier-aligned structure: underwriting authority is clearly delegated, capital and risk remain with Antares and the reinsurance panel, while Insurfox operates as approved MGA and provides the controlling technology and governance layer.'
+  }
+}
+
 const formatMoney = (value: number, lang: Lang) => {
   if (lang === 'de') {
     return `${(value / 1e9).toLocaleString('de-DE', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Mrd. EUR`
@@ -714,11 +845,68 @@ export default function BciaDeckPage() {
     const techStrings = techContent[typedLang]
     const strategicStrings = strategicContent[typedLang]
     const appendixStrings = appendixContent[typedLang]
+    const introStrings = programIntroContent[typedLang]
     const industryImage = typedLang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
     const exposureDe = 12.9e9
     const exposureEea = 133.25e9
 
     return [
+      {
+        key: 'program-structure-intro',
+        node: (
+          <div className="bp0-slide" id="slide-program-structure-intro">
+            <div className="bp0-header">
+              <h1>{introStrings.title}</h1>
+              <p>{introStrings.subtitle}</p>
+              <div className="bp0-accent" aria-hidden="true" />
+            </div>
+            <div className="bp0-grid">
+              <div className="bp0-left">
+                <div className="bp0-cap">{introStrings.rolesTitle}</div>
+                <div className="bp0-role-grid">
+                  {introStrings.roles.map((role) => (
+                    <div key={role.title} className="bp0-card">
+                      <div className="bp0-card-head">
+                        <span className="bp0-icon" aria-hidden="true">{role.icon}</span>
+                        <h3>{role.title}</h3>
+                      </div>
+                      <ul>
+                        {role.bullets.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="bp0-right">
+                <div className="bp0-cap">{introStrings.diagramTitle}</div>
+                <div className="bp0-diagram">
+                  <svg width="300" height="240" role="img" aria-label={introStrings.diagramTitle}>
+                    <rect className="bp0-box" x="40" y="10" width="220" height="36" />
+                    <rect className="bp0-box" x="40" y="70" width="220" height="36" />
+                    <rect className="bp0-box" x="40" y="130" width="220" height="36" />
+                    <rect className="bp0-box" x="40" y="190" width="220" height="36" />
+                    <line className="bp0-line" x1="150" y1="46" x2="150" y2="70" />
+                    <line className="bp0-line" x1="150" y1="106" x2="150" y2="130" />
+                    <line className="bp0-line" x1="150" y1="166" x2="150" y2="190" />
+                    <text className="bp0-text" x="150" y="34" textAnchor="middle">Brokers / Clients</text>
+                    <text className="bp0-text" x="150" y="94" textAnchor="middle">Insurfox Platform (MGA + Tech)</text>
+                    <text className="bp0-text" x="150" y="154" textAnchor="middle">Antares (Risk Carrier)</text>
+                    <text className="bp0-text" x="150" y="214" textAnchor="middle">Reinsurance Panel</text>
+                  </svg>
+                  <ul className="bp0-bullets">
+                    {introStrings.diagramBullets.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="bp0-footer">{introStrings.statement}</div>
+          </div>
+        )
+      },
       {
         key: 'markets',
         node: (

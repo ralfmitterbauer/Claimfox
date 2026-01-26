@@ -1289,6 +1289,136 @@ body.bcia-deck-route {
   color: var(--ix-text-muted);
 }
 
+/* Slide 0 styles */
+.bcia-deck .bp0-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 14px;
+}
+
+.bcia-deck .bp0-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.bcia-deck .bp0-header p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp0-accent {
+  margin-top: 8px;
+  height: 2px;
+  width: 120px;
+  background: var(--ix-primary);
+}
+
+.bcia-deck .bp0-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 18px;
+  flex: 1 1 auto;
+}
+
+.bcia-deck .bp0-cap {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.bcia-deck .bp0-role-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bcia-deck .bp0-card {
+  border: 1px solid var(--ix-border);
+  padding: 10px 12px;
+  background: var(--ix-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bcia-deck .bp0-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bcia-deck .bp0-card h3 {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ix-text);
+}
+
+.bcia-deck .bp0-card ul {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.74rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp0-icon {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--ix-border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ix-text);
+}
+
+.bcia-deck .bp0-diagram {
+  border: 1px solid var(--ix-border);
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+  background: var(--ix-surface);
+}
+
+.bcia-deck .bp0-box {
+  fill: none;
+  stroke: var(--ix-border);
+  stroke-width: 1;
+}
+
+.bcia-deck .bp0-line {
+  stroke: var(--ix-border);
+  stroke-width: 1;
+}
+
+.bcia-deck .bp0-text {
+  fill: var(--ix-text);
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.bcia-deck .bp0-bullets {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.74rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp0-footer {
+  border: 1px solid var(--ix-border);
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  color: var(--ix-text);
+  background: var(--ix-surface-2);
+}
+
 @media print {
   @page {
     size: 297mm 210mm !important;
