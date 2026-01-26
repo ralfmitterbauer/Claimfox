@@ -1119,61 +1119,197 @@ export default function BciaDeckPage() {
     const industryImage = typedLang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
     const exposureDe = 12.9e9
     const exposureEea = 133.25e9
-    const tocStrings = typedLang === 'en'
+    const pricingStrings = typedLang === 'en'
       ? {
-          title: 'BCIA Program Overview — Table of Contents',
-          subtitle: 'Carrier-aligned program setup, market modeling, coverage & risk controls',
-          sections: [
-            {
-              label: 'A — Program & Partnership Setup',
-              items: [
-                { label: 'Program Structure & Governance Framework', index: 1 }
-              ]
-            },
-            {
-              label: 'B — Strategy, Market & Economics',
-              items: [
-                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
-                { label: 'Market Environment & Addressable Exposure (Germany & EEA)', index: 3 },
-                { label: 'Indicative premium corridor derived from modeled exposure', index: 4 }
-              ]
-            },
-            {
-              label: 'C — Coverage & Risk Control',
-              items: [
-                { label: 'Coverage Overview — Triggers & Payout Mechanics', index: 5 },
-                { label: 'Risk management framework', index: 6 }
-              ]
-            }
-          ]
+          title: 'Pricing & Risk Limits',
+          subtitle: 'Carrier-aligned pricing logic and bounded authority',
+          leftTitle: 'Pricing Engine',
+          leftBullets: [
+            'Risk-based pricing using exposure drivers, real-time operational telemetry, portfolio signals and modeled loss cost corridors.',
+            'Inputs: Telematics (fleet/logistics), system logs, external signals, broker/insured data.',
+            'Output: price corridor and terms within approved limits.'
+          ],
+          middleTitle: 'Limits & Aggregates',
+          limitRows: [
+            { label: 'Per-risk limit', value: '$150,000' },
+            { label: 'Daily aggregate', value: 'Unchanged' },
+            { label: 'Regional aggregate', value: 'Unchanged' },
+            { label: 'Notes', value: 'Carrier-aligned, capital protection' }
+          ],
+          rightTitle: 'Underwriting Guardrails',
+          rightBullets: [
+            'Within binder authority',
+            'Corridor checks',
+            'Referral triggers when outside corridor / aggregation flags',
+            'Audit trail & version control'
+          ],
+          footnote:
+            'Pricing and limits are carrier-aligned; authority operates within agreed binder and treaty guardrails.'
         }
       : {
-          title: 'BCIA Program Overview — Inhaltsverzeichnis',
-          subtitle: 'Carrier-konforme Programmstruktur, Marktmodellierung, Deckung & Risikokontrollen',
+          title: 'Pricing & Risk Limits',
+          subtitle: 'Carrier-konforme Preislogik und klar begrenzte Zeichnungsgrenzen',
+          leftTitle: 'Pricing Engine',
+          leftBullets: [
+            'Risikobasiertes Pricing auf Basis von Exposure-Treibern, Echtzeit-Telemetrie, Portfoliosignalen und modellierten Loss-Cost-Korridoren.',
+            'Inputs: Telematik (Flotte/Logistik), System-Logs, externe Signale, Broker-/Versichertendaten.',
+            'Output: Preis-Korridor und Bedingungen innerhalb der freigegebenen Limits.'
+          ],
+          middleTitle: 'Limits & Aggregates',
+          limitRows: [
+            { label: 'Per-Risk-Limit', value: '150.000 USD' },
+            { label: 'Daily Aggregate', value: 'Unverändert' },
+            { label: 'Regional Aggregate', value: 'Unverändert' },
+            { label: 'Hinweis', value: 'Carrier-konform, Kapitalschutz' }
+          ],
+          rightTitle: 'Underwriting Guardrails',
+          rightBullets: [
+            'Innerhalb der Binder-Autorität',
+            'Korridor-Prüfungen',
+            'Referral-Trigger bei Abweichung / Aggregations-Flags',
+            'Audit Trail & Versionierung'
+          ],
+          footnote:
+            'Pricing und Limits sind carrier-konform; die Authority operiert innerhalb definierter Binder- und Treaty-Guardrails.'
+        }
+
+    const scenarioStrings = typedLang === 'en'
+      ? {
+          title: 'Scenario Analysis',
+          subtitle: 'Stress testing with preserved exposure assumptions',
+          tableTitle: 'Scenario set',
+          tableColumns: ['Scenario', 'Focus metric', 'Outcome'],
+          rows: [
+            ['Baseline operations', 'Frequency / severity', 'Within corridor'],
+            ['Regional disruption cluster', 'Accumulation test', 'Referral'],
+            ['Extreme event spike', 'Tail stress', 'Moratorium trigger'],
+            ['System outage wave', 'Trigger sensitivity', 'Referral'],
+            ['Broker concentration', 'Distribution stress', 'Within corridor']
+          ],
+          methodTitle: 'Stress test method',
+          methodBullets: [
+            'Preserved exposure baseline',
+            'Sensitivity on trigger frequency and payout curve',
+            'Aggregate utilization tracking (daily/regional)',
+            'Capital protection checks'
+          ],
+          takeawayTitle: 'Key takeaways',
+          takeawayBullets: [
+            'Robust under adverse frequency',
+            'Aggregation controls limit downside',
+            'Deterministic triggers + auditability increase confidence',
+            'Supports carrier underwriting governance'
+          ],
+          bandTitle: 'Indicative loss cost band'
+        }
+      : {
+          title: 'Scenario Analysis',
+          subtitle: 'Stresstests mit unveränderten Exposure-Annahmen',
+          tableTitle: 'Szenario-Set',
+          tableColumns: ['Szenario', 'Fokus', 'Ergebnis'],
+          rows: [
+            ['Baseline Betrieb', 'Frequenz / Schadenhöhe', 'Innerhalb Korridor'],
+            ['Regionale Disruption', 'Kumulations-Test', 'Referral'],
+            ['Extremereignis-Spike', 'Tail-Stress', 'Moratorium-Trigger'],
+            ['Systemausfall-Welle', 'Trigger-Sensitivität', 'Referral'],
+            ['Broker-Konzentration', 'Distribution-Stress', 'Innerhalb Korridor']
+          ],
+          methodTitle: 'Stresstest-Methodik',
+          methodBullets: [
+            'Unveränderte Exposure-Baseline',
+            'Sensitivität auf Trigger-Frequenz und Auszahlungskurve',
+            'Aggregat-Auslastung (daily/regional)',
+            'Kapitalschutz-Checks'
+          ],
+          takeawayTitle: 'Kernaussagen',
+          takeawayBullets: [
+            'Robust bei erhöhter Frequenz',
+            'Aggregationskontrollen begrenzen Downside',
+            'Deterministische Trigger + Auditierbarkeit erhöhen Vertrauen',
+            'Unterstützt carrier-konforme Underwriting-Governance'
+          ],
+          bandTitle: 'Indikativer Loss-Cost-Korridor'
+        }
+
+    const appendixSlideStrings = typedLang === 'en'
+      ? {
+          title: 'Appendix',
+          subtitle: 'Data availability and audit-ready documentation',
+          dataTitle: 'Data pack contents',
+          dataBullets: [
+            'Sample anonymized datasets (claims-like records, operational events, service availability, exposure drivers)',
+            'Data dictionary & schema',
+            'Validation rules summary',
+            'Audit-trail excerpts (decision logs)',
+            'Reporting extracts (bordereaux-ready)'
+          ],
+          availabilityTitle: 'Availability & controls',
+          availabilityBullets: [
+            'Provided under NDA / data room',
+            'Anonymization & minimization',
+            'Access logging',
+            'Export formats: CSV/Parquet + PDF summaries'
+          ],
+          nextStepsTitle: 'Next steps',
+          nextSteps: ['Confirm target jurisdiction', 'Agree limit/aggregate schedule', 'Data room access', 'Binder execution']
+        }
+      : {
+          title: 'Appendix',
+          subtitle: 'Datenverfügbarkeit und auditierbare Dokumentation',
+          dataTitle: 'Inhalte des Data Packs',
+          dataBullets: [
+            'Beispielhafte anonymisierte Datensätze (Claims-ähnlich, operative Events, Service-Availability, Exposure-Treiber)',
+            'Data Dictionary & Schema',
+            'Zusammenfassung der Validierungsregeln',
+            'Auszüge aus dem Audit-Trail (Entscheidungs-Logs)',
+            'Reporting-Extrakte (bordereaux-ready)'
+          ],
+          availabilityTitle: 'Verfügbarkeit & Kontrollen',
+          availabilityBullets: [
+            'Bereitstellung unter NDA / Data Room',
+            'Anonymisierung & Minimierung',
+            'Zugriffsprotokollierung',
+            'Exportformate: CSV/Parquet + PDF-Summaries'
+          ],
+          nextStepsTitle: 'Nächste Schritte',
+          nextSteps: ['Zieljurisdiktion bestätigen', 'Limit-/Aggregatplan festlegen', 'Data-Room-Zugriff', 'Binder-Execution']
+        }
+    const tocStrings = {
+      title: 'BCIA Program Overview — Inhaltsverzeichnis',
+      subtitle: 'Carrier-aligned Program Setup, Marktmodellierung, Coverage, Pricing & Governance',
+      sections: [
+        {
+          label: 'A — Program & Partnership Setup',
+          items: [
+            { label: 'Program Structure & Governance Framework', index: 1 }
+          ]
+        },
+        {
+          label: 'B — Strategy, Market & Economics',
+          items: [
+            { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
+            { label: 'Marktumfeld & adressiertes Exposure (Deutschland & EEA)', index: 3 },
+            { label: 'Indikativer Prämienkorridor aus modellbasiertem Exposure', index: 4 }
+          ]
+        },
+        {
+          label: 'C — Coverage & Risk Control',
+          items: [
+            { label: 'Coverage Overview — Trigger- & Auszahlungslogik', index: 5 },
+            { label: 'Risikomanagement-Framework', index: 6 }
+          ]
+        },
+        {
+          label: 'D — Pricing, Limits & Validation',
           sections: [
-            {
-              label: 'A — Program & Partnership Setup',
-              items: [
-                { label: 'Program Structure & Governance Framework', index: 1 }
-              ]
-            },
-            {
-              label: 'B — Strategie, Markt & Ökonomie',
-              items: [
-                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
-                { label: 'Marktumfeld & adressiertes Exposure (Deutschland & EEA)', index: 3 },
-                { label: 'Indikativer Prämienkorridor aus modellbasiertem Exposure', index: 4 }
-              ]
-            },
-            {
-              label: 'C — Deckung & Risikokontrolle',
-              items: [
-                { label: 'Coverage Overview — Trigger- & Auszahlungslogik', index: 5 },
-                { label: 'Risikomanagement-Framework', index: 6 }
-              ]
-            }
+          items: [
+            { label: 'Pricing & Risk Limits', index: 7 },
+            { label: 'Scenario Analysis', index: 8 },
+            { label: 'Appendix', index: 9 }
           ]
         }
+      ]
+    }
 
     return [
       {
@@ -1680,6 +1816,158 @@ export default function BciaDeckPage() {
               </div>
             </div>
             <div className="bp2risk-guardrails">{riskStrings.guardrails}</div>
+          </div>
+        )
+      }
+      ,
+      {
+        key: 'pricing-limits',
+        node: (
+          <div className="bp7-slide" id="slide-pricing-limits">
+            <div className="bp7-header">
+              <h1>{pricingStrings.title}</h1>
+              <p>{pricingStrings.subtitle}</p>
+            </div>
+            <div className="bp7-grid">
+              <div className="bp7-panel">
+                <div className="bp7-cap">{pricingStrings.leftTitle}</div>
+                <ul className="bp7-list">
+                  {pricingStrings.leftBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bp7-diagram">
+                  <svg width="260" height="140" role="img" aria-label="Pricing corridor flow">
+                    <rect x="10" y="16" width="80" height="28" className="bp0-box" />
+                    <rect x="100" y="16" width="70" height="28" className="bp0-box" />
+                    <rect x="178" y="16" width="70" height="28" className="bp0-box" />
+                    <line x1="90" y1="30" x2="100" y2="30" className="bp0-line" />
+                    <line x1="170" y1="30" x2="178" y2="30" className="bp0-line" />
+                    <text x="50" y="34" textAnchor="middle" className="bp0-text">Inputs</text>
+                    <text x="135" y="34" textAnchor="middle" className="bp0-text">Model</text>
+                    <text x="214" y="34" textAnchor="middle" className="bp0-text">Corridor</text>
+                    <line x1="20" y1="70" x2="240" y2="70" className="bp0-line" />
+                    <text x="130" y="92" textAnchor="middle" className="bp0-text">
+                      {typedLang === 'en' ? 'Price + terms within limits' : 'Preis + Bedingungen innerhalb Limits'}
+                    </text>
+                  </svg>
+                </div>
+              </div>
+              <div className="bp7-panel">
+                <div className="bp7-cap">{pricingStrings.middleTitle}</div>
+                <table className="bp7-table">
+                  <tbody>
+                    {pricingStrings.limitRows.map((row) => (
+                      <tr key={row.label}>
+                        <td className="bp7-term">{row.label}</td>
+                        <td className="bp7-value">{row.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="bp7-panel">
+                <div className="bp7-cap">{pricingStrings.rightTitle}</div>
+                <ul className="bp7-list">
+                  {pricingStrings.rightBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="bp7-footer">{pricingStrings.footnote}</div>
+          </div>
+        )
+      },
+      {
+        key: 'scenario-analysis',
+        node: (
+          <div className="bp8-slide" id="slide-scenario-analysis">
+            <div className="bp8-header">
+              <h1>{scenarioStrings.title}</h1>
+              <p>{scenarioStrings.subtitle}</p>
+            </div>
+            <div className="bp8-grid">
+              <div className="bp8-panel">
+                <div className="bp8-cap">{scenarioStrings.tableTitle}</div>
+                <table className="bp8-table">
+                  <thead>
+                    <tr>
+                      {scenarioStrings.tableColumns.map((col) => (
+                        <th key={col}>{col}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scenarioStrings.rows.map((row) => (
+                      <tr key={row[0]}>
+                        <td>{row[0]}</td>
+                        <td>{row[1]}</td>
+                        <td>{row[2]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="bp8-panel">
+                <div className="bp8-cap">{scenarioStrings.methodTitle}</div>
+                <ul className="bp8-list">
+                  {scenarioStrings.methodBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bp8-band">
+                  <span>{scenarioStrings.bandTitle}</span>
+                  <svg width="200" height="36" role="img" aria-label={scenarioStrings.bandTitle}>
+                    <rect x="0" y="12" width="200" height="12" className="bp8-band-base" />
+                    <rect x="40" y="8" width="120" height="20" className="bp8-band-stress" />
+                  </svg>
+                </div>
+              </div>
+              <div className="bp8-panel">
+                <div className="bp8-cap">{scenarioStrings.takeawayTitle}</div>
+                <ul className="bp8-list">
+                  {scenarioStrings.takeawayBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )
+      },
+      {
+        key: 'appendix',
+        node: (
+          <div className="bp9-slide" id="slide-appendix">
+            <div className="bp9-header">
+              <h1>{appendixSlideStrings.title}</h1>
+              <p>{appendixSlideStrings.subtitle}</p>
+            </div>
+            <div className="bp9-grid">
+              <div className="bp9-panel">
+                <div className="bp9-cap">{appendixSlideStrings.dataTitle}</div>
+                <ul className="bp9-list">
+                  {appendixSlideStrings.dataBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bp9-panel">
+                <div className="bp9-cap">{appendixSlideStrings.availabilityTitle}</div>
+                <ul className="bp9-list">
+                  {appendixSlideStrings.availabilityBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bp9-cap bp9-cap-secondary">{appendixSlideStrings.nextStepsTitle}</div>
+                <div className="bp8-strip">
+                  {appendixSlideStrings.nextSteps.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         )
       }
