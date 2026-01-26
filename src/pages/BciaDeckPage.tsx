@@ -1090,18 +1090,28 @@ export default function BciaDeckPage() {
     return () => window.removeEventListener('keydown', handler)
   }, [activeIndex])
 
+  const jumpToSlide = useCallback((index: number) => {
+    const viewport = viewportRef.current
+    if (!viewport) return
+    const count = slideRefs.current.length
+    const nextIndex = Math.max(0, Math.min(index, Math.max(count - 1, 0)))
+    isProgrammatic.current = true
+    setActiveIndex(nextIndex)
+    if (programmaticTimer.current) {
+      window.clearTimeout(programmaticTimer.current)
+    }
+    viewport.scrollTo({ left: nextIndex * viewport.clientWidth, behavior: 'smooth' })
+    programmaticTimer.current = window.setTimeout(() => {
+      isProgrammatic.current = false
+      programmaticTimer.current = null
+    }, 450)
+  }, [])
+
   const slides = useMemo<Slide[]>(() => {
     const copy = enterpriseStrings[typedLang]
     const mapImage = typedLang === 'en' ? KarteDeEuEn : KarteDeEu
     const premiumStrings = premiumContent[typedLang]
     const slide1 = slide1Labels[typedLang]
-    const programStrings = programContent[typedLang]
-    const governanceStrings = governanceContent[typedLang]
-    const operatingStrings = operatingContent[typedLang]
-    const reinsuranceStrings = reinsuranceContent[typedLang]
-    const techStrings = techContent[typedLang]
-    const strategicStrings = strategicContent[typedLang]
-    const appendixStrings = appendixContent[typedLang]
     const introStrings = programIntroContent[typedLang]
     const strategyStrings = strategyEconomicsContent[typedLang]
     const coverageStrings = coverageContent[typedLang]
@@ -1109,8 +1119,103 @@ export default function BciaDeckPage() {
     const industryImage = typedLang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
     const exposureDe = 12.9e9
     const exposureEea = 133.25e9
+    const tocStrings = typedLang === 'en'
+      ? {
+          title: 'BCIA Program Overview — Table of Contents',
+          subtitle: 'Carrier-aligned program setup, market modeling, coverage & risk controls',
+          sections: [
+            {
+              label: 'A — Program & Partnership Setup',
+              items: [
+                { label: 'Program Structure & Governance Framework', index: 1 }
+              ]
+            },
+            {
+              label: 'B — Strategy, Market & Economics',
+              items: [
+                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
+                { label: 'Market Environment & Addressable Exposure (Germany & EEA)', index: 3 },
+                { label: 'Indicative premium corridor derived from modeled exposure', index: 4 }
+              ]
+            },
+            {
+              label: 'C — Coverage & Risk Control',
+              items: [
+                { label: 'Coverage Overview — Triggers & Payout Mechanics', index: 5 },
+                { label: 'Risk management framework', index: 6 }
+              ]
+            }
+          ]
+        }
+      : {
+          title: 'BCIA Program Overview — Inhaltsverzeichnis',
+          subtitle: 'Carrier-konforme Programmstruktur, Marktmodellierung, Deckung & Risikokontrollen',
+          sections: [
+            {
+              label: 'A — Program & Partnership Setup',
+              items: [
+                { label: 'Program Structure & Governance Framework', index: 1 }
+              ]
+            },
+            {
+              label: 'B — Strategie, Markt & Ökonomie',
+              items: [
+                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
+                { label: 'Marktumfeld & adressiertes Exposure (Deutschland & EEA)', index: 3 },
+                { label: 'Indikativer Prämienkorridor aus modellbasiertem Exposure', index: 4 }
+              ]
+            },
+            {
+              label: 'C — Deckung & Risikokontrolle',
+              items: [
+                { label: 'Coverage Overview — Trigger- & Auszahlungslogik', index: 5 },
+                { label: 'Risikomanagement-Framework', index: 6 }
+              ]
+            }
+          ]
+        }
 
     return [
+      {
+        key: 'toc',
+        node: (
+          <div className="bp3-slide" id="slide-toc">
+            <div className="bp3-header">
+              <h1>{tocStrings.title}</h1>
+              <p>{tocStrings.subtitle}</p>
+            </div>
+            <div className="bp3-grid">
+              {tocStrings.sections.map((section) => (
+                <div key={section.label} className="bp3-panel">
+                  <div className="bp3-cap">{section.label}</div>
+                  <ul className="bp3-bullets">
+                    {section.items.map((item) => (
+                      <li key={item.label}>
+                        <button
+                          type="button"
+                          className="bcia-toc-link"
+                          onClick={() => jumpToSlide(item.index)}
+                          style={{
+                            background: 'none',
+                            border: 'none',
+                            padding: 0,
+                            color: 'inherit',
+                            font: 'inherit',
+                            textAlign: 'left',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {item.label}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      },
       {
         key: 'program-structure-intro',
         node: (
@@ -1577,357 +1682,9 @@ export default function BciaDeckPage() {
             <div className="bp2risk-guardrails">{riskStrings.guardrails}</div>
           </div>
         )
-      },
-      {
-        key: 'operating',
-        node: (
-          <div className="bp5-slide">
-            <div className="bp5-header">
-              <h1>{operatingStrings.title}</h1>
-              <p>{operatingStrings.subline}</p>
-            </div>
-            <div className="bp5-grid">
-              <div className="bp5-panel">
-                <div className="bp5-cap">{operatingStrings.raciTitle}</div>
-                <table className="bp5-table">
-                  <tbody>
-                    {operatingStrings.raciRows.map((row) => (
-                      <tr key={row.role}>
-                        <td className="bp5-role">{row.role}</td>
-                        <td className="bp5-value">{row.responsibility}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="bp5-panel">
-                <div className="bp5-cap">{operatingStrings.artifactsTitle}</div>
-                <ul className="bp5-list">
-                  {operatingStrings.artifacts.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp5-panel">
-                <div className="bp5-cap">
-                  {typedLang === 'en'
-                    ? 'Evidence & validation'
-                    : 'Evidenz & Validierung'}
-                </div>
-                <ul className="bp5-list">
-                  {typedLang === 'en' ? (
-                    <>
-                      <li>Realtime logistics / fleet / system data</li>
-                      <li>Deterministic rules with audit trail</li>
-                      <li>Trigger establishes eligibility; payouts subject to policy terms & governance controls</li>
-                    </>
-                  ) : (
-                    <>
-                      <li>Realtime Logistik-/Fleet-/Systemdaten</li>
-                      <li>Deterministische Regeln mit Audit Trail</li>
-                      <li>Trigger begründet Anspruch; Auszahlung gemäß Policierung & Governance</li>
-                    </>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )
-      },
-      {
-        key: 'reinsurance',
-        node: (
-          <div className="bp6-slide">
-            <div className="bp6-header">
-              <h1>{reinsuranceStrings.title}</h1>
-              <p>{reinsuranceStrings.subline}</p>
-            </div>
-            <div className="bp6-grid">
-              <div className="bp6-panel">
-                <div className="bp6-cap">{reinsuranceStrings.structureTitle}</div>
-                <ul className="bp6-list">
-                  {reinsuranceStrings.structureNotes.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp6-panel">
-                <div className="bp6-cap">{reinsuranceStrings.controlTitle}</div>
-                <table className="bp6-table">
-                  <tbody>
-                    {reinsuranceStrings.controlRows.map((row) => (
-                      <tr key={row.label}>
-                        <td>{row.label}</td>
-                        <td className="bp6-value">{row.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="bp6-callout">{reinsuranceStrings.callout}</div>
-              </div>
-            </div>
-          </div>
-        )
-      },
-      {
-        key: 'program',
-        node: (
-          <div className="bp3-slide">
-            <div className="bp3-header">
-              <h1>{programStrings.title}</h1>
-              <p>{programStrings.subline}</p>
-            </div>
-            <div className="bp3-grid">
-              <div className="bp3-panel">
-                <div className="bp3-cap">{programStrings.gwpTitle}</div>
-                <div className="bp3-subtitle">{programStrings.gwpSubtitle}</div>
-                <table className="bp3-table">
-                  <thead>
-                    <tr>
-                      <th>{programStrings.yearLabel}</th>
-                      <th className="num">{programStrings.gwpLabel}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>Y1</td><td className="num">$9.1M</td></tr>
-                    <tr><td>Y2</td><td className="num">$19.8M</td></tr>
-                    <tr><td>Y3</td><td className="num">$21.1M</td></tr>
-                    <tr><td>Y4</td><td className="num">$50.9M</td></tr>
-                    <tr><td className="bp3-strong">Y5</td><td className="num bp3-strong">$102.8M</td></tr>
-                  </tbody>
-                </table>
-                <div className="bp3-notes">
-                  {programStrings.gwpNotes.map((note) => (
-                    <p key={note}>{note}</p>
-                  ))}
-                </div>
-              </div>
-              <div className="bp3-panel">
-                <div className="bp3-cap">{programStrings.mgaTitle}</div>
-                <table className="bp3-table">
-                  <tbody>
-                    {programStrings.mgaRows.map((row) => (
-                      <tr key={row.label}>
-                        <td className={row.strong ? 'bp3-strong' : undefined}>{row.label}</td>
-                        <td className={`num${row.strong ? ' bp3-strong' : ''}`}>{row.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <ul className="bp3-bullets">
-                  {programStrings.mgaBullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp3-panel">
-                <div className="bp3-cap">{programStrings.qualityTitle}</div>
-                <ul className="bp3-bullets">
-                  {programStrings.qualityBullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <div className="bp3-callout">{programStrings.callout}</div>
-              </div>
-            </div>
-            <div className="bp3-footer">
-              <div className="bp3-footer-rule" aria-hidden="true" />
-              <div className="bp3-footer-text">
-                {programStrings.footer.map((line) => (
-                  <span key={line}>{line}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-        )
-      },
-      {
-        key: 'governance',
-        node: (
-          <div className="bp4-slide">
-            <div className="bp4-header">
-              <h1>{governanceStrings.title}</h1>
-              <p>{governanceStrings.subline}</p>
-            </div>
-            <div className="bp4-grid">
-              <div className="bp4-panel">
-                <div className="bp4-cap">{governanceStrings.leftTitle}</div>
-                <ul className="bp4-list">
-                  {governanceStrings.leftItems.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <div className="bp4-subcap">{governanceStrings.leftControlsTitle}</div>
-                <ul className="bp4-list bp4-list-compact">
-                  {governanceStrings.leftControls.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp4-panel">
-                <div className="bp4-cap">{governanceStrings.centerTitle}</div>
-                <table className="bp4-table">
-                  <tbody>
-                    {governanceStrings.centerRows.map((row) => (
-                      <tr key={row.label}>
-                        <td>{row.label}</td>
-                        <td className="bp4-value">{row.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div className="bp4-highlight">
-                  {typedLang === 'en'
-                    ? 'No balance sheet risk retained by the MGA'
-                    : 'Kein Bilanzrisiko beim MGA'}
-                </div>
-              </div>
-              <div className="bp4-panel">
-                <div className="bp4-cap">{governanceStrings.rightTitle}</div>
-                <div className="bp4-list-block">
-                  <ul className="bp4-list">
-                    <li>{governanceStrings.rightStages.sources}</li>
-                    <li>{governanceStrings.rightStages.validation}</li>
-                    <li>{governanceStrings.rightStages.engine}</li>
-                    <li>{governanceStrings.rightStages.memo}</li>
-                    <li>{governanceStrings.rightStages.outputs}</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="bp4-assurance">{governanceStrings.assurance}</div>
-          </div>
-        )
-      },
-      {
-        key: 'tech',
-        node: (
-          <div className="bp7-slide">
-            <div className="bp7-header">
-              <h1>{techStrings.title}</h1>
-              <p>{techStrings.subline}</p>
-            </div>
-            <div className="bp7-grid">
-              <div className="bp7-panel">
-                <div className="bp7-cap">{techStrings.sourcesTitle}</div>
-                <ul className="bp7-list">
-                  {techStrings.sources.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp7-panel">
-                <div className="bp7-cap">{techStrings.validationTitle}</div>
-                <ul className="bp7-list">
-                  {techStrings.validation.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp7-panel">
-                <div className="bp7-cap">{techStrings.decisionTitle}</div>
-                <ul className="bp7-list">
-                  {techStrings.decision.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )
-      },
-      {
-        key: 'strategic',
-        node: (
-          <div className="bp8-slide">
-            <div className="bp8-header">
-              <h1>{strategicStrings.title}</h1>
-              <p>{strategicStrings.subline}</p>
-            </div>
-            <div className="bp8-grid">
-              <div className="bp8-panel">
-                <div className="bp8-cap">{strategicStrings.quadrant.underwriting.title}</div>
-                <ul className="bp8-list">
-                  {strategicStrings.quadrant.underwriting.bullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp8-panel">
-                <div className="bp8-cap">{strategicStrings.quadrant.volatility.title}</div>
-                <ul className="bp8-list">
-                  {strategicStrings.quadrant.volatility.bullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp8-panel">
-                <div className="bp8-cap">{strategicStrings.quadrant.efficiency.title}</div>
-                <ul className="bp8-list">
-                  {strategicStrings.quadrant.efficiency.bullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="bp8-panel">
-                <div className="bp8-cap">{strategicStrings.quadrant.distribution.title}</div>
-                <ul className="bp8-list">
-                  {strategicStrings.quadrant.distribution.bullets.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="bp8-strip">
-              {strategicStrings.kpiStrip.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </div>
-          </div>
-        )
-      },
-      {
-        key: 'appendix',
-        node: (
-          <div className="bp9-slide">
-            <div className="bp9-header">
-              <h1>{appendixStrings.title}</h1>
-              <p>{appendixStrings.subline}</p>
-            </div>
-            <div className="bp9-grid">
-              <div className="bp9-panel">
-                <div className="bp9-cap">{appendixStrings.definitionsTitle}</div>
-                <table className="bp9-table">
-                  <tbody>
-                    {appendixStrings.definitions.map((row) => (
-                      <tr key={row.term}>
-                        <td className="bp9-term">{row.term}</td>
-                        <td className="bp9-value">{row.meaning}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="bp9-panel">
-                <div className="bp9-cap">{appendixStrings.assumptionsTitle}</div>
-                <ul className="bp9-list">
-                  {appendixStrings.assumptions.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <div className="bp9-cap bp9-cap-secondary">{appendixStrings.reportingTitle}</div>
-                <ul className="bp9-list">
-                  {appendixStrings.reporting.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        )
       }
     ]
-  }, [typedLang])
+  }, [typedLang, jumpToSlide])
 
   const totalSlides = slides.length
 
