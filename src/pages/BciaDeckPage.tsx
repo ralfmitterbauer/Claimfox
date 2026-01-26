@@ -156,6 +156,23 @@ type ProgramIntroCopy = {
   statement: string
 }
 
+type StrategyEconomicsCopy = {
+  title: string
+  subtitle: string
+  leftTitle: string
+  leftBullets: string[]
+  middleTitle: string
+  middleBullets: string[]
+  middleFlow: string
+  rightTitle: string
+  rightKpis: { label: string; value: string }[]
+  stripTitle: string
+  economicsRows: { label: string; value: string }[]
+  incomeTitle: string
+  incomeRows: { label: string; value: string }[]
+  footnote: string
+}
+
 const compositionRows = [
   { label: 'Motor (Kraftfahrt)', value: 'EUR 34.015 bn' },
   { label: 'Property (Sach)', value: 'EUR 11.306 bn' },
@@ -756,6 +773,91 @@ const programIntroContent: Record<Lang, ProgramIntroCopy> = {
   }
 }
 
+const strategyEconomicsContent: Record<Lang, StrategyEconomicsCopy> = {
+  de: {
+    title: 'Business Strategy, Distribution & Program Economics',
+    subtitle: 'Kontrolliertes Wachstum über Tier‑one‑Distribution und abgestimmte MGA‑Ökonomie',
+    leftTitle: 'Business Strategy',
+    leftBullets: [
+      'Parametrische Deckung zur Minderung von Folgeschäden und Vertragsstrafen',
+      'Fokus auf operative und Service‑Unterbrechungen',
+      'Deterministische Trigger auf Basis von Echtzeit‑Validierung',
+      'Kapital‑effiziente, skalierbare MGA‑Programmstruktur'
+    ],
+    middleTitle: 'Distribution',
+    middleBullets: [
+      'Distribution über Tier‑one‑Broker',
+      'Zugang zu Versicherer‑ und Broker‑Netzwerken',
+      'Enterprise‑fokussierte Kundenbasis',
+      'Programm‑Onboarding und Eligibility‑Kontrollen'
+    ],
+    middleFlow: 'Broker → Insurfox → Antares',
+    rightTitle: 'Initial Program Scale (Year 1)',
+    rightKpis: [
+      { label: 'Geschätztes Bruttoprämienvolumen Jahr 1 (70 % Auslastung)', value: '9,1 Mio. USD' },
+      { label: 'Projektierte Policen / Units', value: '83.000' }
+    ],
+    stripTitle: 'MGA Economics & Growth Outlook',
+    economicsRows: [
+      { label: 'Base commission', value: '29,5%' },
+      { label: 'Performance‑based bonus', value: 'bis zu 9,5%' },
+      { label: 'Total potential commission', value: 'bis zu 39,0%' },
+      { label: 'Target loss ratio', value: '< 27,5%' }
+    ],
+    incomeTitle: 'Expected Premium Income',
+    incomeRows: [
+      { label: 'Y1', value: '9,1 Mio. USD' },
+      { label: 'Y2', value: '19,8 Mio. USD' },
+      { label: 'Y3', value: '21,1 Mio. USD' },
+      { label: 'Y4', value: '50,9 Mio. USD' },
+      { label: 'Y5', value: '102,8 Mio. USD' }
+    ],
+    footnote:
+      'Indikative Programmökonomie auf Basis aktueller Auslastungsannahmen. Die dargestellten Werte stellen Bruttoprämien dar und sind keine Prognosen oder Garantien.'
+  },
+  en: {
+    title: 'Business Strategy, Distribution & Program Economics',
+    subtitle: 'Controlled growth via tier‑one distribution and aligned MGA economics',
+    leftTitle: 'Business Strategy',
+    leftBullets: [
+      'Parametric coverage mitigating consequential damages and penalties',
+      'Focus on operational and service disruptions',
+      'Deterministic triggers supported by real‑time data validation',
+      'Capital‑efficient, scalable MGA‑led program structure'
+    ],
+    middleTitle: 'Distribution',
+    middleBullets: [
+      'Distribution via tier‑one brokers',
+      'Access to insurer and broker networks',
+      'Enterprise‑focused client base',
+      'Program‑level onboarding and eligibility controls'
+    ],
+    middleFlow: 'Broker → Insurfox → Antares',
+    rightTitle: 'Initial Program Scale (Year 1)',
+    rightKpis: [
+      { label: 'Estimated Year 1 GWP at 70% utilization', value: '$9.1M' },
+      { label: 'Projected policies / units', value: '83,000' }
+    ],
+    stripTitle: 'MGA Economics & Growth Outlook',
+    economicsRows: [
+      { label: 'Base commission', value: '29.5%' },
+      { label: 'Performance‑based bonus', value: 'up to 9.5%' },
+      { label: 'Total potential commission', value: 'up to 39.0%' },
+      { label: 'Target loss ratio', value: '< 27.5%' }
+    ],
+    incomeTitle: 'Expected Premium Income',
+    incomeRows: [
+      { label: 'Y1', value: '$9.1M' },
+      { label: 'Y2', value: '$19.8M' },
+      { label: 'Y3', value: '$21.1M' },
+      { label: 'Y4', value: '$50.9M' },
+      { label: 'Y5', value: '$102.8M' }
+    ],
+    footnote:
+      'Indicative program economics based on current utilization assumptions. Figures represent gross written premium and do not constitute forecasts or guarantees.'
+  }
+}
+
 const formatMoney = (value: number, lang: Lang) => {
   if (lang === 'de') {
     return `${(value / 1e9).toLocaleString('de-DE', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Mrd. EUR`
@@ -773,6 +875,7 @@ export default function BciaDeckPage() {
   const slideRefs = useRef<Array<HTMLDivElement | null>>([])
   const [activeIndex, setActiveIndex] = useState(0)
   const scrollRaf = useRef<number | null>(null)
+  const programmaticTimer = useRef<number | null>(null)
   const isProgrammatic = useRef(false)
 
   useEffect(() => {
@@ -846,6 +949,7 @@ export default function BciaDeckPage() {
     const strategicStrings = strategicContent[typedLang]
     const appendixStrings = appendixContent[typedLang]
     const introStrings = programIntroContent[typedLang]
+    const strategyStrings = strategyEconomicsContent[typedLang]
     const industryImage = typedLang === 'en' ? LogistikIndustrieEn : LogistikIndustrieDe
     const exposureDe = 12.9e9
     const exposureEea = 133.25e9
@@ -904,6 +1008,79 @@ export default function BciaDeckPage() {
               </div>
             </div>
             <div className="bp0-footer">{introStrings.statement}</div>
+          </div>
+        )
+      },
+      {
+        key: 'business-strategy-economics',
+        node: (
+          <div className="bp1-slide" id="slide-business-strategy-economics">
+            <div className="bp1-header">
+              <h1>{strategyStrings.title}</h1>
+              <p>{strategyStrings.subtitle}</p>
+            </div>
+            <div className="bp1-grid">
+              <div className="bp1-panel">
+                <div className="bp1-cap">{strategyStrings.leftTitle}</div>
+                <ul className="bp1-list">
+                  {strategyStrings.leftBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="bp1-panel">
+                <div className="bp1-cap">{strategyStrings.middleTitle}</div>
+                <ul className="bp1-list">
+                  {strategyStrings.middleBullets.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <div className="bp1-flow">{strategyStrings.middleFlow}</div>
+              </div>
+              <div className="bp1-panel">
+                <div className="bp1-cap">{strategyStrings.rightTitle}</div>
+                <div className="bp1-kpis">
+                  {strategyStrings.rightKpis.map((kpi) => (
+                    <div key={kpi.label} className="bp1-kpi">
+                      <span>{kpi.label}</span>
+                      <strong>{kpi.value}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="bp1-strip">
+              <div className="bp1-strip-title">{strategyStrings.stripTitle}</div>
+              <div className="bp1-strip-grid">
+                <div className="bp1-strip-panel">
+                  <div className="bp1-strip-cap">MGA Economics</div>
+                  <table>
+                    <tbody>
+                      {strategyStrings.economicsRows.map((row) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td className="num">{row.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="bp1-strip-panel">
+                  <div className="bp1-strip-cap">{strategyStrings.incomeTitle}</div>
+                  <table>
+                    <tbody>
+                      {strategyStrings.incomeRows.map((row) => (
+                        <tr key={row.label}>
+                          <td>{row.label}</td>
+                          <td className="num">{row.value}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div className="bp1-footnote">{strategyStrings.footnote}</div>
           </div>
         )
       },
@@ -1480,11 +1657,16 @@ export default function BciaDeckPage() {
       return
     }
     isProgrammatic.current = true
-    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' })
-    window.setTimeout(() => {
+    setActiveIndex(nextIndex)
+    if (programmaticTimer.current) {
+      window.clearTimeout(programmaticTimer.current)
+    }
+    const nextLeft = nextIndex * viewport.clientWidth
+    viewport.scrollTo({ left: nextLeft, behavior: 'smooth' })
+    programmaticTimer.current = window.setTimeout(() => {
       isProgrammatic.current = false
-      setActiveIndex(nextIndex)
-    }, 350)
+      programmaticTimer.current = null
+    }, 450)
   }, [totalSlides])
 
   const goToSlide = useCallback((index: number) => {

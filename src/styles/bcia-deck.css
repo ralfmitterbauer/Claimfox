@@ -49,6 +49,7 @@
   max-width: 100%;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .bcia-slider::-webkit-scrollbar {
@@ -1419,9 +1420,143 @@ body.bcia-deck-route {
   background: var(--ix-surface-2);
 }
 
+/* Slide 1 styles (Business strategy & economics intro) */
+.bcia-deck .bp1-slide {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 14px;
+}
+
+.bcia-deck .bp1-header h1 {
+  margin: 0 0 6px;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.bcia-deck .bp1-header p {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp1-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  flex: 1 1 auto;
+}
+
+.bcia-deck .bp1-panel {
+  position: relative;
+  border: 1px solid var(--ix-border);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--ix-surface);
+}
+
+.bcia-deck .bp1-panel::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--ix-primary);
+}
+
+.bcia-deck .bp1-cap {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+}
+
+.bcia-deck .bp1-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.78rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp1-flow {
+  margin-top: auto;
+  padding: 8px 10px;
+  border: 1px solid var(--ix-border);
+  font-size: 0.72rem;
+  color: var(--ix-text);
+  text-align: center;
+}
+
+.bcia-deck .bp1-kpis {
+  display: grid;
+  gap: 10px;
+}
+
+.bcia-deck .bp1-kpi span {
+  display: block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ix-text-muted);
+}
+
+.bcia-deck .bp1-kpi strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.bcia-deck .bp1-strip {
+  border: 1px solid var(--ix-border);
+  padding: 10px 12px;
+  display: grid;
+  gap: 8px;
+  background: var(--ix-surface);
+}
+
+.bcia-deck .bp1-strip-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+}
+
+.bcia-deck .bp1-strip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.bcia-deck .bp1-strip-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.74rem;
+}
+
+.bcia-deck .bp1-strip-panel td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--ix-border);
+}
+
+.bcia-deck .bp1-strip-panel td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.bcia-deck .bp1-footnote {
+  font-size: 0.72rem;
+  color: var(--ix-text-muted);
+}
+
 @media print {
   @page {
-    size: 297mm 210mm !important;
+    size: A4 landscape !important;
     margin: 0 !important;
   }
 
@@ -1482,6 +1617,6 @@ body.bcia-deck-route {
 }
 
 @page {
-  size: 297mm 210mm !important;
+  size: A4 landscape !important;
   margin: 0 !important;
 }
