@@ -301,6 +301,11 @@ body.bcia-deck-route {
   letter-spacing: -0.01em;
 }
 
+.bcia-deck .bp2cov-header h1,
+.bcia-deck .bp2risk-header h1 {
+  color: var(--ix-primary);
+}
+
 .bcia-deck .enterprise-premium-header p {
   margin: 0;
   color: var(--ix-text-muted);
@@ -329,7 +334,7 @@ body.bcia-deck-route {
   position: relative;
   border: 1px solid var(--ix-border);
   border-radius: 0;
-  padding: 14px 16px;
+  padding: 12px 14px;
   background: var(--ix-surface);
 }
 
@@ -357,7 +362,7 @@ body.bcia-deck-route {
 
 .bcia-deck .enterprise-premium-card strong {
   display: block;
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 1.2rem;
   font-weight: 700;
 }
@@ -495,18 +500,14 @@ body.bcia-deck-route {
 }
 
 .bcia-deck .enterprise-premium-assumptions h2 {
-  margin: 0 0 6px;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ix-text-muted);
+  display: none;
 }
 
 .bcia-deck .enterprise-premium-assumptions ul {
   margin: 0;
   padding-left: 0;
   color: var(--ix-text-muted);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
