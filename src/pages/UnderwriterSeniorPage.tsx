@@ -35,12 +35,12 @@ const MiniBars = ({ data }: { data: number[] }) => {
   const totalWidth = data.length * barWidth + (data.length - 1) * gap
   const startX = (100 - totalWidth) / 2
   return (
-    <svg className="uw-chart" width="100%" height="32" viewBox="0 0 100 24" aria-hidden>
-      <line x1="12" y1="22" x2="88" y2="22" stroke="var(--ix-border)" strokeWidth="1" />
+    <svg className="uw-chart" width="100%" height="36" viewBox="0 0 100 28" aria-hidden shapeRendering="crispEdges">
+      <line x1="12" y1="24" x2="88" y2="24" stroke="var(--ix-border, #e2e8f0)" strokeWidth="1" />
       {data.map((value, index) => {
-        const height = (value / max) * 16
+        const height = (value / max) * 20
         const x = startX + index * (barWidth + gap)
-        const y = 22 - height
+        const y = 24 - height
         return (
           <rect
             key={value + index}
@@ -48,7 +48,7 @@ const MiniBars = ({ data }: { data: number[] }) => {
             y={y}
             width={barWidth}
             height={height}
-            fill={index === data.length - 1 ? 'var(--insurfox-orange)' : 'var(--blue-dark)'}
+            fill={index === data.length - 1 ? 'var(--insurfox-orange, #d4380d)' : 'var(--blue-dark, #0e0d1c)'}
           />
         )
       })}
