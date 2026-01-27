@@ -850,24 +850,21 @@ export default function FinanceAnalystPage() {
           <Card title={copy.snapshot.title} variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
               <div className="uw-grid uw-cards">
-                <Card title={copy.snapshot.summary} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{selected?.portfolio}</strong>
-                    <span className="uw-muted">{selected?.counterparty}</span>
-                  </div>
-                </Card>
-                <Card title={copy.snapshot.amountLabel} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
-                    <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
-                  </div>
-                </Card>
-                <Card title={copy.snapshot.statusLabel} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{statusLabel(selected?.status || 'open', lang)}</strong>
-                    <span className="uw-muted">{selected ? riskLabel(selected.riskTier, lang) : ''}</span>
-                  </div>
-                </Card>
+                <div className="uw-panel">
+                  <div className="uw-panel-title">{copy.snapshot.summary}</div>
+                  <strong>{selected?.portfolio}</strong>
+                  <span className="uw-muted">{selected?.counterparty}</span>
+                </div>
+                <div className="uw-panel">
+                  <div className="uw-panel-title">{copy.snapshot.amountLabel}</div>
+                  <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
+                  <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
+                </div>
+                <div className="uw-panel">
+                  <div className="uw-panel-title">{copy.snapshot.statusLabel}</div>
+                  <strong>{statusLabel(selected?.status || 'open', lang)}</strong>
+                  <span className="uw-muted">{selected ? riskLabel(selected.riskTier, lang) : ''}</span>
+                </div>
               </div>
 
               <div className="uw-panel">
