@@ -741,39 +741,42 @@ export default function FinanceCfoFinalAuthorityPage() {
         </div>
 
         <div className="uw-grid uw-split">
-          <Card title={copy.table.title} variant="glass" className="uw-card">
+          <Card variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <label className="uw-muted">
-                  {copy.filters.status}
-                  <select
-                    aria-label={copy.filters.status}
-                    value={statusFilter}
-                    onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
-                    style={{ marginLeft: '0.5rem' }}
-                  >
-                    <option value="all">{copy.statusAll}</option>
-                    <option value="open">{statusLabel('open', lang)}</option>
-                    <option value="in_review">{statusLabel('in_review', lang)}</option>
-                    <option value="escalated">{statusLabel('escalated', lang)}</option>
-                    <option value="needs_evidence">{statusLabel('needs_evidence', lang)}</option>
-                    <option value="approved">{statusLabel('approved', lang)}</option>
-                    <option value="rejected">{statusLabel('rejected', lang)}</option>
-                  </select>
-                </label>
-                <label className="uw-muted">
-                  {copy.filters.sort}
-                  <select
-                    aria-label={copy.filters.sort}
-                    value={sortKey}
-                    onChange={(event) => setSortKey(event.target.value as typeof sortKey)}
-                    style={{ marginLeft: '0.5rem' }}
-                  >
-                    <option value="sla">{copy.filters.sortSla}</option>
-                    <option value="amount">{copy.filters.sortAmount}</option>
-                    <option value="risk">{copy.filters.sortRisk}</option>
-                  </select>
-                </label>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <strong>{copy.table.title}</strong>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <label className="uw-muted">
+                    {copy.filters.status}
+                    <select
+                      aria-label={copy.filters.status}
+                      value={statusFilter}
+                      onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+                      style={{ marginLeft: '0.5rem' }}
+                    >
+                      <option value="all">{copy.statusAll}</option>
+                      <option value="open">{statusLabel('open', lang)}</option>
+                      <option value="in_review">{statusLabel('in_review', lang)}</option>
+                      <option value="escalated">{statusLabel('escalated', lang)}</option>
+                      <option value="needs_evidence">{statusLabel('needs_evidence', lang)}</option>
+                      <option value="approved">{statusLabel('approved', lang)}</option>
+                      <option value="rejected">{statusLabel('rejected', lang)}</option>
+                    </select>
+                  </label>
+                  <label className="uw-muted">
+                    {copy.filters.sort}
+                    <select
+                      aria-label={copy.filters.sort}
+                      value={sortKey}
+                      onChange={(event) => setSortKey(event.target.value as typeof sortKey)}
+                      style={{ marginLeft: '0.5rem' }}
+                    >
+                      <option value="sla">{copy.filters.sortSla}</option>
+                      <option value="amount">{copy.filters.sortAmount}</option>
+                      <option value="risk">{copy.filters.sortRisk}</option>
+                    </select>
+                  </label>
+                </div>
               </div>
               <div style={{ overflowX: 'auto' }}>
                 <table className="uw-table" aria-label={copy.table.title}>
@@ -811,41 +814,35 @@ export default function FinanceCfoFinalAuthorityPage() {
             </div>
           </Card>
 
-          <Card title={copy.snapshot.title} variant="glass" className="uw-card">
+          <Card variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
-              <div className="uw-grid uw-cards">
-                <Card title={copy.snapshot.summary} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{selected?.portfolio}</strong>
-                    <span className="uw-muted">{selected?.counterparty}</span>
-                  </div>
-                </Card>
-                <Card title={copy.snapshot.amountLabel} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
-                    <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
-                  </div>
-                </Card>
-                <Card title={copy.snapshot.statusLabel} variant="glass" className="uw-card">
-                  <div className="uw-card-body">
-                    <strong>{statusLabel(selected?.status || 'open', lang)}</strong>
-                    <span className="uw-muted">{selected ? riskLabel(selected.riskTier, lang) : ''}</span>
-                  </div>
-                </Card>
+              <strong>{copy.snapshot.title}</strong>
+              <div className="uw-panel">
+                <div className="uw-panel-title">{copy.snapshot.summary}</div>
+                <strong>{selected?.portfolio}</strong>
+                <span className="uw-muted">{selected?.counterparty}</span>
               </div>
-
+              <div className="uw-panel">
+                <div className="uw-panel-title">{copy.snapshot.amountLabel}</div>
+                <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
+                <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
+              </div>
+              <div className="uw-panel">
+                <div className="uw-panel-title">{copy.snapshot.statusLabel}</div>
+                <strong>{statusLabel(selected?.status || 'open', lang)}</strong>
+                <span className="uw-muted">{selected ? riskLabel(selected.riskTier, lang) : ''}</span>
+              </div>
               <div className="uw-panel">
                 <strong>{copy.snapshot.aiTitle}</strong>
-                <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.1rem' }}>
+                <ul style={{ margin: '0.4rem 0 0', paddingLeft: '1.1rem' }}>
                   {copy.snapshot.aiItems.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
               </div>
-
               <div className="uw-panel">
                 <strong>{copy.snapshot.templates}</strong>
-                <div style={{ display: 'grid', gap: '0.5rem', marginTop: '0.5rem' }}>
+                <div style={{ display: 'grid', gap: '0.5rem', marginTop: '0.4rem' }}>
                   {(['approve', 'approve_with_conditions', 'reject'] as const).map((value) => (
                     <label key={value} style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                       <input
@@ -860,7 +857,6 @@ export default function FinanceCfoFinalAuthorityPage() {
                   ))}
                 </div>
               </div>
-
               <div className="uw-panel">
                 <strong>{copy.snapshot.conditions}</strong>
                 <textarea
@@ -871,7 +867,6 @@ export default function FinanceCfoFinalAuthorityPage() {
                   rows={3}
                 />
               </div>
-
               <div className="uw-panel">
                 <strong>{copy.snapshot.noteLabel}</strong>
                 <textarea
@@ -882,12 +877,10 @@ export default function FinanceCfoFinalAuthorityPage() {
                   rows={2}
                 />
               </div>
-
               <div className="uw-panel">
                 <strong>{copy.snapshot.authorityNote}</strong>
                 <p className="uw-muted" style={{ marginTop: '0.4rem' }}>{copy.snapshot.scopeNote}</p>
               </div>
-
               <div className="uw-actions">
                 <Button onClick={() => {}}>{copy.actions.approve}</Button>
                 <Button variant="secondary" onClick={() => {}}>{copy.actions.conditions}</Button>
