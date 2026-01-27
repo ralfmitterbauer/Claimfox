@@ -35,12 +35,12 @@ const MiniBars = ({ data }: { data: number[] }) => {
   const totalWidth = data.length * barWidth + (data.length - 1) * gap
   const startX = (100 - totalWidth) / 2
   return (
-    <svg className="uw-chart" width="100%" height="40" viewBox="0 0 100 30" aria-hidden>
-      <line x1="12" y1="26" x2="88" y2="26" stroke="var(--ix-border)" strokeWidth="1" />
+    <svg className="uw-chart" width="100%" height="32" viewBox="0 0 100 24" aria-hidden>
+      <line x1="12" y1="22" x2="88" y2="22" stroke="var(--ix-border)" strokeWidth="1" />
       {data.map((value, index) => {
-        const height = (value / max) * 20
+        const height = (value / max) * 16
         const x = startX + index * (barWidth + gap)
-        const y = 26 - height
+        const y = 22 - height
         return (
           <rect
             key={value + index}

@@ -78,6 +78,7 @@
   border-radius: 0 !important;
   box-shadow: none !important;
   padding: 14px 16px !important;
+  overflow: hidden;
 }
 
 .uw-kpi .uw-card {
@@ -118,7 +119,7 @@
 .uw-chart {
   display: block;
   width: 100%;
-  max-width: 140px;
+  max-width: 120px;
   margin: 0 auto;
 }
 
