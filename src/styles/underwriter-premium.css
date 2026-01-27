@@ -177,6 +177,12 @@
   border-bottom: 1px solid var(--ix-border);
   color: var(--ix-text);
   overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.uw-table th:nth-child(5),
+.uw-table td:nth-child(5) {
+  white-space: nowrap;
 }
 
 .uw-row-active {
