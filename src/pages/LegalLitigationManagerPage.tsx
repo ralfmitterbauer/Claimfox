@@ -41,6 +41,34 @@ const formatSla = (iso: string, lang: string) => {
   }).format(date)
 }
 
+const MiniBars = ({ data }: { data: number[] }) => {
+  const max = Math.max(...data)
+  const barWidth = 6
+  const gap = 3
+  const totalWidth = data.length * barWidth + (data.length - 1) * gap
+  const startX = (100 - totalWidth) / 2
+  return (
+    <svg className="uw-chart" width="100%" height="42" viewBox="0 0 100 32" aria-hidden shapeRendering="crispEdges">
+      <line x1="8" y1="28" x2="92" y2="28" stroke="var(--ix-border, #e2e8f0)" strokeWidth="1" />
+      {data.map((value, index) => {
+        const height = (value / max) * 22
+        const x = startX + index * (barWidth + gap)
+        const y = 28 - height
+        return (
+          <rect
+            key={value + index}
+            x={x}
+            y={y}
+            width={barWidth}
+            height={height}
+            fill={index === data.length - 1 ? 'var(--insurfox-orange, #d4380d)' : 'var(--blue-dark, #0e0d1c)'}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
 export default function LegalLitigationManagerPage() {
   const { lang } = useI18n()
 
@@ -251,12 +279,12 @@ export default function LegalLitigationManagerPage() {
 
       <div className="uw-container">
         <div className="uw-grid uw-kpi">
-          <Card title={copy.kpi.open} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.open}</strong></div></Card>
-          <Card title={copy.kpi.dueToday} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.dueToday}</strong></div></Card>
-          <Card title={copy.kpi.breaches} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.breaches}</strong></div></Card>
-          <Card title={copy.kpi.cycle} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.cycle}</strong></div></Card>
-          <Card title={copy.kpi.escalations} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.escalations}</strong></div></Card>
-          <Card title={copy.kpi.spend} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.spend}</strong></div></Card>
+          <Card title={copy.kpi.open} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.open}</strong><MiniBars data={[10, 11, 12, 13, 12]} /></div></Card>
+          <Card title={copy.kpi.dueToday} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.dueToday}</strong><MiniBars data={[3, 4, 4, 5, 4]} /></div></Card>
+          <Card title={copy.kpi.breaches} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.breaches}</strong><MiniBars data={[2, 2, 3, 2, 3]} /></div></Card>
+          <Card title={copy.kpi.cycle} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.cycle}</strong><MiniBars data={[1.8, 1.7, 1.6, 1.5, 1.6]} /></div></Card>
+          <Card title={copy.kpi.escalations} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.escalations}</strong><MiniBars data={[2, 3, 3, 4, 3]} /></div></Card>
+          <Card title={copy.kpi.spend} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.spend}</strong><MiniBars data={[60, 62, 64, 63, 65]} /></div></Card>
         </div>
 
         <div className="uw-grid uw-split">
@@ -334,8 +362,9 @@ export default function LegalLitigationManagerPage() {
         </div>
 
         <div className="uw-grid uw-triplet">
-          <Card title={copy.slaPanel.title} variant="glass" className="uw-card">
+          <Card variant="glass" className="uw-card">
             <div className="uw-card-body">
+              <strong>{copy.slaPanel.title}</strong>
               <div className="uw-muted">{copy.slaPanel.buckets}</div>
               <div className="uw-muted">Due today: {buckets.due_today}</div>
               <div className="uw-muted">Due 48h: {buckets.due_48h}</div>
@@ -346,38 +375,44 @@ export default function LegalLitigationManagerPage() {
               <div className="uw-muted">{selected.severity === 'High' ? copy.slaPanel.carrier : copy.slaPanel.within}</div>
             </div>
           </Card>
-          <Card title={copy.audit.title} variant="glass" className="uw-card">
-            <div className="uw-muted" style={{ marginBottom: '0.5rem' }}>{copy.audit.logTitle}</div>
-            <div style={{ overflowX: 'auto' }}>
-              <table className="uw-table" aria-label="Litigation audit log">
-                <thead>
-                  <tr>
-                    {copy.audit.logCols.map((col) => (
-                      <th key={col}>{col}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {logs.slice(0, 5).map((log) => (
-                    <tr key={log.timestamp}>
-                      <td>{log.timestamp}</td>
-                      <td>{log.role}</td>
-                      <td>{log.action}</td>
-                      <td>{log.ruleVersion}</td>
-                      <td>{log.evidenceStatus}</td>
-                      <td>{log.note}</td>
+          <Card variant="glass" className="uw-card">
+            <div className="uw-card-body">
+              <strong>{copy.audit.title}</strong>
+              <div className="uw-muted">{copy.audit.logTitle}</div>
+              <div style={{ overflowX: 'auto' }}>
+                <table className="uw-table" aria-label="Litigation audit log">
+                  <thead>
+                    <tr>
+                      {copy.audit.logCols.map((col) => (
+                        <th key={col}>{col}</th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {logs.slice(0, 5).map((log) => (
+                      <tr key={log.timestamp}>
+                        <td>{log.timestamp}</td>
+                        <td>{log.role}</td>
+                        <td>{log.action}</td>
+                        <td>{log.ruleVersion}</td>
+                        <td>{log.evidenceStatus}</td>
+                        <td>{log.note}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </Card>
-          <Card title={copy.audit.governanceTitle} variant="glass" className="uw-card">
-            <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.55 }}>
-              {copy.audit.indicators.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+          <Card variant="glass" className="uw-card">
+            <div className="uw-card-body">
+              <strong>{copy.audit.governanceTitle}</strong>
+              <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.55 }}>
+                {copy.audit.indicators.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
           </Card>
         </div>
 
