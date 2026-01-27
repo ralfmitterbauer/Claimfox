@@ -715,17 +715,17 @@ const appendixContent: Record<Lang, AppendixCopy> = {
 const programIntroContent: Record<Lang, ProgramIntroCopy> = {
   de: {
     title: 'Program Structure & Governance Framework',
-    subtitle: 'Approved MGA & Coverholder operating under existing Antares binder',
-    rolesTitle: 'Roles & Responsibilities',
+    subtitle: 'Carrier-geführtes Rollenmodell mit klarer Delegated Authority im bestehenden Antares Binder',
+    rolesTitle: 'Rollen & Verantwortlichkeiten',
     roles: [
       {
         title: 'Risk Carrier / Primary Insurer',
         icon: 'C',
         bullets: [
           'Antares (via Lloyd’s / Lloyd’s Europe)',
-          'Stellt Policen aus',
-          'Trägt primäres Versicherungsrisiko',
-          'Regulatorische Verantwortung und Kapitalbereitstellung'
+          'Lizenzträger und Risikoträger (100 % Risiko)',
+          'Stellt Kapital & Rückversicherung; Solvency II beim Carrier',
+          'Finale Underwriting-Entscheidung bleibt jederzeit beim Carrier'
         ]
       },
       {
@@ -734,41 +734,41 @@ const programIntroContent: Record<Lang, ProgramIntroCopy> = {
         bullets: [
           'Panel mehrerer Rückversicherer',
           'Quota-Share und/oder Excess Layers',
-          'Portfolio-Risiko unter bestehenden Treaties',
-          'Kapazität regional skalierbar'
+          'Kapital- und Rückversicherungsstruktur im Carrier-Setup',
+          'Skalierung nur nach carrier-seitiger Freigabe'
         ]
       },
       {
         title: 'Insurfox – MGA & Coverholder',
         icon: 'M',
         bullets: [
-          'Genehmigter MGA und Coverholder',
-          'Delegierte Zeichnungsautorität unter Binder',
-          'Pricing & Terms innerhalb Korridore',
-          'Kein Bilanzrisiko beim MGA'
+          'Genehmigter MGA und Coverholder (Delegated Authority/Binder)',
+          'Kein Risiko, keine Bilanzbelastung bei Insurfox',
+          'Zeichnung nur innerhalb Underwriting-Guidelines/Korridore',
+          'Referral-/Exception-Logik; Authority jederzeit widerrufbar'
         ]
       },
       {
         title: 'Insurfox Platform – Technology Layer',
         icon: 'T',
         bullets: [
-          'Broker- & Carrier-Portal',
-          'Lead Intake, Validierung, Eligibility',
-          'Realtime Datenaggregation & Trigger-Evidenz',
-          'Governance, Audit Trail, Bordereaux & Reporting'
+          'Insurance Infrastructure / Insurance-as-a-Service',
+          'Nicht Broker, nicht Carrier, kein Carrier-Konkurrent',
+          'Broker-neutral; Datennutzung nur im Carrier-Mandat',
+          'Deterministische Evidenz-Logik, Audit Trail, Bordereaux'
         ]
       }
     ],
     diagramTitle: 'Structural Overview',
     diagramBullets: [
-      'Bestehende globale Binder-Struktur',
-      'Inkrementelle regionale Expansion',
-      'Keine Änderung der Underwriting-Logik',
-      'Deterministische, parametrische Event-Definitionen',
-      'Carrier-aligned Governance-Framework'
+      'Bestehende Binder-Struktur mit klaren Guardrails',
+      'Zeichnung nur innerhalb Guidelines/Korridore, mit Referral/Exception',
+      'Senior Underwriter (Carrier-akzeptiert) verantwortlich innerhalb Guidelines',
+      'Human-in-the-loop: keine autonome Underwriting-/Claims-Entscheidung',
+      'Freedom of Services produkt-/spartenbezogen mit Carrier-Freigabe'
     ],
     statement:
-      'Carrier-konforme Struktur: Die Zeichnungsvollmacht ist klar delegiert, Kapital und Risiko verbleiben bei Antares und dem Rückversicherungs-Panel, während Insurfox als genehmigter MGA agiert und die steuernde Technologie- und Governance-Ebene bereitstellt.'
+      'Carrier-konforme Struktur: Kapital, Risiko und Solvency II verbleiben beim Carrier; Insurfox agiert als genehmigter MGA/Coverholder ohne Bilanzrisiko und liefert den Technologie-, Automatisierungs- und Governance-Layer. Audit-ready durch Logs, Evidenzketten und Bordereaux; keine autonome Entscheidung ohne Regelwerk und Freigaben.'
   },
   en: {
     title: 'Program Structure & Governance Framework',
@@ -832,25 +832,25 @@ const programIntroContent: Record<Lang, ProgramIntroCopy> = {
 const strategyEconomicsContent: Record<Lang, StrategyEconomicsCopy> = {
   de: {
     title: 'Business Strategy, Distribution & Program Economics',
-    subtitle: 'Kontrolliertes Wachstum über Tier‑one‑Distribution und abgestimmte MGA‑Ökonomie',
+    subtitle: 'Kontrollierte, carrier-geführte Portfolio-Entwicklung mit Governance und klaren Leitplanken',
     leftTitle: 'Business Strategy',
     leftBullets: [
       'Parametrische Deckung zur Minderung von Folgeschäden und Vertragsstrafen',
-      'Fokus auf operative und Service‑Unterbrechungen',
-      'Deterministische Trigger auf Basis von Echtzeit‑Validierung',
-      'Kapital‑effiziente, skalierbare MGA‑Programmstruktur'
+      'Fokus auf wenige hochwertige Ankerkunden und hohe Datenqualität (Phase 1)',
+      'Kontrollierte Portfolio-Steuerung statt Wachstumsversprechen',
+      'Nicht im Scope: Kein Retail, kein Price Comparison, kein Motor Book, kein Volume Dumping; keine freie Preisgestaltung ohne Carrier-Freigabe, keine Datennutzung außerhalb Carrier-Mandat'
     ],
     middleTitle: 'Distribution',
     middleBullets: [
-      'Distribution über Tier‑one‑Broker',
-      'Zugang zu Versicherer‑ und Broker‑Netzwerken',
-      'Enterprise‑fokussierte Kundenbasis',
-      'Programm‑Onboarding und Eligibility‑Kontrollen'
+      'Distribution über Tier‑one‑Broker (broker‑neutral, klare Governance)',
+      'Carrier-geführte Freigaben; keine unkontrollierte Broker‑Zuführung',
+      'Enterprise‑fokussierte Kundenbasis mit kontrollierter Selektion',
+      'Programm‑Onboarding, Eligibility‑Kontrollen und Audit‑fähiges Reporting'
     ],
     middleFlow: 'Broker → Insurfox → Antares',
     rightTitle: 'Initial Program Scale (Year 1)',
     rightKpis: [
-      { label: 'Geschätztes Bruttoprämienvolumen Jahr 1 (70 % Auslastung)', value: '9,1 Mio. USD' },
+      { label: 'Geschätztes Bruttoprämienvolumen Jahr 1 (70 % Auslastung)', value: '9,1 Mio. EUR' },
       { label: 'Projektierte Policen / Units', value: '83.000' }
     ],
     stripTitle: 'MGA Economics & Growth Outlook',
@@ -862,11 +862,11 @@ const strategyEconomicsContent: Record<Lang, StrategyEconomicsCopy> = {
     ],
     incomeTitle: 'Expected Premium Income',
     incomeRows: [
-      { label: 'Y1', value: '9,1 Mio. USD' },
-      { label: 'Y2', value: '19,8 Mio. USD' },
-      { label: 'Y3', value: '21,1 Mio. USD' },
-      { label: 'Y4', value: '50,9 Mio. USD' },
-      { label: 'Y5', value: '102,8 Mio. USD' }
+      { label: 'Y1', value: '9,1 Mio. EUR' },
+      { label: 'Y2', value: '19,8 Mio. EUR' },
+      { label: 'Y3', value: '21,1 Mio. EUR' },
+      { label: 'Y4', value: '50,9 Mio. EUR' },
+      { label: 'Y5', value: '102,8 Mio. EUR' }
     ],
     footnote:
       'Indikative Programmökonomie auf Basis aktueller Auslastungsannahmen. Die dargestellten Werte stellen Bruttoprämien dar und sind keine Prognosen oder Garantien.'
