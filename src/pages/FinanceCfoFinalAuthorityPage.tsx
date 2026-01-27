@@ -72,6 +72,34 @@ const formatSla = (iso: string, lang: string) => {
   return lang === 'en' ? `due in ${days}d` : `fällig in ${days}T`
 }
 
+const MiniBars = ({ data }: { data: number[] }) => {
+  const max = Math.max(...data)
+  const barWidth = 6
+  const gap = 3
+  const totalWidth = data.length * barWidth + (data.length - 1) * gap
+  const startX = (100 - totalWidth) / 2
+  return (
+    <svg className="uw-chart" width="100%" height="42" viewBox="0 0 100 32" aria-hidden shapeRendering="crispEdges">
+      <line x1="8" y1="28" x2="92" y2="28" stroke="var(--ix-border, #e2e8f0)" strokeWidth="1" />
+      {data.map((value, index) => {
+        const height = (value / max) * 22
+        const x = startX + index * (barWidth + gap)
+        const y = 28 - height
+        return (
+          <rect
+            key={value + index}
+            x={x}
+            y={y}
+            width={barWidth}
+            height={height}
+            fill={index === data.length - 1 ? 'var(--insurfox-orange, #d4380d)' : 'var(--blue-dark, #0e0d1c)'}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
 const statusLabel = (status: DecisionCase['status'], lang: string) => {
   const mapEn: Record<DecisionCase['status'], string> = {
     open: 'Open',
@@ -704,12 +732,12 @@ export default function FinanceCfoFinalAuthorityPage() {
         </div>
 
         <div className="uw-grid uw-kpi">
-          <Card title={copy.kpi.pending} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.pending}</strong></div></Card>
-          <Card title={copy.kpi.capital} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.capital}</strong></div></Card>
-          <Card title={copy.kpi.cash} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.cash}</strong></div></Card>
-          <Card title={copy.kpi.exceptions} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.exceptions}</strong></div></Card>
-          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaRisk}</strong></div></Card>
-          <Card title={copy.kpi.audit} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.auditScore}</strong></div></Card>
+          <Card title={copy.kpi.pending} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.pending}</strong><MiniBars data={[3, 4, 5, 4, 5]} /></div></Card>
+          <Card title={copy.kpi.capital} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.capital}</strong><MiniBars data={[70, 72, 74, 73, 75]} /></div></Card>
+          <Card title={copy.kpi.cash} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.cash}</strong><MiniBars data={[12, 14, 15, 16, 15]} /></div></Card>
+          <Card title={copy.kpi.exceptions} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.exceptions}</strong><MiniBars data={[2, 3, 4, 3, 4]} /></div></Card>
+          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaRisk}</strong><MiniBars data={[1, 2, 2, 3, 2]} /></div></Card>
+          <Card title={copy.kpi.audit} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.auditScore}</strong><MiniBars data={[82, 84, 86, 87, 88]} /></div></Card>
         </div>
 
         <div className="uw-grid uw-split">

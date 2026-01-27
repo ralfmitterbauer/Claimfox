@@ -72,6 +72,34 @@ const formatSla = (iso: string, lang: string) => {
   return lang === 'en' ? `due in ${days}d` : `fällig in ${days}T`
 }
 
+const MiniBars = ({ data }: { data: number[] }) => {
+  const max = Math.max(...data)
+  const barWidth = 6
+  const gap = 3
+  const totalWidth = data.length * barWidth + (data.length - 1) * gap
+  const startX = (100 - totalWidth) / 2
+  return (
+    <svg className="uw-chart" width="100%" height="42" viewBox="0 0 100 32" aria-hidden shapeRendering="crispEdges">
+      <line x1="8" y1="28" x2="92" y2="28" stroke="var(--ix-border, #e2e8f0)" strokeWidth="1" />
+      {data.map((value, index) => {
+        const height = (value / max) * 22
+        const x = startX + index * (barWidth + gap)
+        const y = 28 - height
+        return (
+          <rect
+            key={value + index}
+            x={x}
+            y={y}
+            width={barWidth}
+            height={height}
+            fill={index === data.length - 1 ? 'var(--insurfox-orange, #d4380d)' : 'var(--blue-dark, #0e0d1c)'}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
 const statusLabel = (status: DecisionCase['status'], lang: string) => {
   const mapEn: Record<DecisionCase['status'], string> = {
     open: 'Open',
@@ -766,14 +794,14 @@ export default function FinanceAnalystPage() {
         </div>
 
         <div className="uw-grid uw-kpi">
-          <Card title={copy.kpi.premium} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.premium}</strong></div></Card>
-          <Card title={copy.kpi.claims} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.claims}</strong></div></Card>
-          <Card title={copy.kpi.lossRatio} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.lossRatio}</strong></div></Card>
-          <Card title={copy.kpi.expense} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.expense}</strong></div></Card>
-          <Card title={copy.kpi.open} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.open}</strong></div></Card>
-          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaRisk}</strong></div></Card>
-          <Card title={copy.kpi.exceptions} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.exceptions}</strong></div></Card>
-          <Card title={copy.kpi.recoveries} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.recoveries}</strong></div></Card>
+          <Card title={copy.kpi.premium} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.premium}</strong><MiniBars data={[18, 20, 22, 24, 26]} /></div></Card>
+          <Card title={copy.kpi.claims} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.claims}</strong><MiniBars data={[12, 14, 16, 15, 17]} /></div></Card>
+          <Card title={copy.kpi.lossRatio} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.lossRatio}</strong><MiniBars data={[62, 64, 63, 66, 65]} /></div></Card>
+          <Card title={copy.kpi.expense} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.expense}</strong><MiniBars data={[28, 27, 29, 30, 28]} /></div></Card>
+          <Card title={copy.kpi.open} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.open}</strong><MiniBars data={[6, 8, 7, 9, 8]} /></div></Card>
+          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaRisk}</strong><MiniBars data={[2, 3, 3, 4, 3]} /></div></Card>
+          <Card title={copy.kpi.exceptions} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.exceptions}</strong><MiniBars data={[3, 4, 5, 4, 5]} /></div></Card>
+          <Card title={copy.kpi.recoveries} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.recoveries}</strong><MiniBars data={[4, 5, 6, 5, 6]} /></div></Card>
         </div>
 
         <div className="uw-grid uw-split">

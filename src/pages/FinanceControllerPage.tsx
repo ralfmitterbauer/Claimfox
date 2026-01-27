@@ -72,6 +72,34 @@ const formatSla = (iso: string, lang: string) => {
   return lang === 'en' ? `due in ${days}d` : `fällig in ${days}T`
 }
 
+const MiniBars = ({ data }: { data: number[] }) => {
+  const max = Math.max(...data)
+  const barWidth = 6
+  const gap = 3
+  const totalWidth = data.length * barWidth + (data.length - 1) * gap
+  const startX = (100 - totalWidth) / 2
+  return (
+    <svg className="uw-chart" width="100%" height="42" viewBox="0 0 100 32" aria-hidden shapeRendering="crispEdges">
+      <line x1="8" y1="28" x2="92" y2="28" stroke="var(--ix-border, #e2e8f0)" strokeWidth="1" />
+      {data.map((value, index) => {
+        const height = (value / max) * 22
+        const x = startX + index * (barWidth + gap)
+        const y = 28 - height
+        return (
+          <rect
+            key={value + index}
+            x={x}
+            y={y}
+            width={barWidth}
+            height={height}
+            fill={index === data.length - 1 ? 'var(--insurfox-orange, #d4380d)' : 'var(--blue-dark, #0e0d1c)'}
+          />
+        )
+      })}
+    </svg>
+  )
+}
+
 const statusLabel = (status: DecisionCase['status'], lang: string) => {
   const mapEn: Record<DecisionCase['status'], string> = {
     open: 'Open',
@@ -700,13 +728,13 @@ export default function FinanceControllerPage() {
         </div>
 
         <div className="uw-grid uw-kpi">
-          <Card title={copy.kpi.close} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.close}</strong></div></Card>
-          <Card title={copy.kpi.reconciliations} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.reconciliations}</strong></div></Card>
-          <Card title={copy.kpi.journals} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.journals}</strong></div></Card>
-          <Card title={copy.kpi.suspense} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.suspense}</strong></div></Card>
-          <Card title={copy.kpi.interco} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.interco}</strong></div></Card>
-          <Card title={copy.kpi.reporting} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.reporting}</strong></div></Card>
-          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaBreaches}</strong></div></Card>
+          <Card title={copy.kpi.close} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.close}</strong><MiniBars data={[62, 66, 70, 74, 78]} /></div></Card>
+          <Card title={copy.kpi.reconciliations} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.reconciliations}</strong><MiniBars data={[6, 7, 8, 7, 9]} /></div></Card>
+          <Card title={copy.kpi.journals} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.journals}</strong><MiniBars data={[5, 6, 7, 6, 7]} /></div></Card>
+          <Card title={copy.kpi.suspense} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.suspense}</strong><MiniBars data={[1.2, 1.1, 1.0, 0.9, 0.8]} /></div></Card>
+          <Card title={copy.kpi.interco} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.interco}</strong><MiniBars data={[3, 4, 3, 5, 4]} /></div></Card>
+          <Card title={copy.kpi.reporting} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.reporting}</strong><MiniBars data={[2, 3, 4, 4, 5]} /></div></Card>
+          <Card title={copy.kpi.sla} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.slaBreaches}</strong><MiniBars data={[1, 2, 2, 3, 2]} /></div></Card>
         </div>
 
         <div className="uw-grid uw-split">
