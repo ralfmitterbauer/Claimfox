@@ -101,6 +101,20 @@
   text-transform: uppercase;
 }
 
+.uw-kpi .ui-card__header {
+  margin-bottom: 0.35rem;
+  min-height: 2.4rem;
+}
+
+.uw-kpi .ui-card__title {
+  line-height: 1.15;
+  max-height: 2.3em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
 .uw-card::before {
   content: '';
   position: absolute;
