@@ -27,83 +27,125 @@ export default function HomePage() {
     },
     heroTitle:
       lang === 'en'
-        ? 'The AI-driven Insurance Platform for Logistics, Transport & Mobility.'
-        : 'Die KI-basierte Versicherungsplattform für Logistik, Transport und Mobilität.',
+        ? 'Insurfox AI IaaS'
+        : 'Insurfox AI IaaS',
     heroBody:
       lang === 'en'
-        ? 'Insurfox connects insurers, brokers, and customers across the value chain with a single AI-native platform for underwriting, claims and governance.'
-        : 'Insurfox verbindet Versicherer, Makler und Kunden entlang der Wertschöpfungskette über eine AI-native Plattform für Underwriting, Claims und Governance.',
+        ? 'The AI-based insurance platform for logistics, transport and mobility. Insurfox connects carriers, brokers and clients across the value chain through an AI-native platform for underwriting, claims and governance.'
+        : 'Die KI-basierte Versicherungsplattform für Logistik, Transport und Mobilität. Insurfox verbindet Versicherer, Makler und Kunden entlang der Wertschöpfungskette über eine AI-native Plattform für Underwriting, Claims und Governance.',
     valueTitle:
       lang === 'en'
-        ? 'Connected insurance operations with AI-native infrastructure.'
-        : 'Vernetzte Versicherungsprozesse mit AI-nativer Infrastruktur.',
+        ? 'One platform — clearly separated roles'
+        : 'Eine Plattform – klar getrennte Rollen',
     valueBody:
       lang === 'en'
-        ? 'A unified system that reduces complexity, improves claims performance, and enables scalable digital collaboration.'
-        : 'Ein integriertes System, das Komplexität reduziert, Schadenprozesse optimiert und skalierbare Zusammenarbeit ermöglicht.',
+        ? 'Insurfox is neither a broker nor a carrier. The platform provides AI-native infrastructure where risk ownership, underwriting authority and technology remain strictly separated.'
+        : 'Insurfox ist weder Broker noch Versicherer. Die Plattform stellt eine AI-native Infrastruktur bereit, in der Risikohoheit, Zeichnungsautorität und Technologie strikt getrennt bleiben.',
     valueCards: [
       {
-        title: lang === 'en' ? 'One platform, multi access' : 'Eine Plattform, alle Akteure',
+        title: lang === 'en' ? 'Carriers' : 'Versicherer (Carrier)',
         body:
           lang === 'en'
-            ? 'Insurers, brokers, and logistics customers collaborate in one system with role-based access.'
-            : 'Versicherer, Makler und Logistikunternehmen arbeiten in einem System mit rollenbasiertem Zugriff.'
+            ? 'Hold risk, capital and regulatory responsibility • Retain final underwriting and claims authority • Control capacity, limits and governance'
+            : 'Tragen Risiko, Kapital und regulatorische Verantwortung • Behalten finale Underwriting- und Claims-Entscheidung • Steuern Kapazität, Limits und Governance'
       },
       {
-        title: lang === 'en' ? 'AI-supported decision support' : 'KI-gestützte Entscheidungsunterstützung',
+        title: lang === 'en' ? 'Brokers' : 'Makler',
         body:
           lang === 'en'
-            ? 'Risk assessment, fraud signals, and portfolio insights with human oversight.'
-            : 'Risikobewertung, Fraud-Signale und Portfolio-Insights mit Human-in-the-Loop.'
+            ? 'Remain the primary distribution partner • No data leakage, no competitive conflict • Transparent processes and fast access to products'
+            : 'Bleiben primärer Vertriebspartner • Kein Datenabfluss, keine Konkurrenzsituation • Transparente Prozesse und schneller Zugang zu Produkten'
       },
       {
-        title: lang === 'en' ? 'Transparent claims operations' : 'Transparente Schadenprozesse',
+        title: lang === 'en' ? 'Logistics & fleets' : 'Logistik & Flotten',
         body:
           lang === 'en'
-            ? 'Real-time visibility into claims, costs, and performance across all stakeholders.'
-            : 'Echtzeit-Transparenz über Schäden, Kosten und Performance für alle Stakeholder.'
+            ? 'Digital policy issuance and real-time claims transparency • Parametric triggers instead of subjective loss notices • Clear service and performance KPIs'
+            : 'Digitale Policierung und Echtzeit-Schadentransparenz • Parametrische Trigger statt subjektiver Schadenmeldungen • Klare Service- und Performance-KPIs'
       }
     ],
-    productKicker: lang === 'en' ? 'Product & Platform' : 'Produkt & Plattform',
+    aiTitle: lang === 'en'
+      ? 'AI-supported decision support — human-in-the-loop'
+      : 'KI-gestützte Entscheidungsunterstützung – Human-in-the-Loop',
+    aiBody: lang === 'en'
+      ? 'Insurfox does not use AI for autonomous decisions, but to structure and prepare underwriting, claims and governance decisions.'
+      : 'Insurfox nutzt KI nicht zur autonomen Entscheidung, sondern zur strukturierten Vorbereitung von Underwriting-, Claims- und Governance-Entscheidungen.',
+    aiBullets: [
+      lang === 'en'
+        ? 'Risk and exposure assessment based on real-time data'
+        : 'Risiko- und Exposure-Bewertung auf Basis von Echtzeit-Daten',
+      lang === 'en'
+        ? 'Fraud and anomaly signals with clear escalation rules'
+        : 'Fraud- und Anomalie-Signale mit klaren Eskalationsregeln',
+      lang === 'en'
+        ? 'Portfolio insights for carriers without operational interference'
+        : 'Portfolio-Insights für Carrier, ohne operative Eingriffe'
+    ],
+    aiNote: lang === 'en'
+      ? 'All decisions follow predefined rules and remain fully auditable at all times.'
+      : 'Alle Entscheidungen folgen vordefinierten Regeln und bleiben jederzeit prüf- und auditierbar.',
+    claimsTitle: lang === 'en'
+      ? 'Transparent claims processes in real time'
+      : 'Transparente Schadenprozesse in Echtzeit',
+    claimsBody: lang === 'en'
+      ? 'Losses are not reported — they are activated based on data. Insurfox orchestrates the process from trigger event to escalation, transparently for all parties.'
+      : 'Schäden werden nicht gemeldet, sondern datenbasiert ausgelöst. Insurfox orchestriert den Prozess von Trigger-Ereignis bis Eskalation – transparent für alle Beteiligten.',
+    claimsBullets: [
+      lang === 'en'
+        ? 'Parametric triggers (e.g., delay, standstill, system outage)'
+        : 'Parametrische Trigger (z. B. Verzögerung, Stillstand, Systemausfall)',
+      lang === 'en'
+        ? 'Structured FNOL and automated evidence capture'
+        : 'Strukturierte FNOL und automatische Evidenz-Erfassung',
+      lang === 'en'
+        ? 'Clear escalation paths for thresholds or boundary breaches'
+        : 'Klare Eskalationspfade bei Schwellen- oder Grenzwertüberschreitungen'
+    ],
+    claimsFooter: lang === 'en'
+      ? 'Carriers remain in control — processes become faster, traceable and scalable.'
+      : 'Versicherer behalten die Kontrolle – Prozesse werden schneller, nachvollziehbarer und skalierbar.',
+    productKicker: lang === 'en' ? 'Product & platform' : 'Produkt & Plattform',
     productTitle:
       lang === 'en'
-        ? 'Insurance products delivered through a unified AI-native platform.'
-        : 'Versicherungsprodukte in einer einheitlichen AI-native Plattform.',
+        ? 'Scale together — carrier-aligned'
+        : 'Gemeinsam skalieren – carrier-konform',
     productBody:
       lang === 'en'
-        ? 'Carrier liability, fleet and cargo insurance with API-first integration, digital distribution and claims management.'
-        : 'Frachtführerhaftung, Flotte und Cargo mit API-first Integration, digitaler Distribution und Schadenmanagement.',
+        ? 'Insurfox does not market products. The platform enables standardized execution of insurance programs across multiple lines. Examples: carrier liability, cargo, fleet. API-first integration, digital policy issuance, real-time reporting & bordereaux. Insurfox serves carriers, brokers and enterprise clients who want to digitize insurance processes in a controlled way — without loss of control.'
+        : 'Insurfox betreibt keine Produktvermarktung. Die Plattform ermöglicht die standardisierte Umsetzung von Versicherungsprogrammen über mehrere Sparten hinweg. Beispiele: Frachtführerhaftung, Cargo, Flotte. API-first Integration, digitale Policierung, Echtzeit-Reporting & Bordereaux. Insurfox richtet sich an Versicherer, Makler und Enterprise-Kunden, die Versicherungsprozesse kontrolliert digitalisieren wollen – ohne Kontrollverlust.',
     trustTitle:
       lang === 'en'
-        ? 'Governance, data control and audit readiness built in.'
-        : 'Governance, Datenkontrolle und Audit-Readiness integriert.',
+        ? 'Governance, data control and audit-readiness built in'
+        : 'Governance, Datenkontrolle und Audit-Readiness integriert',
     trustBody:
       lang === 'en'
-        ? 'Decision support remains with insurers while Insurfox ensures traceability, security and compliance.'
-        : 'Die Entscheidungshoheit bleibt beim Versicherer, während Insurfox Nachvollziehbarkeit, Sicherheit und Compliance sicherstellt.',
+        ? 'Insurfox is designed as carrier-aligned infrastructure. The platform strengthens governance — it does not replace it.'
+        : 'Insurfox ist als carrier-konforme Infrastruktur konzipiert. Die Plattform stärkt Governance – sie ersetzt sie nicht.',
     trustItems: [
       {
         title: lang === 'en' ? 'Data sovereignty' : 'Data Sovereignty',
         body:
           lang === 'en'
-            ? 'No external AI providers, no uncontrolled data transfer.'
-            : 'Keine externen KI-Anbieter, kein unkontrollierter Datenabfluss.'
+            ? 'No external AI providers • No use of data outside the carrier mandate • Clear mandate per product and line'
+            : 'Keine externen KI-Provider • Keine Nutzung der Daten außerhalb des Carrier-Mandats • Klare Mandatierung pro Produkt & Sparte'
       },
       {
         title: lang === 'en' ? 'Audit-ready' : 'Audit-Ready',
         body:
           lang === 'en'
-            ? 'Documented processes, model lifecycle governance and traceable outputs.'
-            : 'Dokumentierte Prozesse, Model Lifecycle Governance und nachvollziehbare Outputs.'
+            ? 'Complete audit trail • Versioned rules & models • Traceable decisions and evidence chains'
+            : 'Vollständiger Audit-Trail • Versionierte Regeln & Modelle • Nachvollziehbare Entscheidungen und Evidenzketten'
       },
       {
         title: lang === 'en' ? 'Scalable collaboration' : 'Skalierbare Zusammenarbeit',
         body:
           lang === 'en'
-            ? 'Multi-tenant architecture for regulated insurance markets.'
-            : 'Multi-Tenant-Architektur für regulierte Versicherungsmärkte.'
+            ? 'Multi-tenant architecture • Built for regulated insurance markets • FoS-enabled programs per line and carrier approval'
+            : 'Multi-Tenant-Architektur • Geeignet für regulierte Versicherungsmärkte • FoS-fähige Programme pro Sparte & Carrier-Freigabe'
       }
-    ]
+    ],
+    ctaQuote: lang === 'en' ? 'Request a quote' : 'Angebot anfragen',
+    ctaWhitepaper: lang === 'en' ? 'Whitepaper' : 'Whitepaper'
   }
 
   return (
@@ -185,6 +227,40 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="home-value">
+        <div className="home-section-header">
+          <h2>{copy.aiTitle}</h2>
+          <p>{copy.aiBody}</p>
+          <p>{copy.aiNote}</p>
+        </div>
+        <div className="home-value-grid">
+          {copy.aiBullets.map((bullet) => (
+            <div key={bullet} className="home-value-card">
+              <h3>{bullet}</h3>
+              <p>{''}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="home-value">
+        <div className="home-section-header">
+          <h2>{copy.claimsTitle}</h2>
+          <p>{copy.claimsBody}</p>
+        </div>
+        <div className="home-value-grid">
+          {copy.claimsBullets.map((bullet) => (
+            <div key={bullet} className="home-value-card">
+              <h3>{bullet}</h3>
+              <p>{''}</p>
+            </div>
+          ))}
+        </div>
+        <div className="home-section-header">
+          <p>{copy.claimsFooter}</p>
+        </div>
+      </section>
+
       <section className="home-product">
         <div className="home-product-card">
           <div>
@@ -192,9 +268,9 @@ export default function HomePage() {
             <h2>{copy.productTitle}</h2>
             <p>{copy.productBody}</p>
             <div className="home-product-actions">
-              <Button onClick={() => navigate('/get-quote')}>Angebot anfragen</Button>
+              <Button onClick={() => navigate('/get-quote')}>{copy.ctaQuote}</Button>
               <Button variant="secondary" onClick={() => navigate('/insurfox-whitepaper')}>
-                Whitepaper
+                {copy.ctaWhitepaper}
               </Button>
             </div>
           </div>
