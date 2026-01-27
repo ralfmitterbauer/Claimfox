@@ -36,6 +36,10 @@ import UnderwriterRolePage from '@/pages/UnderwriterRolePage'
 import LegalRolePage from '@/pages/LegalRolePage'
 import FinanceRolePage from '@/pages/FinanceRolePage'
 import UnderwriterReportingPage from '@/pages/UnderwriterReportingPage'
+import UnderwriterJuniorPage from '@/pages/UnderwriterJuniorPage'
+import UnderwriterSeniorPage from '@/pages/UnderwriterSeniorPage'
+import UnderwriterCarrierPage from '@/pages/UnderwriterCarrierPage'
+import UnderwriterCompliancePage from '@/pages/UnderwriterCompliancePage'
 import PolicyPurchasePage from '@/pages/PolicyPurchasePage'
 import MyProfilePage from '@/pages/MyProfilePage'
 import ProfilePersonalPage from '@/pages/ProfilePersonalPage'
@@ -80,6 +84,10 @@ export default function AppRouter() {
       </Route>
       <Route element={<FullscreenBgLayout showHeader />}>
         <Route path="/roles/underwriter/reporting" element={<UnderwriterReportingPage />} />
+        <Route path="/roles/underwriter/junior" element={<UnderwriterJuniorPage />} />
+        <Route path="/roles/underwriter/senior" element={<UnderwriterSeniorPage />} />
+        <Route path="/roles/underwriter/carrier" element={<UnderwriterCarrierPage />} />
+        <Route path="/roles/underwriter/compliance" element={<UnderwriterCompliancePage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
