@@ -88,6 +88,11 @@ export default function AppRouter() {
         <Route path="/roles/underwriter/senior" element={<UnderwriterSeniorPage />} />
         <Route path="/roles/underwriter/carrier" element={<UnderwriterCarrierPage />} />
         <Route path="/roles/underwriter/compliance" element={<UnderwriterCompliancePage />} />
+        <Route path="/underwriter" element={<UnderwriterRolePage />} />
+        <Route path="/underwriter/junior" element={<UnderwriterJuniorPage />} />
+        <Route path="/underwriter/senior" element={<UnderwriterSeniorPage />} />
+        <Route path="/underwriter/carrier" element={<UnderwriterCarrierPage />} />
+        <Route path="/underwriter/compliance" element={<UnderwriterCompliancePage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
