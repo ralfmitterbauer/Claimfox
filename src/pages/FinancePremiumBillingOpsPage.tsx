@@ -787,21 +787,24 @@ export default function FinancePremiumBillingOpsPage() {
           <Card title={copy.snapshot.title} variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
               <div className="uw-grid uw-cards">
-                <div className="uw-panel">
-                  <div className="uw-panel-title">{copy.snapshot.summary}</div>
-                  <strong>{selected?.portfolio}</strong>
-                  <span className="uw-muted">{selected?.counterparty}</span>
-                </div>
-                <div className="uw-panel">
-                  <div className="uw-panel-title">{copy.snapshot.amountLabel}</div>
-                  <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
-                  <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
-                </div>
-                <div className="uw-panel">
-                  <div className="uw-panel-title">{copy.snapshot.dunningLabel}</div>
-                  <strong>{selected?.tags.includes('dunning') ? copy.snapshot.stage2 : copy.snapshot.stage1}</strong>
-                  <span className="uw-muted">{statusLabel(selected?.status || 'open', lang)}</span>
-                </div>
+                <Card title={copy.snapshot.summary} variant="glass" className="uw-card">
+                  <div className="uw-card-body">
+                    <strong>{selected?.portfolio}</strong>
+                    <span className="uw-muted">{selected?.counterparty}</span>
+                  </div>
+                </Card>
+                <Card title={copy.snapshot.amountLabel} variant="glass" className="uw-card">
+                  <div className="uw-card-body">
+                    <strong>{formatMoney(selected?.amountMinor || 0, lang)}</strong>
+                    <span className="uw-muted">{formatDate(selected?.dueAt || '', lang)}</span>
+                  </div>
+                </Card>
+                <Card title={copy.snapshot.dunningLabel} variant="glass" className="uw-card">
+                  <div className="uw-card-body">
+                    <strong>{selected?.tags.includes('dunning') ? copy.snapshot.stage2 : copy.snapshot.stage1}</strong>
+                    <span className="uw-muted">{statusLabel(selected?.status || 'open', lang)}</span>
+                  </div>
+                </Card>
               </div>
 
               <div className="uw-panel">

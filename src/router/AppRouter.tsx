@@ -113,7 +113,7 @@ export default function AppRouter() {
         <Route path="/roles/legal/regulatory-compliance" element={<LegalRegulatoryCompliancePage />} />
         <Route path="/roles/legal/litigation-manager" element={<LegalLitigationManagerPage />} />
         <Route path="/roles/legal/carrier-final-authority" element={<LegalCarrierFinalAuthorityPage />} />
-        <Route path="/roles/finance" element={<FinanceRolePage />} />
+        <Route path="/roles/finance" element={<Navigate to="/finance/analyst" replace />} />
         <Route path="/finance/analyst" element={<FinanceAnalystPage />} />
         <Route path="/finance/billing" element={<FinancePremiumBillingOpsPage />} />
         <Route path="/finance/claims" element={<FinanceClaimsPage />} />
