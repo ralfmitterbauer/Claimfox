@@ -35,6 +35,7 @@ import MvpPage from '@/pages/MvpPage'
 import UnderwriterRolePage from '@/pages/UnderwriterRolePage'
 import LegalRolePage from '@/pages/LegalRolePage'
 import FinanceRolePage from '@/pages/FinanceRolePage'
+import UnderwriterReportingPage from '@/pages/UnderwriterReportingPage'
 import PolicyPurchasePage from '@/pages/PolicyPurchasePage'
 import MyProfilePage from '@/pages/MyProfilePage'
 import ProfilePersonalPage from '@/pages/ProfilePersonalPage'
@@ -76,6 +77,9 @@ export default function AppRouter() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route element={<FullscreenBgLayout showHeader={false} />}>
         <Route path="/login" element={<LoginPage />} />
+      </Route>
+      <Route element={<FullscreenBgLayout showHeader />}>
+        <Route path="/roles/underwriter/reporting" element={<UnderwriterReportingPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />

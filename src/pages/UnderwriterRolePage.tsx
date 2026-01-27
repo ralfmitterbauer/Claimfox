@@ -1,4 +1,6 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import Button from '@/components/ui/Button'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
@@ -6,11 +8,13 @@ import HeroBlockBackground from '@/assets/images/hero_block_1.png'
 
 export default function UnderwriterRolePage() {
   const { lang } = useI18n()
+  const navigate = useNavigate()
 
   const copy = lang === 'en'
     ? {
         title: 'Underwriter',
         subtitle: 'Portfolio steering, underwriting corridors and clear referral logic within the carrier framework.',
+        cta: 'Login',
         sections: [
           {
             title: 'Portfolio Steering',
@@ -29,6 +33,7 @@ export default function UnderwriterRolePage() {
     : {
         title: 'Underwriter',
         subtitle: 'Portfolio-Steuerung, Underwriting-Korridore und klare Referral-Logik im Carrier-Framework.',
+        cta: 'Login',
         sections: [
           {
             title: 'Portfolio-Steuerung',
@@ -68,24 +73,42 @@ export default function UnderwriterRolePage() {
           margin: '0 auto',
           padding: '32px 1.25rem 4rem',
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           gap: '1.25rem'
         }}
       >
-        {copy.sections.map((section) => (
-          <Card
-            key={section.title}
-            title={section.title}
-            variant="glass"
-            style={{ display: 'flex', flexDirection: 'column', minHeight: '180px' }}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button
+            variant="secondary"
+            onClick={() => navigate('/roles/underwriter/reporting')}
+            style={{
+              background: '#ffffff',
+              color: '#0e0d1c',
+              borderRadius: '999px',
+              border: '1px solid #d9d9d9',
+              height: '40px',
+              padding: '0 1.25rem',
+              fontWeight: 600
+            }}
           >
-            <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.55 }}>
-              {section.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Card>
-        ))}
+            {copy.cta}
+          </Button>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.25rem' }}>
+          {copy.sections.map((section) => (
+            <Card
+              key={section.title}
+              title={section.title}
+              variant="glass"
+              style={{ display: 'flex', flexDirection: 'column', minHeight: '180px' }}
+            >
+              <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.55 }}>
+                {section.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
   )

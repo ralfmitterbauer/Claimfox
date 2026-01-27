@@ -1286,41 +1286,77 @@ export default function BciaDeckPage() {
           nextStepsTitle: 'Nächste Schritte',
           nextSteps: ['Zieljurisdiktion bestätigen', 'Limit-/Aggregatplan festlegen', 'Data-Room-Zugriff', 'Binder-Execution']
         };
-    const tocStrings = {
-      title: 'BCIA Program Overview — Inhaltsverzeichnis',
-      subtitle: 'Carrier-aligned Program Setup, Marktmodellierung, Coverage, Pricing & Governance',
-      sections: [
-        {
-          label: 'A — Program & Partnership Setup',
-          items: [
-            { label: 'Program Structure & Governance Framework', index: 1 }
-          ]
-        },
-        {
-          label: 'B — Strategy, Market & Economics',
-          items: [
-            { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
-            { label: 'Marktumfeld & adressiertes Exposure (Deutschland & EEA)', index: 3 },
-            { label: 'Indikativer Prämienkorridor aus modellbasiertem Exposure', index: 4 }
-          ]
-        },
-        {
-          label: 'C — Coverage & Risk Control',
-          items: [
-            { label: 'Coverage Overview — Trigger- & Auszahlungslogik', index: 5 },
-            { label: 'Risikomanagement-Framework', index: 6 }
-          ]
-        },
-        {
-          label: 'D — Pricing, Limits & Validation',
-          items: [
-            { label: 'Pricing & Risk Limits', index: 7 },
-            { label: 'Scenario Analysis', index: 8 },
-            { label: 'Appendix', index: 9 }
+    const tocStrings = typedLang === 'en'
+      ? {
+          title: 'BCIA Program Overview — Table of contents',
+          subtitle: 'Carrier-aligned program setup, market modeling, coverage, pricing & governance',
+          sections: [
+            {
+              label: 'A — Program & Partnership Setup',
+              items: [
+                { label: 'Program Structure & Governance Framework', index: 1 }
+              ]
+            },
+            {
+              label: 'B — Strategy, Market & Economics',
+              items: [
+                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
+                { label: 'Market Environment & Addressable Exposure (Germany & EEA)', index: 3 },
+                { label: 'Indicative premium corridor derived from modeled exposure', index: 4 }
+              ]
+            },
+            {
+              label: 'C — Coverage & Risk Control',
+              items: [
+                { label: 'Coverage Overview — Triggers & Payout Mechanics', index: 5 },
+                { label: 'Risk management framework', index: 6 }
+              ]
+            },
+            {
+              label: 'D — Pricing, Limits & Validation',
+              items: [
+                { label: 'Pricing & Risk Limits', index: 7 },
+                { label: 'Scenario Analysis', index: 8 },
+                { label: 'Appendix', index: 9 }
+              ]
+            }
           ]
         }
-      ]
-    }
+      : {
+          title: 'BCIA Program Overview — Inhaltsverzeichnis',
+          subtitle: 'Carrier-aligned Program Setup, Marktmodellierung, Coverage, Pricing & Governance',
+          sections: [
+            {
+              label: 'A — Programm & Partnerschaft',
+              items: [
+                { label: 'Programmstruktur & Governance-Framework', index: 1 }
+              ]
+            },
+            {
+              label: 'B — Strategie, Markt & Ökonomie',
+              items: [
+                { label: 'Business Strategy, Distribution & Program Economics', index: 2 },
+                { label: 'Marktumfeld & adressiertes Exposure (Deutschland & EEA)', index: 3 },
+                { label: 'Indikativer Prämienkorridor aus modellbasiertem Exposure', index: 4 }
+              ]
+            },
+            {
+              label: 'C — Coverage & Risikosteuerung',
+              items: [
+                { label: 'Coverage Overview — Trigger- & Auszahlungslogik', index: 5 },
+                { label: 'Risikomanagement-Framework', index: 6 }
+              ]
+            },
+            {
+              label: 'D — Pricing, Limits & Validierung',
+              items: [
+                { label: 'Pricing & Risk Limits', index: 7 },
+                { label: 'Scenario Analysis', index: 8 },
+                { label: 'Appendix', index: 9 }
+              ]
+            }
+          ]
+        }
 
     return [
       {

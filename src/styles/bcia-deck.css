@@ -46,6 +46,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
+  z-index: 1;
   max-width: 100%;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -98,7 +99,7 @@
   color: var(--blue-dark);
   font-size: 2rem;
   cursor: pointer;
-  z-index: 20;
+  z-index: 40;
   pointer-events: auto;
 }
 
@@ -122,6 +123,19 @@ body.bcia-deck-route {
   position: absolute;
   bottom: 8px;
   right: 16px;
+  font-size: 0.7rem;
+  color: var(--ix-text-muted);
+}
+
+.bcia-disclaimer {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--ix-text);
+  font-weight: 600;
+}
+
+.bcia-footnote {
+  margin: 6px 0 0;
   font-size: 0.7rem;
   color: var(--ix-text-muted);
 }
@@ -629,6 +643,14 @@ body.bcia-deck-route {
 .bcia-deck .bcia-toc-arrow {
   text-align: right;
   color: var(--ix-text-muted);
+}
+
+.bcia-deck .bcia-toc-goal {
+  margin-top: auto;
+  border-top: 1px solid var(--ix-border);
+  padding-top: 8px;
+  font-size: 0.78rem;
+  color: var(--ix-text);
 }
 
 @media screen {
@@ -1507,6 +1529,16 @@ body.bcia-deck-route {
   gap: 12px;
 }
 
+.bcia-deck .bp0-toolkit {
+  margin-top: 12px;
+  border: 1px solid var(--ix-border);
+  padding: 10px 12px;
+  background: var(--ix-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .bcia-deck .bp0-card {
   border: 1px solid var(--ix-border);
   padding: 10px 12px;
@@ -1554,6 +1586,25 @@ body.bcia-deck-route {
   display: grid;
   gap: 10px;
   background: var(--ix-surface);
+}
+
+.bcia-deck .bp0-callout {
+  margin-top: 10px;
+  border: 1px solid var(--ix-border);
+  padding: 8px 10px;
+  font-size: 0.74rem;
+  color: var(--ix-text);
+  position: relative;
+}
+
+.bcia-deck .bp0-callout::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--ix-primary);
 }
 
 .bcia-deck .bp0-box {
@@ -1657,6 +1708,31 @@ body.bcia-deck-route {
   font-size: 0.72rem;
   color: var(--ix-text);
   text-align: center;
+}
+
+.bcia-deck .bp1-callout {
+  margin-top: auto;
+  border: 1px solid var(--ix-border);
+  padding: 8px 10px;
+  font-size: 0.72rem;
+  color: var(--ix-text);
+  background: var(--ix-surface);
+}
+
+.bcia-deck .bp1-callout-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ix-text-muted);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.bcia-deck .bp1-callout-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.76rem;
+  color: var(--ix-text-muted);
 }
 
 .bcia-deck .bp1-kpis {
@@ -1878,6 +1954,38 @@ body.bcia-deck-route {
   margin: 6px 0 0;
   color: var(--ix-text-muted);
   font-size: 0.9rem;
+}
+
+.bcia-deck .bp2risk-top {
+  border: 1px solid var(--ix-border);
+  padding: 10px 12px;
+  background: var(--ix-surface);
+  display: grid;
+  gap: 10px;
+}
+
+.bcia-deck .bp2risk-top-title {
+  font-size: 0.78rem;
+  color: var(--ix-text);
+  font-weight: 600;
+}
+
+.bcia-deck .bp2risk-top-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bcia-deck .bp2risk-top-item {
+  border: 1px solid var(--ix-border);
+  padding: 8px 10px;
+  background: var(--ix-surface-2);
+}
+
+.bcia-deck .bp2risk-list.bp2risk-list-compact {
+  font-size: 0.74rem;
+  color: var(--ix-text-muted);
+  line-height: 1.4;
 }
 
 .bcia-deck .bp2risk-grid {
