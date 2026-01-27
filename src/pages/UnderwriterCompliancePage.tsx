@@ -72,7 +72,8 @@ export default function UnderwriterCompliancePage() {
           missingEvidence: 'Missing evidence',
           overrides: 'Overrides without rationale',
           breaches: 'SLA breaches',
-          ruleChanges: 'Rule version changes'
+          ruleChanges: 'Rule version changes',
+          completeness: 'Evidence completeness'
         },
         filters: { role: 'Role', status: 'Evidence status', all: 'All' },
         roles: { junior: 'Junior', senior: 'Senior', carrier: 'Carrier', compliance: 'Compliance' },
@@ -114,7 +115,8 @@ export default function UnderwriterCompliancePage() {
           missingEvidence: 'Fehlende Evidenz',
           overrides: 'Overrides ohne Begründung',
           breaches: 'SLA Breaches',
-          ruleChanges: 'Rule-Version-Änderungen'
+          ruleChanges: 'Rule-Version-Änderungen',
+          completeness: 'Evidenz-Vollständigkeit'
         },
         filters: { role: 'Rolle', status: 'Evidenzstatus', all: 'Alle' },
         roles: { junior: 'Junior', senior: 'Senior', carrier: 'Carrier', compliance: 'Compliance' },
@@ -177,7 +179,8 @@ export default function UnderwriterCompliancePage() {
     missingEvidence: logs.filter((log) => log.evidenceStatus !== 'ok').length,
     overrides: 0,
     breaches: 3,
-    ruleChanges: 2
+    ruleChanges: 2,
+    completeness: `${Math.round((logs.filter((log) => log.evidenceStatus === 'ok').length / logs.length) * 100)}%`
   }
 
   return (
@@ -204,6 +207,7 @@ export default function UnderwriterCompliancePage() {
           <Card title={copy.kpi.overrides} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.overrides}</strong><MiniBars data={[0, 0, 0, 0, 0]} /></div></Card>
           <Card title={copy.kpi.breaches} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.breaches}</strong><MiniBars data={[4, 3, 3, 2, 3]} /></div></Card>
           <Card title={copy.kpi.ruleChanges} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.ruleChanges}</strong><MiniBars data={[1, 1, 2, 2, 2]} /></div></Card>
+          <Card title={copy.kpi.completeness} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.completeness}</strong><MiniBars data={[82, 84, 86, 88, 90]} /></div></Card>
         </div>
 
         <Card title={copy.auditTitle} variant="glass" className="uw-card" style={{ overflowX: 'auto' }}>

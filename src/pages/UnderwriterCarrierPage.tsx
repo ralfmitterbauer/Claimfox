@@ -78,7 +78,8 @@ export default function UnderwriterCarrierPage() {
           decisionTime: 'Avg carrier decision time',
           escalations: 'Escalations from MGA',
           capacity: 'Capacity utilization',
-          exceptions: 'Exceptions'
+          exceptions: 'Exceptions',
+          breaches: 'SLA breaches'
         },
         table: { id: 'ID', account: 'Account', product: 'Product', sla: 'SLA', status: 'Status' },
         products: { fleet: 'Fleet', cargo: 'Cargo', carrier_liability: 'Carrier liability' },
@@ -103,7 +104,8 @@ export default function UnderwriterCarrierPage() {
           decisionTime: 'Ø Carrier-Entscheidungszeit',
           escalations: 'Eskalationen vom MGA',
           capacity: 'Kapazitätsauslastung',
-          exceptions: 'Exceptions'
+          exceptions: 'Exceptions',
+          breaches: 'SLA-Verstöße'
         },
         table: { id: 'ID', account: 'Account', product: 'Produkt', sla: 'SLA', status: 'Status' },
         products: { fleet: 'Flotte', cargo: 'Cargo', carrier_liability: 'Frachtführerhaftung' },
@@ -159,7 +161,8 @@ export default function UnderwriterCarrierPage() {
     decisionTime: '2.1d',
     escalations: 7,
     capacity: '78%',
-    exceptions: 4
+    exceptions: 4,
+    breaches: cases.filter((item) => item.slaBucket === 'breached').length
   }
 
   const [selectedId, setSelectedId] = React.useState(cases[0]?.id)
@@ -189,6 +192,7 @@ export default function UnderwriterCarrierPage() {
           <Card title={copy.kpi.escalations} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.escalations}</strong><MiniBars data={[4, 5, 6, 6, 7]} /></div></Card>
           <Card title={copy.kpi.capacity} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.capacity}</strong><MiniBars data={[68, 70, 72, 76, 78]} /></div></Card>
           <Card title={copy.kpi.exceptions} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.exceptions}</strong><MiniBars data={[2, 3, 4, 3, 4]} /></div></Card>
+          <Card title={copy.kpi.breaches} variant="glass" className="uw-card"><div className="uw-card-body"><strong>{kpis.breaches}</strong><MiniBars data={[1, 2, 1, 2, 1]} /></div></Card>
         </div>
 
         <div className="uw-grid uw-split">
