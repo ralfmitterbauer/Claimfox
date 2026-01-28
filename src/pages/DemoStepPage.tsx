@@ -103,6 +103,7 @@ const UNDERWRITER_ROLE_MAP: Record<string, RoleOption> = {
 
 type DemoFlowCopy = {
   inboxCases: Array<{ id: string; type: string; risk: string; sla: string; flag: string }>
+  kpis: Array<{ label: string; value: string; note?: string }>
   aiRecommendation: { action: string; confidence: string; drivers: string[] }
   governance: { approvals: string; authority: string; policy: string; sla: string }
   auditTimeline: string[]
@@ -117,6 +118,11 @@ const DEFAULT_FLOW_COPY: DemoFlowCopy = {
     { id: 'PLC-5580', type: 'Policy', risk: 'Medium', sla: '8h left', flag: 'Pricing exception' },
     { id: 'PAY-7742', type: 'Payment', risk: 'High', sla: '2h left', flag: 'Suspicious routing' },
     { id: 'CLM-9033', type: 'Claim', risk: 'Low', sla: '24h left', flag: 'AI anomaly' }
+  ],
+  kpis: [
+    { label: 'Open decisions', value: '28' },
+    { label: 'Overrides', value: '6' },
+    { label: 'SLA at risk', value: '3' }
   ],
   aiRecommendation: {
     action: 'Hold and request additional evidence',
@@ -145,6 +151,11 @@ const UNDERWRITER_FLOW_COPY: Record<string, DemoFlowCopy> = {
       { id: 'UW-1881', type: 'Policy', risk: 'Medium', sla: 'Today', flag: 'Missing evidence' },
       { id: 'UW-1903', type: 'Policy', risk: 'Medium', sla: '6h left', flag: 'Referral threshold' }
     ],
+    kpis: [
+      { label: 'Cases in corridor', value: '18' },
+      { label: 'Evidence gaps', value: '4' },
+      { label: 'Referrals', value: '3' }
+    ],
     aiRecommendation: {
       action: 'Freigabe im Korridor mit Evidenznachforderung',
       confidence: '79%',
@@ -169,6 +180,11 @@ const UNDERWRITER_FLOW_COPY: Record<string, DemoFlowCopy> = {
       { id: 'UW-2419', type: 'Policy', risk: 'High', sla: '2h left', flag: 'Override requested' },
       { id: 'UW-2455', type: 'Policy', risk: 'High', sla: 'Today', flag: 'Aggregation breach' },
       { id: 'UW-2470', type: 'Policy', risk: 'Medium', sla: '6h left', flag: 'Pricing exception' }
+    ],
+    kpis: [
+      { label: 'Override requests', value: '7' },
+      { label: 'Aggregation risk', value: '2' },
+      { label: 'Portfolio impact', value: '+3.6pp LR' }
     ],
     aiRecommendation: {
       action: 'Override nur mit Auflage und Limit-Adjustierung',
@@ -195,6 +211,11 @@ const UNDERWRITER_FLOW_COPY: Record<string, DemoFlowCopy> = {
       { id: 'UW-3222', type: 'Policy', risk: 'High', sla: 'Today', flag: 'Capacity escalation' },
       { id: 'UW-3235', type: 'Policy', risk: 'Medium', sla: '4h left', flag: 'Limit exception' }
     ],
+    kpis: [
+      { label: 'Capacity used', value: '92%' },
+      { label: 'Limit exceptions', value: '3' },
+      { label: 'Reinsurance match', value: '97%' }
+    ],
     aiRecommendation: {
       action: 'Freigabe mit reduzierter Kapazität',
       confidence: '81%',
@@ -220,6 +241,11 @@ const UNDERWRITER_FLOW_COPY: Record<string, DemoFlowCopy> = {
       { id: 'UW-4014', type: 'Audit', risk: 'High', sla: '4h left', flag: 'Missing evidence trail' },
       { id: 'UW-4022', type: 'Audit', risk: 'Low', sla: 'Tomorrow', flag: 'Ruleset mismatch' }
     ],
+    kpis: [
+      { label: 'Audit gaps', value: '5' },
+      { label: 'Ruleset mismatches', value: '2' },
+      { label: 'Governance SLA', value: '96%' }
+    ],
     aiRecommendation: {
       action: 'Entscheidungen mit fehlender Begründung eskalieren',
       confidence: '88%',
@@ -244,6 +270,11 @@ const UNDERWRITER_FLOW_COPY: Record<string, DemoFlowCopy> = {
       { id: 'UW-5102', type: 'Report', risk: 'Medium', sla: 'Today', flag: 'Referral rate spike' },
       { id: 'UW-5127', type: 'Report', risk: 'Low', sla: 'Tomorrow', flag: 'Corridor drift' },
       { id: 'UW-5141', type: 'Report', risk: 'Medium', sla: '6h left', flag: 'Override trend' }
+    ],
+    kpis: [
+      { label: 'Referral rate', value: '28%' },
+      { label: 'Override trend', value: '+12%' },
+      { label: 'Portfolio quality', value: 'A-' }
     ],
     aiRecommendation: {
       action: 'Korridor-Review mit Senior UW abstimmen',
@@ -436,6 +467,16 @@ export default function DemoStepPage() {
         {stepNumber === 2 && (
           <div className="uw-section">
             <h2 className="uw-section-title">Decision inbox</h2>
+            <div className="uw-grid uw-kpi">
+              {flowCopy.kpis.map((kpi) => (
+                <Card key={kpi.label} title={kpi.label} variant="glass" className="uw-card">
+                  <div className="uw-card-body">
+                    <strong>{kpi.value}</strong>
+                    {kpi.note && <span className="uw-muted">{kpi.note}</span>}
+                  </div>
+                </Card>
+              ))}
+            </div>
             <div className="uw-grid uw-cards">
               {flowCopy.inboxCases.map((item) => (
                 <Card key={item.id} title={item.id} subtitle={item.type} variant="glass" className="uw-card">

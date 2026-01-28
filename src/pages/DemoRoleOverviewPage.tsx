@@ -128,6 +128,7 @@ export default function DemoRoleOverviewPage() {
   }
 
   const config = roles[roleId]
+  const showContext = roleId === 'underwriter'
 
   return (
     <section className="uw-page">
@@ -143,7 +144,21 @@ export default function DemoRoleOverviewPage() {
           )}
         />
 
-        <div className="uw-grid uw-cards">
+        {showContext && (
+          <Card variant="glass" className="uw-card">
+            <div className="uw-card-body" style={{ gap: '0.35rem' }}>
+              <strong>Role context</strong>
+              <span className="uw-muted">
+                Fokus auf Portfolio-Entscheidungen, klare Referral-Logik und Governance-konforme Overrides.
+              </span>
+            </div>
+          </Card>
+        )}
+
+        <div
+          className="uw-grid uw-cards"
+          style={roleId === 'underwriter' ? { gridTemplateColumns: 'repeat(5, minmax(0, 1fr))', gap: '0.6rem' } : undefined}
+        >
           {config.subroles.map((subrole) => {
             const isCompact = roleId === 'underwriter'
             const targetRoute = subrole.demoKey ? `/demo/step/1?role=${subrole.demoKey}` : '/demo/step/1'
@@ -169,7 +184,7 @@ export default function DemoRoleOverviewPage() {
                   }}
                 >
                   {isCompact && (
-                    <div style={{ display: 'grid', gap: '0.1rem' }}>
+                    <div style={{ display: 'grid', gap: '0.1rem', minWidth: 0 }}>
                       <strong style={{ fontSize: '0.9rem' }}>{subrole.label}</strong>
                       <span style={{ fontSize: '0.72rem', color: 'var(--ix-text-muted)' }}>{helperText}</span>
                     </div>
@@ -185,7 +200,8 @@ export default function DemoRoleOverviewPage() {
                       color: '#fff',
                       padding: isCompact ? '0.2rem 0.6rem' : '0.4rem 0.9rem',
                       fontSize: isCompact ? '0.75rem' : '0.9rem',
-                      boxShadow: 'none'
+                      boxShadow: 'none',
+                      flexShrink: 0
                     }}
                   >
                     Demo starten
