@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import BciaDeckPage, { type BciaSlide } from '@/pages/BciaDeckPage'
 import Startslide from '@/assets/images/startslide.png'
-import InsurfoxLogo from '@/assets/logos/Insurfox_Logo_colored_dark.png'
 import '@/styles/insurfox-iaas.css'
 
 export default function InsurfoxIaaSPage() {
@@ -15,9 +14,6 @@ export default function InsurfoxIaaSPage() {
             src={Startslide}
             alt="Insurfox overview"
           />
-          <div className="insurfox-iaas-card">
-            <img src={InsurfoxLogo} alt="Insurfox" />
-          </div>
         </div>
       </div>
     )
