@@ -84,6 +84,7 @@ import BciaDeckPage from '@/pages/BciaDeckPage'
 import InsurfoxIaaSPage from '@/pages/InsurfoxIaaSPage'
 import DemoOverviewPage from '@/pages/DemoOverviewPage'
 import DemoStepPage from '@/pages/DemoStepPage'
+import DemoRoleOverviewPage from '@/pages/DemoRoleOverviewPage'
 import DemoDriverOverviewPage from '@/pages/DemoDriverOverviewPage'
 import DemoDriverStepPage from '@/pages/DemoDriverStepPage'
 
@@ -115,6 +116,7 @@ export default function AppRouter() {
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
         <Route path="/demo" element={<DemoOverviewPage />} />
         <Route path="/demo/step/:stepId" element={<DemoStepPage />} />
+        <Route path="/demo/role/:roleId" element={<DemoRoleOverviewPage />} />
         <Route path="/roles" element={<RolesPage />} />
         <Route path="/roles/underwriter" element={<UnderwriterRolePage />} />
         <Route path="/roles/legal" element={<LegalRolePage />} />
