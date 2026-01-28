@@ -145,33 +145,34 @@ export default function DemoRoleOverviewPage() {
         <div className="uw-grid uw-cards">
           {config.subroles.map((subrole) => {
             const isCompact = roleId === 'underwriter'
+            const targetRoute = '/demo/step/1'
             return (
               <Card
                 key={subrole.route}
                 title={isCompact ? undefined : subrole.label}
                 variant="glass"
                 className="uw-card"
-                style={isCompact ? { minHeight: '72px', padding: '10px 12px' } : undefined}
+                style={isCompact ? { minHeight: '56px', padding: '8px 10px' } : undefined}
               >
                 <div
                   className="uw-card-body"
                   style={{
-                    gap: isCompact ? '0.5rem' : '0.35rem',
+                    gap: isCompact ? '0.4rem' : '0.35rem',
                     flexDirection: isCompact ? 'row' : 'column',
                     alignItems: isCompact ? 'center' : 'flex-start',
                     justifyContent: isCompact ? 'space-between' : 'flex-start',
                     width: '100%'
                   }}
                 >
-                  {isCompact && <strong>{subrole.label}</strong>}
+                  {isCompact && <strong style={{ fontSize: '0.9rem' }}>{subrole.label}</strong>}
                   <Button
-                    onClick={() => navigate(subrole.route)}
+                    onClick={() => navigate(targetRoute)}
                     disableHover
                     style={{
-                      background: 'var(--blue-dark)',
+                      background: '#281c65',
                       color: '#fff',
-                      padding: isCompact ? '0.3rem 0.75rem' : '0.4rem 0.9rem',
-                      fontSize: isCompact ? '0.8rem' : '0.9rem',
+                      padding: isCompact ? '0.2rem 0.6rem' : '0.4rem 0.9rem',
+                      fontSize: isCompact ? '0.75rem' : '0.9rem',
                       boxShadow: 'none'
                     }}
                   >
