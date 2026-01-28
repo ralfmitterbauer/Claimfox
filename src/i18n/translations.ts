@@ -19,6 +19,7 @@ type TranslationTree = {
       logistics: string
       fleet: string
       partner: string
+      presentation: string
       demo: string
     }
   }
@@ -982,6 +983,7 @@ export const translations: Record<Lang, TranslationTree> = {
         logistics: 'Logistik',
         fleet: 'Flotte',
         partner: 'Partner',
+        presentation: 'Presentation',
         demo: 'Demo'
       }
     },
@@ -3087,6 +3089,7 @@ export const translations: Record<Lang, TranslationTree> = {
         logistics: 'Logistics',
         fleet: 'Fleet',
         partner: 'Partner',
+        presentation: 'Presentation',
         demo: 'Demo'
       }
     },
