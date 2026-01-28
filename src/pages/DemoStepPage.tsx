@@ -376,6 +376,84 @@ export default function DemoStepPage() {
   const roleLabel = selectedRole?.label ?? 'Role not set'
   const decisionFocus = selectedRole?.decision ?? 'Decision focus not set'
   const accountability = selectedRole?.accountability ?? 'Accountability not set'
+  const kpiItems = [
+    {
+      title: 'Progress',
+      value: progressLabel,
+      note: 'Guided flow',
+      color: 'bg-blue-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+      )
+    },
+    {
+      title: 'Role',
+      value: roleLabel,
+      note: 'Decision owner',
+      color: 'bg-indigo-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" />
+          <path d="M5 20a7 7 0 0 1 14 0" />
+        </svg>
+      )
+    },
+    {
+      title: 'Decision focus',
+      value: decisionFocus,
+      note: 'Priority',
+      color: 'bg-azure-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 8v4" />
+          <path d="M12 16h.01" />
+        </svg>
+      )
+    },
+    {
+      title: 'AI confidence',
+      value: flowCopy.aiRecommendation.confidence,
+      note: 'HITL required',
+      color: 'bg-yellow-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3v6" />
+          <path d="M12 15v6" />
+          <path d="M5 12h14" />
+          <path d="M7 7l10 10" />
+        </svg>
+      )
+    },
+    {
+      title: 'SLA impact',
+      value: flowCopy.governance.sla,
+      note: 'Time remaining',
+      color: 'bg-red-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 7v5" />
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 12l4 2" />
+        </svg>
+      )
+    },
+    {
+      title: 'Accountability',
+      value: accountability,
+      note: 'Governance',
+      color: 'bg-green-lt',
+      icon: (
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      )
+    }
+  ]
 
   return (
     <div className="page">
@@ -405,22 +483,19 @@ export default function DemoStepPage() {
         <div className="page-body">
           <div className="container-xl">
             <div className="row row-cards">
-              {[
-                { title: 'Progress', value: progressLabel, note: 'Guided flow', color: 'bg-blue-lt' },
-                { title: 'Role', value: roleLabel, note: 'Decision owner', color: 'bg-indigo-lt' },
-                { title: 'Decision focus', value: decisionFocus, note: 'Priority', color: 'bg-azure-lt' },
-                { title: 'AI confidence', value: flowCopy.aiRecommendation.confidence, note: 'HITL required', color: 'bg-yellow-lt' },
-                { title: 'SLA impact', value: flowCopy.governance.sla, note: 'Time remaining', color: 'bg-red-lt' },
-                { title: 'Accountability', value: accountability, note: 'Governance', color: 'bg-green-lt' }
-              ].map((item) => (
+              {kpiItems.map((item, index) => (
                 <div className="col-6 col-md-4 col-xl-2" key={item.title}>
-                  <div className="card">
-                    <div className="card-body">
-                      <div className="d-flex align-items-center">
-                        <span className={`badge ${item.color} me-2`}>{item.title}</span>
+                  <div className="card h-100">
+                    <div className="card-body d-flex flex-column gap-2">
+                      <div className="d-flex align-items-center justify-content-between">
+                        <span className={`avatar avatar-sm ${item.color}`}>{item.icon}</span>
+                        <span className={`badge ${item.color}`}>{item.title}</span>
                       </div>
-                      <div className="mt-2 fw-bold">{item.value}</div>
+                      <div className="fw-bold">{item.value}</div>
                       <div className="text-muted">{item.note}</div>
+                      <div className="progress progress-sm mt-1">
+                        <div className={`progress-bar ${index % 2 === 0 ? 'bg-blue' : 'bg-green'}`} style={{ width: `${66 + index * 4}%` }} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -430,8 +505,17 @@ export default function DemoStepPage() {
             <div className="row row-cards mt-2">
               <div className="col-12 col-xl-8">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Decision inbox</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-blue-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 4h18v16H3z" />
+                          <path d="M7 8h10" />
+                          <path d="M7 12h6" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">Decision inbox</h3>
+                    </div>
                     <span className="badge bg-blue-lt">Live queue</span>
                   </div>
                   <div className="table-responsive">
@@ -468,22 +552,39 @@ export default function DemoStepPage() {
               </div>
               <div className="col-12 col-xl-4">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Decision snapshot</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-orange-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 3l9 4.5-9 4.5-9-4.5L12 3z" />
+                          <path d="M3 7.5v6l9 4.5 9-4.5v-6" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">Decision snapshot</h3>
+                    </div>
                     <span className="badge bg-orange-lt">AI assisted</span>
                   </div>
-                  <div className="card-body">
-                    <div className="mb-3">
+                  <div className="card-body d-flex flex-column gap-2">
+                    <div>
                       <div className="text-muted">Recommended action</div>
                       <div className="fw-bold">{flowCopy.aiRecommendation.action}</div>
                     </div>
-                    <div className="text-muted">Approvals: {flowCopy.governance.approvals}</div>
-                    <div className="text-muted">Authority: {flowCopy.governance.authority}</div>
-                    <div className="text-muted">Policy: {flowCopy.governance.policy}</div>
-                    <div className="mt-3">
+                    <div className="d-flex align-items-center justify-content-between text-muted">
+                      <span>Approvals</span>
+                      <span className="fw-semibold text-dark">{flowCopy.governance.approvals}</span>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between text-muted">
+                      <span>Authority</span>
+                      <span className="fw-semibold text-dark">{flowCopy.governance.authority}</span>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between text-muted">
+                      <span>Policy</span>
+                      <span className="fw-semibold text-dark">{flowCopy.governance.policy}</span>
+                    </div>
+                    <div className="mt-1">
                       <span className="badge bg-yellow-lt">AI suggestion — requires human review</span>
                     </div>
-                    <div className="mt-3">
+                    <div className="mt-2">
                       <svg width="100%" height="64" viewBox="0 0 200 64" fill="none">
                         <path d="M0 48 C30 20, 60 60, 90 28 C120 -2, 150 40, 200 16" stroke="#206bc4" strokeWidth="3" fill="none" />
                         <circle cx="200" cy="16" r="4" fill="#206bc4" />
@@ -497,44 +598,86 @@ export default function DemoStepPage() {
             <div className="row row-cards mt-2">
               <div className="col-12 col-md-6 col-xl-4">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">AI suggestion</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-yellow-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 3v6" />
+                          <path d="M12 15v6" />
+                          <path d="M5 12h14" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">AI suggestion</h3>
+                    </div>
                     <span className="badge bg-yellow-lt">Human review</span>
                   </div>
-                  <div className="card-body">
-                    <div className="text-muted mb-2">{flowCopy.aiRecommendation.action}</div>
-                    <ul className="list-unstyled m-0">
+                  <div className="card-body d-flex flex-column gap-2">
+                    <div className="text-muted">{flowCopy.aiRecommendation.action}</div>
+                    <div className="d-grid gap-2">
                       {flowCopy.aiRecommendation.drivers.map((driver) => (
-                        <li key={driver}>{driver}</li>
+                        <div className="d-flex align-items-center gap-2" key={driver}>
+                          <span className="badge bg-yellow-lt">Driver</span>
+                          <span>{driver}</span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className="col-12 col-md-6 col-xl-4">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Governance</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-indigo-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">Governance</h3>
+                    </div>
                     <span className="badge bg-indigo-lt">Carrier ready</span>
                   </div>
-                  <div className="card-body">
-                    <div>Approvals: {flowCopy.governance.approvals}</div>
-                    <div>Authority: {flowCopy.governance.authority}</div>
-                    <div>Policy: {flowCopy.governance.policy}</div>
-                    <div className="text-muted mt-2">Audit trail mandatory for every override.</div>
+                  <div className="card-body d-flex flex-column gap-2">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <span className="text-muted">Approvals</span>
+                      <span className="fw-semibold">{flowCopy.governance.approvals}</span>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <span className="text-muted">Authority</span>
+                      <span className="fw-semibold">{flowCopy.governance.authority}</span>
+                    </div>
+                    <div className="d-flex align-items-center justify-content-between">
+                      <span className="text-muted">Policy</span>
+                      <span className="fw-semibold">{flowCopy.governance.policy}</span>
+                    </div>
+                    <div className="text-muted">Audit trail mandatory for every override.</div>
                   </div>
                 </div>
               </div>
               <div className="col-12 col-md-6 col-xl-4">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">SLA & escalation</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-red-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M12 7v5" />
+                          <circle cx="12" cy="12" r="9" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">SLA & escalation</h3>
+                    </div>
                     <span className="badge bg-red-lt">Time-bound</span>
                   </div>
-                  <div className="card-body">
-                    <div>SLA impact: {flowCopy.governance.sla}</div>
+                  <div className="card-body d-flex flex-column gap-2">
+                    <div className="d-flex align-items-center justify-content-between">
+                      <span className="text-muted">SLA impact</span>
+                      <span className="fw-semibold">{flowCopy.governance.sla}</span>
+                    </div>
                     <div className="text-muted">Escalate if SLA is breached.</div>
                     <div className="text-muted">HITL checkpoint required.</div>
+                    <div className="progress progress-sm mt-1">
+                      <div className="progress-bar bg-red" style={{ width: '68%' }} />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -543,17 +686,26 @@ export default function DemoStepPage() {
             <div className="row row-cards mt-2">
               <div className="col-12">
                 <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Audit & logs</h3>
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-center gap-2">
+                      <span className="avatar avatar-sm bg-green-lt">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M4 7h16" />
+                          <path d="M4 12h16" />
+                          <path d="M4 17h16" />
+                        </svg>
+                      </span>
+                      <h3 className="card-title mb-0">Audit & logs</h3>
+                    </div>
                     <span className="badge bg-green-lt">Audit-ready</span>
                   </div>
                   <div className="card-body">
                     <div className="row">
                       {flowCopy.auditTimeline.map((entry) => (
                         <div className="col-12 col-md-6" key={entry}>
-                          <div className="mb-2">
-                            <span className="badge bg-blue-lt me-2">Log</span>
-                            {entry}
+                          <div className="d-flex align-items-center gap-2 mb-2">
+                            <span className="badge bg-blue-lt">Log</span>
+                            <span>{entry}</span>
                           </div>
                         </div>
                       ))}

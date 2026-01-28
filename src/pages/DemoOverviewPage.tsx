@@ -6,8 +6,16 @@ export default function DemoOverviewPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
 
+  const groupMeta = [
+    { key: 'insurance', iconBg: 'bg-indigo-lt', accent: 'bg-indigo-lt' },
+    { key: 'fleet', iconBg: 'bg-azure-lt', accent: 'bg-azure-lt' },
+    { key: 'logistics', iconBg: 'bg-teal-lt', accent: 'bg-teal-lt' },
+    { key: 'broker', iconBg: 'bg-orange-lt', accent: 'bg-orange-lt' }
+  ]
+
   const overviewGroups = [
     {
+      key: 'insurance',
       title: t('roles.overviewGroups.insurance'),
       items: [
         { label: t('roles.cards.underwriter.title'), roleId: 'underwriter' },
@@ -18,6 +26,7 @@ export default function DemoOverviewPage() {
       ]
     },
     {
+      key: 'fleet',
       title: t('roles.overviewGroups.fleet'),
       items: [
         { label: 'Fahrer', roleId: 'driver-demo' },
@@ -26,12 +35,14 @@ export default function DemoOverviewPage() {
       ]
     },
     {
+      key: 'logistics',
       title: t('roles.overviewGroups.logistics'),
       items: [
         { label: t('roles.cards.logistics.title'), roleId: 'logistics' }
       ]
     },
     {
+      key: 'broker',
       title: t('roles.overviewGroups.broker'),
       items: [
         { label: t('roles.brokerPortal'), roleId: 'broker-crm' },
@@ -66,12 +77,48 @@ export default function DemoOverviewPage() {
         <div className="page-body">
           <div className="container-xl">
             <div className="row row-cards">
-              {overviewGroups.map((group, index) => (
+              {overviewGroups.map((group, index) => {
+                const meta = groupMeta[index]
+                return (
                 <div className="col-12 col-md-6 col-xl-3" key={group.title}>
-                  <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title">{group.title}</h3>
-                      <span className={`badge ${index % 2 === 0 ? 'bg-indigo-lt' : 'bg-azure-lt'}`}>
+                  <div className="card h-100">
+                    <div className="card-header d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center gap-2">
+                        <span className={`avatar avatar-sm ${meta?.iconBg ?? 'bg-indigo-lt'}`}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                            {group.key === 'insurance' && (
+                              <>
+                                <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
+                                <path d="M9 12l2 2 4-4" />
+                              </>
+                            )}
+                            {group.key === 'fleet' && (
+                              <>
+                                <rect x="3" y="11" width="18" height="7" rx="2" />
+                                <path d="M7 11l3-5h4l3 5" />
+                                <circle cx="7.5" cy="18" r="1.5" />
+                                <circle cx="16.5" cy="18" r="1.5" />
+                              </>
+                            )}
+                            {group.key === 'logistics' && (
+                              <>
+                                <path d="M3 7h18v10H3z" />
+                                <path d="M7 7v10" />
+                                <path d="M3 12h18" />
+                              </>
+                            )}
+                            {group.key === 'broker' && (
+                              <>
+                                <path d="M6 8h12v12H6z" />
+                                <path d="M9 4h6v4H9z" />
+                                <path d="M9 12h6" />
+                              </>
+                            )}
+                          </svg>
+                        </span>
+                        <h3 className="card-title mb-0">{group.title}</h3>
+                      </div>
+                      <span className={`badge ${meta?.accent ?? 'bg-indigo-lt'}`}>
                         {group.items.length} roles
                       </span>
                     </div>
@@ -80,7 +127,7 @@ export default function DemoOverviewPage() {
                         <button
                           key={role.roleId}
                           type="button"
-                          className={`btn btn-outline-${roleIndex % 2 === 0 ? 'primary' : 'secondary'} btn-pill`}
+                          className={`btn btn-outline-${roleIndex % 2 === 0 ? 'primary' : 'secondary'} w-100 justify-content-between`}
                           onClick={() => {
                             if (role.roleId === 'driver-demo') {
                               navigate('/demo-driver')
@@ -89,19 +136,31 @@ export default function DemoOverviewPage() {
                             navigate(`/demo/role/${role.roleId}`)
                           }}
                         >
-                          <span className="me-2">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
-                              <path d="M9 12l2 2 4-4" />
-                            </svg>
+                          <span className="d-flex align-items-center gap-2">
+                            <span className="avatar avatar-xs bg-blue-lt">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 5v14" />
+                                <path d="M5 12h14" />
+                              </svg>
+                            </span>
+                            {role.label}
                           </span>
-                          {role.label}
+                          <span className="text-muted">Demo</span>
                         </button>
                       ))}
                     </div>
+                    <div className="card-footer">
+                      <div className="d-flex align-items-center justify-content-between">
+                        <span className="text-muted">Readiness</span>
+                        <span className="badge bg-green-lt">Active</span>
+                      </div>
+                      <div className="progress progress-sm mt-2">
+                        <div className="progress-bar bg-blue" style={{ width: `${70 + index * 6}%` }} />
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
 
             <div className="row row-cards mt-2">

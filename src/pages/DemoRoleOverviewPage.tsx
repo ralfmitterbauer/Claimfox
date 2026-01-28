@@ -195,22 +195,39 @@ export default function DemoRoleOverviewPage() {
               <div className="row row-cards mb-3">
                 <div className="col-12">
                   <div className="card">
-                    <div className="card-header">
-                      <h3 className="card-title">Role context</h3>
+                    <div className="card-header d-flex align-items-center justify-content-between">
+                      <div className="d-flex align-items-center gap-2">
+                        <span className="avatar avatar-sm bg-indigo-lt">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
+                            <path d="M9 12l2 2 4-4" />
+                          </svg>
+                        </span>
+                        <h3 className="card-title mb-0">Role context</h3>
+                      </div>
                       <span className="badge bg-indigo-lt">Management summary</span>
                     </div>
                     <div className="card-body">
                       <div className="row g-3">
                         {underwriterContext.map((role) => (
                           <div className="col-12 col-md-6 col-xl-4" key={role.label}>
-                            <div className="card card-sm">
-                              <div className="card-body">
-                                <div className="d-flex align-items-center justify-content-between mb-2">
+                            <div className="card card-sm h-100">
+                              <div className="card-body d-flex flex-column gap-2">
+                                <div className="d-flex align-items-center justify-content-between">
                                   <strong>{role.label}</strong>
                                   {role.selected && <span className="badge bg-azure-lt">Selected</span>}
                                 </div>
-                                <div className="text-muted">Decides on {role.decision}</div>
-                                <div className="text-muted">Accountable for {role.accountability}</div>
+                                <div className="text-muted">
+                                  <span className="text-secondary text-uppercase me-1">Decides</span>
+                                  {role.decision}
+                                </div>
+                                <div className="text-muted">
+                                  <span className="text-secondary text-uppercase me-1">Accountable</span>
+                                  {role.accountability}
+                                </div>
+                                <div className="progress progress-sm mt-1">
+                                  <div className="progress-bar bg-indigo" style={{ width: role.selected ? '86%' : '62%' }} />
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -235,23 +252,42 @@ export default function DemoRoleOverviewPage() {
                 const badgeClass = index % 2 === 0 ? 'bg-green-lt' : 'bg-blue-lt'
                 return (
                   <div className="col-12 col-md-6 col-xl-3" key={subrole.route}>
-                    <div className="card card-md">
-                      <div className="card-header">
-                        <h3 className="card-title">{subrole.label}</h3>
+                    <div className="card card-md h-100">
+                      <div className="card-header d-flex align-items-center justify-content-between">
+                        <div className="d-flex align-items-center gap-2">
+                          <span className={`avatar avatar-sm ${badgeClass}`}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M12 7v10" />
+                              <path d="M7 12h10" />
+                            </svg>
+                          </span>
+                          <h3 className="card-title mb-0">{subrole.label}</h3>
+                        </div>
                         <span className={`badge ${badgeClass}`}>Demo</span>
                       </div>
-                      <div className="card-body">
+                      <div className="card-body d-flex flex-column gap-2">
                         {description && (
                           <>
-                            <div className="text-muted mb-1">Decides on {description.decision}</div>
-                            <div className="text-muted mb-3">Accountable for {description.accountability}</div>
+                            <div className="text-muted">
+                              <span className="text-secondary text-uppercase me-1">Decides</span>
+                              {description.decision}
+                            </div>
+                            <div className="text-muted">
+                              <span className="text-secondary text-uppercase me-1">Accountable</span>
+                              {description.accountability}
+                            </div>
                           </>
                         )}
                         {!description && (
-                          <div className="text-muted mb-3">
+                          <div className="text-muted">
                             Start the guided demo flow (no data captured).
                           </div>
                         )}
+                        <div className="progress progress-sm mt-2">
+                          <div className={`progress-bar ${index % 2 === 0 ? 'bg-green' : 'bg-blue'}`} style={{ width: `${68 + index * 4}%` }} />
+                        </div>
+                      </div>
+                      <div className="card-footer">
                         <button
                           type="button"
                           className="btn btn-primary w-100"
