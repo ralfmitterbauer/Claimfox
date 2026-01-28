@@ -4,7 +4,6 @@ import Header from '@/components/ui/Header'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 import HeroBlockBackground from '@/assets/images/hero_block_1.png'
-import '@/styles/underwriter-premium.css'
 
 type DecisionCase = {
   id: string

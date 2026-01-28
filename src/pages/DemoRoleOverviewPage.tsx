@@ -1,10 +1,6 @@
 import React from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import Header from '@/components/ui/Header'
-import Card from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import '@/styles/underwriter-premium.css'
 
 type SubRole = {
   label: string
@@ -169,80 +165,109 @@ export default function DemoRoleOverviewPage() {
     : {}
 
   return (
-    <section className="uw-page">
-      <div className="uw-container">
-        <Header
-          title={config.title}
-          subtitle={config.subtitle}
-          subtitleColor="#65748b"
-          actions={(
-            <Button variant="secondary" disableHover onClick={() => navigate('/demo')}>
-              Back to overview
-            </Button>
-          )}
-        />
-
-        {showContext && (
-          <Card variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>Role context</strong>
-              {underwriterContext.map((role) => (
-                <div key={role.label} className="uw-panel">
-                  <div className="uw-actions">
-                    <strong>{role.label}</strong>
-                    {role.selected && <span className="uw-badge">Selected</span>}
-                  </div>
-                  <div>Decides on {role.decision}</div>
-                  <div className="uw-muted">Accountable for {role.accountability}</div>
+    <div className="page">
+      <div className="page-wrapper">
+        <div className="page-header d-print-none">
+          <div className="container-xl">
+            <div className="row g-2 align-items-center">
+              <div className="col">
+                <div className="page-pretitle">Role overview</div>
+                <h2 className="page-title">{config.title}</h2>
+                <div className="text-muted">{config.subtitle}</div>
+              </div>
+              <div className="col-auto ms-auto">
+                <div className="btn-list">
+                  <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/demo')}>
+                    Back to overview
+                  </button>
+                  <button type="button" className="btn btn-primary" onClick={() => navigate('/demo/step/1')}>
+                    Start demo
+                  </button>
                 </div>
-              ))}
-              <div className="uw-muted">
-                This role decides on Risiken im Korridor freigeben and is accountable for Evidenzqualität und SLA-Einhaltung.
               </div>
             </div>
-          </Card>
-        )}
+          </div>
+        </div>
 
-        <div className={`uw-grid ${roleId === 'underwriter' ? 'uw-kpi' : 'uw-cards'}`}>
-          {config.subroles.map((subrole) => {
-            const isCompact = roleId === 'underwriter'
-            const targetRoute = subrole.demoKey ? `/demo/step/1?role=${subrole.demoKey}` : '/demo/step/1'
-            const helperText = isCompact
-              ? (isEn ? 'Demo' : 'Demo')
-              : (isEn ? 'Start the guided demo flow (no data captured).' : 'Starte den geführten Demo-Flow (keine Datenerfassung).')
-            const descriptionKey = isCompact
-              ? subrole.label.toLowerCase().replace(/\s+/g, '-')
-              : ''
-            const description = isCompact ? underwriterDescriptions[descriptionKey] : undefined
-            return (
-              <Card
-                key={subrole.route}
-                title={isCompact ? undefined : subrole.label}
-                variant="glass"
-                className="uw-card"
-              >
-                <div className="uw-card-body">
-                  {isCompact && (
-                    <>
-                      <strong>{subrole.label}</strong>
-                      <span className="uw-muted">{helperText}</span>
-                      {description && <div>Decides on {description.decision}</div>}
-                      {description && <div className="uw-muted">Accountable for {description.accountability}</div>}
-                    </>
-                  )}
-                  {!isCompact && <span className="uw-muted">{helperText}</span>}
-                  <Button
-                    onClick={() => navigate(targetRoute)}
-                    disableHover
-                  >
-                    Demo starten
-                  </Button>
+        <div className="page-body">
+          <div className="container-xl">
+            {showContext && (
+              <div className="row row-cards mb-3">
+                <div className="col-12">
+                  <div className="card">
+                    <div className="card-header">
+                      <h3 className="card-title">Role context</h3>
+                      <span className="badge bg-indigo-lt">Management summary</span>
+                    </div>
+                    <div className="card-body">
+                      <div className="row g-3">
+                        {underwriterContext.map((role) => (
+                          <div className="col-12 col-md-6 col-xl-4" key={role.label}>
+                            <div className="card card-sm">
+                              <div className="card-body">
+                                <div className="d-flex align-items-center justify-content-between mb-2">
+                                  <strong>{role.label}</strong>
+                                  {role.selected && <span className="badge bg-azure-lt">Selected</span>}
+                                </div>
+                                <div className="text-muted">Decides on {role.decision}</div>
+                                <div className="text-muted">Accountable for {role.accountability}</div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-3 text-muted">
+                        This role decides on Risiken im Korridor freigeben and is accountable for Evidenzqualität und SLA-Einhaltung.
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </Card>
-            )
-          })}
+              </div>
+            )}
+
+            <div className="row row-cards">
+              {config.subroles.map((subrole, index) => {
+                const targetRoute = subrole.demoKey ? `/demo/step/1?role=${subrole.demoKey}` : '/demo/step/1'
+                const descriptionKey = showContext
+                  ? subrole.label.toLowerCase().replace(/\s+/g, '-')
+                  : ''
+                const description = showContext ? underwriterDescriptions[descriptionKey] : undefined
+                const badgeClass = index % 2 === 0 ? 'bg-green-lt' : 'bg-blue-lt'
+                return (
+                  <div className="col-12 col-md-6 col-xl-3" key={subrole.route}>
+                    <div className="card card-md">
+                      <div className="card-header">
+                        <h3 className="card-title">{subrole.label}</h3>
+                        <span className={`badge ${badgeClass}`}>Demo</span>
+                      </div>
+                      <div className="card-body">
+                        {description && (
+                          <>
+                            <div className="text-muted mb-1">Decides on {description.decision}</div>
+                            <div className="text-muted mb-3">Accountable for {description.accountability}</div>
+                          </>
+                        )}
+                        {!description && (
+                          <div className="text-muted mb-3">
+                            Start the guided demo flow (no data captured).
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          className="btn btn-primary w-100"
+                          onClick={() => navigate(targetRoute)}
+                        >
+                          Demo starten
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

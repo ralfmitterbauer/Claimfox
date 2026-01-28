@@ -4,7 +4,6 @@ import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
 import HeroBlockBackground from '@/assets/images/hero_block_1.png'
 import { useNavigate } from 'react-router-dom'
-import '@/styles/underwriter-premium.css'
 
 export default function UnderwriterRolePage() {
   const { lang } = useI18n()

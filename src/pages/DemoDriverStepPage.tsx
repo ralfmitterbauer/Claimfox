@@ -3,7 +3,6 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import '@/styles/underwriter-premium.css'
 
 type DriverDemoState = {
   authMethod: 'email' | 'phone'

@@ -7,7 +7,7 @@
   --muted: #65748b;
   --header-height: 64px;
   --bottom-nav-height: 72px;
-  font-family: 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--tblr-font-sans-serif, 'Source Sans 3', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
 }
 
 * {
@@ -23,9 +23,9 @@ body,
 body {
   margin: 0;
   min-height: 100%;
-  background: #f7f7f8;
-  color: var(--text);
-  font-family: inherit;
+  background: var(--tblr-bg-surface, #f6f8fb);
+  color: var(--tblr-body-color, var(--text));
+  font-family: var(--tblr-font-sans-serif, inherit);
 }
 
 button,
@@ -34,18 +34,10 @@ input {
 }
 
 a {
-  color: inherit;
+  color: var(--tblr-link-color, inherit);
   text-decoration: none;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--insurfox-orange);
-}
 
 .ui-card {
   background-color: #ffffff;
@@ -103,18 +95,6 @@ h6 {
   margin: 0 auto;
 }
 
-.page-title {
-  margin-bottom: 16px;
-  font-size: clamp(1.5rem, 4vw, 2.4rem);
-  color: var(--insurfox-orange);
-}
-
-.page {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  padding: 0 24px 32px;
-}
 
 .roles-page {
   gap: 1.5rem;

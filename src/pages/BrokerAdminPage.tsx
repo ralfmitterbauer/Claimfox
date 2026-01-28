@@ -2,7 +2,6 @@ import React from 'react'
 import Card from '@/components/ui/Card'
 import Header from '@/components/ui/Header'
 import { useI18n } from '@/i18n/I18nContext'
-import '@/styles/underwriter-premium.css'
 
 export default function BrokerAdminPage() {
   const { lang } = useI18n()

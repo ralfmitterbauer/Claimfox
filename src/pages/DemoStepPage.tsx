@@ -1,9 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
-import Header from '@/components/ui/Header'
-import Card from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import '@/styles/underwriter-premium.css'
 
 type RoleOption = {
   id: string
@@ -382,141 +378,197 @@ export default function DemoStepPage() {
   const accountability = selectedRole?.accountability ?? 'Accountability not set'
 
   return (
-    <section className="uw-page">
-      <div className="uw-container">
-        <Header
-          title={stepTitles[stepNumber]}
-          subtitle={flowCopy.subtitle}
-          subtitleColor="#65748b"
-          actions={(
-            <div className="uw-actions">
-              <Button onClick={handleBack} variant="secondary" disableHover>
-                Back
-              </Button>
-              <Button onClick={handleNext} disableHover>
-                {stepNumber === TOTAL_STEPS ? 'Finish Demo' : 'Next'}
-              </Button>
+    <div className="page">
+      <div className="page-wrapper">
+        <div className="page-header d-print-none">
+          <div className="container-xl">
+            <div className="row g-2 align-items-center">
+              <div className="col">
+                <div className="page-pretitle">Decision demo</div>
+                <h2 className="page-title">{stepTitles[stepNumber]}</h2>
+                <div className="text-muted">{flowCopy.subtitle}</div>
+              </div>
+              <div className="col-auto ms-auto">
+                <div className="btn-list">
+                  <button type="button" className="btn btn-outline-primary" onClick={handleBack}>
+                    Back
+                  </button>
+                  <button type="button" className="btn btn-primary" onClick={handleNext}>
+                    {stepNumber === TOTAL_STEPS ? 'Finish demo' : 'Next'}
+                  </button>
+                </div>
+              </div>
             </div>
-          )}
-        />
-
-        <div className="uw-grid uw-kpi">
-          <Card title="Progress" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{progressLabel}</strong>
-              <span className="uw-muted">Guided demo flow</span>
-            </div>
-          </Card>
-          <Card title="Role" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{roleLabel}</strong>
-              <span className="uw-muted">Decision owner</span>
-            </div>
-          </Card>
-          <Card title="Decision focus" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{decisionFocus}</strong>
-              <span className="uw-muted">Operational priority</span>
-            </div>
-          </Card>
-          <Card title="AI confidence" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{flowCopy.aiRecommendation.confidence}</strong>
-              <span className="uw-muted">HITL required</span>
-            </div>
-          </Card>
-          <Card title="SLA impact" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{flowCopy.governance.sla}</strong>
-              <span className="uw-muted">Time remaining</span>
-            </div>
-          </Card>
-          <Card title="Accountability" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>{accountability}</strong>
-              <span className="uw-muted">Governance owner</span>
-            </div>
-          </Card>
-        </div>
-
-        <div className="uw-grid uw-split">
-          <Card title="Decision inbox" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <table className="uw-table">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Type</th>
-                    <th>Risk</th>
-                    <th>SLA</th>
-                    <th>AI flag</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {flowCopy.inboxCases.map((item) => (
-                    <tr key={item.id}>
-                      <td>{item.id}</td>
-                      <td>{item.type}</td>
-                      <td>{item.risk}</td>
-                      <td>{item.sla}</td>
-                      <td>{item.flag}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
-          <Card title="Decision snapshot" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <strong>Recommended action</strong>
-              <div>{flowCopy.aiRecommendation.action}</div>
-              <div className="uw-muted">Required approvals: {flowCopy.governance.approvals}</div>
-              <div className="uw-muted">Authority level: {flowCopy.governance.authority}</div>
-              <div className="uw-muted">Policy version: {flowCopy.governance.policy}</div>
-            </div>
-          </Card>
-        </div>
-
-        <div className="uw-grid uw-triplet">
-          <Card title="AI suggestion" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <div className="uw-panel">AI suggestion — requires human review</div>
-              <div>{flowCopy.aiRecommendation.action}</div>
-              <ul>
-                {flowCopy.aiRecommendation.drivers.map((driver) => (
-                  <li key={driver}>{driver}</li>
-                ))}
-              </ul>
-            </div>
-          </Card>
-          <Card title="Governance" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <div>Approvals: {flowCopy.governance.approvals}</div>
-              <div>Authority: {flowCopy.governance.authority}</div>
-              <div>Policy: {flowCopy.governance.policy}</div>
-            </div>
-          </Card>
-          <Card title="SLA & escalation" variant="glass" className="uw-card">
-            <div className="uw-card-body">
-              <div>SLA impact: {flowCopy.governance.sla}</div>
-              <div className="uw-muted">Escalate if SLA is breached</div>
-              <div className="uw-muted">HITL checkpoint required</div>
-            </div>
-          </Card>
-        </div>
-
-        <Card title="Audit & logs" variant="glass" className="uw-card">
-          <div className="uw-card-body">
-            {flowCopy.auditTimeline.map((entry) => (
-              <div key={entry}>{entry}</div>
-            ))}
           </div>
-        </Card>
+        </div>
 
-        <div className="uw-disclaimer">
-          Demo data. AI suggestion — requires human review. HITL: AI suggests, humans decide.
+        <div className="page-body">
+          <div className="container-xl">
+            <div className="row row-cards">
+              {[
+                { title: 'Progress', value: progressLabel, note: 'Guided flow', color: 'bg-blue-lt' },
+                { title: 'Role', value: roleLabel, note: 'Decision owner', color: 'bg-indigo-lt' },
+                { title: 'Decision focus', value: decisionFocus, note: 'Priority', color: 'bg-azure-lt' },
+                { title: 'AI confidence', value: flowCopy.aiRecommendation.confidence, note: 'HITL required', color: 'bg-yellow-lt' },
+                { title: 'SLA impact', value: flowCopy.governance.sla, note: 'Time remaining', color: 'bg-red-lt' },
+                { title: 'Accountability', value: accountability, note: 'Governance', color: 'bg-green-lt' }
+              ].map((item) => (
+                <div className="col-6 col-md-4 col-xl-2" key={item.title}>
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="d-flex align-items-center">
+                        <span className={`badge ${item.color} me-2`}>{item.title}</span>
+                      </div>
+                      <div className="mt-2 fw-bold">{item.value}</div>
+                      <div className="text-muted">{item.note}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="row row-cards mt-2">
+              <div className="col-12 col-xl-8">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">Decision inbox</h3>
+                    <span className="badge bg-blue-lt">Live queue</span>
+                  </div>
+                  <div className="table-responsive">
+                    <table className="table card-table table-vcenter">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Type</th>
+                          <th>Risk</th>
+                          <th>SLA</th>
+                          <th>AI flag</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {flowCopy.inboxCases.map((item) => (
+                          <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td>{item.type}</td>
+                            <td>
+                              <span className={`badge ${item.risk === 'High' ? 'bg-red-lt' : item.risk === 'Medium' ? 'bg-yellow-lt' : 'bg-green-lt'}`}>
+                                {item.risk}
+                              </span>
+                            </td>
+                            <td>{item.sla}</td>
+                            <td>
+                              <span className="badge bg-purple-lt">{item.flag}</span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-xl-4">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">Decision snapshot</h3>
+                    <span className="badge bg-orange-lt">AI assisted</span>
+                  </div>
+                  <div className="card-body">
+                    <div className="mb-3">
+                      <div className="text-muted">Recommended action</div>
+                      <div className="fw-bold">{flowCopy.aiRecommendation.action}</div>
+                    </div>
+                    <div className="text-muted">Approvals: {flowCopy.governance.approvals}</div>
+                    <div className="text-muted">Authority: {flowCopy.governance.authority}</div>
+                    <div className="text-muted">Policy: {flowCopy.governance.policy}</div>
+                    <div className="mt-3">
+                      <span className="badge bg-yellow-lt">AI suggestion — requires human review</span>
+                    </div>
+                    <div className="mt-3">
+                      <svg width="100%" height="64" viewBox="0 0 200 64" fill="none">
+                        <path d="M0 48 C30 20, 60 60, 90 28 C120 -2, 150 40, 200 16" stroke="#206bc4" strokeWidth="3" fill="none" />
+                        <circle cx="200" cy="16" r="4" fill="#206bc4" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="row row-cards mt-2">
+              <div className="col-12 col-md-6 col-xl-4">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">AI suggestion</h3>
+                    <span className="badge bg-yellow-lt">Human review</span>
+                  </div>
+                  <div className="card-body">
+                    <div className="text-muted mb-2">{flowCopy.aiRecommendation.action}</div>
+                    <ul className="list-unstyled m-0">
+                      {flowCopy.aiRecommendation.drivers.map((driver) => (
+                        <li key={driver}>{driver}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-xl-4">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">Governance</h3>
+                    <span className="badge bg-indigo-lt">Carrier ready</span>
+                  </div>
+                  <div className="card-body">
+                    <div>Approvals: {flowCopy.governance.approvals}</div>
+                    <div>Authority: {flowCopy.governance.authority}</div>
+                    <div>Policy: {flowCopy.governance.policy}</div>
+                    <div className="text-muted mt-2">Audit trail mandatory for every override.</div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-xl-4">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">SLA & escalation</h3>
+                    <span className="badge bg-red-lt">Time-bound</span>
+                  </div>
+                  <div className="card-body">
+                    <div>SLA impact: {flowCopy.governance.sla}</div>
+                    <div className="text-muted">Escalate if SLA is breached.</div>
+                    <div className="text-muted">HITL checkpoint required.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="row row-cards mt-2">
+              <div className="col-12">
+                <div className="card">
+                  <div className="card-header">
+                    <h3 className="card-title">Audit & logs</h3>
+                    <span className="badge bg-green-lt">Audit-ready</span>
+                  </div>
+                  <div className="card-body">
+                    <div className="row">
+                      {flowCopy.auditTimeline.map((entry) => (
+                        <div className="col-12 col-md-6" key={entry}>
+                          <div className="mb-2">
+                            <span className="badge bg-blue-lt me-2">Log</span>
+                            {entry}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="alert alert-info mt-3" role="alert">
+              Demo data. AI suggestion — requires human review. HITL: AI suggests, humans decide.
+            </div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

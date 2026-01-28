@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './styles.css'
 import '../styles/insurfox-tokens.css'
-import '../styles/underwriter-premium.css'
 
 const root = document.getElementById('root')
 
