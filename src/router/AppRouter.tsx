@@ -101,6 +101,7 @@ export default function AppRouter() {
         <Route path="/roles/underwriter/senior" element={<UnderwriterSeniorPage />} />
         <Route path="/roles/underwriter/carrier" element={<UnderwriterCarrierPage />} />
         <Route path="/roles/underwriter/compliance" element={<UnderwriterCompliancePage />} />
+        <Route path="/insurfox-iaas" element={<InsurfoxIaaSPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
@@ -176,7 +177,6 @@ export default function AppRouter() {
         <Route path="/business-model-antares-test" element={<BusinessModelAntaresPage />} />
         <Route path="/market-overview-logistics" element={<MarketOverviewPage />} />
         <Route path="/bcia" element={<BciaDeckPage />} />
-        <Route path="/insurfox-iaas" element={<InsurfoxIaaSPage />} />
         <Route path="/premium-corridor" element={<PremiumCorridorPage />} />
         <Route path="/setup" element={<SetupPage />} />
         <Route path="/storyblok-test" element={<StoryblokTestPage />} />
