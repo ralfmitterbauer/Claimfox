@@ -31,6 +31,33 @@ const demoTracks = [
   }
 ]
 
+const clickDummies = [
+  {
+    id: 'guided-flow',
+    title: 'Guided Decision Flow',
+    description: 'Role to audit in five clear steps.',
+    cta: 'Start flow'
+  },
+  {
+    id: 'claims-legal',
+    title: 'Claims & Legal Review',
+    description: 'Dispute handling with explainable guidance.',
+    cta: 'Open dummy'
+  },
+  {
+    id: 'finance-reinsurance',
+    title: 'Finance & Reinsurance',
+    description: 'Capital decisions with governance guardrails.',
+    cta: 'Open dummy'
+  },
+  {
+    id: 'fraud-compliance',
+    title: 'Fraud & Compliance',
+    description: 'Anomaly escalation with audit trail.',
+    cta: 'Open dummy'
+  }
+]
+
 export default function DemoOverviewPage() {
   const navigate = useNavigate()
 
@@ -53,41 +80,67 @@ export default function DemoOverviewPage() {
           )}
         />
 
-        <div className="uw-grid uw-cards">
-          {demoTracks.map((track) => (
-            <Card
-              key={track.id}
-              title={track.title}
-              subtitle={track.description}
-              variant="glass"
-              className="uw-card"
-              interactive
-              onClick={() => navigate('/demo/step/1')}
-            >
-              <div className="uw-card-body" style={{ gap: '0.75rem' }}>
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {track.badges.map((badge) => (
-                    <span
-                      key={badge}
-                      style={{
-                        fontSize: '0.72rem',
-                        letterSpacing: '0.05em',
-                        textTransform: 'uppercase',
-                        padding: '0.25rem 0.5rem',
-                        border: '1px solid var(--ix-border)',
-                        color: 'var(--ix-text-muted)'
-                      }}
-                    >
-                      {badge}
-                    </span>
-                  ))}
+        <div className="uw-section">
+          <h2 className="uw-section-title">Decision storylines</h2>
+          <div className="uw-grid uw-cards">
+            {demoTracks.map((track) => (
+              <Card
+                key={track.id}
+                title={track.title}
+                subtitle={track.description}
+                variant="glass"
+                className="uw-card"
+                interactive
+                onClick={() => navigate('/demo/step/1')}
+              >
+                <div className="uw-card-body" style={{ gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {track.badges.map((badge) => (
+                      <span
+                        key={badge}
+                        style={{
+                          fontSize: '0.72rem',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          padding: '0.25rem 0.5rem',
+                          border: '1px solid var(--ix-border)',
+                          color: 'var(--ix-text-muted)'
+                        }}
+                      >
+                        {badge}
+                      </span>
+                    ))}
+                  </div>
+                  <Button onClick={() => navigate('/demo/step/1')} variant="secondary" disableHover>
+                    Open track
+                  </Button>
                 </div>
-                <Button onClick={() => navigate('/demo/step/1')} variant="secondary" disableHover>
-                  Open track
-                </Button>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <div className="uw-section">
+          <h2 className="uw-section-title">Click dummies</h2>
+          <div className="uw-grid uw-cards">
+            {clickDummies.map((dummy) => (
+              <Card
+                key={dummy.id}
+                title={dummy.title}
+                subtitle={dummy.description}
+                variant="glass"
+                className="uw-card"
+                interactive
+                onClick={() => navigate('/demo/step/1')}
+              >
+                <div className="uw-card-body" style={{ gap: '0.75rem' }}>
+                  <Button onClick={() => navigate('/demo/step/1')} variant="secondary" disableHover>
+                    {dummy.cta}
+                  </Button>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </section>
