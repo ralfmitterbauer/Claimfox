@@ -30,11 +30,11 @@
 
 /* === Phone Mock Shell === */
 .phone-shell {
-  width: 420px;
-  height: 746px;
+  width: 344px;
+  height: 720px;
   max-width: 92vw;
   max-height: calc(100vh - 220px);
-  aspect-ratio: 714 / 1269;
+  aspect-ratio: 71.5 / 149.6;
   border-radius: 38px;
   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.14);
   overflow: hidden;
@@ -56,11 +56,11 @@
 /* Screen area inside the mock */
 .phone-frame {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 38px;
+  top: 9%;
+  left: 8%;
+  right: 8%;
+  bottom: 9.5%;
+  border-radius: 28px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -272,11 +272,11 @@
 
 /* iPhone-like aspect ratio (portrait) + locked sizing */
 .phone-shell {
-  width: 420px;                 /* stable width so layout doesn't jump */
-  height: 746px;                /* stable height */
+  width: 344px;                 /* stable width so layout doesn't jump */
+  height: 720px;                /* stable height */
   max-width: 40vw;              /* prevent exploding on wide screens */
   max-height: calc(100vh - 220px); /* keep inside viewport under header */
-  aspect-ratio: 714 / 1269;
+  aspect-ratio: 71.5 / 149.6;
   border-radius: 38px;
   overflow: hidden;
 }
@@ -284,15 +284,15 @@
 /* If viewport is tight, scale down slightly but keep ratio */
 @media (max-height: 820px) {
   .phone-shell {
-    width: 360px;
-    height: 639px;
+    width: 318px;
+    height: 665px;
     max-height: calc(100vh - 200px);
   }
 }
 @media (max-height: 740px) {
   .phone-shell {
-    width: 320px;
-    height: 568px;
+    width: 292px;
+    height: 610px;
     max-height: calc(100vh - 180px);
   }
 }
