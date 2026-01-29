@@ -61,6 +61,11 @@ const STEP_META: Array<{ id: StepId; label: string; short: string; subtitle: str
   { id: 'claims', label: 'Claims', short: 'Claims', subtitle: 'FNOL chatbot intake' },
   { id: 'chat', label: 'Chat', short: 'Chat', subtitle: 'Insurer communication' }
 ]
+const STEP_IDS: StepId[] = STEP_META.map((item) => item.id)
+const STEP_TITLES: Record<StepId, string> = STEP_META.reduce((acc, item) => {
+  acc[item.id] = item.label
+  return acc
+}, {} as Record<StepId, string>)
 
 const INITIAL_CHAT: ChatMessage[] = [
   { id: 'c1', from: 'driver', text: 'Hi, I need help with my claim.' },
@@ -99,7 +104,7 @@ const writeDemoState = (next: DriverDemoState) => sessionStorage.setItem(DEMO_DR
 
 const readAudit = (): AuditEntry[] => safeParse(sessionStorage.getItem(DEMO_DRIVER_AUDIT), [])
 const appendAudit = (message: string) => {
-  const ts = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
+  const ts = new Date().toISOString()
   const next = [{ ts, message }, ...readAudit()]
   sessionStorage.setItem(DEMO_DRIVER_AUDIT, JSON.stringify(next))
 }
@@ -256,7 +261,7 @@ export default function DemoDriverStepPage() {
     { label: 'SLA Running', active: demoState.slaRunning, tone: 'red' }
   ]
 
-  const aiHints: Record<StepId, string[]> = {
+  const hitlBullets: Record<StepId, string[]> = {
     register: ['AI checks domain risk score', 'Auto-approves low risk signup', 'No decision without human override'],
     onboarding: ['AI suggests completion order', 'Flags missing vehicle info', 'Human review required for exceptions'],
     profile: ['AI validates company match', 'Detects policy overlap', 'Human review for overrides'],
@@ -836,7 +841,9 @@ export default function DemoDriverStepPage() {
     )
   }
 
-  const auditDisplay = auditLog.length === 0 ? [{ ts: '—', message: 'No events yet' }] : auditLog
+  const currentStep = step.id
+  const audit = auditLog
+  const snapshot = snapshotBadges.map((badge) => ({ label: badge.label, on: badge.active }))
 
   return (
     <div className="page">
@@ -895,80 +902,59 @@ export default function DemoDriverStepPage() {
                 {adminOpen ? 'Hide admin view' : 'Show admin view'}
               </button>
               <div className="demo-admin-inner">
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Step navigation</h3>
-                  </div>
-                  <div className="list-group list-group-flush">
-                    {STEP_META.map((item) => (
+                <div className="admin-panel">
+                  <h4>Step navigation</h4>
+                  <div className="list-group">
+                    {STEP_IDS.map((s) => (
                       <button
-                        key={item.id}
+                        key={s}
                         type="button"
-                        className={`list-group-item list-group-item-action d-flex align-items-center justify-content-between ${item.id === step.id ? 'active' : ''}`}
-                        onClick={() => handleJump(item.id)}
+                        className={`list-group-item list-group-item-action d-flex align-items-center justify-content-between ${s === currentStep ? 'active' : ''}`}
+                        onClick={() => handleJump(s)}
                       >
-                        <span>{item.label}</span>
-                        <span className="badge bg-blue-lt text-blue">{item.short}</span>
+                        <span>{STEP_TITLES[s]}</span>
+                        <span className="badge bg-blue-lt">{s}</span>
                       </button>
                     ))}
                   </div>
-                </div>
 
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">AI & HITL</h3>
-                  </div>
-                  <div className="card-body">
-                    <ul className="list-unstyled m-0 d-grid gap-2">
-                      {aiHints[step.id].map((hint) => (
-                        <li key={hint} className="d-flex align-items-center gap-2">
-                          <span className="badge bg-orange-lt text-orange">AI</span>
-                          <span>{hint}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                  <hr style={{ margin: '0.75rem 0' }} />
 
-                <div className="card">
-                  <div className="card-header">
-                    <div className="d-flex align-items-center justify-content-between w-100">
-                      <h3 className="card-title mb-0">Audit log</h3>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-primary"
-                        onClick={() => {
-                          clearAudit()
-                          setAuditLog([])
-                        }}
-                      >
-                        Clear
-                      </button>
-                    </div>
-                  </div>
-                  <div className="card-body d-grid gap-2">
-                    {auditDisplay.map((entry, index) => (
-                      <div key={`${entry.ts}-${index}`} className="d-flex align-items-center justify-content-between">
-                        <span>{entry.message}</span>
-                        <span className="text-muted">{entry.ts}</span>
+                  <h4>AI & HITL</h4>
+                  <ul>
+                    {hitlBullets[currentStep].map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+
+                  <hr style={{ margin: '0.75rem 0' }} />
+
+                  <h4>Audit log</h4>
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    {audit.slice(0, 10).map((a, idx) => (
+                      <div key={`${a.ts}-${idx}`} className="admin-audit-item">
+                        <div className="ts">{new Date(a.ts).toLocaleString()}</div>
+                        <div className="msg">{a.message}</div>
                       </div>
                     ))}
+                    {audit.length === 0 && <div className="text-muted">No entries yet.</div>}
                   </div>
-                </div>
 
-                <div className="card">
-                  <div className="card-header">
-                    <h3 className="card-title">Snapshot</h3>
-                  </div>
-                  <div className="card-body d-flex flex-wrap gap-2">
-                    {snapshotBadges.map((badge) => (
-                      <span
-                        key={badge.label}
-                        className={`badge ${badge.active ? `bg-${badge.tone}-lt text-${badge.tone}` : 'bg-gray-lt text-muted'}`}
-                      >
-                        {badge.label}
+                  <hr style={{ margin: '0.75rem 0' }} />
+
+                  <h4>Snapshot</h4>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {snapshot.map((s) => (
+                      <span key={s.label} className={`badge ${s.on ? 'bg-success-lt' : 'bg-secondary-lt'}`}>
+                        {s.label}
                       </span>
                     ))}
+                  </div>
+
+                  <hr style={{ margin: '0.75rem 0' }} />
+
+                  <div style={{ fontSize: '0.78rem', color: 'var(--tblr-muted, #667085)' }}>
+                    Demo data only. AI suggestions require human review.
                   </div>
                 </div>
               </div>

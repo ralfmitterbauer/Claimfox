@@ -238,3 +238,178 @@
   from { opacity: 0; transform: translateY(2px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* =========================================================
+   Overrides: iPhone ratio + fixed sizing + admin as 1 block
+   ========================================================= */
+
+/* Make demo fit in viewport height and keep phone position stable */
+.demo-shell {
+  max-width: 1200px;
+  padding: 1rem;
+  gap: 1rem;
+  align-items: start;
+}
+
+/* LEFT column: keep phone centered and stable */
+.demo-driver {
+  display: grid;
+  place-items: start center;
+}
+
+/* iPhone-like aspect ratio (portrait) + locked sizing */
+.phone-frame {
+  width: 340px;                 /* stable width so layout doesn't jump */
+  height: 720px;                /* stable height */
+  max-width: 40vw;              /* prevent exploding on wide screens */
+  max-height: calc(100vh - 220px); /* keep inside viewport under header */
+  aspect-ratio: 9 / 19.5;       /* iPhone-ish */
+  border-radius: 38px;
+  overflow: hidden;
+}
+
+/* If viewport is tight, scale down slightly but keep ratio */
+@media (max-height: 820px) {
+  .phone-frame {
+    width: 320px;
+    height: 680px;
+    max-height: calc(100vh - 200px);
+  }
+}
+@media (max-height: 740px) {
+  .phone-frame {
+    width: 300px;
+    height: 640px;
+    max-height: calc(100vh - 180px);
+  }
+}
+
+/* phone content scrolls INSIDE the phone (frame stays fixed size) */
+.phone-body {
+  overflow: auto;
+  max-height: calc(100% - 108px); /* statusbar + appbar */
+  padding: 12px;
+  gap: 0.75rem;
+}
+
+/* Make phone UI denser */
+.phone-statusbar {
+  padding: 12px 14px 8px;
+  font-size: 0.72rem;
+}
+.phone-appbar {
+  padding: 10px 14px 12px;
+}
+.phone-appbar-title strong {
+  font-size: 0.92rem;
+}
+.phone-appbar-title span {
+  font-size: 0.75rem;
+}
+.phone-card {
+  border-radius: 16px;
+}
+.phone-card-header {
+  padding: 10px 10px 8px;
+}
+.phone-card-header .title {
+  font-size: 0.85rem;
+}
+.phone-card-header .hint {
+  font-size: 0.72rem;
+}
+.phone-card-body {
+  padding: 10px;
+  gap: 0.6rem;
+}
+.phone-bubble {
+  font-size: 0.84rem;
+  padding: 0.5rem 0.65rem;
+}
+.phone-chip {
+  font-size: 0.74rem;
+  padding: 0.3rem 0.55rem;
+}
+
+/* RIGHT column: separator line + single admin block (no rounded corners) */
+.demo-shell {
+  grid-template-columns: minmax(0, 1fr) 420px;
+}
+.demo-admin {
+  position: sticky;
+  top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--insurfox-blue, #2563eb); /* Insurfox blue */
+}
+
+/* admin container – one single block */
+.demo-admin-inner {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-panel {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff;
+  padding: 0.75rem;
+}
+
+/* compact admin typography so it fits */
+.admin-panel h4 {
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem 0;
+}
+.admin-panel ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.admin-panel li {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  margin-bottom: 0.25rem;
+}
+
+/* compact navigation */
+.admin-panel .list-group-item {
+  padding: 0.45rem 0.55rem !important;
+  border-radius: 0 !important;
+  font-size: 0.8rem;
+}
+.admin-panel .badge {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0 !important;
+}
+
+/* compact audit log */
+.admin-audit-item {
+  font-size: 0.78rem;
+  line-height: 1.2;
+}
+.admin-audit-item .ts {
+  font-size: 0.72rem;
+  color: var(--tblr-muted, #667085);
+}
+.admin-audit-item .msg {
+  font-weight: 600;
+}
+
+/* keep admin static on narrow screens */
+@media (max-width: 960px) {
+  .demo-shell {
+    grid-template-columns: 1fr;
+  }
+  .demo-admin {
+    position: static;
+    padding-left: 0;
+    border-left: none;
+    border-top: 3px solid var(--insurfox-blue, #2563eb);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .phone-frame {
+    max-width: 92vw;
+  }
+}
