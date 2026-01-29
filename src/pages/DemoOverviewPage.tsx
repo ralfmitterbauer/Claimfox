@@ -7,6 +7,8 @@ import InsuranceIcon from '@/assets/images/insurance_icon.png'
 import FleetIcon from '@/assets/images/flotte.png'
 import LogisticsIcon from '@/assets/images/logistic_icon.png'
 import BrokerIcon from '@/assets/images/broker_icon.png'
+import FinanceIcon from '@/assets/images/finance.png'
+import DriverIcon from '@/assets/images/driver.png'
 
 export default function DemoOverviewPage() {
   const navigate = useNavigate()
@@ -168,7 +170,12 @@ export default function DemoOverviewPage() {
                                       className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
                                       onClick={() => navigate(item.to)}
                                     >
-                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="d-flex align-items-center gap-2">
+                                        {item.label === 'Fahrer' && (
+                                          <img src={DriverIcon} alt="" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+                                        )}
+                                        <span className="fw-semibold">{item.label}</span>
+                                      </span>
                                       <span className="badge bg-blue-lt text-blue">Demo</span>
                                     </button>
                                   ))}
@@ -227,11 +234,8 @@ export default function DemoOverviewPage() {
                                 onClick={() => setFinanceOpen((prev) => !prev)}
                               >
                                 <span className="d-flex align-items-center gap-2">
-                                  <span className="avatar avatar-xs bg-blue-lt text-blue">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                      <path d="M12 5v14" />
-                                      <path d="M5 12h14" />
-                                    </svg>
+                                  <span className="d-inline-flex align-items-center">
+                                    <img src={FinanceIcon} alt="" style={{ width: 32, height: 32, objectFit: 'contain' }} />
                                   </span>
                                   <span className="fw-semibold">{role.label}</span>
                                 </span>
