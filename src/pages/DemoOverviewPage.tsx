@@ -76,7 +76,7 @@ export default function DemoOverviewPage() {
         </div>
         <div className="page-body">
           <div className="container-xl">
-            <div className="row row-cards">
+            <div className="row row-cards align-items-stretch">
               {overviewGroups.map((group, index) => {
                 const meta = groupMeta[index]
                 return (
@@ -116,18 +116,21 @@ export default function DemoOverviewPage() {
                             )}
                           </svg>
                         </span>
-                        <h3 className="card-title mb-0">{group.title}</h3>
+                        <div>
+                          <h3 className="card-title mb-0">{group.title}</h3>
+                          <div className="text-muted fs-4">Demo roles</div>
+                        </div>
                       </div>
                       <span className={`badge ${meta?.accent ?? 'bg-indigo-lt'}`}>
                         {group.items.length} roles
                       </span>
                     </div>
-                    <div className="card-body d-grid gap-2">
-                      {group.items.map((role, roleIndex) => (
+                    <div className="list-group list-group-flush">
+                      {group.items.map((role) => (
                         <button
                           key={role.roleId}
                           type="button"
-                          className={`btn btn-outline-${roleIndex % 2 === 0 ? 'primary' : 'secondary'} w-100 justify-content-between`}
+                          className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
                           onClick={() => {
                             if (role.roleId === 'driver-demo') {
                               navigate('/demo-driver')
@@ -137,15 +140,15 @@ export default function DemoOverviewPage() {
                           }}
                         >
                           <span className="d-flex align-items-center gap-2">
-                            <span className="avatar avatar-xs bg-blue-lt">
+                            <span className="avatar avatar-xs bg-blue-lt text-blue">
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 5v14" />
                                 <path d="M5 12h14" />
                               </svg>
                             </span>
-                            {role.label}
+                            <span className="fw-semibold">{role.label}</span>
                           </span>
-                          <span className="text-muted">Demo</span>
+                          <span className="badge bg-blue-lt text-blue">Demo</span>
                         </button>
                       ))}
                     </div>
