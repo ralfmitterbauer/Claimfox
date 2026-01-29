@@ -1,92 +1,76 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 
-type DriverDemoState = {
-  authMethod: 'email' | 'phone'
-  contact: string
-  password: string
-  agreed: boolean
-  accountCreated: boolean
-  profile: {
-    fullName: string
-    dob: string
-    licensePlate: string
-    vehicleType: string
-    policyNumber: string
-    insurer: string
-  }
-  profileSkipped: boolean
-  claim: {
-    claimType: string
-    when: string
-    location: string
-    injured: string
-    description: string
-    claimId: string
-  }
-  uploads: {
-    photos: boolean
-    report: boolean
-    license: boolean
-  }
-  chatLog: { id: string; from: 'driver' | 'insurer'; text: string }[]
+const STEP_IDS = ['register', 'onboarding', 'profile', 'identification', 'quote', 'purchase', 'claims', 'chat'] as const
+
+type StepId = (typeof STEP_IDS)[number]
+
+type DemoState = {
+  verified: boolean
+  quoteReady: boolean
+  policyActive: boolean
+  claimSubmitted: boolean
+  locationCaptured: boolean
+  timeCaptured: boolean
 }
 
-const STEP_IDS = ['register', 'profile', 'claim', 'upload', 'chat', 'summary'] as const
+type ChatMessage = { id: string; from: 'driver' | 'insurer'; text: string }
 
-const STEP_TITLES: Record<(typeof STEP_IDS)[number], string> = {
-  register: 'Registration',
-  profile: 'Profile',
-  claim: 'Report claim',
-  upload: 'Upload evidence',
-  chat: 'Chat support',
-  summary: 'Summary'
-}
+type StepMeta = { id: StepId; label: string; short: string }
 
-const INITIAL_CHAT = [
-  { id: 'm1', from: 'driver' as const, text: 'Hi, I reported an accident. What’s next?' },
-  { id: 'm2', from: 'insurer' as const, text: 'Thanks. Please confirm location and if vehicle is drivable.' },
-  { id: 'm3', from: 'driver' as const, text: 'Vehicle drivable, location Munich.' },
-  { id: 'm4', from: 'insurer' as const, text: 'We assigned handler. Next step: repair partner or payout options.' },
-  { id: 'm5', from: 'insurer' as const, text: 'Would you like a repair appointment?' },
-  { id: 'm6', from: 'driver' as const, text: 'Prefer payout.' }
+const STEP_META: StepMeta[] = [
+  { id: 'register', label: 'Register', short: 'Register' },
+  { id: 'onboarding', label: 'Onboarding', short: 'Onboard' },
+  { id: 'profile', label: 'Profile', short: 'Profile' },
+  { id: 'identification', label: 'Identification', short: 'ID Check' },
+  { id: 'quote', label: 'Quote', short: 'Quote' },
+  { id: 'purchase', label: 'Purchase', short: 'Purchase' },
+  { id: 'claims', label: 'Claims (FNOL)', short: 'Claims' },
+  { id: 'chat', label: 'Chat', short: 'Chat' }
 ]
 
-const createInitialState = (): DriverDemoState => ({
-  authMethod: 'email',
-  contact: 'alex.driver@demo.insurfox',
-  password: 'demo',
-  agreed: true,
-  accountCreated: false,
-  profile: {
-    fullName: 'Alex Driver',
-    dob: '12 Apr 1993',
-    licensePlate: 'M-IF 421',
-    vehicleType: 'Car',
-    policyNumber: 'PL-204889',
-    insurer: 'Atlas Insurance'
-  },
-  profileSkipped: false,
-  claim: {
-    claimType: 'Accident',
-    when: 'Today',
-    location: 'Munich',
-    injured: 'No',
-    description: 'Rear-end collision at traffic light.',
-    claimId: 'CLM-10421'
-  },
-  uploads: {
-    photos: true,
-    report: true,
-    license: true
-  },
-  chatLog: INITIAL_CHAT
-})
+const INITIAL_CHAT: ChatMessage[] = [
+  { id: 'm1', from: 'driver', text: 'Hi, I need help with my claim.' },
+  { id: 'm2', from: 'insurer', text: 'Thanks. I can see your FNOL. Can you confirm the location?' },
+  { id: 'm3', from: 'driver', text: 'Munich, Leopoldstrasse 14.' },
+  { id: 'm4', from: 'insurer', text: 'Got it. A handler will review. Do you prefer repair or payout?' }
+]
+
+const defaultState: DemoState = {
+  verified: false,
+  quoteReady: false,
+  policyActive: false,
+  claimSubmitted: false,
+  locationCaptured: false,
+  timeCaptured: false
+}
+
+const stateKey = 'driverDemoState'
+const chatKey = 'driverDemoChat'
+
+const safeParse = <T,>(value: string | null, fallback: T): T => {
+  if (!value) return fallback
+  try {
+    return JSON.parse(value) as T
+  } catch {
+    return fallback
+  }
+}
 
 export default function DemoDriverStepPage() {
   const { stepId } = useParams()
   const navigate = useNavigate()
-  const state = createInitialState()
+
+  const [demoState, setDemoState] = useState<DemoState>(() => safeParse(sessionStorage.getItem(stateKey), defaultState))
+  const [chatLog, setChatLog] = useState<ChatMessage[]>(() => safeParse(sessionStorage.getItem(chatKey), INITIAL_CHAT))
+
+  useEffect(() => {
+    sessionStorage.setItem(stateKey, JSON.stringify(demoState))
+  }, [demoState])
+
+  useEffect(() => {
+    sessionStorage.setItem(chatKey, JSON.stringify(chatLog))
+  }, [chatLog])
 
   const stepIndex = useMemo(
     () => STEP_IDS.findIndex((step) => step === stepId),
@@ -116,149 +100,312 @@ export default function DemoDriverStepPage() {
     navigate(`/demo-driver/step/${STEP_IDS[stepIndex + 1]}`)
   }
 
-  const stepContent = {
-    register: {
-      inboxRows: [
-        { item: 'Email', value: state.contact },
-        { item: 'Password', value: '••••••••' },
-        { item: 'Consent', value: 'Granted (demo)' }
-      ],
-      snapshot: [
-        { label: 'Account', value: 'Created (demo)' },
-        { label: 'Login', value: 'Not required' }
-      ]
-    },
-    profile: {
-      inboxRows: [
-        { item: 'Full name', value: state.profile.fullName },
-        { item: 'Date of birth', value: state.profile.dob },
-        { item: 'License plate', value: state.profile.licensePlate },
-        { item: 'Vehicle type', value: state.profile.vehicleType }
-      ],
-      snapshot: [
-        { label: 'Policy number', value: state.profile.policyNumber },
-        { label: 'Insurer', value: state.profile.insurer }
-      ]
-    },
-    claim: {
-      inboxRows: [
-        { item: 'Incident type', value: state.claim.claimType },
-        { item: 'When', value: state.claim.when },
-        { item: 'Where', value: state.claim.location },
-        { item: 'Injured', value: state.claim.injured }
-      ],
-      snapshot: [
-        { label: 'Claim ID', value: state.claim.claimId },
-        { label: 'SLA', value: '24h initial response' }
-      ]
-    },
-    upload: {
-      inboxRows: [
-        { item: 'Damage photos', value: 'Uploaded (demo)' },
-        { item: 'Police report', value: 'Uploaded (demo)' },
-        { item: 'Driver license', value: 'Uploaded (demo)' }
-      ],
-      snapshot: [
-        { label: 'Encryption', value: 'Active' },
-        { label: 'Claim file', value: 'Updated' }
-      ]
-    },
-    chat: {
-      inboxRows: state.chatLog.map((item) => ({ item: item.from === 'driver' ? 'Driver' : 'Insurer', value: item.text })),
-      snapshot: [
-        { label: 'Handler', value: 'Assigned' },
-        { label: 'Status', value: 'HITL' }
-      ]
-    },
-    summary: {
-      inboxRows: [
-        { item: 'Account created', value: 'Yes' },
-        { item: 'Profile saved', value: 'Yes' },
-        { item: 'Claim reported', value: state.claim.claimId },
-        { item: 'Evidence attached', value: 'Yes' },
-        { item: 'Chat log', value: 'Recorded' }
-      ],
-      snapshot: [
-        { label: 'Outcome', value: 'Audit-ready' },
-        { label: 'Next step', value: 'Repair or payout' }
-      ]
-    }
+  const handleJump = (step: StepId) => {
+    navigate(`/demo-driver/step/${step}`)
+  }
+
+  const stepperStatus = {
+    identification: demoState.verified,
+    quote: demoState.quoteReady,
+    purchase: demoState.policyActive,
+    claims: demoState.claimSubmitted
+  }
+
+  const appendChat = (text: string) => {
+    setChatLog((prev) => [
+      ...prev,
+      { id: `m${prev.length + 1}`, from: 'driver', text },
+      { id: `m${prev.length + 2}`, from: 'insurer', text: 'Thanks. A handler response is queued (demo).' }
+    ])
+  }
+
+  const claimLocation = demoState.locationCaptured ? 'Munich, Leopoldstrasse 14' : 'Capture location'
+  const claimTime = demoState.timeCaptured ? '29 Jan 2026, 08:42' : 'Capture timestamp'
+
+  const stepView = {
+    register: (
+      <div className="d-flex flex-column gap-3">
+        <div className="d-flex align-items-center justify-content-between">
+          <div>
+            <div className="text-muted">Prefilled email</div>
+            <div className="fw-bold">alex.driver@insurfox.demo</div>
+          </div>
+          <span className="badge bg-blue-lt text-blue">Verified domain</span>
+        </div>
+        <div className="d-flex flex-wrap gap-2">
+          <span className="badge bg-indigo-lt text-indigo">No password needed</span>
+          <span className="badge bg-green-lt text-green">Consent stored</span>
+          <span className="badge bg-azure-lt text-azure">2 min setup</span>
+        </div>
+        <button type="button" className="btn btn-primary" onClick={goNext}>Confirm email</button>
+      </div>
+    ),
+    onboarding: (
+      <div className="d-flex flex-column gap-3">
+        <div className="text-muted">Guided onboarding wizard</div>
+        <div className="d-flex flex-wrap gap-2">
+          {['Account', 'Vehicle', 'Coverage', 'Support'].map((item, index) => (
+            <span key={item} className={`badge ${index < 2 ? 'bg-green-lt text-green' : 'bg-blue-lt text-blue'}`}>
+              {item}
+            </span>
+          ))}
+        </div>
+        <div className="progress">
+          <div className="progress-bar bg-blue" style={{ width: '55%' }} />
+        </div>
+        <button type="button" className="btn btn-primary" onClick={goNext}>Continue onboarding</button>
+      </div>
+    ),
+    profile: (
+      <div className="d-flex flex-column gap-3">
+        <div className="row g-2">
+          {[
+            { label: 'Driver', value: 'Alex Driver' },
+            { label: 'Company', value: 'Insurfox Fleet GmbH' },
+            { label: 'Vehicle', value: 'BMW 320d · M-IF 421' },
+            { label: 'Coverage', value: 'Carrier liability + casco' }
+          ].map((item) => (
+            <div className="col-12 col-md-6" key={item.label}>
+              <div className="border rounded-3 p-3">
+                <div className="text-muted">{item.label}</div>
+                <div className="fw-bold">{item.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button type="button" className="btn btn-primary" onClick={goNext}>Confirm profile</button>
+      </div>
+    ),
+    identification: (
+      <div className="d-flex flex-column gap-3">
+        <div className="row g-2">
+          {[
+            { label: 'ID document', value: 'German ID · OCR matched' },
+            { label: 'Selfie match', value: demoState.verified ? 'Match verified' : 'Pending verification' }
+          ].map((item) => (
+            <div className="col-12 col-md-6" key={item.label}>
+              <div className="border rounded-3 p-3 d-flex justify-content-between align-items-center">
+                <div>
+                  <div className="text-muted">{item.label}</div>
+                  <div className="fw-bold">{item.value}</div>
+                </div>
+                <span className={`badge ${demoState.verified ? 'bg-green-lt text-green' : 'bg-yellow-lt text-yellow'}`}>
+                  {demoState.verified ? 'Verified' : 'Awaiting'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            setDemoState((prev) => ({ ...prev, verified: true }))
+            goNext()
+          }}
+        >
+          Verify identity
+        </button>
+      </div>
+    ),
+    quote: (
+      <div className="d-flex flex-column gap-3">
+        <div className="text-muted">Carrier liability quote wizard</div>
+        <div className="d-flex flex-wrap gap-2">
+          {['Carrier liability', '3 vehicles', 'EU coverage', 'Telematics discount'].map((item) => (
+            <span key={item} className="badge bg-azure-lt text-azure">{item}</span>
+          ))}
+        </div>
+        <div className="border rounded-3 p-3 d-flex justify-content-between align-items-center">
+          <div>
+            <div className="text-muted">Estimated premium</div>
+            <div className="fw-bold">€ 1,420 / month</div>
+          </div>
+          <span className={`badge ${demoState.quoteReady ? 'bg-green-lt text-green' : 'bg-yellow-lt text-yellow'}`}>
+            {demoState.quoteReady ? 'Quote ready' : 'Draft'}
+          </span>
+        </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            setDemoState((prev) => ({ ...prev, quoteReady: true }))
+            goNext()
+          }}
+        >
+          Generate quote
+        </button>
+      </div>
+    ),
+    purchase: (
+      <div className="d-flex flex-column gap-3">
+        <div className="text-muted">Checkout</div>
+        <div className="border rounded-3 p-3">
+          <div className="d-flex justify-content-between">
+            <span>Carrier liability package</span>
+            <span className="fw-semibold">€ 1,420</span>
+          </div>
+          <div className="d-flex justify-content-between text-muted">
+            <span>Vehicles</span>
+            <span>3</span>
+          </div>
+          <div className="d-flex justify-content-between text-muted">
+            <span>Billing</span>
+            <span>Monthly</span>
+          </div>
+        </div>
+        <div className="d-flex flex-wrap gap-2">
+          {['SEPA', 'Card', 'Invoice'].map((item) => (
+            <span key={item} className="badge bg-indigo-lt text-indigo">{item}</span>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            setDemoState((prev) => ({ ...prev, policyActive: true }))
+            goNext()
+          }}
+        >
+          Activate policy
+        </button>
+      </div>
+    ),
+    claims: (
+      <div className="d-flex flex-column gap-3">
+        <div className="text-muted">FNOL chatbot intake (structured)</div>
+        <div className="d-flex flex-wrap gap-2">
+          <button
+            type="button"
+            className={`btn btn-sm ${demoState.locationCaptured ? 'btn-success' : 'btn-outline-primary'}`}
+            onClick={() => setDemoState((prev) => ({ ...prev, locationCaptured: true }))}
+          >
+            {claimLocation}
+          </button>
+          <button
+            type="button"
+            className={`btn btn-sm ${demoState.timeCaptured ? 'btn-success' : 'btn-outline-primary'}`}
+            onClick={() => setDemoState((prev) => ({ ...prev, timeCaptured: true }))}
+          >
+            {claimTime}
+          </button>
+        </div>
+        <div className="row g-2">
+          {[
+            { label: 'Incident', value: 'Rear-end collision' },
+            { label: 'Driver status', value: 'No injuries' },
+            { label: 'Vehicle', value: 'BMW 320d · M-IF 421' },
+            { label: 'Road conditions', value: 'Wet surface' }
+          ].map((item) => (
+            <div className="col-12 col-md-6" key={item.label}>
+              <div className="border rounded-3 p-3">
+                <div className="text-muted">{item.label}</div>
+                <div className="fw-bold">{item.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => {
+            setDemoState((prev) => ({ ...prev, claimSubmitted: true }))
+            goNext()
+          }}
+        >
+          Submit FNOL
+        </button>
+      </div>
+    ),
+    chat: (
+      <div className="d-flex flex-column gap-3">
+        <div className="d-flex flex-column gap-2">
+          {chatLog.map((msg) => (
+            <div
+              key={msg.id}
+              className={`p-2 rounded-3 ${msg.from === 'driver' ? 'bg-blue-lt text-blue ms-auto' : 'bg-gray-100 text-muted'}`}
+              style={{ maxWidth: '85%' }}
+            >
+              {msg.text}
+            </div>
+          ))}
+        </div>
+        <div className="d-flex flex-wrap gap-2">
+          {['Book repair', 'Prefer payout', 'Need a call'].map((reply) => (
+            <button key={reply} type="button" className="btn btn-outline-primary btn-sm" onClick={() => appendChat(reply)}>
+              {reply}
+            </button>
+          ))}
+        </div>
+        <button type="button" className="btn btn-primary" onClick={goNext}>Finish demo</button>
+      </div>
+    )
   }[currentStep]
 
-  const kpis = [
-    {
-      title: 'Progress',
-      value: stepLabel,
-      note: 'Driver journey',
-      color: 'bg-blue-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5l3 2" />
-        </svg>
-      )
-    },
-    {
-      title: 'Driver',
-      value: state.profile.fullName,
-      note: state.profile.licensePlate,
-      color: 'bg-indigo-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z" />
-          <path d="M5 20a7 7 0 0 1 14 0" />
-        </svg>
-      )
-    },
-    {
-      title: 'Claim ID',
-      value: state.claim.claimId,
-      note: 'FNOL',
-      color: 'bg-azure-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M6 4h9l3 3v13H6z" />
-          <path d="M9 12h6" />
-          <path d="M9 16h6" />
-        </svg>
-      )
-    },
-    {
-      title: 'Channel',
-      value: 'Chat',
-      note: 'HITL support',
-      color: 'bg-teal-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H7l-4 3 1.5-4.5A8.5 8.5 0 1 1 21 11.5z" />
-        </svg>
-      )
-    },
-    {
-      title: 'SLA',
-      value: '24h',
-      note: 'Initial response',
-      color: 'bg-red-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="9" />
-          <path d="M12 7v5" />
-        </svg>
-      )
-    },
-    {
-      title: 'Status',
-      value: 'Demo',
-      note: 'Prefilled',
-      color: 'bg-green-lt',
-      icon: (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M9 12l2 2 4-4" />
-          <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
-        </svg>
-      )
-    }
-  ]
+  const systemSnapshot = {
+    register: [
+      { label: 'Account status', value: 'Created (demo)' },
+      { label: 'Email verified', value: 'Auto-confirmed' },
+      { label: 'Risk score', value: 'Low' }
+    ],
+    onboarding: [
+      { label: 'Wizard completion', value: '55%' },
+      { label: 'Data quality', value: 'High' },
+      { label: 'Support flag', value: 'None' }
+    ],
+    profile: [
+      { label: 'Driver segment', value: 'Fleet driver' },
+      { label: 'Company match', value: 'Validated' },
+      { label: 'Vehicle class', value: 'Sedan' }
+    ],
+    identification: [
+      { label: 'ID check', value: demoState.verified ? 'Verified' : 'Pending' },
+      { label: 'Selfie match', value: demoState.verified ? '98% match' : 'Awaiting' },
+      { label: 'Fraud signal', value: 'None' }
+    ],
+    quote: [
+      { label: 'Carrier liability', value: 'Included' },
+      { label: 'Vehicles', value: '3 added' },
+      { label: 'Quote status', value: demoState.quoteReady ? 'Ready to bind' : 'Draft' }
+    ],
+    purchase: [
+      { label: 'Payment method', value: 'SEPA' },
+      { label: 'Policy state', value: demoState.policyActive ? 'Active' : 'Pending' },
+      { label: 'Coverage start', value: 'Immediate' }
+    ],
+    claims: [
+      { label: 'Location', value: demoState.locationCaptured ? 'Captured' : 'Missing' },
+      { label: 'Timestamp', value: demoState.timeCaptured ? 'Captured' : 'Missing' },
+      { label: 'FNOL status', value: demoState.claimSubmitted ? 'Submitted' : 'Draft' }
+    ],
+    chat: [
+      { label: 'Handler', value: 'Assigned' },
+      { label: 'HITL', value: 'Required' },
+      { label: 'Next action', value: 'Repair decision' }
+    ]
+  }[currentStep]
+
+  const aiCard = {
+    register: 'AI suggests low-risk onboarding. Human review not required.',
+    onboarding: 'AI recommends prioritizing vehicle data. Human review required.',
+    profile: 'AI validates company profile; human approval for exceptions.',
+    identification: 'AI face match suggests approval — requires human review.',
+    quote: 'AI suggests coverage limits based on fleet usage.',
+    purchase: 'AI flags policy for carrier confirmation.',
+    claims: 'AI triages FNOL severity — requires human review.',
+    chat: 'AI drafts responses; human handler approves.'
+  }[currentStep]
+
+  const auditLog = {
+    register: ['Email captured', 'Consent stored', 'Account created'],
+    onboarding: ['Wizard started', 'Vehicle section completed', 'Support resources shown'],
+    profile: ['Profile confirmed', 'Company matched', 'Coverage recommended'],
+    identification: ['ID uploaded', 'Selfie matched', demoState.verified ? 'Identity verified' : 'Identity pending'],
+    quote: ['Quote draft created', demoState.quoteReady ? 'Quote approved' : 'Quote pending', 'Carrier rules applied'],
+    purchase: ['Checkout reviewed', demoState.policyActive ? 'Policy activated' : 'Activation pending', 'Payment scheduled'],
+    claims: ['Location captured', 'Timestamp captured', demoState.claimSubmitted ? 'FNOL submitted' : 'FNOL draft'],
+    chat: ['Chat opened', 'HITL notice delivered', 'Handler response queued']
+  }[currentStep]
 
   return (
     <div className="page">
@@ -268,8 +415,8 @@ export default function DemoDriverStepPage() {
             <div className="row g-2 align-items-center">
               <div className="col">
                 <div className="page-pretitle">Driver demo</div>
-                <h2 className="page-title">{STEP_TITLES[currentStep]}</h2>
-                <div className="text-muted">Driver journey demo — prefilled, no manual input.</div>
+                <h2 className="page-title">{STEP_META[stepIndex].label}</h2>
+                <div className="text-muted">Click-only guided journey. No manual input required.</div>
               </div>
               <div className="col-auto ms-auto">
                 <div className="btn-list">
@@ -277,7 +424,7 @@ export default function DemoDriverStepPage() {
                     Back
                   </button>
                   <button type="button" className="btn btn-primary" onClick={goNext}>
-                    {currentStep === 'summary' ? 'Finish demo' : 'Next'}
+                    {stepIndex === STEP_IDS.length - 1 ? 'Finish demo' : 'Next'}
                   </button>
                 </div>
               </div>
@@ -287,29 +434,35 @@ export default function DemoDriverStepPage() {
 
         <div className="page-body">
           <div className="container-xl">
-            <div className="row row-cards">
-              {kpis.map((item, index) => (
-                <div className="col-6 col-md-4 col-xl-2" key={item.title}>
-                  <div className="card h-100">
-                    <div className="card-body d-flex flex-column gap-2">
-                      <div className="d-flex align-items-center justify-content-between">
-                        <span className={`avatar avatar-sm ${item.color}`}>{item.icon}</span>
-                        <span className={`badge ${item.color}`}>{item.title}</span>
-                      </div>
-                      <div className="fw-bold">{item.value}</div>
-                      <div className="text-muted">{item.note}</div>
-                      <div className="progress progress-sm mt-1">
-                        <div className={`progress-bar ${index % 2 === 0 ? 'bg-blue' : 'bg-green'}`} style={{ width: `${62 + index * 5}%` }} />
-                      </div>
-                    </div>
-                  </div>
+            <div className="card mb-3">
+              <div className="card-body d-flex flex-column gap-2">
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="fw-semibold">Step navigation</div>
+                  <span className="badge bg-blue-lt">{stepLabel}</span>
                 </div>
-              ))}
+                <div className="d-flex flex-wrap gap-2">
+                  {STEP_META.map((step) => {
+                    const isActive = step.id === currentStep
+                    const isDone = stepperStatus[step.id as keyof typeof stepperStatus]
+                    const buttonClass = isActive
+                      ? 'btn btn-primary btn-sm'
+                      : isDone
+                        ? 'btn btn-success btn-sm'
+                        : 'btn btn-outline-primary btn-sm'
+
+                    return (
+                      <button key={step.id} type="button" className={buttonClass} onClick={() => handleJump(step.id)}>
+                        {step.short}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
             </div>
 
-            <div className="row row-cards mt-2">
-              <div className="col-12 col-xl-8">
-                <div className="card">
+            <div className="row row-cards">
+              <div className="col-12 col-xl-7">
+                <div className="card h-100">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center gap-2">
                       <span className="avatar avatar-sm bg-blue-lt">
@@ -319,32 +472,16 @@ export default function DemoDriverStepPage() {
                           <path d="M7 12h6" />
                         </svg>
                       </span>
-                      <h3 className="card-title mb-0">Step details</h3>
+                      <h3 className="card-title mb-0">Step view</h3>
                     </div>
-                    <span className="badge bg-blue-lt">{stepLabel}</span>
+                    <span className="badge bg-blue-lt">{STEP_META[stepIndex].label}</span>
                   </div>
-                  <div className="table-responsive">
-                    <table className="table card-table table-vcenter">
-                      <thead>
-                        <tr>
-                          <th>Item</th>
-                          <th>Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {stepContent.inboxRows.map((row) => (
-                          <tr key={`${row.item}-${row.value}`}>
-                            <td>{row.item}</td>
-                            <td>{row.value}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                  <div className="card-body">{stepView}</div>
                 </div>
               </div>
-              <div className="col-12 col-xl-4">
-                <div className="card">
+
+              <div className="col-12 col-xl-5">
+                <div className="card h-100">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center gap-2">
                       <span className="avatar avatar-sm bg-yellow-lt">
@@ -353,25 +490,21 @@ export default function DemoDriverStepPage() {
                           <path d="M8 4v16" />
                         </svg>
                       </span>
-                      <h3 className="card-title mb-0">Snapshot</h3>
+                      <h3 className="card-title mb-0">System snapshot</h3>
                     </div>
-                    <span className="badge bg-yellow-lt">Prefilled</span>
+                    <span className="badge bg-yellow-lt">Captured</span>
                   </div>
                   <div className="card-body d-flex flex-column gap-2">
-                    {stepContent.snapshot.map((item) => (
+                    {systemSnapshot.map((item) => (
                       <div className="d-flex align-items-center justify-content-between" key={item.label}>
                         <span className="text-muted">{item.label}</span>
                         <span className="fw-semibold">{item.value}</span>
                       </div>
                     ))}
-                    <div className="mt-2">
-                      <svg width="100%" height="70" viewBox="0 0 200 70" fill="none">
-                        <rect x="0" y="10" width="38" height="50" rx="6" fill="#e0e7ff" />
-                        <rect x="44" y="20" width="38" height="40" rx="6" fill="#dbeafe" />
-                        <rect x="88" y="6" width="38" height="54" rx="6" fill="#cffafe" />
-                        <rect x="132" y="26" width="38" height="34" rx="6" fill="#dcfce7" />
-                        <rect x="176" y="16" width="20" height="44" rx="6" fill="#fde68a" />
-                      </svg>
+                    <div className="mt-3">
+                      <div className="progress progress-sm">
+                        <div className="progress-bar bg-blue" style={{ width: demoState.policyActive ? '90%' : '60%' }} />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -380,7 +513,7 @@ export default function DemoDriverStepPage() {
 
             <div className="row row-cards mt-2">
               <div className="col-12 col-md-6 col-xl-4">
-                <div className="card">
+                <div className="card h-100">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center gap-2">
                       <span className="avatar avatar-sm bg-orange-lt">
@@ -395,58 +528,15 @@ export default function DemoDriverStepPage() {
                     <span className="badge bg-orange-lt">Human review</span>
                   </div>
                   <div className="card-body">
-                    <div className="text-muted">AI suggestion — requires human review.</div>
-                    <div className="text-muted">AI supports triage, humans approve outcomes.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-xl-4">
-                <div className="card">
-                  <div className="card-header d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="avatar avatar-sm bg-indigo-lt">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
-                        </svg>
-                      </span>
-                      <h3 className="card-title mb-0">Governance</h3>
-                    </div>
-                    <span className="badge bg-indigo-lt">Audit trail</span>
-                  </div>
-                  <div className="card-body">
-                    <div className="text-muted">Audit trail across all steps.</div>
-                    <div className="text-muted">Carrier oversight preserved.</div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-12 col-md-6 col-xl-4">
-                <div className="card">
-                  <div className="card-header d-flex align-items-center justify-content-between">
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="avatar avatar-sm bg-red-lt">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="12" r="9" />
-                          <path d="M12 7v5" />
-                        </svg>
-                      </span>
-                      <h3 className="card-title mb-0">SLA & service</h3>
-                    </div>
-                    <span className="badge bg-red-lt">Time-bound</span>
-                  </div>
-                  <div className="card-body">
-                    <div className="text-muted">Initial response within 24h.</div>
-                    <div className="text-muted">Escalation if SLA risk.</div>
-                    <div className="progress progress-sm mt-2">
-                      <div className="progress-bar bg-red" style={{ width: '70%' }} />
+                    <div className="text-muted">{aiCard}</div>
+                    <div className="mt-2">
+                      <span className="badge bg-yellow-lt">AI suggestion — requires human review</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="row row-cards mt-2">
-              <div className="col-12">
-                <div className="card">
+              <div className="col-12 col-md-6 col-xl-8">
+                <div className="card h-100">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <div className="d-flex align-items-center gap-2">
                       <span className="avatar avatar-sm bg-green-lt">
@@ -456,22 +546,20 @@ export default function DemoDriverStepPage() {
                           <path d="M4 17h16" />
                         </svg>
                       </span>
-                      <h3 className="card-title mb-0">Audit & logs</h3>
+                      <h3 className="card-title mb-0">Audit log</h3>
                     </div>
                     <span className="badge bg-green-lt">Demo</span>
                   </div>
-                  <div className="card-body d-flex flex-column gap-2">
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="badge bg-blue-lt">Log</span>
-                      <span>Step viewed: {STEP_TITLES[currentStep]}</span>
-                    </div>
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="badge bg-blue-lt">Log</span>
-                      <span>Data captured: demo only</span>
-                    </div>
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="badge bg-blue-lt">Log</span>
-                      <span>HITL checkpoint confirmed</span>
+                  <div className="card-body">
+                    <div className="row">
+                      {auditLog.map((entry) => (
+                        <div className="col-12 col-md-6" key={entry}>
+                          <div className="d-flex align-items-center gap-2 mb-2">
+                            <span className="badge bg-blue-lt">Log</span>
+                            <span>{entry}</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -479,7 +567,7 @@ export default function DemoDriverStepPage() {
             </div>
 
             <div className="alert alert-info mt-3" role="alert">
-              Demo data only. AI suggestion — requires human review.
+              Demo data only. AI suggestions require human review.
             </div>
           </div>
         </div>

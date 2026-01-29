@@ -6,8 +6,8 @@ export default function DemoDriverOverviewPage() {
   const kpis = [
     {
       title: 'Steps',
-      value: '6',
-      note: 'Registration to summary',
+      value: '8',
+      note: 'Register to chat support',
       color: 'bg-blue-lt',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -42,8 +42,8 @@ export default function DemoDriverOverviewPage() {
     },
     {
       title: 'Channel',
-      value: 'Chat + Upload',
-      note: 'HITL support',
+      value: 'Guided demo',
+      note: 'Click-only journey',
       color: 'bg-teal-lt',
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -154,33 +154,43 @@ export default function DemoDriverOverviewPage() {
                       <tbody>
                         <tr>
                           <td>1</td>
-                          <td>Registration</td>
-                          <td>Demo ready</td>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Profile completion</td>
+                          <td>Register</td>
                           <td>Prefilled</td>
                         </tr>
                         <tr>
+                          <td>2</td>
+                          <td>Onboarding</td>
+                          <td>Guided</td>
+                        </tr>
+                        <tr>
                           <td>3</td>
-                          <td>FNOL claim</td>
-                          <td>Chat-based</td>
+                          <td>Profile</td>
+                          <td>Validated</td>
                         </tr>
                         <tr>
                           <td>4</td>
-                          <td>Evidence upload</td>
-                          <td>Attached</td>
+                          <td>Identification</td>
+                          <td>HITL check</td>
                         </tr>
                         <tr>
                           <td>5</td>
-                          <td>Chat support</td>
-                          <td>HITL</td>
+                          <td>Quote</td>
+                          <td>Carrier aligned</td>
                         </tr>
                         <tr>
                           <td>6</td>
-                          <td>Summary</td>
-                          <td>Audit-ready</td>
+                          <td>Purchase</td>
+                          <td>Activate policy</td>
+                        </tr>
+                        <tr>
+                          <td>7</td>
+                          <td>Claims (FNOL)</td>
+                          <td>Structured intake</td>
+                        </tr>
+                        <tr>
+                          <td>8</td>
+                          <td>Chat support</td>
+                          <td>HITL</td>
                         </tr>
                       </tbody>
                     </table>
