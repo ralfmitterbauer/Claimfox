@@ -65,10 +65,9 @@ export default function DemoRoleOverviewPage() {
       title: t('roles.cards.claims.title'),
       subtitle: isEn ? 'Claims subroles' : 'Claims Unterrollen',
       subroles: [
-        { label: isEn ? 'Claim Manager Overview' : 'Schadenmanager Übersicht', route: '/claim-manager' },
-        { label: isEn ? 'Claim Manager App' : 'Schadenmanager App', route: '/claim-manager-app' },
-        { label: isEn ? 'Claim Case' : 'Schadenfall', route: '/claim-manager-case' },
-        { label: isEn ? 'Claim Intake (Chatbot)' : 'Schadenmeldung (Chatbot)', route: '/claim-process' }
+        { label: isEn ? 'Claims Manager' : 'Claims Manager', route: '/demo-claims/manager/step/intake' },
+        { label: isEn ? 'Claims Handler' : 'Versicherungssachbearbeiter', route: '/demo-claims/handler/step/intake' },
+        { label: isEn ? 'Regress / Subrogation' : 'Regressierung', route: '/demo-claims/regress/step/intake' }
       ]
     },
     partner: {

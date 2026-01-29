@@ -37,7 +37,7 @@ export default function DemoOverviewPage() {
         { label: t('roles.cards.underwriter.title'), roleId: 'underwriter' },
         { label: t('roles.cards.legal.title'), roleId: 'legal' },
         { label: t('roles.cards.finance.title'), roleId: 'finance' },
-        { label: t('roles.cards.claims.title'), roleId: 'claims' },
+        { label: 'Claims', roleId: 'claims' },
         { label: t('roles.cards.partner.title'), roleId: 'partner' }
       ]
     },
@@ -289,10 +289,9 @@ export default function DemoOverviewPage() {
                               {claimsOpen && (
                                 <div className="list-group list-group-flush">
                                   {[
-                                    { label: 'Claim Manager Overview', to: '/claim-manager' },
-                                    { label: 'Claim Manager App', to: '/claim-manager-app' },
-                                    { label: 'Claim Case', to: '/claim-manager-case' },
-                                    { label: 'Claim Intake (Chatbot)', to: '/claim-process' },
+                                    { label: 'Claims Manager', to: '/demo-claims/manager/step/intake' },
+                                    { label: 'Versicherungssachbearbeiter', to: '/demo-claims/handler/step/intake' },
+                                    { label: 'Regressierung', to: '/demo-claims/regress/step/intake' },
                                   ].map((item) => (
                                     <button
                                       key={item.label}

@@ -110,6 +110,12 @@ import DemoFinancialControllerPage from '@/pages/demo-finance/DemoFinancialContr
 import DemoFinancialControllerStepPage from '@/pages/demo-finance/DemoFinancialControllerStepPage'
 import DemoCfoFinanceAuthorityPage from '@/pages/demo-finance/DemoCfoFinanceAuthorityPage'
 import DemoCfoFinanceAuthorityStepPage from '@/pages/demo-finance/DemoCfoFinanceAuthorityStepPage'
+import DemoClaimsManagerPage from '@/pages/demo-claims/DemoClaimsManagerPage'
+import DemoClaimsManagerStepPage from '@/pages/demo-claims/DemoClaimsManagerStepPage'
+import DemoClaimsHandlerPage from '@/pages/demo-claims/DemoClaimsHandlerPage'
+import DemoClaimsHandlerStepPage from '@/pages/demo-claims/DemoClaimsHandlerStepPage'
+import DemoRegressPage from '@/pages/demo-claims/DemoRegressPage'
+import DemoRegressStepPage from '@/pages/demo-claims/DemoRegressStepPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -160,6 +166,12 @@ export default function AppRouter() {
         <Route path="/demo-finance/controller/step/:stepId" element={<DemoFinancialControllerStepPage />} />
         <Route path="/demo-finance/cfo" element={<DemoCfoFinanceAuthorityPage />} />
         <Route path="/demo-finance/cfo/step/:stepId" element={<DemoCfoFinanceAuthorityStepPage />} />
+        <Route path="/demo-claims/manager" element={<DemoClaimsManagerPage />} />
+        <Route path="/demo-claims/manager/step/:stepId" element={<DemoClaimsManagerStepPage />} />
+        <Route path="/demo-claims/handler" element={<DemoClaimsHandlerPage />} />
+        <Route path="/demo-claims/handler/step/:stepId" element={<DemoClaimsHandlerStepPage />} />
+        <Route path="/demo-claims/regress" element={<DemoRegressPage />} />
+        <Route path="/demo-claims/regress/step/:stepId" element={<DemoRegressStepPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
