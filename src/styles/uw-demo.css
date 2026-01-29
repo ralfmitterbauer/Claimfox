@@ -1,0 +1,191 @@
+/* =========================================================
+   Underwriter Demo Shell (Left decision flow + Right admin)
+   ========================================================= */
+:root {
+  --insurfox-blue: #2563eb;
+}
+
+/* Keep within viewport */
+.uw-shell {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .uw-shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.uw-left {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.uw-decision {
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.10);
+  overflow: hidden;
+}
+
+.uw-decision-header {
+  padding: 0.9rem 1rem 0.75rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: rgba(248, 250, 252, 0.85);
+}
+
+.uw-decision-title {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+.uw-decision-title strong {
+  font-size: 1rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uw-decision-title span {
+  font-size: 0.82rem;
+  color: var(--tblr-muted, #667085);
+}
+
+.uw-decision-body {
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.uw-block {
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  border-radius: 12px;
+  background: #fff;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.uw-kv {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 0.4rem 0.75rem;
+  align-items: baseline;
+  font-size: 0.88rem;
+}
+.uw-kv .k {
+  color: var(--tblr-muted, #667085);
+  font-size: 0.82rem;
+}
+.uw-kv .v {
+  font-weight: 600;
+  min-width: 0;
+}
+
+.uw-ai {
+  border-left: 3px solid var(--insurfox-blue);
+  background: rgba(37, 99, 235, 0.06);
+}
+
+.uw-cta-row {
+  display: grid;
+  gap: 0.5rem;
+}
+.uw-cta-row .btn {
+  width: 100%;
+}
+
+/* Right admin panel: blue separator + single rectangle, no rounding */
+.uw-admin {
+  position: sticky;
+  top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid var(--insurfox-blue);
+}
+@media (max-width: 960px) {
+  .uw-admin {
+    position: static;
+    padding-left: 0;
+    border-left: none;
+    border-top: 3px solid var(--insurfox-blue);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+  }
+}
+
+.uw-admin-panel {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #ffffff;
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.uw-admin-panel h4 {
+  font-size: 0.82rem;
+  margin: 0;
+}
+.uw-admin-small {
+  font-size: 0.78rem;
+  line-height: 1.25;
+  color: var(--tblr-muted, #667085);
+}
+
+.uw-admin-panel .list-group-item {
+  padding: 0.42rem 0.52rem !important;
+  border-radius: 0 !important;
+  font-size: 0.78rem;
+}
+.uw-admin-panel .badge {
+  font-size: 0.68rem;
+  padding: 0.18rem 0.38rem;
+  border-radius: 0 !important;
+}
+
+/* Audit list */
+.uw-audit {
+  display: grid;
+  gap: 0.5rem;
+}
+.uw-audit-item {
+  font-size: 0.78rem;
+  line-height: 1.2;
+  border-top: 1px dashed rgba(15, 23, 42, 0.12);
+  padding-top: 0.45rem;
+}
+.uw-audit-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.uw-audit-item .ts {
+  font-size: 0.70rem;
+  color: var(--tblr-muted, #667085);
+}
+.uw-audit-item .msg {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* Subtle appear */
+.uw-fade-in {
+  animation: uwFadeIn 220ms ease-out both;
+}
+@keyframes uwFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

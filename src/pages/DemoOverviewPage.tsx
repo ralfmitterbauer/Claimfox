@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useI18n } from '@/i18n/I18nContext'
+import UnderwriterIcon from '@/assets/images/underwriter.png'
 
 export default function DemoOverviewPage() {
   const navigate = useNavigate()
@@ -19,6 +20,7 @@ export default function DemoOverviewPage() {
       title: t('roles.overviewGroups.insurance'),
       items: [
         { label: t('roles.cards.underwriter.title'), roleId: 'underwriter' },
+        { label: 'Junior Underwriter Demo', roleId: 'underwriter-junior-demo' },
         { label: t('roles.cards.legal.title'), roleId: 'legal' },
         { label: t('roles.cards.finance.title'), roleId: 'finance' },
         { label: t('roles.cards.claims.title'), roleId: 'claims' },
@@ -126,16 +128,26 @@ export default function DemoOverviewPage() {
                               navigate('/demo-driver/step/register')
                               return
                             }
+                            if (role.roleId === 'underwriter-junior-demo') {
+                              navigate('/demo-underwriter/junior')
+                              return
+                            }
                             navigate(`/demo/role/${role.roleId}`)
                           }}
                         >
                           <span className="d-flex align-items-center gap-2">
-                            <span className="avatar avatar-xs bg-blue-lt text-blue">
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M12 5v14" />
-                                <path d="M5 12h14" />
-                              </svg>
-                            </span>
+                            {role.roleId === 'underwriter' ? (
+                              <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                <img src={UnderwriterIcon} alt="" style={{ width: 14, height: 14, objectFit: 'contain' }} />
+                              </span>
+                            ) : (
+                              <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M12 5v14" />
+                                  <path d="M5 12h14" />
+                                </svg>
+                              </span>
+                            )}
                             <span className="fw-semibold">{role.label}</span>
                           </span>
                           <span className="badge bg-blue-lt text-blue">Demo</span>
