@@ -244,7 +244,11 @@ export default function DemoRoleOverviewPage() {
 
             <div className="row row-cards">
               {config.subroles.map((subrole, index) => {
-                const targetRoute = subrole.demoKey ? `/demo/step/1?role=${subrole.demoKey}` : '/demo/step/1'
+                const targetRoute = subrole.demoKey === 'uw-junior'
+                  ? '/demo-underwriter/junior/step/intake'
+                  : subrole.demoKey
+                    ? `/demo/step/1?role=${subrole.demoKey}`
+                    : '/demo/step/1'
                 const descriptionKey = showContext
                   ? subrole.label.toLowerCase().replace(/\s+/g, '-')
                   : ''
@@ -252,51 +256,80 @@ export default function DemoRoleOverviewPage() {
                 const badgeClass = index % 2 === 0 ? 'bg-green-lt' : 'bg-blue-lt'
                 return (
                   <div className="col-12 col-md-6 col-xl-3" key={subrole.route}>
-                    <div className="card card-md h-100">
-                      <div className="card-header d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center gap-2">
-                          <span className={`avatar avatar-sm ${badgeClass}`}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                              <path d="M12 7v10" />
-                              <path d="M7 12h10" />
-                            </svg>
-                          </span>
-                          <h3 className="card-title mb-0">{subrole.label}</h3>
-                        </div>
-                        <span className={`badge ${badgeClass}`}>Demo</span>
-                      </div>
-                      <div className="card-body d-flex flex-column gap-2">
-                        {description && (
-                          <>
-                            <div className="text-muted">
-                              <span className="text-secondary text-uppercase me-1">Decides</span>
-                              {description.decision}
-                            </div>
-                            <div className="text-muted">
-                              <span className="text-secondary text-uppercase me-1">Accountable</span>
-                              {description.accountability}
-                            </div>
-                          </>
-                        )}
-                        {!description && (
-                          <div className="text-muted">
-                            Start the guided demo flow (no data captured).
+                    {showContext ? (
+                      <div className="card card-sm h-100">
+                        <div className="card-body d-flex align-items-start justify-content-between gap-3 py-2">
+                          <div className="d-flex flex-column gap-1">
+                            <div className="fw-semibold">{subrole.label}</div>
+                            {description && (
+                              <>
+                                <div className="text-muted small">
+                                  <span className="text-secondary text-uppercase me-1">Decides</span>
+                                  {description.decision}
+                                </div>
+                                <div className="text-muted small">
+                                  <span className="text-secondary text-uppercase me-1">Accountable</span>
+                                  {description.accountability}
+                                </div>
+                              </>
+                            )}
                           </div>
-                        )}
-                        <div className="progress progress-sm mt-2">
-                          <div className={`progress-bar ${index % 2 === 0 ? 'bg-green' : 'bg-blue'}`} style={{ width: `${68 + index * 4}%` }} />
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-primary"
+                            onClick={() => navigate(targetRoute)}
+                          >
+                            Demo starten
+                          </button>
                         </div>
                       </div>
-                      <div className="card-footer">
-                        <button
-                          type="button"
-                          className="btn btn-primary w-100"
-                          onClick={() => navigate(targetRoute)}
-                        >
-                          Demo starten
-                        </button>
+                    ) : (
+                      <div className="card card-md h-100">
+                        <div className="card-header d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center gap-2">
+                            <span className={`avatar avatar-sm ${badgeClass}`}>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M12 7v10" />
+                                <path d="M7 12h10" />
+                              </svg>
+                            </span>
+                            <h3 className="card-title mb-0">{subrole.label}</h3>
+                          </div>
+                          <span className={`badge ${badgeClass}`}>Demo</span>
+                        </div>
+                        <div className="card-body d-flex flex-column gap-2">
+                          {description && (
+                            <>
+                              <div className="text-muted">
+                                <span className="text-secondary text-uppercase me-1">Decides</span>
+                                {description.decision}
+                              </div>
+                              <div className="text-muted">
+                                <span className="text-secondary text-uppercase me-1">Accountable</span>
+                                {description.accountability}
+                              </div>
+                            </>
+                          )}
+                          {!description && (
+                            <div className="text-muted">
+                              Start the guided demo flow (no data captured).
+                            </div>
+                          )}
+                          <div className="progress progress-sm mt-2">
+                            <div className={`progress-bar ${index % 2 === 0 ? 'bg-green' : 'bg-blue'}`} style={{ width: `${68 + index * 4}%` }} />
+                          </div>
+                        </div>
+                        <div className="card-footer">
+                          <button
+                            type="button"
+                            className="btn btn-primary w-100"
+                            onClick={() => navigate(targetRoute)}
+                          >
+                            Demo starten
+                          </button>
+                        </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )
               })}
