@@ -331,6 +331,13 @@
   padding: 0.3rem 0.55rem;
 }
 
+/* Smaller CTA buttons inside phone */
+.phone-cta-row .btn {
+  font-size: 0.85rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 12px;
+}
+
 /* RIGHT column: separator line + single admin block (no rounded corners) */
 .demo-shell {
   grid-template-columns: minmax(0, 1fr) 420px;

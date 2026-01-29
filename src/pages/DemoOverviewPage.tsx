@@ -123,7 +123,7 @@ export default function DemoOverviewPage() {
                           className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
                           onClick={() => {
                             if (role.roleId === 'driver-demo') {
-                              navigate('/demo-driver')
+                              navigate('/demo-driver/step/register')
                               return
                             }
                             navigate(`/demo/role/${role.roleId}`)
