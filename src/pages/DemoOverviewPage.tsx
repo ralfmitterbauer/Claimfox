@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useI18n } from '@/i18n/I18nContext'
 import UnderwriterIcon from '@/assets/images/underwriter.png'
@@ -6,6 +6,7 @@ import UnderwriterIcon from '@/assets/images/underwriter.png'
 export default function DemoOverviewPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
+  const [underwriterOpen, setUnderwriterOpen] = useState(false)
 
   const groupMeta = [
     { key: 'insurance', iconBg: 'bg-indigo-lt', accent: 'bg-indigo-lt' },
@@ -20,9 +21,6 @@ export default function DemoOverviewPage() {
       title: t('roles.overviewGroups.insurance'),
       items: [
         { label: t('roles.cards.underwriter.title'), roleId: 'underwriter' },
-        { label: 'Junior Underwriter Demo', roleId: 'underwriter-junior-demo' },
-        { label: 'Senior Underwriter Demo', roleId: 'underwriter-senior-demo' },
-        { label: 'Carrier Authority', roleId: 'underwriter-carrier-demo' },
         { label: t('roles.cards.legal.title'), roleId: 'legal' },
         { label: t('roles.cards.finance.title'), roleId: 'finance' },
         { label: t('roles.cards.claims.title'), roleId: 'claims' },
@@ -120,49 +118,74 @@ export default function DemoOverviewPage() {
                       </span>
                     </div>
                     <div className="list-group list-group-flush">
-                      {group.items.map((role) => (
-                        <button
-                          key={role.roleId}
-                          type="button"
-                          className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
-                          onClick={() => {
-                            if (role.roleId === 'driver-demo') {
-                              navigate('/demo-driver/step/register')
-                              return
-                            }
-                            if (role.roleId === 'underwriter-junior-demo') {
-                              navigate('/demo-underwriter/junior/step/intake')
-                              return
-                            }
-                            if (role.roleId === 'underwriter-senior-demo') {
-                              navigate('/demo-underwriter/senior/step/intake')
-                              return
-                            }
-                            if (role.roleId === 'underwriter-carrier-demo') {
-                              navigate('/demo-underwriter/carrier/step/handover')
-                              return
-                            }
-                            navigate(`/demo/role/${role.roleId}`)
-                          }}
-                        >
-                          <span className="d-flex align-items-center gap-2">
-                            {role.roleId === 'underwriter' ? (
-                              <span className="avatar avatar-xs bg-blue-lt text-blue">
-                                <img src={UnderwriterIcon} alt="" style={{ width: 14, height: 14, objectFit: 'contain' }} />
-                              </span>
-                            ) : (
+                      {group.items.map((role) => {
+                        if (role.roleId === 'underwriter') {
+                          return (
+                            <React.Fragment key={role.roleId}>
+                              <button
+                                type="button"
+                                className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                                onClick={() => setUnderwriterOpen((prev) => !prev)}
+                              >
+                                <span className="d-flex align-items-center gap-2">
+                                  <span className="d-inline-flex align-items-center">
+                                    <img src={UnderwriterIcon} alt="" style={{ width: 28, height: 28, objectFit: 'contain' }} />
+                                  </span>
+                                  <span className="fw-semibold">{role.label}</span>
+                                </span>
+                                <span className="badge bg-blue-lt text-blue">{underwriterOpen ? 'Hide' : 'Show'}</span>
+                              </button>
+                              {underwriterOpen && (
+                                <div className="list-group list-group-flush">
+                                  {[
+                                    { label: 'Junior Underwriter', to: '/demo-underwriter/junior/step/intake' },
+                                    { label: 'Senior Underwriter', to: '/demo-underwriter/senior/step/intake' },
+                                    { label: 'Carrier Authority', to: '/demo-underwriter/carrier/step/handover' },
+                                    { label: 'Compliance', to: '/demo-underwriter/compliance/step/intake' },
+                                    { label: 'Underwriter Reporting', to: '/demo/step/1?role=uw-reporting' },
+                                  ].map((item) => (
+                                    <button
+                                      key={item.label}
+                                      type="button"
+                                      className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
+                                      onClick={() => navigate(item.to)}
+                                    >
+                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="badge bg-blue-lt text-blue">Demo</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        }
+
+                        return (
+                          <button
+                            key={role.roleId}
+                            type="button"
+                            className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                            onClick={() => {
+                              if (role.roleId === 'driver-demo') {
+                                navigate('/demo-driver/step/register')
+                                return
+                              }
+                              navigate(`/demo/role/${role.roleId}`)
+                            }}
+                          >
+                            <span className="d-flex align-items-center gap-2">
                               <span className="avatar avatar-xs bg-blue-lt text-blue">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                                   <path d="M12 5v14" />
                                   <path d="M5 12h14" />
                                 </svg>
                               </span>
-                            )}
-                            <span className="fw-semibold">{role.label}</span>
-                          </span>
-                          <span className="badge bg-blue-lt text-blue">Demo</span>
-                        </button>
-                      ))}
+                              <span className="fw-semibold">{role.label}</span>
+                            </span>
+                            <span className="badge bg-blue-lt text-blue">Demo</span>
+                          </button>
+                        )
+                      })}
                     </div>
                     <div className="card-footer">
                       <div className="d-flex align-items-center justify-content-between">
