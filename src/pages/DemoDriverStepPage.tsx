@@ -860,14 +860,14 @@ export default function DemoDriverStepPage() {
   const currentStep = step.id
   const snapshot = snapshotBadges.map((badge) => ({ label: badge.label, on: badge.active }))
   const stepStatus: Record<StepId, boolean> = {
-    register: demoState.accountCreated,
-    onboarding: demoState.onboardingComplete,
-    profile: demoState.profileConfirmed,
-    identification: demoState.verified,
-    quote: demoState.quoteReady,
-    purchase: demoState.policyActive,
-    claims: demoState.claimSubmitted,
-    chat: demoState.handlerAssigned,
+    register: demoState.accountCreated || currentStep === 'register',
+    onboarding: demoState.onboardingComplete || currentStep === 'onboarding',
+    profile: demoState.profileConfirmed || currentStep === 'profile',
+    identification: demoState.verified || currentStep === 'identification',
+    quote: demoState.quoteReady || currentStep === 'quote',
+    purchase: demoState.policyActive || currentStep === 'purchase',
+    claims: demoState.claimSubmitted || currentStep === 'claims',
+    chat: demoState.handlerAssigned || currentStep === 'chat',
   }
 
   const audit = auditLog
@@ -945,17 +945,6 @@ export default function DemoDriverStepPage() {
                       </span>
                     </div>
                   ))}
-                </div>
-
-                <h4>Audit log</h4>
-                <div className="admin-audit">
-                  {audit.slice(0, 10).map((a, idx) => (
-                    <div key={`${a.ts}-${idx}`} className="admin-audit-item">
-                      <div className="ts">{new Date(a.ts).toLocaleString()}</div>
-                      <div className="msg">{a.message}</div>
-                    </div>
-                  ))}
-                  {audit.length === 0 && <div className="text-muted">No entries yet.</div>}
                 </div>
               </div>
             </aside>

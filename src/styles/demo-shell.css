@@ -261,7 +261,7 @@
 .demo-shell {
   max-width: 1200px;
   padding: 1rem;
-  gap: 1.75rem;
+  gap: 2rem;
   align-items: start;
   --mock-width: 344px;
   --mock-height: 720px;
@@ -390,12 +390,12 @@
 }
 .demo-admin-left {
   justify-content: flex-start;
-  padding-left: 1rem;
+  padding-left: 0.6rem;
   border-left: 3px solid var(--insurfox-blue, #2563eb);
 }
 .demo-admin-right {
   justify-content: flex-start;
-  padding-left: 1.5rem;
+  padding-left: 1.8rem;
   border-left: 3px solid var(--insurfox-blue, #2563eb);
 }
 
@@ -404,7 +404,7 @@
   border-radius: 0 !important;
   box-shadow: none !important;
   background: transparent;
-  padding: 0.2rem 0.1rem;
+  padding: 0.35rem 0.2rem;
   height: 100%;
   overflow: auto;
   width: 100%;
@@ -413,22 +413,22 @@
 
 /* compact admin typography so it fits */
 .admin-panel h4 {
-  font-size: 0.68rem;
-  margin: 0 0 0.25rem 0;
+  font-size: 0.7rem;
+  margin: 0 0 0.4rem 0;
 }
 .admin-panel ul {
   margin: 0;
-  padding-left: 0.9rem;
+  padding-left: 1rem;
 }
 .admin-panel li {
   font-size: 0.66rem;
-  line-height: 1.1;
-  margin-bottom: 0.14rem;
+  line-height: 1.2;
+  margin-bottom: 0.28rem;
 }
 
 /* compact navigation */
 .admin-panel .list-group-item {
-  padding: 0.22rem 0.35rem !important;
+  padding: 0.28rem 0.35rem !important;
   border-radius: 0 !important;
   font-size: 0.66rem;
   border: none !important;
@@ -449,11 +449,16 @@
 /* compact audit log */
 .admin-audit-item {
   font-size: 0.66rem;
-  line-height: 1.1;
+  line-height: 1.2;
 }
 .admin-audit-item .ts {
   font-size: 0.6rem;
   color: var(--tblr-muted, #667085);
+}
+
+.admin-audit {
+  display: grid;
+  gap: 0.45rem;
 }
 .admin-audit-item .msg {
   font-weight: 600;
