@@ -53,12 +53,12 @@ export default function DemoRoleOverviewPage() {
       title: t('roles.cards.finance.title'),
       subtitle: isEn ? 'Finance subroles' : 'Finance Unterrollen',
       subroles: [
-        { label: 'Finance Analyst', route: '/roles/finance/analyst' },
-        { label: 'Premium & Billing Operations', route: '/roles/finance/premium-billing' },
-        { label: 'Claims Finance', route: '/roles/finance/claims' },
-        { label: 'Reinsurance Finance', route: '/roles/finance/reinsurance' },
-        { label: 'Financial Controller', route: '/roles/finance/controller' },
-        { label: 'CFO / Carrier Finance Final Authority', route: '/roles/finance/cfo-final-authority' }
+        { label: 'Finance Analyst', route: '/demo-finance/analyst/step/intake' },
+        { label: 'Premium & Billing Operations', route: '/demo-finance/billing/step/intake' },
+        { label: 'Claims Finance', route: '/demo-finance/claims/step/intake' },
+        { label: 'Reinsurance Finance', route: '/demo-finance/reinsurance/step/intake' },
+        { label: 'Financial Controller', route: '/demo-finance/controller/step/intake' },
+        { label: 'CFO / Carrier Finance Final Authority', route: '/demo-finance/cfo/step/intake' }
       ]
     },
     claims: {

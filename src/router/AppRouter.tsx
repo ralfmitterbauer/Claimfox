@@ -42,12 +42,6 @@ import LegalRegulatoryCompliancePage from '@/pages/LegalRegulatoryCompliancePage
 import LegalLitigationManagerPage from '@/pages/LegalLitigationManagerPage'
 import LegalCarrierFinalAuthorityPage from '@/pages/LegalCarrierFinalAuthorityPage'
 import FinanceRolePage from '@/pages/FinanceRolePage'
-import FinanceAnalystPage from '@/pages/FinanceAnalystPage'
-import FinancePremiumBillingOpsPage from '@/pages/FinancePremiumBillingOpsPage'
-import FinanceClaimsPage from '@/pages/FinanceClaimsPage'
-import FinanceReinsurancePage from '@/pages/FinanceReinsurancePage'
-import FinanceControllerPage from '@/pages/FinanceControllerPage'
-import FinanceCfoFinalAuthorityPage from '@/pages/FinanceCfoFinalAuthorityPage'
 import UnderwriterReportingPage from '@/pages/UnderwriterReportingPage'
 import UnderwriterJuniorPage from '@/pages/UnderwriterJuniorPage'
 import UnderwriterSeniorPage from '@/pages/UnderwriterSeniorPage'
@@ -104,6 +98,18 @@ import DemoRegulatoryLegalPage from '@/pages/demo-legal/DemoRegulatoryLegalPage'
 import DemoRegulatoryLegalStepPage from '@/pages/demo-legal/DemoRegulatoryLegalStepPage'
 import DemoPrivacyLegalPage from '@/pages/demo-legal/DemoPrivacyLegalPage'
 import DemoPrivacyLegalStepPage from '@/pages/demo-legal/DemoPrivacyLegalStepPage'
+import DemoFinanceAnalystPage from '@/pages/demo-finance/DemoFinanceAnalystPage'
+import DemoFinanceAnalystStepPage from '@/pages/demo-finance/DemoFinanceAnalystStepPage'
+import DemoPremiumBillingOpsPage from '@/pages/demo-finance/DemoPremiumBillingOpsPage'
+import DemoPremiumBillingOpsStepPage from '@/pages/demo-finance/DemoPremiumBillingOpsStepPage'
+import DemoClaimsFinancePage from '@/pages/demo-finance/DemoClaimsFinancePage'
+import DemoClaimsFinanceStepPage from '@/pages/demo-finance/DemoClaimsFinanceStepPage'
+import DemoReinsuranceFinancePage from '@/pages/demo-finance/DemoReinsuranceFinancePage'
+import DemoReinsuranceFinanceStepPage from '@/pages/demo-finance/DemoReinsuranceFinanceStepPage'
+import DemoFinancialControllerPage from '@/pages/demo-finance/DemoFinancialControllerPage'
+import DemoFinancialControllerStepPage from '@/pages/demo-finance/DemoFinancialControllerStepPage'
+import DemoCfoFinanceAuthorityPage from '@/pages/demo-finance/DemoCfoFinanceAuthorityPage'
+import DemoCfoFinanceAuthorityStepPage from '@/pages/demo-finance/DemoCfoFinanceAuthorityStepPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -142,6 +148,18 @@ export default function AppRouter() {
         <Route path="/demo-legal/regulatory/step/:stepId" element={<DemoRegulatoryLegalStepPage />} />
         <Route path="/demo-legal/privacy" element={<DemoPrivacyLegalPage />} />
         <Route path="/demo-legal/privacy/step/:stepId" element={<DemoPrivacyLegalStepPage />} />
+        <Route path="/demo-finance/analyst" element={<DemoFinanceAnalystPage />} />
+        <Route path="/demo-finance/analyst/step/:stepId" element={<DemoFinanceAnalystStepPage />} />
+        <Route path="/demo-finance/billing" element={<DemoPremiumBillingOpsPage />} />
+        <Route path="/demo-finance/billing/step/:stepId" element={<DemoPremiumBillingOpsStepPage />} />
+        <Route path="/demo-finance/claims" element={<DemoClaimsFinancePage />} />
+        <Route path="/demo-finance/claims/step/:stepId" element={<DemoClaimsFinanceStepPage />} />
+        <Route path="/demo-finance/reinsurance" element={<DemoReinsuranceFinancePage />} />
+        <Route path="/demo-finance/reinsurance/step/:stepId" element={<DemoReinsuranceFinanceStepPage />} />
+        <Route path="/demo-finance/controller" element={<DemoFinancialControllerPage />} />
+        <Route path="/demo-finance/controller/step/:stepId" element={<DemoFinancialControllerStepPage />} />
+        <Route path="/demo-finance/cfo" element={<DemoCfoFinanceAuthorityPage />} />
+        <Route path="/demo-finance/cfo/step/:stepId" element={<DemoCfoFinanceAuthorityStepPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
@@ -160,18 +178,6 @@ export default function AppRouter() {
         <Route path="/roles/legal/litigation-manager" element={<LegalLitigationManagerPage />} />
         <Route path="/roles/legal/carrier-final-authority" element={<LegalCarrierFinalAuthorityPage />} />
         <Route path="/roles/finance" element={<FinanceRolePage />} />
-        <Route path="/finance/analyst" element={<FinanceAnalystPage />} />
-        <Route path="/finance/billing" element={<FinancePremiumBillingOpsPage />} />
-        <Route path="/finance/claims" element={<FinanceClaimsPage />} />
-        <Route path="/finance/reinsurance" element={<FinanceReinsurancePage />} />
-        <Route path="/finance/controller" element={<FinanceControllerPage />} />
-        <Route path="/finance/cfo" element={<FinanceCfoFinalAuthorityPage />} />
-        <Route path="/roles/finance/analyst" element={<FinanceAnalystPage />} />
-        <Route path="/roles/finance/premium-billing" element={<FinancePremiumBillingOpsPage />} />
-        <Route path="/roles/finance/claims" element={<FinanceClaimsPage />} />
-        <Route path="/roles/finance/reinsurance" element={<FinanceReinsurancePage />} />
-        <Route path="/roles/finance/controller" element={<FinanceControllerPage />} />
-        <Route path="/roles/finance/cfo-final-authority" element={<FinanceCfoFinalAuthorityPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/broker-portal" element={<BrokerPortalLandingPage />} />
         <Route path="/marketing" element={<MarketingLandingPage />} />

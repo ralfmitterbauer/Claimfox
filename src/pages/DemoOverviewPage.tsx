@@ -244,12 +244,12 @@ export default function DemoOverviewPage() {
                               {financeOpen && (
                                 <div className="list-group list-group-flush">
                                   {[
-                                    { label: 'Finance Analyst', to: '/roles/finance/analyst' },
-                                    { label: 'Premium & Billing Operations', to: '/roles/finance/premium-billing' },
-                                    { label: 'Claims Finance', to: '/roles/finance/claims' },
-                                    { label: 'Reinsurance Finance', to: '/roles/finance/reinsurance' },
-                                    { label: 'Financial Controller', to: '/roles/finance/controller' },
-                                    { label: 'CFO / Carrier Finance Final Authority', to: '/roles/finance/cfo-final-authority' },
+                                    { label: 'Finance Analyst', to: '/demo-finance/analyst/step/intake' },
+                                    { label: 'Premium & Billing Operations', to: '/demo-finance/billing/step/intake' },
+                                    { label: 'Claims Finance', to: '/demo-finance/claims/step/intake' },
+                                    { label: 'Reinsurance Finance', to: '/demo-finance/reinsurance/step/intake' },
+                                    { label: 'Financial Controller', to: '/demo-finance/controller/step/intake' },
+                                    { label: 'CFO / Carrier Finance Final Authority', to: '/demo-finance/cfo/step/intake' },
                                   ].map((item) => (
                                     <button
                                       key={item.label}
