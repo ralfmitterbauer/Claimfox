@@ -30,8 +30,8 @@
 
 /* === Phone Mock Shell === */
 .phone-shell {
-  width: 344px;
-  height: 720px;
+  width: 447px;
+  height: 936px;
   max-width: 92vw;
   max-height: calc(100vh - 220px);
   aspect-ratio: 71.5 / 149.6;
@@ -272,8 +272,8 @@
 
 /* iPhone-like aspect ratio (portrait) + locked sizing */
 .phone-shell {
-  width: 344px;                 /* stable width so layout doesn't jump */
-  height: 720px;                /* stable height */
+  width: 447px;                 /* stable width so layout doesn't jump */
+  height: 936px;                /* stable height */
   max-width: 40vw;              /* prevent exploding on wide screens */
   max-height: calc(100vh - 220px); /* keep inside viewport under header */
   aspect-ratio: 71.5 / 149.6;
@@ -284,15 +284,15 @@
 /* If viewport is tight, scale down slightly but keep ratio */
 @media (max-height: 820px) {
   .phone-shell {
-    width: 318px;
-    height: 665px;
+    width: 413px;
+    height: 865px;
     max-height: calc(100vh - 200px);
   }
 }
 @media (max-height: 740px) {
   .phone-shell {
-    width: 292px;
-    height: 610px;
+    width: 380px;
+    height: 793px;
     max-height: calc(100vh - 180px);
   }
 }
