@@ -40,6 +40,7 @@ export default function DemoRoleOverviewPage() {
         { label: 'Legal Counsel', route: '/demo-legal/counsel/step/intake' },
         { label: 'Claims Legal', route: '/demo-legal/claims/step/intake' },
         { label: 'Regulatory Legal', route: '/demo-legal/regulatory/step/intake' },
+        { label: 'Privacy Legal (GDPR)', route: '/demo-legal/privacy/step/intake' },
         { label: 'Legal Intake', route: '/roles/legal/intake' },
         { label: 'Legal Claims Specialist', route: '/roles/legal/claims-specialist' },
         { label: 'Legal Product Distribution', route: '/roles/legal/product-distribution' },
