@@ -870,17 +870,7 @@ export default function DemoDriverStepPage() {
     chat: demoState.handlerAssigned,
   }
 
-  const staticAudit = [
-    { ts: '29.1.2026, 14:55:51', message: 'Policy purchased and activated' },
-    { ts: '29.1.2026, 14:55:50', message: 'Quote generated (liability + vehicle)' },
-    { ts: '29.1.2026, 14:55:48', message: 'Identity verified (ID + selfie match)' },
-    { ts: '29.1.2026, 14:55:47', message: 'Profile confirmed' },
-    { ts: '29.1.2026, 14:55:46', message: 'Onboarding completed (wizard)' },
-    { ts: '29.1.2026, 14:55:45', message: 'Registration started (email captured)' },
-    { ts: '29.1.2026, 14:41:38', message: 'Registration started (email captured)' },
-    { ts: '29.1.2026, 14:29:25', message: 'Policy purchased and activated' },
-    { ts: '29.1.2026, 14:29:24', message: 'Quote generated (liability + vehicle)' },
-  ]
+  const audit = auditLog
 
   return (
     <div className="page">
@@ -909,12 +899,13 @@ export default function DemoDriverStepPage() {
                 </ul>
                 <h4>Audit log</h4>
                 <div className="admin-audit">
-                  {staticAudit.map((a, idx) => (
+                  {audit.slice(0, 10).map((a, idx) => (
                     <div key={`${a.ts}-${idx}`} className="admin-audit-item">
-                      <div className="ts">{a.ts}</div>
+                      <div className="ts">{new Date(a.ts).toLocaleString()}</div>
                       <div className="msg">{a.message}</div>
                     </div>
                   ))}
+                  {audit.length === 0 && <div className="text-muted">No entries yet.</div>}
                 </div>
               </div>
             </aside>
@@ -958,12 +949,13 @@ export default function DemoDriverStepPage() {
 
                 <h4>Audit log</h4>
                 <div className="admin-audit">
-                  {staticAudit.map((a, idx) => (
+                  {audit.slice(0, 10).map((a, idx) => (
                     <div key={`${a.ts}-${idx}`} className="admin-audit-item">
-                      <div className="ts">{a.ts}</div>
+                      <div className="ts">{new Date(a.ts).toLocaleString()}</div>
                       <div className="msg">{a.message}</div>
                     </div>
                   ))}
+                  {audit.length === 0 && <div className="text-muted">No entries yet.</div>}
                 </div>
               </div>
             </aside>
