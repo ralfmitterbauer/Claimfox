@@ -16,6 +16,9 @@ export default function DemoOverviewPage() {
   const [financeOpen, setFinanceOpen] = useState(false)
   const [claimsOpen, setClaimsOpen] = useState(false)
   const [partnerOpen, setPartnerOpen] = useState(false)
+  const [fleetOpen, setFleetOpen] = useState(false)
+  const [logisticsOpen, setLogisticsOpen] = useState(false)
+  const [brokerOpen, setBrokerOpen] = useState(false)
 
   const groupMeta = [
     { key: 'insurance', iconBg: 'bg-indigo-lt', accent: 'bg-indigo-lt' },
@@ -330,6 +333,129 @@ export default function DemoOverviewPage() {
                                     { label: 'Surveyors', to: '/partner-management-surveyors' },
                                     { label: 'Major Loss', to: '/partner-management-major-loss' },
                                     { label: 'Parts', to: '/partner-management-parts' },
+                                  ].map((item) => (
+                                    <button
+                                      key={item.label}
+                                      type="button"
+                                      className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
+                                      onClick={() => navigate(item.to)}
+                                    >
+                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="badge bg-blue-lt text-blue">Demo</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        }
+
+                        if (role.roleId === 'reporting') {
+                          return (
+                            <React.Fragment key={role.roleId}>
+                              <button
+                                type="button"
+                                className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                                onClick={() => setFleetOpen((prev) => !prev)}
+                              >
+                                <span className="d-flex align-items-center gap-2">
+                                  <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M12 5v14" />
+                                      <path d="M5 12h14" />
+                                    </svg>
+                                  </span>
+                                  <span className="fw-semibold">{role.label}</span>
+                                </span>
+                                <span className="text-blue" style={{ fontSize: '1rem', lineHeight: 1 }}>{fleetOpen ? '▲' : '▼'}</span>
+                              </button>
+                              {fleetOpen && (
+                                <div className="list-group list-group-flush">
+                                  {[
+                                    { label: 'Fahrer', to: '/demo-driver/step/register' },
+                                    { label: 'Fleet Reporting', to: '/fleet-reporting' },
+                                    { label: 'Fleet Management', to: '/fleet-management' },
+                                  ].map((item) => (
+                                    <button
+                                      key={item.label}
+                                      type="button"
+                                      className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
+                                      onClick={() => navigate(item.to)}
+                                    >
+                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="badge bg-blue-lt text-blue">Demo</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        }
+
+                        if (role.roleId === 'logistics') {
+                          return (
+                            <React.Fragment key={role.roleId}>
+                              <button
+                                type="button"
+                                className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                                onClick={() => setLogisticsOpen((prev) => !prev)}
+                              >
+                                <span className="d-flex align-items-center gap-2">
+                                  <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M12 5v14" />
+                                      <path d="M5 12h14" />
+                                    </svg>
+                                  </span>
+                                  <span className="fw-semibold">{role.label}</span>
+                                </span>
+                                <span className="text-blue" style={{ fontSize: '1rem', lineHeight: 1 }}>{logisticsOpen ? '▲' : '▼'}</span>
+                              </button>
+                              {logisticsOpen && (
+                                <div className="list-group list-group-flush">
+                                  {[
+                                    { label: 'Logistics', to: '/logistics' },
+                                  ].map((item) => (
+                                    <button
+                                      key={item.label}
+                                      type="button"
+                                      className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
+                                      onClick={() => navigate(item.to)}
+                                    >
+                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="badge bg-blue-lt text-blue">Demo</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        }
+
+                        if (role.roleId === 'broker-crm') {
+                          return (
+                            <React.Fragment key={role.roleId}>
+                              <button
+                                type="button"
+                                className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                                onClick={() => setBrokerOpen((prev) => !prev)}
+                              >
+                                <span className="d-flex align-items-center gap-2">
+                                  <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                      <path d="M12 5v14" />
+                                      <path d="M5 12h14" />
+                                    </svg>
+                                  </span>
+                                  <span className="fw-semibold">{role.label}</span>
+                                </span>
+                                <span className="text-blue" style={{ fontSize: '1rem', lineHeight: 1 }}>{brokerOpen ? '▲' : '▼'}</span>
+                              </button>
+                              {brokerOpen && (
+                                <div className="list-group list-group-flush">
+                                  {[
+                                    { label: 'Broker CRM', to: '/broker-crm' },
+                                    { label: 'Broker Administration', to: '/broker-admin' },
                                   ].map((item) => (
                                     <button
                                       key={item.label}
