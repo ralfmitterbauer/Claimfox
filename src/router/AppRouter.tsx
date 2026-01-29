@@ -94,6 +94,12 @@ import DemoSeniorUnderwriterPage from '@/pages/demo-underwriter/DemoSeniorUnderw
 import DemoSeniorUnderwriterStepPage from '@/pages/demo-underwriter/DemoSeniorUnderwriterStepPage'
 import DemoCarrierAuthorityPage from '@/pages/demo-underwriter/DemoCarrierAuthorityPage'
 import DemoCarrierAuthorityStepPage from '@/pages/demo-underwriter/DemoCarrierAuthorityStepPage'
+import DemoCompliancePage from '@/pages/demo-underwriter/DemoCompliancePage'
+import DemoComplianceStepPage from '@/pages/demo-underwriter/DemoComplianceStepPage'
+import DemoLegalCounselPage from '@/pages/demo-legal/DemoLegalCounselPage'
+import DemoLegalCounselStepPage from '@/pages/demo-legal/DemoLegalCounselStepPage'
+import DemoLegalClaimsPage from '@/pages/demo-legal/DemoLegalClaimsPage'
+import DemoLegalClaimsStepPage from '@/pages/demo-legal/DemoLegalClaimsStepPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -122,6 +128,12 @@ export default function AppRouter() {
         <Route path="/demo-underwriter/senior/step/:stepId" element={<DemoSeniorUnderwriterStepPage />} />
         <Route path="/demo-underwriter/carrier" element={<DemoCarrierAuthorityPage />} />
         <Route path="/demo-underwriter/carrier/step/:stepId" element={<DemoCarrierAuthorityStepPage />} />
+        <Route path="/demo-underwriter/compliance" element={<DemoCompliancePage />} />
+        <Route path="/demo-underwriter/compliance/step/:stepId" element={<DemoComplianceStepPage />} />
+        <Route path="/demo-legal/counsel" element={<DemoLegalCounselPage />} />
+        <Route path="/demo-legal/counsel/step/:stepId" element={<DemoLegalCounselStepPage />} />
+        <Route path="/demo-legal/claims" element={<DemoLegalClaimsPage />} />
+        <Route path="/demo-legal/claims/step/:stepId" element={<DemoLegalClaimsStepPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />

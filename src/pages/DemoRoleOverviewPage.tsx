@@ -37,6 +37,8 @@ export default function DemoRoleOverviewPage() {
       title: t('roles.cards.legal.title'),
       subtitle: isEn ? 'Legal subroles' : 'Legal Unterrollen',
       subroles: [
+        { label: 'Legal Counsel', route: '/demo-legal/counsel/step/intake' },
+        { label: 'Claims Legal', route: '/demo-legal/claims/step/intake' },
         { label: 'Legal Intake', route: '/roles/legal/intake' },
         { label: 'Legal Claims Specialist', route: '/roles/legal/claims-specialist' },
         { label: 'Legal Product Distribution', route: '/roles/legal/product-distribution' },
@@ -250,9 +252,11 @@ export default function DemoRoleOverviewPage() {
                     ? '/demo-underwriter/senior/step/intake'
                     : subrole.demoKey === 'uw-carrier'
                       ? '/demo-underwriter/carrier/step/handover'
-                    : subrole.demoKey
-                      ? `/demo/step/1?role=${subrole.demoKey}`
-                      : '/demo/step/1'
+                      : subrole.demoKey === 'uw-compliance'
+                        ? '/demo-underwriter/compliance/step/intake'
+                      : subrole.demoKey
+                        ? `/demo/step/1?role=${subrole.demoKey}`
+                        : '/demo/step/1'
                 const descriptionKey = showContext
                   ? subrole.label.toLowerCase().replace(/\s+/g, '-')
                   : ''

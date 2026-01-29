@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import { useI18n } from '@/i18n/I18nContext'
 import UnderwriterIcon from '@/assets/images/underwriter.png'
 import LegalIcon from '@/assets/images/legal.png'
+import InsuranceIcon from '@/assets/images/insurance_icon.png'
+import FleetIcon from '@/assets/images/flotte.png'
 
 export default function DemoOverviewPage() {
   const navigate = useNavigate()
   const { t } = useI18n()
   const [underwriterOpen, setUnderwriterOpen] = useState(false)
+  const [legalOpen, setLegalOpen] = useState(false)
 
   const groupMeta = [
     { key: 'insurance', iconBg: 'bg-indigo-lt', accent: 'bg-indigo-lt' },
@@ -77,46 +80,48 @@ export default function DemoOverviewPage() {
                   <div className="card h-100">
                     <div className="card-header d-flex align-items-center justify-content-between">
                       <div className="d-flex align-items-center gap-2">
-                        <span className={`avatar avatar-sm ${meta?.iconBg ?? 'bg-indigo-lt'}`}>
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                            {group.key === 'insurance' && (
-                              <>
-                                <path d="M12 3l7 4v6c0 5-3 8-7 9-4-1-7-4-7-9V7z" />
-                                <path d="M9 12l2 2 4-4" />
-                              </>
-                            )}
-                            {group.key === 'fleet' && (
-                              <>
-                                <rect x="3" y="11" width="18" height="7" rx="2" />
-                                <path d="M7 11l3-5h4l3 5" />
-                                <circle cx="7.5" cy="18" r="1.5" />
-                                <circle cx="16.5" cy="18" r="1.5" />
-                              </>
-                            )}
-                            {group.key === 'logistics' && (
-                              <>
-                                <path d="M3 7h18v10H3z" />
-                                <path d="M7 7v10" />
-                                <path d="M3 12h18" />
-                              </>
-                            )}
-                            {group.key === 'broker' && (
-                              <>
-                                <path d="M6 8h12v12H6z" />
-                                <path d="M9 4h6v4H9z" />
-                                <path d="M9 12h6" />
-                              </>
-                            )}
-                          </svg>
+                        <span className={group.key === 'insurance' || group.key === 'fleet' ? 'd-inline-flex align-items-center' : `avatar avatar-sm ${meta?.iconBg ?? 'bg-indigo-lt'}`}>
+                          {group.key === 'insurance' ? (
+                            <img src={InsuranceIcon} alt="" style={{ width: 24, height: 24, objectFit: 'contain' }} />
+                          ) : group.key === 'fleet' ? (
+                            <img src={FleetIcon} alt="" style={{ width: 24, height: 24, objectFit: 'contain' }} />
+                          ) : (
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                              {group.key === 'fleet' && (
+                                <>
+                                  <rect x="3" y="11" width="18" height="7" rx="2" />
+                                  <path d="M7 11l3-5h4l3 5" />
+                                  <circle cx="7.5" cy="18" r="1.5" />
+                                  <circle cx="16.5" cy="18" r="1.5" />
+                                </>
+                              )}
+                              {group.key === 'logistics' && (
+                                <>
+                                  <path d="M3 7h18v10H3z" />
+                                  <path d="M7 7v10" />
+                                  <path d="M3 12h18" />
+                                </>
+                              )}
+                              {group.key === 'broker' && (
+                                <>
+                                  <path d="M6 8h12v12H6z" />
+                                  <path d="M9 4h6v4H9z" />
+                                  <path d="M9 12h6" />
+                                </>
+                              )}
+                            </svg>
+                          )}
                         </span>
                         <div>
                           <h3 className="card-title mb-0">{group.title}</h3>
-                          <div className="text-muted fs-4">Demo roles</div>
+                          <div className="text-muted fs-4">Roles</div>
                         </div>
                       </div>
-                      <span className={`badge ${meta?.accent ?? 'bg-indigo-lt'}`}>
-                        {group.items.length} roles
-                      </span>
+                      {group.key !== 'insurance' && group.key !== 'fleet' && (
+                        <span className={`badge ${meta?.accent ?? 'bg-indigo-lt'}`}>
+                          {group.items.length} roles
+                        </span>
+                      )}
                     </div>
                     <div className="list-group list-group-flush">
                       {group.items.map((role) => {
@@ -143,7 +148,45 @@ export default function DemoOverviewPage() {
                                     { label: 'Senior Underwriter', to: '/demo-underwriter/senior/step/intake' },
                                     { label: 'Carrier Authority', to: '/demo-underwriter/carrier/step/handover' },
                                     { label: 'Compliance', to: '/demo-underwriter/compliance/step/intake' },
-                                    { label: 'Underwriter Reporting', to: '/demo/step/1?role=uw-reporting' },
+                                    { label: 'Underwriter Reporting', to: '/roles/underwriter/reporting' },
+                                  ].map((item) => (
+                                    <button
+                                      key={item.label}
+                                      type="button"
+                                      className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
+                                      onClick={() => navigate(item.to)}
+                                    >
+                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="badge bg-blue-lt text-blue">Demo</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        }
+
+                        if (role.roleId === 'legal') {
+                          return (
+                            <React.Fragment key={role.roleId}>
+                              <button
+                                type="button"
+                                className="list-group-item list-group-item-action d-flex align-items-center justify-content-between"
+                                onClick={() => setLegalOpen((prev) => !prev)}
+                              >
+                                <span className="d-flex align-items-center gap-2">
+                                  <span className="d-inline-flex align-items-center">
+                                    <img src={LegalIcon} alt="" style={{ width: 28, height: 28, objectFit: 'contain' }} />
+                                  </span>
+                                  <span className="fw-semibold">{role.label}</span>
+                                </span>
+                                <span className="text-blue" style={{ fontSize: '1rem', lineHeight: 1 }}>{legalOpen ? '▲' : '▼'}</span>
+                              </button>
+                              {legalOpen && (
+                                <div className="list-group list-group-flush">
+                                  {[
+                                    { label: 'Legal Counsel', to: '/demo-legal/counsel/step/intake' },
+                                    { label: 'Claims Legal', to: '/demo-legal/claims/step/intake' },
                                   ].map((item) => (
                                     <button
                                       key={item.label}
@@ -175,18 +218,12 @@ export default function DemoOverviewPage() {
                             }}
                           >
                             <span className="d-flex align-items-center gap-2">
-                              {role.roleId === 'legal' ? (
-                                <span className="d-inline-flex align-items-center">
-                                  <img src={LegalIcon} alt="" style={{ width: 28, height: 28, objectFit: 'contain' }} />
-                                </span>
-                              ) : (
-                                <span className="avatar avatar-xs bg-blue-lt text-blue">
-                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M12 5v14" />
-                                    <path d="M5 12h14" />
-                                  </svg>
-                                </span>
-                              )}
+                              <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                  <path d="M12 5v14" />
+                                  <path d="M5 12h14" />
+                                </svg>
+                              </span>
                               <span className="fw-semibold">{role.label}</span>
                             </span>
                             <span className="badge bg-blue-lt text-blue">Demo</span>
