@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/demo-shell.css'
 import { appendAudit, readAudit, readJson, writeJson } from './_partnerStorage'
-import { useI18n } from '@/features/i18n/I18nProvider'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_PARTNER_PARTS_STATE'
 const KEY_AUDIT = 'DEMO_PARTNER_PARTS_AUDIT'
