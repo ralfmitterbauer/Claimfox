@@ -219,11 +219,17 @@ export default function InsuranceLandingPage() {
             </Button>
             <p>{copy.heroContext}</p>
           </div>
-          <div className="home-hero-card" aria-label="Insurfox Logo" style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}>
+          <div className="home-hero-card" aria-label="Insurfox Logo" style={{ background: 'transparent', boxShadow: 'none', border: 'none', alignSelf: 'center' }}>
             <img
               src={InsurfoxLogoLight}
               alt="Insurfox"
-              style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'scale(1.5) translateX(-120px)', transformOrigin: 'center' }}
+              style={{
+                width: 'clamp(200px, 28vw, 360px)',
+                height: 'auto',
+                objectFit: 'contain',
+                transform: 'translateX(-72px)',
+                transformOrigin: 'right center'
+              }}
             />
           </div>
         </div>
