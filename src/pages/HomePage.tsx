@@ -359,6 +359,30 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      <nav className="home-mobile-bottom-bar" aria-label="Mobile shortcuts">
+        <button
+          type="button"
+          onClick={() => {
+            if (isAuthenticated) {
+              logout()
+              navigate('/login')
+              return
+            }
+            navigate('/login')
+          }}
+        >
+          {isAuthenticated ? copy.nav.logout : copy.nav.login}
+        </button>
+        <div className="home-marketing-lang-switch" role="group" aria-label="Language switch mobile">
+          <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
+            DE
+          </button>
+          <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>
+            EN
+          </button>
+        </div>
+      </nav>
     </main>
   )
 }
