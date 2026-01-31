@@ -5,6 +5,7 @@ import InsurfoxLogo from '@/assets/logos/Dark_blink.svg'
 import HomeHeroBackground from '@/assets/images/Home1.png'
 import HomeHeroCardImage from '@/assets/images/iaas_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
+import InsuranceProcessLandscape from '@/assets/images/insurance_process_landscape.png'
 import { useI18n } from '@/i18n/I18nContext'
 import { useAuth } from '@/features/auth/AuthContext'
 
@@ -278,6 +279,7 @@ export default function HomePage() {
           <div>
             <span className="home-product-kicker">{copy.productKicker}</span>
             <h2>{copy.productTitle}</h2>
+            <img src={InsuranceProcessLandscape} alt="Insurance process overview" style={{ width: '100%', margin: '0.5rem 0 1rem', borderRadius: 18, border: '1px solid rgba(148, 163, 184, 0.18)', boxShadow: '0 14px 32px rgba(15, 23, 42, 0.08)' }} />
             <p>{copy.productBody}</p>
             <div className="home-product-actions">
               <div />
