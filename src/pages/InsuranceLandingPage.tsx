@@ -11,7 +11,6 @@ export default function InsuranceLandingPage() {
   const { lang } = useI18n()
   const navigate = useNavigate()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
-  const [isAiPreviewOpen, setIsAiPreviewOpen] = React.useState(false)
 
   const copy = {
     heroKicker: lang === 'en' ? 'Insurfox AI IaaS' : 'Insurfox AI IaaS',
@@ -149,10 +148,13 @@ export default function InsuranceLandingPage() {
     aiDoesNotBullets: lang === 'en'
       ? ['Approve or bind automatically', 'Override carrier authority', 'Decide without evidence', 'Bypass controls', 'Obscure rationale']
       : ['Autonom genehmigen oder binden', 'Carrier-Autorität überschreiben', 'Ohne Evidenz entscheiden', 'Kontrollen umgehen', 'Begründung verschleiern'],
-    visualTitle: lang === 'en' ? 'From data to a decision record' : 'Von Daten zum Entscheidungsnachweis',
-    visualBullets: lang === 'en'
-      ? ['Inputs and events arrive', 'AI drafts a decision pack with rationale', 'Human decision creates an auditable record']
-      : ['Inputs und Ereignisse treffen ein', 'KI erstellt Decision Pack mit Begründung', 'Menschliche Entscheidung erzeugt Audit-Nachweis'],
+    platformKicker: lang === 'en' ? 'Platform' : 'Plattform',
+    platformTitle: lang === 'en'
+      ? 'One portal, multiple insurance programs'
+      : 'Ein Portal, mehrere Versicherungsprogramme',
+    platformBody: lang === 'en'
+      ? 'Unified execution across lines, API-first integration, reporting and bordereaux. Supports carrier, broker and enterprise operating models.'
+      : 'Einheitliche Ausfuehrung ueber Sparten, API-first Integration, Reporting und Bordereaux. Unterstuetzt Carrier-, Makler- und Enterprise-Operating-Modelle.',
     rolesTitle: lang === 'en' ? 'Operational views' : 'Operative Ansichten',
     rolesBody: lang === 'en'
       ? 'Open role-based views with controlled workflows and approvals.'
@@ -238,27 +240,27 @@ export default function InsuranceLandingPage() {
 
       <section className="home-product">
         <div className="home-product-card">
-          <div style={{ display: 'grid', gap: '1.5rem' }}>
-            <span className="home-product-kicker">{lang === 'en' ? 'Process' : 'Prozess'}</span>
-            <h2>{copy.visualTitle}</h2>
-            <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.6 }}>
-              {copy.visualBullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              className="home-hero-card"
-              onClick={() => setIsAiPreviewOpen(true)}
-              aria-label="Open AI process preview"
-            >
-              <img src={AiInsuranceProcessImage} alt="AI insurance process" />
-            </button>
+          <div>
+            <span className="home-product-kicker">{copy.platformKicker}</span>
+            <h2>{copy.platformTitle}</h2>
+            <img
+              src={AiInsuranceProcessImage}
+              alt="AI insurance process"
+              style={{
+                width: '100%',
+                margin: '0.5rem 0 1rem',
+                borderRadius: 18,
+                border: '1px solid rgba(148, 163, 184, 0.18)',
+                boxShadow: '0 14px 32px rgba(15, 23, 42, 0.08)'
+              }}
+            />
+            <p>{copy.platformBody}</p>
+            <div className="home-product-actions">
+              <div />
+            </div>
           </div>
           <div className="home-product-media">
-            <div className="home-hero-card" aria-label="Insurance AI" style={{ cursor: 'default' }}>
-              <img src={InsuranceAiImage} alt="Insurance AI" />
-            </div>
+            <img src={InsuranceAiImage} alt="Insurance AI" />
           </div>
         </div>
       </section>
@@ -398,16 +400,6 @@ export default function InsuranceLandingPage() {
         </div>
       </section>
 
-      {isAiPreviewOpen && (
-        <div className="hero-image-modal" role="dialog" aria-modal="true">
-          <button type="button" className="hero-image-modal__close" onClick={() => setIsAiPreviewOpen(false)} aria-label="Close">
-            ×
-          </button>
-          <div className="hero-image-modal__content">
-            <img src={AiInsuranceProcessImage} alt="AI insurance process" />
-          </div>
-        </div>
-      )}
     </main>
   )
 }
