@@ -221,8 +221,8 @@ export default function HomePage() {
             <p>{copy.heroBody}</p>
             <p>{copy.heroContext}</p>
           </div>
-          <div className="home-hero-card" aria-label="Insurfox Logo">
-            <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '82%', height: '82%', objectFit: 'contain' }} />
+          <div className="home-hero-card" aria-label="Insurfox Logo" style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}>
+            <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '100%', height: '100%', objectFit: 'contain', transform: 'scale(1.5)' }} />
           </div>
         </div>
         <span className="home-hero-accent" aria-hidden />
