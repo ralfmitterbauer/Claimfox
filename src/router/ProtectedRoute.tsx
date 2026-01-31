@@ -21,7 +21,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (isAuthenticated && user?.mode === 'insurance-only') {
-    const allowedRoutes = new Set(['/home', '/insurance'])
+    const allowedRoutes = new Set(['/home', '/insurance', '/insurance-dashboard'])
     if (!allowedRoutes.has(location.pathname)) {
       return <Navigate to="/home" replace />
     }
