@@ -6,6 +6,7 @@ import HomeHeroBackground from '@/assets/images/Home1.png'
 import HomeHeroCardImage from '@/assets/images/iaas_home.png'
 import ProductImage from '@/assets/images/Produkt1.png'
 import InsuranceProcessLandscape from '@/assets/images/insurance_process_landscape.png'
+import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 import { useI18n } from '@/i18n/I18nContext'
 import { useAuth } from '@/features/auth/AuthContext'
 
@@ -27,7 +28,7 @@ export default function HomePage() {
       logout: lang === 'en' ? 'Logout' : 'Abmelden'
     },
     heroKicker: lang === 'en' ? 'Insurance Infrastructure' : 'Versicherungsinfrastruktur',
-    heroTitle: lang === 'en' ? 'Insurfox Portal' : 'Insurfox Portal',
+    heroTitle: lang === 'en' ? 'Insurfox AI IaaS Portal' : 'Insurfox AI IaaS Portal',
     heroBody: lang === 'en'
       ? 'Insurfox is a central platform to run insurance programs across partners, lines and markets. It standardizes execution and keeps decision authority with carriers.'
       : 'Insurfox ist eine zentrale Plattform zum Betrieb von Versicherungsprogrammen über Partner, Sparten und Märkte hinweg. Sie standardisiert die Ausführung und belässt die Entscheidungshoheit bei den Carriern.',
@@ -220,11 +221,28 @@ export default function HomePage() {
             <p>{copy.heroBody}</p>
             <p>{copy.heroContext}</p>
           </div>
-          <button type="button" className="home-hero-card" onClick={() => setIsHeroPreviewOpen(true)} aria-label="Bildvorschau öffnen">
-            <img src={HomeHeroCardImage} alt="Insurfox AI IaaS" />
-          </button>
+          <div className="home-hero-card" aria-label="Insurfox Logo">
+            <img src={InsurfoxLogoLight} alt="Insurfox" style={{ width: '82%', height: '82%', objectFit: 'contain' }} />
+          </div>
         </div>
         <span className="home-hero-accent" aria-hidden />
+      </section>
+
+      <section className="home-product">
+        <div className="home-product-card">
+          <div>
+            <span className="home-product-kicker">{copy.productKicker}</span>
+            <h2>{copy.productTitle}</h2>
+            <img src={InsuranceProcessLandscape} alt="Insurance process overview" style={{ width: '100%', margin: '0.5rem 0 1rem', borderRadius: 18, border: '1px solid rgba(148, 163, 184, 0.18)', boxShadow: '0 14px 32px rgba(15, 23, 42, 0.08)' }} />
+            <p>{copy.productBody}</p>
+            <div className="home-product-actions">
+              <div />
+            </div>
+          </div>
+          <div className="home-product-media">
+            <img src={ProductImage} alt="Produktmodule" />
+          </div>
+        </div>
       </section>
 
       <section className="home-value">
@@ -271,23 +289,6 @@ export default function HomePage() {
         </div>
         <div className="home-section-header">
           <p>{copy.claimsFooter}</p>
-        </div>
-      </section>
-
-      <section className="home-product">
-        <div className="home-product-card">
-          <div>
-            <span className="home-product-kicker">{copy.productKicker}</span>
-            <h2>{copy.productTitle}</h2>
-            <img src={InsuranceProcessLandscape} alt="Insurance process overview" style={{ width: '100%', margin: '0.5rem 0 1rem', borderRadius: 18, border: '1px solid rgba(148, 163, 184, 0.18)', boxShadow: '0 14px 32px rgba(15, 23, 42, 0.08)' }} />
-            <p>{copy.productBody}</p>
-            <div className="home-product-actions">
-              <div />
-            </div>
-          </div>
-          <div className="home-product-media">
-            <img src={ProductImage} alt="Produktmodule" />
-          </div>
         </div>
       </section>
 
