@@ -220,6 +220,33 @@ export default function InsuranceLandingPage() {
         <span className="home-hero-accent" aria-hidden />
       </section>
 
+      <section className="home-product">
+        <div className="home-product-card">
+          <div style={{ display: 'grid', gap: '1.5rem' }}>
+            <span className="home-product-kicker">{lang === 'en' ? 'Process' : 'Prozess'}</span>
+            <h2>{copy.visualTitle}</h2>
+            <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.6 }}>
+              {copy.visualBullets.map((bullet) => (
+                <li key={bullet}>{bullet}</li>
+              ))}
+            </ul>
+            <button
+              type="button"
+              className="home-hero-card"
+              onClick={() => setIsAiPreviewOpen(true)}
+              aria-label="Open AI process preview"
+            >
+              <img src={AiInsuranceProcessImage} alt="AI insurance process" />
+            </button>
+          </div>
+          <div className="home-product-media">
+            <div className="home-hero-card" aria-label="Insurance AI" style={{ cursor: 'default' }}>
+              <img src={InsuranceAiImage} alt="Insurance AI" />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="home-value">
         <div className="home-section-header">
           <h2>{copy.lifecycleTitle}</h2>
@@ -232,33 +259,6 @@ export default function InsuranceLandingPage() {
               <p>{card.body}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="home-product">
-        <div className="home-product-card">
-          <div>
-            <span className="home-product-kicker">{lang === 'en' ? 'Process' : 'Prozess'}</span>
-            <h2>{copy.visualTitle}</h2>
-            <ul style={{ margin: 0, paddingLeft: '1.1rem', color: '#475569', lineHeight: 1.6 }}>
-              {copy.visualBullets.map((bullet) => (
-                <li key={bullet}>{bullet}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="home-product-media" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '1rem' }}>
-            <button
-              type="button"
-              className="home-hero-card"
-              onClick={() => setIsAiPreviewOpen(true)}
-              aria-label="Open AI process preview"
-            >
-              <img src={AiInsuranceProcessImage} alt="AI insurance process" />
-            </button>
-            <div className="home-hero-card" aria-label="Insurance AI" style={{ cursor: 'default' }}>
-              <img src={InsuranceAiImage} alt="Insurance AI" />
-            </div>
-          </div>
         </div>
       </section>
 
