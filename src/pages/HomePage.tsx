@@ -17,6 +17,11 @@ export default function HomePage() {
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
   const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false)
 
+  const go = (route: string) => {
+    navigate(route)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }
+
   const copy = {
     nav: {
       insurance: lang === 'en' ? 'Insurance' : 'Versicherungen',
@@ -164,28 +169,28 @@ export default function HomePage() {
     <main className="home-marketing">
       <header className="home-marketing-header">
         <div className="home-marketing-header-inner">
-          <button type="button" onClick={() => navigate('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
+          <button type="button" onClick={() => go('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
             <img src={InsurfoxLogo} alt="Insurfox" className="home-marketing-logo" />
           </button>
           <nav className="home-marketing-nav">
-            <button type="button" onClick={() => navigate('/insurance')}>{copy.nav.insurance}</button>
+            <button type="button" onClick={() => go('/insurance')}>{copy.nav.insurance}</button>
             {user?.mode !== 'insurance-only' && (
               <>
-                <button type="button" onClick={() => navigate('/broker-portal')}>{copy.nav.broker}</button>
-                <button type="button" onClick={() => navigate('/logistics')}>{copy.nav.logistics}</button>
-                <button type="button" onClick={() => navigate('/fleet')}>{copy.nav.fleet}</button>
-                <button type="button" onClick={() => navigate('/partner')}>{copy.nav.partner}</button>
-                <button type="button" onClick={() => navigate('/demo')}>{copy.nav.demo}</button>
+                <button type="button" onClick={() => go('/broker-portal')}>{copy.nav.broker}</button>
+                <button type="button" onClick={() => go('/logistics')}>{copy.nav.logistics}</button>
+                <button type="button" onClick={() => go('/fleet')}>{copy.nav.fleet}</button>
+                <button type="button" onClick={() => go('/partner')}>{copy.nav.partner}</button>
+                <button type="button" onClick={() => go('/demo')}>{copy.nav.demo}</button>
               </>
             )}
             <Button
               onClick={() => {
                 if (isAuthenticated) {
                   logout()
-                  navigate('/login')
+                  go('/login')
                   return
                 }
-                navigate('/login')
+                go('/login')
               }}
               className="home-marketing-login"
               style={{ padding: '0.5rem 1.1rem' }}
@@ -218,24 +223,24 @@ export default function HomePage() {
           </nav>
           {isMobileNavOpen && (
             <div className="home-marketing-mobile-panel" role="dialog" aria-label="Navigation">
-              <button type="button" onClick={() => { navigate('/insurance'); setIsMobileNavOpen(false) }}>
+              <button type="button" onClick={() => { go('/insurance'); setIsMobileNavOpen(false) }}>
                 {copy.nav.insurance}
               </button>
               {user?.mode !== 'insurance-only' && (
                 <>
-                  <button type="button" onClick={() => { navigate('/broker-portal'); setIsMobileNavOpen(false) }}>
+                  <button type="button" onClick={() => { go('/broker-portal'); setIsMobileNavOpen(false) }}>
                     {copy.nav.broker}
                   </button>
-                  <button type="button" onClick={() => { navigate('/logistics'); setIsMobileNavOpen(false) }}>
+                  <button type="button" onClick={() => { go('/logistics'); setIsMobileNavOpen(false) }}>
                     {copy.nav.logistics}
                   </button>
-                  <button type="button" onClick={() => { navigate('/fleet'); setIsMobileNavOpen(false) }}>
+                  <button type="button" onClick={() => { go('/fleet'); setIsMobileNavOpen(false) }}>
                     {copy.nav.fleet}
                   </button>
-                  <button type="button" onClick={() => { navigate('/partner'); setIsMobileNavOpen(false) }}>
+                  <button type="button" onClick={() => { go('/partner'); setIsMobileNavOpen(false) }}>
                     {copy.nav.partner}
                   </button>
-                  <button type="button" onClick={() => { navigate('/demo'); setIsMobileNavOpen(false) }}>
+                  <button type="button" onClick={() => { go('/demo'); setIsMobileNavOpen(false) }}>
                     {copy.nav.demo}
                   </button>
                 </>

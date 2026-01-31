@@ -6,6 +6,10 @@ import { useI18n } from '@/i18n/I18nContext'
 export default function InsuranceDashboardPage() {
   const { lang } = useI18n()
   const navigate = useNavigate()
+  const go = (route: string) => {
+    navigate(route)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }
 
   const copy = {
     headerKicker: lang === 'en' ? 'Insurance dashboard' : 'Versicherungs-Dashboard',
@@ -104,7 +108,7 @@ export default function InsuranceDashboardPage() {
             <p>{copy.headerBody}</p>
           </div>
           <Button
-            onClick={() => navigate('/insurance')}
+            onClick={() => go('/insurance')}
             className="home-marketing-login"
             style={{ padding: '0.5rem 1.1rem' }}
             disableHover
@@ -145,7 +149,7 @@ export default function InsuranceDashboardPage() {
                 key={card.title}
                 type="button"
                 className="home-value-card"
-                onClick={() => navigate(card.route)}
+                onClick={() => go(card.route)}
                 style={{ textAlign: 'left' }}
               >
                 <h3>{card.title}</h3>

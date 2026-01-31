@@ -12,6 +12,11 @@ export default function InsuranceLandingPage() {
   const navigate = useNavigate()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
+  const go = (route: string) => {
+    navigate(route)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }
+
   const copy = {
     heroKicker: lang === 'en' ? 'Insurfox AI IaaS' : 'Insurfox AI IaaS',
     heroTitle: lang === 'en' ? 'AI for insurance decision processes' : 'KI für Versicherungs-Entscheidungsprozesse',
@@ -212,7 +217,7 @@ export default function InsuranceLandingPage() {
             <h1>{copy.heroTitle}</h1>
             <p>{copy.heroBody}</p>
             <Button
-              onClick={() => navigate('/insurance-dashboard')}
+              onClick={() => go('/insurance-dashboard')}
               className="home-marketing-login"
               style={{ padding: '0.55rem 1.2rem', width: 'fit-content' }}
               disableHover
@@ -375,7 +380,7 @@ export default function InsuranceLandingPage() {
               key={card.title}
               type="button"
               className="home-value-card"
-              onClick={() => navigate(card.route)}
+              onClick={() => go(card.route)}
               style={{ textAlign: 'left' }}
             >
               <h3>{card.title}</h3>

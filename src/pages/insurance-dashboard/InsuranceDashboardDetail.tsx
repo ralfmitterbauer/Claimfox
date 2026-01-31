@@ -32,6 +32,10 @@ type InsuranceDashboardDetailProps = {
 
 export default function InsuranceDashboardDetail(props: InsuranceDashboardDetailProps) {
   const navigate = useNavigate()
+  const go = (route: string) => {
+    navigate(route)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }
 
   return (
     <main className="home-marketing">
@@ -46,7 +50,7 @@ export default function InsuranceDashboardDetail(props: InsuranceDashboardDetail
             <p>{props.subtitle}</p>
           </div>
           <Button
-            onClick={() => navigate(props.backRoute)}
+            onClick={() => go(props.backRoute)}
             className="home-marketing-login"
             style={{ padding: '0.5rem 1.1rem' }}
             disableHover

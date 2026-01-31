@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logoDark from '@/assets/logos/Dark_blink.svg'
 import Button from '@/components/ui/Button'
@@ -10,6 +10,7 @@ export default function AppHeader() {
   const navigate = useNavigate()
   const { lang, setLang, t } = useI18n()
   const { isAuthenticated, logout, user } = useAuth()
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false)
 
   const authLabel = isAuthenticated ? t('header.logout') : t('header.login')
 
@@ -17,9 +18,16 @@ export default function AppHeader() {
     if (isAuthenticated) {
       logout()
       navigate('/login')
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
       return
     }
     navigate('/login')
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+  }
+
+  function go(route: string) {
+    navigate(route)
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
   }
 
   const navItems = [
@@ -77,12 +85,12 @@ export default function AppHeader() {
   return (
     <header className="home-marketing-header" ref={headerRef}>
       <div className="home-marketing-header-inner">
-        <button type="button" onClick={() => navigate('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
+        <button type="button" onClick={() => go('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
           <img src={logoDark} alt="Insurfox" className="home-marketing-logo" />
         </button>
         <nav className="home-marketing-nav">
           {navItems.map((item) => (
-            <button key={item.route} type="button" onClick={() => navigate(item.route)}>
+            <button key={item.route} type="button" onClick={() => go(item.route)}>
               {item.label}
             </button>
           ))}
@@ -106,12 +114,26 @@ export default function AppHeader() {
             </svg>
             <span className="home-marketing-login-text">{authLabel}</span>
           </Button>
-          <button type="button" className="home-marketing-menu" aria-label="Menü öffnen">
+          <button
+            type="button"
+            className="home-marketing-menu home-marketing-menu-trigger"
+            aria-label="Menü öffnen"
+            onClick={() => setIsMobileNavOpen((prev) => !prev)}
+          >
             <span />
             <span />
             <span />
           </button>
         </nav>
+        {isMobileNavOpen && (
+          <div className="home-marketing-mobile-panel" role="dialog" aria-label="Navigation">
+            {navItems.map((item) => (
+              <button key={item.route} type="button" onClick={() => { go(item.route); setIsMobileNavOpen(false) }}>
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </header>
   )
