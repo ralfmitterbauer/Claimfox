@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 import HomeHeroBackground from '@/assets/images/Home1.png'
 import AiInsuranceProcessImage from '@/assets/images/ai_insurance_process.png'
@@ -19,6 +20,7 @@ export default function InsuranceLandingPage() {
       ? 'AI supports structuring, prioritization and evidence preparation. Decisions remain with the carrier, with human review.'
       : 'KI unterstützt Strukturierung, Priorisierung und Evidenzaufbereitung. Entscheidungen bleiben beim Carrier, mit menschlicher Prüfung.',
     heroContext: lang === 'en' ? 'Underwriting • Claims • Governance' : 'Underwriting • Schaden • Governance',
+    heroCta: lang === 'en' ? 'Open dashboard' : 'Dashboard öffnen',
     lifecycleTitle: lang === 'en' ? 'Decision lifecycle, end-to-end' : 'Entscheidungs-Lifecycle – Ende zu Ende',
     lifecycleBody: lang === 'en'
       ? 'Standardized steps make decisions repeatable and controlled across partners and markets.'
@@ -207,6 +209,14 @@ export default function InsuranceLandingPage() {
             <span className="home-hero-kicker">{copy.heroKicker}</span>
             <h1>{copy.heroTitle}</h1>
             <p>{copy.heroBody}</p>
+            <Button
+              onClick={() => navigate('/insurance-dashboard')}
+              className="home-marketing-login"
+              style={{ padding: '0.55rem 1.2rem', width: 'fit-content' }}
+              disableHover
+            >
+              {copy.heroCta}
+            </Button>
             <p>{copy.heroContext}</p>
           </div>
           <div className="home-hero-card" aria-label="Insurfox Logo" style={{ background: 'transparent', boxShadow: 'none', border: 'none' }}>
