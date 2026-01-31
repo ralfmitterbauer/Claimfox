@@ -33,9 +33,9 @@ export default function InsuranceDashboardPage() {
           { label: lang === 'en' ? 'Portfolio exceptions' : 'Portfolio-Ausnahmen', value: '5' }
         ],
         cards: [
-          { title: lang === 'en' ? 'New submissions' : 'Neue Einreichungen', route: '/insurance' },
-          { title: lang === 'en' ? 'Referrals & approvals' : 'Freigaben & Entscheidungen', route: '/insurance' },
-          { title: lang === 'en' ? 'Portfolio view' : 'Portfolio-Ansicht', route: '/insurance' }
+          { title: lang === 'en' ? 'New submissions' : 'Neue Einreichungen', route: '/insurance-dashboard/underwriting/submissions' },
+          { title: lang === 'en' ? 'Referrals & approvals' : 'Freigaben & Entscheidungen', route: '/insurance-dashboard/underwriting/referrals' },
+          { title: lang === 'en' ? 'Portfolio view' : 'Portfolio-Ansicht', route: '/insurance-dashboard/underwriting/portfolio' }
         ]
       },
       {
@@ -50,8 +50,8 @@ export default function InsuranceDashboardPage() {
           { label: lang === 'en' ? 'SLA breaches' : 'SLA-Verstosse', value: '2' }
         ],
         cards: [
-          { title: lang === 'en' ? 'Claims worklist' : 'Schaden-Worklist', route: '/claim-manager' },
-          { title: lang === 'en' ? 'Cost approvals' : 'Kostenfreigaben', route: '/claim-manager' },
+          { title: lang === 'en' ? 'Claims worklist' : 'Schaden-Worklist', route: '/claim-manager-app' },
+          { title: lang === 'en' ? 'Cost approvals' : 'Kostenfreigaben', route: '/insurance-dashboard/claims/cost-approvals' },
           { title: lang === 'en' ? 'Partner orchestration' : 'Partner-Orchestrierung', route: '/partner-management-overview' }
         ]
       },
@@ -67,9 +67,9 @@ export default function InsuranceDashboardPage() {
           { label: lang === 'en' ? 'Processing volume' : 'Processing-Volumen', value: '1.2k' }
         ],
         cards: [
-          { title: lang === 'en' ? 'Program status' : 'Programmstatus', route: '/insurance' },
-          { title: lang === 'en' ? 'Integrations' : 'Integrationen', route: '/insurance' },
-          { title: lang === 'en' ? 'Reporting & bordereaux' : 'Reporting & Bordereaux', route: '/insurance' }
+          { title: lang === 'en' ? 'Program status' : 'Programmstatus', route: '/insurance-dashboard/operations/program-status' },
+          { title: lang === 'en' ? 'Integrations' : 'Integrationen', route: '/insurance-dashboard/operations/integrations' },
+          { title: lang === 'en' ? 'Reporting & bordereaux' : 'Reporting & Bordereaux', route: '/insurance-dashboard/operations/reporting' }
         ]
       },
       {
@@ -84,9 +84,9 @@ export default function InsuranceDashboardPage() {
           { label: lang === 'en' ? 'Audit findings' : 'Audit-Findings', value: '1' }
         ],
         cards: [
-          { title: lang === 'en' ? 'Access & mandates' : 'Zugriff & Mandate', route: '/insurance' },
-          { title: lang === 'en' ? 'Rules & versions' : 'Regeln & Versionen', route: '/insurance' },
-          { title: lang === 'en' ? 'Audit trail' : 'Audit-Trail', route: '/insurance' }
+          { title: lang === 'en' ? 'Access & mandates' : 'Zugriff & Mandate', route: '/insurance-dashboard/governance/access-mandates' },
+          { title: lang === 'en' ? 'Rules & versions' : 'Regeln & Versionen', route: '/insurance-dashboard/governance/rules-versions' },
+          { title: lang === 'en' ? 'Audit trail' : 'Audit-Trail', route: '/insurance-dashboard/governance/audit-trail' }
         ]
       }
     ]

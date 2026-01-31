@@ -21,8 +21,11 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (isAuthenticated && user?.mode === 'insurance-only') {
-    const allowedRoutes = new Set(['/home', '/insurance', '/insurance-dashboard'])
-    if (!allowedRoutes.has(location.pathname)) {
+    const allowedPrefixes = ['/home', '/insurance', '/insurance-dashboard']
+    const isAllowed = allowedPrefixes.some((prefix) => (
+      location.pathname === prefix || location.pathname.startsWith(`${prefix}/`)
+    ))
+    if (!isAllowed) {
       return <Navigate to="/home" replace />
     }
   }

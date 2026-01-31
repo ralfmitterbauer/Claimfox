@@ -30,6 +30,16 @@ import GetQuotePage from '@/pages/GetQuotePage'
 import LogisticsLandingPage from '@/pages/LogisticsLandingPage'
 import InsuranceLandingPage from '@/pages/InsuranceLandingPage'
 import InsuranceDashboardPage from '@/pages/InsuranceDashboardPage'
+import UnderwritingSubmissionsPage from '@/pages/insurance-dashboard/UnderwritingSubmissionsPage'
+import UnderwritingReferralsPage from '@/pages/insurance-dashboard/UnderwritingReferralsPage'
+import UnderwritingPortfolioPage from '@/pages/insurance-dashboard/UnderwritingPortfolioPage'
+import ClaimsCostApprovalsPage from '@/pages/insurance-dashboard/ClaimsCostApprovalsPage'
+import OperationsProgramStatusPage from '@/pages/insurance-dashboard/OperationsProgramStatusPage'
+import OperationsIntegrationsPage from '@/pages/insurance-dashboard/OperationsIntegrationsPage'
+import OperationsReportingPage from '@/pages/insurance-dashboard/OperationsReportingPage'
+import GovernanceAccessMandatesPage from '@/pages/insurance-dashboard/GovernanceAccessMandatesPage'
+import GovernanceRulesVersionsPage from '@/pages/insurance-dashboard/GovernanceRulesVersionsPage'
+import GovernanceAuditTrailPage from '@/pages/insurance-dashboard/GovernanceAuditTrailPage'
 import FleetLandingPage from '@/pages/FleetLandingPage'
 import PartnerLandingPage from '@/pages/PartnerLandingPage'
 import LogisticsAppPage from '@/pages/LogisticsAppPage'
@@ -243,6 +253,16 @@ export default function AppRouter() {
         <Route path="/logistics" element={<LogisticsLandingPage />} />
         <Route path="/insurance" element={<InsuranceLandingPage />} />
         <Route path="/insurance-dashboard" element={<InsuranceDashboardPage />} />
+        <Route path="/insurance-dashboard/underwriting/submissions" element={<UnderwritingSubmissionsPage />} />
+        <Route path="/insurance-dashboard/underwriting/referrals" element={<UnderwritingReferralsPage />} />
+        <Route path="/insurance-dashboard/underwriting/portfolio" element={<UnderwritingPortfolioPage />} />
+        <Route path="/insurance-dashboard/claims/cost-approvals" element={<ClaimsCostApprovalsPage />} />
+        <Route path="/insurance-dashboard/operations/program-status" element={<OperationsProgramStatusPage />} />
+        <Route path="/insurance-dashboard/operations/integrations" element={<OperationsIntegrationsPage />} />
+        <Route path="/insurance-dashboard/operations/reporting" element={<OperationsReportingPage />} />
+        <Route path="/insurance-dashboard/governance/access-mandates" element={<GovernanceAccessMandatesPage />} />
+        <Route path="/insurance-dashboard/governance/rules-versions" element={<GovernanceRulesVersionsPage />} />
+        <Route path="/insurance-dashboard/governance/audit-trail" element={<GovernanceAuditTrailPage />} />
         <Route path="/fleet" element={<FleetLandingPage />} />
         <Route path="/partner" element={<PartnerLandingPage />} />
         <Route path="/logistics-app" element={<LogisticsAppPage />} />
