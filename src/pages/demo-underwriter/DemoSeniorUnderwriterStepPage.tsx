@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_UW_SENIOR_STATE'
 const KEY_AUDIT = 'DEMO_UW_SENIOR_AUDIT'
@@ -23,15 +24,6 @@ type SeniorUwState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Referral intake', subtitle: 'Identify override need' },
-  { id: 'override', title: 'Override proposal', subtitle: 'Choose override path' },
-  { id: 'portfolio', title: 'Portfolio impact', subtitle: 'Confirm portfolio constraints' },
-  { id: 'governance', title: 'Governance gate', subtitle: 'Request + receive approval' },
-  { id: 'decision', title: 'Decision', subtitle: 'Approve override, decline, or escalate' },
-  { id: 'confirm', title: 'Final confirmation', subtitle: 'Lock audit rationale' },
-]
 
 function nowTs() {
   return Date.now()
@@ -92,14 +84,25 @@ function Kv({ k, v }: { k: string; v: React.ReactNode }) {
   )
 }
 
-function money(n: number) {
-  return `€ ${n} / month`
+function money(n: number, isEn: boolean) {
+  return isEn ? `€ ${n} / month` : `€ ${n} / Monat`
 }
 
 export default function DemoSeniorUnderwriterStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Referral intake', 'Referral-Intake'), subtitle: tr('Identify override need', 'Override-Bedarf erkennen') },
+    { id: 'override', title: tr('Override proposal', 'Override-Vorschlag'), subtitle: tr('Choose override path', 'Override-Pfad wählen') },
+    { id: 'portfolio', title: tr('Portfolio impact', 'Portfolio-Impact'), subtitle: tr('Confirm portfolio constraints', 'Portfolio-Grenzen bestätigen') },
+    { id: 'governance', title: tr('Governance gate', 'Governance-Gate'), subtitle: tr('Request + receive approval', 'Freigabe anfordern + erhalten') },
+    { id: 'decision', title: tr('Decision', 'Entscheidung'), subtitle: tr('Approve override, decline, or escalate', 'Override freigeben, ablehnen oder eskalieren') },
+    { id: 'confirm', title: tr('Final confirmation', 'Finale Bestätigung'), subtitle: tr('Lock audit rationale', 'Audit-Begründung sperren') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<SeniorUwState>(() => readState())
 
@@ -111,7 +114,7 @@ export default function DemoSeniorUnderwriterStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-underwriter/senior/step/intake" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<SeniorUwState>) {
     const next = { ...state, ...p }
@@ -124,11 +127,11 @@ export default function DemoSeniorUnderwriterStepPage() {
   }
 
   const snapshotBadges = [
-    { label: 'Override Proposed', ok: state.overrideProposed },
-    { label: 'Portfolio Checked', ok: state.portfolioChecked },
-    { label: 'Governance Approved', ok: state.governanceApproved },
-    { label: 'Escalated', ok: state.escalatedToCarrier },
-    { label: 'Decision Locked', ok: state.decisionLocked },
+    { label: tr('Override Proposed', 'Override vorgeschlagen'), ok: state.overrideProposed },
+    { label: tr('Portfolio Checked', 'Portfolio geprüft'), ok: state.portfolioChecked },
+    { label: tr('Governance Approved', 'Governance freigegeben'), ok: state.governanceApproved },
+    { label: tr('Escalated', 'Eskaliert'), ok: state.escalatedToCarrier },
+    { label: tr('Decision Locked', 'Entscheidung gesperrt'), ok: state.decisionLocked },
   ]
 
   // Next enabling rules (keep it strict + click-only)
@@ -149,10 +152,10 @@ export default function DemoSeniorUnderwriterStepPage() {
 
   const aiOverrideText =
     state.aiSuggestedOverride === 'limit_increase'
-      ? 'Increase limit with governance approval (controlled exposure)'
+      ? tr('Increase limit with governance approval (controlled exposure)', 'Limit erhöhen mit Governance-Freigabe (kontrollierte Exponierung)')
       : state.aiSuggestedOverride === 'deductible_adjust'
-        ? 'Adjust deductible to align with corridor severity'
-        : 'No override needed'
+        ? tr('Adjust deductible to align with corridor severity', 'Selbstbehalt an Schwere im Korridor anpassen')
+        : tr('No override needed', 'Kein Override erforderlich')
 
   const premiumWithOverride = state.aiSuggestedOverride === 'limit_increase' ? state.basePremiumMonthly + 24 : state.basePremiumMonthly + 12
 
@@ -163,28 +166,28 @@ export default function DemoSeniorUnderwriterStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">UNDERWRITER DEMO</div>
+                <div className="page-pretitle">{tr('UNDERWRITER DEMO', 'UNDERWRITER DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-underwriter/senior')}>
-                    Restart
+                    {tr('Restart', 'Neustart')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={!canGoNext || stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={!canGoNext || stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -201,7 +204,7 @@ export default function DemoSeniorUnderwriterStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · one decision</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('one decision', 'eine Entscheidung')}</span>
                     </div>
                     <span className="badge bg-indigo-lt">Senior UW</span>
                   </div>
@@ -210,25 +213,25 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {/* Case context */}
                     <div className="uw-block">
                       <div className="uw-kv">
-                        <Kv k="Case ID" v={state.caseId} />
-                        <Kv k="Insured" v={state.insured} />
-                        <Kv k="Product" v={state.product} />
-                        <Kv k="Base premium" v={<span className="badge bg-azure-lt">{money(state.basePremiumMonthly)}</span>} />
-                        <Kv k="AI risk score" v={<span className="badge bg-azure-lt">57 / 100</span>} />
+                        <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                        <Kv k={tr('Insured', 'Versicherter')} v={state.insured} />
+                        <Kv k={tr('Product', 'Produkt')} v={tr('Fleet Liability + Cargo Extension', 'Flottenhaftpflicht + Fracht-Erweiterung')} />
+                        <Kv k={tr('Base premium', 'Basisprämie')} v={<span className="badge bg-azure-lt">{money(state.basePremiumMonthly, isEn)}</span>} />
+                        <Kv k={tr('AI risk score', 'KI-Risikoscore')} v={<span className="badge bg-azure-lt">57 / 100</span>} />
                       </div>
                     </div>
 
                     {stepId === 'intake' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI triage</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI triage', 'KI-Triage')}</div>
                           <div className="uw-admin-small">
-                            Referral triggers because the requested limit exceeds standard corridor for this insured segment.
+                            {tr('Referral triggers because the requested limit exceeds standard corridor for this insured segment.', 'Referral ausgelöst, da das angefragte Limit den Standardkorridor für dieses Segment überschreitet.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Trigger" v={<span className="badge bg-yellow-lt">Limit request exceeds corridor</span>} />
-                            <Kv k="Suggested path" v={aiOverrideText} />
-                            <Kv k="Escalation hint" v="Escalate if governance rejects or portfolio cap is hit" />
+                            <Kv k={tr('Trigger', 'Trigger')} v={<span className="badge bg-yellow-lt">{tr('Limit request exceeds corridor', 'Limitanfrage überschreitet Korridor')}</span>} />
+                            <Kv k={tr('Suggested path', 'Vorgeschlagener Pfad')} v={aiOverrideText} />
+                            <Kv k={tr('Escalation hint', 'Eskalationshinweis')} v={tr('Escalate if governance rejects or portfolio cap is hit', 'Eskalieren bei Governance-Ablehnung oder Portfolio-Cap')} />
                           </div>
                         </div>
 
@@ -236,22 +239,22 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Intake completed (referral classified: override candidate)')
-                              goTo('override')
-                            }}
-                          >
-                            Proceed to override proposal
-                          </button>
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-                              appendAudit('Escalated to Carrier Authority (direct)')
-                              setPartial({ escalatedToCarrier: true, decision: 'escalate' })
-                              goTo('confirm')
-                            }}
-                          >
-                            Escalate to Carrier Authority now
-                          </button>
+                            appendAudit(tr('Intake completed (referral classified: override candidate)', 'Intake abgeschlossen (Referral klassifiziert: Override-Kandidat)'))
+                            goTo('override')
+                          }}
+                        >
+                          {tr('Proceed to override proposal', 'Weiter zum Override-Vorschlag')}
+                        </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            appendAudit(tr('Escalated to Carrier Authority (direct)', 'Direkt an Carrier Authority eskaliert'))
+                            setPartial({ escalatedToCarrier: true, decision: 'escalate' })
+                            goTo('confirm')
+                          }}
+                        >
+                          {tr('Escalate to Carrier Authority now', 'Jetzt an Carrier Authority eskalieren')}
+                        </button>
                         </div>
                       </>
                     )}
@@ -259,14 +262,14 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {stepId === 'override' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI proposal</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI proposal', 'KI-Vorschlag')}</div>
                           <div className="uw-admin-small">
-                            AI proposes an override that stays within governance rules and documents rationale.
+                            {tr('AI proposes an override that stays within governance rules and documents rationale.', 'KI schlägt einen Override vor, der innerhalb der Governance-Regeln bleibt und die Begründung dokumentiert.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Override" v={<span className="badge bg-indigo-lt">{aiOverrideText}</span>} />
-                            <Kv k="Premium (with override)" v={<span className="badge bg-azure-lt">{money(premiumWithOverride)}</span>} />
-                            <Kv k="Why" v="Limit uplift reduces rejection risk; pricing compensates severity tail" />
+                            <Kv k={tr('Override', 'Override')} v={<span className="badge bg-indigo-lt">{aiOverrideText}</span>} />
+                            <Kv k={tr('Premium (with override)', 'Prämie (mit Override)')} v={<span className="badge bg-azure-lt">{money(premiumWithOverride, isEn)}</span>} />
+                            <Kv k={tr('Why', 'Warum')} v={tr('Limit uplift reduces rejection risk; pricing compensates severity tail', 'Limitanhebung senkt Ablehnungsrisiko; Pricing kompensiert Severity-Tail')} />
                           </div>
                         </div>
 
@@ -274,34 +277,34 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Override proposed (AI-aligned)')
-                              setPartial({ overrideProposed: true, decision: 'pending' })
-                              goTo('portfolio')
-                            }}
-                          >
-                            Propose this override
-                          </button>
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-                              appendAudit('Decline path selected (override not pursued)')
-                              setPartial({ decision: 'decline', overrideProposed: false })
-                            }}
-                          >
-                            Decline (no override)
-                          </button>
+                            appendAudit(tr('Override proposed (AI-aligned)', 'Override vorgeschlagen (KI-konform)'))
+                            setPartial({ overrideProposed: true, decision: 'pending' })
+                            goTo('portfolio')
+                          }}
+                        >
+                          {tr('Propose this override', 'Diesen Override vorschlagen')}
+                        </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            appendAudit(tr('Decline path selected (override not pursued)', 'Ablehnung gewählt (kein Override)'))
+                            setPartial({ decision: 'decline', overrideProposed: false })
+                          }}
+                        >
+                          {tr('Decline (no override)', 'Ablehnen (kein Override)')}
+                        </button>
                         </div>
 
                         <div className="uw-cta-row">
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-                              appendAudit('Escalation selected (override outside authority)')
-                              setPartial({ escalatedToCarrier: true, decision: 'escalate' })
-                            }}
-                          >
-                            Escalate to Carrier Authority
-                          </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            appendAudit(tr('Escalation selected (override outside authority)', 'Eskalation gewählt (Override außerhalb der Autorität)'))
+                            setPartial({ escalatedToCarrier: true, decision: 'escalate' })
+                          }}
+                        >
+                          {tr('Escalate to Carrier Authority', 'An Carrier Authority eskalieren')}
+                        </button>
                         </div>
                       </>
                     )}
@@ -309,14 +312,14 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {stepId === 'portfolio' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Portfolio impact</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Portfolio impact', 'Portfolio-Impact')}</div>
                           <div className="uw-admin-small">
-                            Senior UW is accountable for portfolio impact before requesting governance approval.
+                            {tr('Senior UW is accountable for portfolio impact before requesting governance approval.', 'Senior UW ist vor Governance-Freigabe für den Portfolio-Impact verantwortlich.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Portfolio capacity" v={<span className="badge bg-green-lt">OK</span>} />
-                            <Kv k="Concentration" v={<span className="badge bg-green-lt">Within guardrails</span>} />
-                            <Kv k="Impact" v="Neutral to slightly positive (priced for limit uplift)" />
+                            <Kv k={tr('Portfolio capacity', 'Portfolio-Kapazität')} v={<span className="badge bg-green-lt">OK</span>} />
+                            <Kv k={tr('Concentration', 'Konzentration')} v={<span className="badge bg-green-lt">{tr('Within guardrails', 'Innerhalb Leitplanken')}</span>} />
+                            <Kv k={tr('Impact', 'Impact')} v={tr('Neutral to slightly positive (priced for limit uplift)', 'Neutral bis leicht positiv (Pricing für Limitanhebung)')} />
                           </div>
                         </div>
 
@@ -324,22 +327,22 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Portfolio impact confirmed (guardrails OK)')
-                              setPartial({ portfolioChecked: true })
-                              goTo('governance')
-                            }}
-                          >
-                            Confirm portfolio impact
-                          </button>
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-                              appendAudit('Portfolio risk flagged (escalate)')
-                              setPartial({ escalatedToCarrier: true, decision: 'escalate' })
-                            }}
-                          >
-                            Flag risk & escalate
-                          </button>
+                            appendAudit(tr('Portfolio impact confirmed (guardrails OK)', 'Portfolio-Impact bestätigt (Leitplanken OK)'))
+                            setPartial({ portfolioChecked: true })
+                            goTo('governance')
+                          }}
+                        >
+                          {tr('Confirm portfolio impact', 'Portfolio-Impact bestätigen')}
+                        </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            appendAudit(tr('Portfolio risk flagged (escalate)', 'Portfolio-Risiko markiert (eskalieren)'))
+                            setPartial({ escalatedToCarrier: true, decision: 'escalate' })
+                          }}
+                        >
+                          {tr('Flag risk & escalate', 'Risiko markieren & eskalieren')}
+                        </button>
                         </div>
                       </>
                     )}
@@ -347,14 +350,14 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {stepId === 'governance' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Governance gate</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Governance gate', 'Governance-Gate')}</div>
                           <div className="uw-admin-small">
-                            Overrides require governance approval. This step simulates request + approval by click.
+                            {tr('Overrides require governance approval. This step simulates request + approval by click.', 'Overrides erfordern Governance-Freigabe. Dieser Schritt simuliert Anfrage + Freigabe per Klick.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Request status" v={<span className={`badge ${state.governanceRequested ? 'bg-azure-lt' : 'bg-muted-lt'}`}>{state.governanceRequested ? 'Requested' : 'Not requested'}</span>} />
-                            <Kv k="Approval" v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.governanceApproved ? 'Approved' : 'Pending'}</span>} />
-                            <Kv k="Required" v="Rationale + portfolio check + authority boundary" />
+                            <Kv k={tr('Request status', 'Anfragestatus')} v={<span className={`badge ${state.governanceRequested ? 'bg-azure-lt' : 'bg-muted-lt'}`}>{state.governanceRequested ? tr('Requested', 'Angefragt') : tr('Not requested', 'Nicht angefragt')}</span>} />
+                            <Kv k={tr('Approval', 'Freigabe')} v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.governanceApproved ? tr('Approved', 'Freigegeben') : tr('Pending', 'Ausstehend')}</span>} />
+                            <Kv k={tr('Required', 'Erforderlich')} v={tr('Rationale + portfolio check + authority boundary', 'Begründung + Portfolio-Check + Autoritätsgrenze')} />
                           </div>
                         </div>
 
@@ -362,23 +365,23 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Governance approval requested')
+                              appendAudit(tr('Governance approval requested', 'Governance-Freigabe angefordert'))
                               setPartial({ governanceRequested: true })
                             }}
                             disabled={state.governanceRequested}
                           >
-                            Request governance approval
+                            {tr('Request governance approval', 'Governance-Freigabe anfordern')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Governance approved (simulated)')
+                              appendAudit(tr('Governance approved (simulated)', 'Governance freigegeben (simuliert)'))
                               setPartial({ governanceApproved: true })
                               goTo('decision')
                             }}
                             disabled={!state.governanceRequested || state.governanceApproved}
                           >
-                            Receive approval
+                            {tr('Receive approval', 'Freigabe erhalten')}
                           </button>
                         </div>
 
@@ -386,12 +389,12 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Escalated to Carrier Authority (governance alternative)')
+                              appendAudit(tr('Escalated to Carrier Authority (governance alternative)', 'An Carrier Authority eskaliert (Governance-Alternative)'))
                               setPartial({ escalatedToCarrier: true, decision: 'escalate' })
                               goTo('confirm')
                             }}
                           >
-                            Escalate to Carrier Authority instead
+                            {tr('Escalate to Carrier Authority instead', 'Stattdessen an Carrier Authority eskalieren')}
                           </button>
                         </div>
                       </>
@@ -400,14 +403,14 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {stepId === 'decision' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Decision options</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Decision options', 'Entscheidungsoptionen')}</div>
                           <div className="uw-admin-small">
-                            Approve requires governance + portfolio confirmation. Escalate if outside authority.
+                            {tr('Approve requires governance + portfolio confirmation. Escalate if outside authority.', 'Freigabe erfordert Governance + Portfolio-Bestätigung. Eskalieren, wenn außerhalb der Autorität.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Governance" v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-yellow-lt'}`}>{state.governanceApproved ? 'Approved' : 'Not approved'}</span>} />
-                            <Kv k="Portfolio" v={<span className={`badge ${state.portfolioChecked ? 'bg-green-lt' : 'bg-yellow-lt'}`}>{state.portfolioChecked ? 'Checked' : 'Not checked'}</span>} />
-                            <Kv k="AI stance" v="Approve override if both gates are satisfied" />
+                            <Kv k="Governance" v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-yellow-lt'}`}>{state.governanceApproved ? tr('Approved', 'Freigegeben') : tr('Not approved', 'Nicht freigegeben')}</span>} />
+                            <Kv k="Portfolio" v={<span className={`badge ${state.portfolioChecked ? 'bg-green-lt' : 'bg-yellow-lt'}`}>{state.portfolioChecked ? tr('Checked', 'Geprüft') : tr('Not checked', 'Nicht geprüft')}</span>} />
+                            <Kv k={tr('AI stance', 'KI-Position')} v={tr('Approve override if both gates are satisfied', 'Override freigeben, wenn beide Gates erfüllt sind')} />
                           </div>
                         </div>
 
@@ -415,36 +418,36 @@ export default function DemoSeniorUnderwriterStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Decision set: approve override')
-                              setPartial({ decision: 'approve_override' })
-                              goTo('confirm')
-                            }}
-                            disabled={!state.governanceApproved || !state.portfolioChecked}
-                          >
-                            Approve override
-                          </button>
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => {
-                              appendAudit('Decision set: decline')
-                              setPartial({ decision: 'decline' })
-                              goTo('confirm')
-                            }}
-                          >
-                            Decline
-                          </button>
+                            appendAudit(tr('Decision set: approve override', 'Entscheidung gesetzt: Override freigeben'))
+                            setPartial({ decision: 'approve_override' })
+                            goTo('confirm')
+                          }}
+                          disabled={!state.governanceApproved || !state.portfolioChecked}
+                        >
+                          {tr('Approve override', 'Override freigeben')}
+                        </button>
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={() => {
+                            appendAudit(tr('Decision set: decline', 'Entscheidung gesetzt: Ablehnen'))
+                            setPartial({ decision: 'decline' })
+                            goTo('confirm')
+                          }}
+                        >
+                          {tr('Decline', 'Ablehnen')}
+                        </button>
                         </div>
 
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Decision set: escalate to Carrier Authority')
+                              appendAudit(tr('Decision set: escalate to Carrier Authority', 'Entscheidung gesetzt: An Carrier Authority eskalieren'))
                               setPartial({ decision: 'escalate', escalatedToCarrier: true })
                               goTo('confirm')
                             }}
                           >
-                            Escalate to Carrier Authority
+                            {tr('Escalate to Carrier Authority', 'An Carrier Authority eskalieren')}
                           </button>
                         </div>
                       </>
@@ -453,24 +456,24 @@ export default function DemoSeniorUnderwriterStepPage() {
                     {stepId === 'confirm' && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Decision summary</div>
-                          <div className="uw-admin-small">Final click locks the decision rationale into the audit trail.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Decision summary', 'Entscheidungsübersicht')}</div>
+                          <div className="uw-admin-small">{tr('Final click locks the decision rationale into the audit trail.', 'Finaler Klick sperrt die Entscheidungsbegründung im Audit-Trail.')}</div>
 
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Decision" v={<span className="badge bg-indigo-lt">{state.decision === 'approve_override' ? 'Approve override' : state.decision === 'decline' ? 'Decline' : 'Escalate'}</span>} />
-                            <Kv k="Governance" v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.governanceApproved ? 'Approved' : 'N/A'}</span>} />
-                            <Kv k="Portfolio" v={<span className={`badge ${state.portfolioChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.portfolioChecked ? 'Checked' : 'N/A'}</span>} />
-                            <Kv k="Escalation" v={<span className={`badge ${state.escalatedToCarrier ? 'bg-yellow-lt' : 'bg-muted-lt'}`}>{state.escalatedToCarrier ? 'Carrier Authority' : 'No'}</span>} />
+                            <Kv k={tr('Decision', 'Entscheidung')} v={<span className="badge bg-indigo-lt">{state.decision === 'approve_override' ? tr('Approve override', 'Override freigeben') : state.decision === 'decline' ? tr('Decline', 'Ablehnen') : tr('Escalate', 'Eskalieren')}</span>} />
+                            <Kv k={tr('Governance', 'Governance')} v={<span className={`badge ${state.governanceApproved ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.governanceApproved ? tr('Approved', 'Freigegeben') : 'N/A'}</span>} />
+                            <Kv k={tr('Portfolio', 'Portfolio')} v={<span className={`badge ${state.portfolioChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.portfolioChecked ? tr('Checked', 'Geprüft') : 'N/A'}</span>} />
+                            <Kv k={tr('Escalation', 'Eskalation')} v={<span className={`badge ${state.escalatedToCarrier ? 'bg-yellow-lt' : 'bg-muted-lt'}`}>{state.escalatedToCarrier ? tr('Carrier Authority', 'Carrier Authority') : tr('No', 'Nein')}</span>} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI audit note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI audit note', 'KI-Audit-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            AI stores structured rationale fields (non-sensitive) for governance traceability and portfolio reporting.
+                            {tr('AI stores structured rationale fields (non-sensitive) for governance traceability and portfolio reporting.', 'KI speichert strukturierte Begründungen (nicht sensitiv) für Governance-Nachvollziehbarkeit und Reporting.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Rationale stored" v="Override trigger + portfolio guardrails + governance status + escalation path" />
+                            <Kv k={tr('Rationale stored', 'Begründung gespeichert')} v={tr('Override trigger + portfolio guardrails + governance status + escalation path', 'Override-Trigger + Portfolio-Leitplanken + Governance-Status + Eskalationspfad')} />
                           </div>
                         </div>
 
@@ -479,16 +482,16 @@ export default function DemoSeniorUnderwriterStepPage() {
                             className="btn btn-primary"
                             onClick={() => {
                               if (!state.decisionLocked) {
-                                appendAudit('Decision locked (audit-ready)')
+                                appendAudit(tr('Decision locked (audit-ready)', 'Entscheidung gesperrt (audit-ready)'))
                                 setPartial({ decisionLocked: true })
                               }
                               nav('/demo-underwriter/senior')
                             }}
                           >
-                            Lock & restart
+                            {tr('Lock & restart', 'Sperren & neu starten')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/roles/underwriter/senior')}>
-                            Back to role page
+                            {tr('Back to role page', 'Zurück zur Rollen-Seite')}
                           </button>
                         </div>
                       </>
@@ -500,9 +503,9 @@ export default function DemoSeniorUnderwriterStepPage() {
               {/* RIGHT */}
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -515,28 +518,28 @@ export default function DemoSeniorUnderwriterStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )
                     })}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortlichkeit')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> overrides with governance approval</div>
-                      <div><strong>Accountable:</strong> portfolio impact & escalation logic</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('overrides with governance approval', 'Overrides mit Governance-Freigabe')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('portfolio impact & escalation logic', 'Portfolio-Impact & Eskalationslogik')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>AI proposes an override and explains tradeoffs</li>
-                      <li>Portfolio check confirms guardrails before governance</li>
-                      <li>Governance gate is mandatory for override approval</li>
-                      <li>Escalate to Carrier Authority if outside authority</li>
+                      <li>{tr('AI proposes an override and explains tradeoffs', 'KI schlägt Override vor und erklärt Trade-offs')}</li>
+                      <li>{tr('Portfolio check confirms guardrails before governance', 'Portfolio-Check bestätigt Leitplanken vor Governance')}</li>
+                      <li>{tr('Governance gate is mandatory for override approval', 'Governance-Gate ist Pflicht für Override-Freigabe')}</li>
+                      <li>{tr('Escalate to Carrier Authority if outside authority', 'An Carrier Authority eskalieren, wenn außerhalb der Autorität')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -547,11 +550,11 @@ export default function DemoSeniorUnderwriterStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

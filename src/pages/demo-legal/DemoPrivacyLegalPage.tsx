@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_LEGAL_PRIVACY_STATE'
 const KEY_AUDIT = 'DEMO_LEGAL_PRIVACY_AUDIT'
@@ -62,11 +63,14 @@ function appendAudit(message: string) {
 
 export default function DemoPrivacyLegalPage() {
   const nav = useNavigate()
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
 
   useEffect(() => {
     clearAll()
     writeState(defaultState())
-    appendAudit('Demo started (state reset)')
+    appendAudit(tr('Demo started (state reset)', 'Demo gestartet (State zurückgesetzt)'))
   }, [])
 
   return (
@@ -76,9 +80,9 @@ export default function DemoPrivacyLegalPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">LEGAL DEMO</div>
-                <h2 className="page-title">Privacy Legal – GDPR Governance</h2>
-                <div className="text-muted">Click-only · Lawful basis & data scope · No dashboards</div>
+                <div className="page-pretitle">{tr('LEGAL DEMO', 'LEGAL-DEMO')}</div>
+                <h2 className="page-title">{tr('Privacy Legal – GDPR Governance', 'Privacy Legal – GDPR Governance')}</h2>
+                <div className="text-muted">{tr('Click-only · Lawful basis & data scope · No dashboards', 'Click-only · Rechtsgrundlage & Datenscope · Keine Dashboards')}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
@@ -87,19 +91,19 @@ export default function DemoPrivacyLegalPage() {
                     onClick={() => {
                       clearAll()
                       writeState(defaultState())
-                      appendAudit('Demo reset (manual)')
+                      appendAudit(tr('Demo reset (manual)', 'Demo zurückgesetzt (manuell)'))
                     }}
                   >
-                    Reset
+                    {tr('Reset', 'Zurücksetzen')}
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => {
-                      appendAudit('Case opened')
+                      appendAudit(tr('Case opened', 'Fall geöffnet'))
                       nav('/demo-legal/privacy/step/intake')
                     }}
                   >
-                    Start review
+                    {tr('Start review', 'Prüfung starten')}
                   </button>
                 </div>
               </div>
@@ -114,45 +118,51 @@ export default function DemoPrivacyLegalPage() {
                 <div className="uw-decision">
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
-                      <strong>What you will click through</strong>
-                      <span>5 screens · GDPR compliance</span>
+                      <strong>{tr('What you will click through', 'Was du durchklickst')}</strong>
+                      <span>{tr('5 screens · GDPR compliance', '5 Screens · GDPR-Compliance')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Privacy Legal</span>
+                    <span className="badge bg-indigo-lt">{tr('Privacy Legal', 'Privacy Legal')}</span>
                   </div>
 
                   <div className="uw-decision-body">
                     <div className="uw-block">
                       <div className="uw-kv">
-                        <div className="k">Case</div><div className="v">GDPR-2024-1182</div>
-                        <div className="k">Insured</div><div className="v">Nordstadt Logistics GmbH</div>
-                        <div className="k">Process</div><div className="v">Underwriting</div>
-                        <div className="k">Goal</div><div className="v">Lawful basis + minimisation</div>
+                        <div className="k">{tr('Case', 'Fall')}</div><div className="v">GDPR-2024-1182</div>
+                        <div className="k">{tr('Insured', 'Versicherungsnehmer')}</div><div className="v">Nordstadt Logistics GmbH</div>
+                        <div className="k">{tr('Process', 'Prozess')}</div><div className="v">{tr('Underwriting', 'Underwriting')}</div>
+                        <div className="k">{tr('Goal', 'Ziel')}</div><div className="v">{tr('Lawful basis + minimisation', 'Rechtsgrundlage + Datenminimierung')}</div>
                       </div>
                     </div>
 
                     <div className="uw-block uw-ai">
-                      <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI stance (non-binding)</div>
+                      <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI stance (non-binding)', 'KI-Einschätzung (unverbindlich)')}</div>
                       <div className="uw-admin-small">
-                        Processing involves personal data under GDPR. Lawful basis must be confirmed before continuation.
+                        {tr(
+                          'Processing involves personal data under GDPR. Lawful basis must be confirmed before continuation.',
+                          'Verarbeitung umfasst personenbezogene Daten nach GDPR. Rechtsgrundlage muss vor Fortsetzung bestätigt werden.',
+                        )}
                       </div>
                       <div className="d-flex flex-wrap gap-2">
-                        <span className="badge bg-azure-lt">Lawful basis</span>
-                        <span className="badge bg-azure-lt">Minimisation</span>
-                        <span className="badge bg-azure-lt">Risk</span>
+                        <span className="badge bg-azure-lt">{tr('Lawful basis', 'Rechtsgrundlage')}</span>
+                        <span className="badge bg-azure-lt">{tr('Minimisation', 'Minimierung')}</span>
+                        <span className="badge bg-azure-lt">{tr('Risk', 'Risiko')}</span>
                       </div>
                     </div>
 
                     <div className="uw-cta-row">
                       <button className="btn btn-primary" onClick={() => nav('/demo-legal/privacy/step/intake')}>
-                        Start at step 1 (intake)
+                        {tr('Start at step 1 (intake)', 'Start bei Schritt 1 (Intake)')}
                       </button>
                       <button className="btn btn-outline-secondary" onClick={() => nav('/roles/legal')}>
-                        Back to role page
+                        {tr('Back to role page', 'Zur Rollen-Seite')}
                       </button>
                     </div>
 
                     <div className="text-muted" style={{ fontSize: '0.82rem' }}>
-                      Note: This start screen auto-resets session state on every visit to ensure the click flow always works.
+                      {tr(
+                        'Note: This start screen auto-resets session state on every visit to ensure the click flow always works.',
+                        'Hinweis: Dieser Start-Screen setzt den Session-State bei jedem Besuch automatisch zurück.',
+                      )}
                     </div>
                   </div>
                 </div>
@@ -160,24 +170,24 @@ export default function DemoPrivacyLegalPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Privacy Legal – Accountability</h4>
+                  <h4>{tr('Privacy Legal – Accountability', 'Privacy Legal – Verantwortung')}</h4>
                   <div className="uw-admin-small">
-                    <div><strong>Decides:</strong> lawful basis, data scope, risk</div>
-                    <div><strong>Accountable:</strong> GDPR compliance & defensibility</div>
+                    <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('lawful basis, data scope, risk', 'Rechtsgrundlage, Datenscope, Risiko')}</div>
+                    <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('GDPR compliance & defensibility', 'GDPR-Compliance & rechtliche Belastbarkeit')}</div>
                   </div>
                   <div className="d-flex flex-wrap gap-2">
-                    <span className="badge bg-indigo-lt">Lawful basis</span>
-                    <span className="badge bg-indigo-lt">Data scope</span>
-                    <span className="badge bg-indigo-lt">Risk</span>
+                    <span className="badge bg-indigo-lt">{tr('Lawful basis', 'Rechtsgrundlage')}</span>
+                    <span className="badge bg-indigo-lt">{tr('Data scope', 'Datenscope')}</span>
+                    <span className="badge bg-indigo-lt">{tr('Risk', 'Risiko')}</span>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit (live)</h4>
+                    <h4>{tr('Audit (live)', 'Audit (live)')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const raw = sessionStorage.getItem(KEY_AUDIT)
                         const items: { ts: number; message: string }[] = raw ? JSON.parse(raw) : []
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 6).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

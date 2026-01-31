@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/demo-shell.css'
 import { appendAudit, readAudit, readJson, writeJson } from './_financeStorage'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_FIN_BILLING_STATE'
 const KEY_AUDIT = 'DEMO_FIN_BILLING_AUDIT'
@@ -19,14 +20,6 @@ type BillingState = {
   locked: boolean
 }
 
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Intake', subtitle: 'Confirm billing cycle' },
-  { id: 'invoice', title: 'Invoice', subtitle: 'Release or hold' },
-  { id: 'exceptions', title: 'Exceptions', subtitle: 'Resolve exception' },
-  { id: 'reconcile', title: 'Reconcile', subtitle: 'Confirm checks' },
-  { id: 'lock', title: 'Lock', subtitle: 'Lock billing decision' }
-]
-
 function defaultState(): BillingState {
   return {
     accountId: 'ACC-44021',
@@ -40,14 +33,20 @@ function defaultState(): BillingState {
   }
 }
 
-function money(amount: number) {
-  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
-}
-
 export default function DemoPremiumBillingOpsStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Intake', 'Intake'), subtitle: tr('Confirm billing cycle', 'Billing-Zyklus bestätigen') },
+    { id: 'invoice', title: tr('Invoice', 'Rechnung'), subtitle: tr('Release or hold', 'Freigeben oder halten') },
+    { id: 'exceptions', title: tr('Exceptions', 'Ausnahmen'), subtitle: tr('Resolve exception', 'Ausnahme klären') },
+    { id: 'reconcile', title: tr('Reconcile', 'Abgleich'), subtitle: tr('Confirm checks', 'Prüfungen bestätigen') },
+    { id: 'lock', title: tr('Lock', 'Sperren'), subtitle: tr('Lock billing decision', 'Billing-Entscheidung sperren') }
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
   const [state, setState] = useState<BillingState>(() => readJson(KEY_STATE, defaultState()))
 
   useEffect(() => {
@@ -58,6 +57,23 @@ export default function DemoPremiumBillingOpsStepPage() {
 
   if (!stepId || !current) return <Navigate to="/demo-finance/billing/step/intake" replace />
 
+  function money(amount: number) {
+    return new Intl.NumberFormat(isEn ? 'en-US' : 'de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
+  }
+
+  const exceptionLabel = (value: BillingState['exception']) => {
+    switch (value) {
+      case 'bank_reject':
+        return tr('bank reject', 'Bankablehnung')
+      case 'address_mismatch':
+        return tr('address mismatch', 'Adressabweichung')
+      case 'tax_issue':
+        return tr('tax issue', 'Steuerproblem')
+      default:
+        return tr('none', 'keine')
+    }
+  }
+
   function setPartial(p: Partial<BillingState>) {
     const next = { ...state, ...p }
     setState(next)
@@ -67,9 +83,9 @@ export default function DemoPremiumBillingOpsStepPage() {
   const audit = readAudit(KEY_AUDIT)
 
   const snapshot = [
-    { label: `Exception ${state.exception}`, ok: state.exception === 'none' },
-    { label: state.invoiceReleased ? 'Invoice released' : 'Held', ok: state.invoiceReleased },
-    { label: state.locked ? 'Locked' : 'Unlocked', ok: state.locked }
+    { label: `${tr('Exception', 'Ausnahme')} ${exceptionLabel(state.exception)}`, ok: state.exception === 'none' },
+    { label: state.invoiceReleased ? tr('Invoice released', 'Rechnung freigegeben') : tr('Held', 'Gehalten'), ok: state.invoiceReleased },
+    { label: state.locked ? tr('Locked', 'Gesperrt') : tr('Unlocked', 'Entsperrt'), ok: state.locked }
   ]
 
   const amount = state.cycle === 'annual' ? state.invoiceAmount * 12 : state.invoiceAmount
@@ -81,14 +97,14 @@ export default function DemoPremiumBillingOpsStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">FINANCE DEMO</div>
+                <div className="page-pretitle">{tr('FINANCE DEMO', 'FINANCE-DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-finance/billing')}>
-                    Restart
+                    {tr('Restart', 'Neu starten')}
                   </button>
                 </div>
               </div>
@@ -103,45 +119,45 @@ export default function DemoPremiumBillingOpsStepPage() {
                 <div className="card">
                   <div className="card-header">
                     <div>
-                      <div className="text-muted">Step {STEPS.findIndex((s) => s.id === stepId) + 1}/{STEPS.length}</div>
+                      <div className="text-muted">{tr('Step', 'Schritt')} {STEPS_LOCAL.findIndex((s) => s.id === stepId) + 1}/{STEPS_LOCAL.length}</div>
                       <h3 className="card-title mb-0">{current.title}</h3>
                     </div>
                   </div>
                   <div className="card-body">
-                    <div className="text-muted">Account</div>
+                    <div className="text-muted">{tr('Account', 'Konto')}</div>
                     <div className="fw-semibold">{state.accountId} · {state.customer}</div>
-                    <div className="text-muted mt-2">Cycle</div>
-                    <div className="fw-semibold">{state.cycle}</div>
-                    <div className="text-muted mt-2">Invoice amount</div>
+                    <div className="text-muted mt-2">{tr('Cycle', 'Zyklus')}</div>
+                    <div className="fw-semibold">{state.cycle === 'monthly' ? tr('Monthly', 'Monatlich') : tr('Annual', 'Jährlich')}</div>
+                    <div className="text-muted mt-2">{tr('Invoice amount', 'Rechnungsbetrag')}</div>
                     <div className="fw-semibold">{money(amount)}</div>
 
                     {stepId === 'intake' && (
                       <>
                         <div className="card mt-3">
                           <div className="card-body">
-                            <div className="fw-semibold">AI note</div>
-                            <div className="text-muted">Potential exception detected: address_mismatch.</div>
+                            <div className="fw-semibold">{tr('AI note', 'KI-Hinweis')}</div>
+                            <div className="text-muted">{tr('Potential exception detected: address_mismatch.', 'Mögliche Ausnahme erkannt: Adressabweichung.')}</div>
                           </div>
                         </div>
                         <div className="mt-3 d-grid gap-2">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Billing intake confirmed')
+                              appendAudit(KEY_AUDIT, tr('Billing intake confirmed', 'Billing-Intake bestätigt'))
                               nav('/demo-finance/billing/step/invoice')
                             }}
                           >
-                            Review invoice
+                            {tr('Review invoice', 'Rechnung prüfen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
                               const next = state.cycle === 'monthly' ? 'annual' : 'monthly'
-                              appendAudit(KEY_AUDIT, `Cycle set to ${next}`)
+                              appendAudit(KEY_AUDIT, tr(`Cycle set to ${next}`, `Zyklus gesetzt: ${next === 'annual' ? 'jährlich' : 'monatlich'}`))
                               setPartial({ cycle: next })
                             }}
                           >
-                            Set cycle: Annual
+                            {tr('Set cycle: Annual', 'Zyklus setzen: Jährlich')}
                           </button>
                         </div>
                       </>
@@ -151,30 +167,30 @@ export default function DemoPremiumBillingOpsStepPage() {
                       <>
                         <div className="card mt-3">
                           <div className="card-body">
-                            <div className="fw-semibold">AI recommendation</div>
-                            <div className="text-muted">Hold release if exception present.</div>
+                            <div className="fw-semibold">{tr('AI recommendation', 'KI-Empfehlung')}</div>
+                            <div className="text-muted">{tr('Hold release if exception present.', 'Freigabe halten, wenn Ausnahme vorhanden ist.')}</div>
                           </div>
                         </div>
                         <div className="mt-3 d-grid gap-2">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Invoice released (override)')
+                              appendAudit(KEY_AUDIT, tr('Invoice released (override)', 'Rechnung freigegeben (Override)'))
                               setPartial({ invoiceReleased: true })
                               nav('/demo-finance/billing/step/exceptions')
                             }}
                           >
-                            Release invoice
+                            {tr('Release invoice', 'Rechnung freigeben')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Invoice held pending exception')
+                              appendAudit(KEY_AUDIT, tr('Invoice held pending exception', 'Rechnung gehalten (Ausnahme offen)'))
                               setPartial({ invoiceReleased: false })
                               nav('/demo-finance/billing/step/exceptions')
                             }}
                           >
-                            Hold invoice
+                            {tr('Hold invoice', 'Rechnung halten')}
                           </button>
                         </div>
                       </>
@@ -184,29 +200,29 @@ export default function DemoPremiumBillingOpsStepPage() {
                       <>
                         <div className="card mt-3">
                           <div className="card-body">
-                            <div className="fw-semibold">Exception status</div>
-                            <div className="text-muted">{state.exception}</div>
+                            <div className="fw-semibold">{tr('Exception status', 'Ausnahmestatus')}</div>
+                            <div className="text-muted">{exceptionLabel(state.exception)}</div>
                           </div>
                         </div>
                         <div className="mt-3 d-grid gap-2">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Exception cleared (address updated)')
+                              appendAudit(KEY_AUDIT, tr('Exception cleared (address updated)', 'Ausnahme behoben (Adresse aktualisiert)'))
                               setPartial({ exception: 'none', exceptionCleared: true })
                               nav('/demo-finance/billing/step/reconcile')
                             }}
                           >
-                            Clear exception
+                            {tr('Clear exception', 'Ausnahme beheben')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Exception escalated to billing lead')
+                              appendAudit(KEY_AUDIT, tr('Exception escalated to billing lead', 'Ausnahme an Billing Lead eskaliert'))
                               nav('/demo-finance/billing/step/reconcile')
                             }}
                           >
-                            Escalate to billing lead
+                            {tr('Escalate to billing lead', 'An Billing Lead eskalieren')}
                           </button>
                         </div>
                       </>
@@ -216,28 +232,28 @@ export default function DemoPremiumBillingOpsStepPage() {
                       <>
                         <div className="card mt-3">
                           <div className="card-body">
-                            <div className="fw-semibold">AI note</div>
-                            <div className="text-muted">Reconciliation complete; safe to release if held.</div>
+                            <div className="fw-semibold">{tr('AI note', 'KI-Hinweis')}</div>
+                            <div className="text-muted">{tr('Reconciliation complete; safe to release if held.', 'Abgleich vollständig; Freigabe möglich, falls gehalten.')}</div>
                           </div>
                         </div>
                         <div className="mt-3 d-grid gap-2">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Reconciliation confirmed')
+                              appendAudit(KEY_AUDIT, tr('Reconciliation confirmed', 'Abgleich bestätigt'))
                               nav('/demo-finance/billing/step/lock')
                             }}
                           >
-                            Confirm reconciliation
+                            {tr('Confirm reconciliation', 'Abgleich bestätigen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Exception reopened')
+                              appendAudit(KEY_AUDIT, tr('Exception reopened', 'Ausnahme wieder geöffnet'))
                               setPartial({ exception: 'address_mismatch', exceptionCleared: false })
                             }}
                           >
-                            Re-open exception
+                            {tr('Re-open exception', 'Ausnahme erneut öffnen')}
                           </button>
                         </div>
                       </>
@@ -247,24 +263,24 @@ export default function DemoPremiumBillingOpsStepPage() {
                       <>
                         <div className="card mt-3">
                           <div className="card-body">
-                            <div className="fw-semibold">Summary</div>
-                            <div className="text-muted">Exception: {state.exception}</div>
-                            <div className="text-muted">Invoice released: {state.invoiceReleased ? 'Yes' : 'No'}</div>
+                            <div className="fw-semibold">{tr('Summary', 'Zusammenfassung')}</div>
+                            <div className="text-muted">{tr('Exception', 'Ausnahme')}: {exceptionLabel(state.exception)}</div>
+                            <div className="text-muted">{tr('Invoice released', 'Rechnung freigegeben')}: {state.invoiceReleased ? tr('Yes', 'Ja') : tr('No', 'Nein')}</div>
                           </div>
                         </div>
                         <div className="mt-3 d-grid gap-2">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit(KEY_AUDIT, 'Billing decision locked')
+                              appendAudit(KEY_AUDIT, tr('Billing decision locked', 'Billing-Entscheidung gesperrt'))
                               setPartial({ locked: true })
                               nav('/demo-finance/billing')
                             }}
                           >
-                            Lock billing decision
+                            {tr('Lock billing decision', 'Billing-Entscheidung sperren')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/demo-finance/billing')}>
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -275,9 +291,9 @@ export default function DemoPremiumBillingOpsStepPage() {
 
               <div className="finance-admin">
                 <div className="admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group">
-                    {STEPS.map((s) => (
+                    {STEPS_LOCAL.map((s) => (
                       <button
                         key={s.id}
                         className={`list-group-item list-group-item-action d-flex align-items-center justify-content-between ${s.id === stepId ? 'active' : ''}`}
@@ -291,12 +307,12 @@ export default function DemoPremiumBillingOpsStepPage() {
                   </div>
 
                   <hr />
-                  <h4>AI & Accountability</h4>
-                  <div>Decides: invoice release + exception handling path</div>
-                  <div>Accountable: premium capture & billing integrity</div>
+                  <h4>{tr('AI & Accountability', 'KI & Verantwortung')}</h4>
+                  <div>{tr('Decides: invoice release + exception handling path', 'Entscheidet: Rechnungsfreigabe + Ausnahmebehandlung')}</div>
+                  <div>{tr('Accountable: premium capture & billing integrity', 'Verantwortlich: Prämienerfassung & Billing-Integrität')}</div>
 
                   <hr />
-                  <h4>Snapshot</h4>
+                  <h4>{tr('Snapshot', 'Snapshot')}</h4>
                   <div className="d-flex flex-wrap gap-2">
                     {snapshot.map((s) => (
                       <span key={s.label} className={`badge ${s.ok ? 'bg-green-lt' : 'bg-secondary-lt'}`}>
@@ -306,9 +322,9 @@ export default function DemoPremiumBillingOpsStepPage() {
                   </div>
 
                   <hr />
-                  <h4>Audit log</h4>
+                  <h4>{tr('Audit log', 'Audit-Log')}</h4>
                   <div className="admin-audit">
-                    {audit.length === 0 && <div className="text-muted">No entries yet.</div>}
+                    {audit.length === 0 && <div className="text-muted">{tr('No entries yet.', 'Noch keine Einträge.')}</div>}
                     {audit.slice(0, 8).map((a) => (
                       <div key={`${a.ts}-${a.message}`} className="admin-audit-item">
                         <div className="ts">{a.ts}</div>

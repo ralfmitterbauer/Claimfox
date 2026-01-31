@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_UW_COMPLIANCE_STATE'
 const KEY_AUDIT = 'DEMO_UW_COMPLIANCE_AUDIT'
@@ -24,14 +25,6 @@ type ComplianceState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Compliance intake', subtitle: 'Scope & governance only' },
-  { id: 'rules', title: 'Rules integrity', subtitle: 'Validate ruleset execution' },
-  { id: 'evidence', title: 'Evidence review', subtitle: 'Confirm evidence quality' },
-  { id: 'exceptions', title: 'Exceptions', subtitle: 'Escalate or mark informational' },
-  { id: 'signoff', title: 'Audit sign-off', subtitle: 'Seal audit trail' },
-]
 
 function nowTs() {
   return Date.now()
@@ -96,7 +89,17 @@ function Kv({ k, v }: { k: string; v: React.ReactNode }) {
 export default function DemoComplianceStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Compliance intake', 'Compliance-Eingang'), subtitle: tr('Scope & governance only', 'Nur Scope & Governance') },
+    { id: 'rules', title: tr('Rules integrity', 'Regel-Integrität'), subtitle: tr('Validate ruleset execution', 'Regelset-Ausführung prüfen') },
+    { id: 'evidence', title: tr('Evidence review', 'Evidenzprüfung'), subtitle: tr('Confirm evidence quality', 'Evidenzqualität bestätigen') },
+    { id: 'exceptions', title: tr('Exceptions', 'Ausnahmen'), subtitle: tr('Escalate or mark informational', 'Eskalieren oder informational markieren') },
+    { id: 'signoff', title: tr('Audit sign-off', 'Audit-Abschluss'), subtitle: tr('Seal audit trail', 'Audit-Trail versiegeln') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<ComplianceState>(() => readState())
 
@@ -107,7 +110,7 @@ export default function DemoComplianceStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-underwriter/compliance/step/intake" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<ComplianceState>) {
     const next = { ...state, ...p }
@@ -120,11 +123,11 @@ export default function DemoComplianceStepPage() {
   }
 
   const snapshotBadges = [
-    { label: 'Rules Checked', ok: state.rulesChecked },
-    { label: 'Evidence Checked', ok: state.evidenceChecked },
-    { label: 'Consent Logged', ok: state.consentLogged },
-    { label: 'Exception Flagged', ok: state.exceptionFlagged },
-    { label: 'Audit Sealed', ok: state.auditSealed },
+    { label: tr('Rules checked', 'Regeln geprüft'), ok: state.rulesChecked },
+    { label: tr('Evidence checked', 'Evidenz geprüft'), ok: state.evidenceChecked },
+    { label: tr('Consent logged', 'Einwilligung erfasst'), ok: state.consentLogged },
+    { label: tr('Exception flagged', 'Ausnahme markiert'), ok: state.exceptionFlagged },
+    { label: tr('Audit sealed', 'Audit versiegelt'), ok: state.auditSealed },
   ]
 
   const canGoNext = (() => {
@@ -139,15 +142,30 @@ export default function DemoComplianceStepPage() {
   const exceptionAction = (() => {
     switch (state.exceptionReason) {
       case 'low_evidence':
-        return 'Request additional documentation'
+        return tr('Request additional documentation', 'Zusätzliche Dokumente anfordern')
       case 'rule_conflict':
-        return 'Escalate to Compliance Lead'
+        return tr('Escalate to Compliance Lead', 'An Compliance Lead eskalieren')
       case 'consent_missing':
-        return 'Block until consent logged'
+        return tr('Block until consent logged', 'Blockieren bis Einwilligung erfasst ist')
       case 'data_mismatch':
-        return 'Reconcile entity identifiers'
+        return tr('Reconcile entity identifiers', 'Entitätskennungen abgleichen')
       default:
-        return 'No exceptions detected'
+        return tr('No exceptions detected', 'Keine Ausnahmen erkannt')
+    }
+  })()
+
+  const exceptionReasonLabel = (() => {
+    switch (state.exceptionReason) {
+      case 'low_evidence':
+        return tr('Low evidence', 'Geringe Evidenz')
+      case 'rule_conflict':
+        return tr('Rule conflict', 'Regelkonflikt')
+      case 'consent_missing':
+        return tr('Consent missing', 'Einwilligung fehlt')
+      case 'data_mismatch':
+        return tr('Data mismatch', 'Datenabweichung')
+      default:
+        return tr('None', 'Keine')
     }
   })()
 
@@ -158,28 +176,28 @@ export default function DemoComplianceStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">UNDERWRITER DEMO</div>
+                <div className="page-pretitle">{tr('UNDERWRITER DEMO', 'UNDERWRITER-DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-underwriter/compliance')}>
-                    Restart
+                    {tr('Restart', 'Neu starten')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={!canGoNext || stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={!canGoNext || stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -195,9 +213,9 @@ export default function DemoComplianceStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · audit only</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('audit only', 'nur Audit')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Compliance</span>
+                    <span className="badge bg-indigo-lt">{tr('Compliance', 'Compliance')}</span>
                   </div>
 
                   <div className="uw-decision-body">
@@ -205,23 +223,26 @@ export default function DemoComplianceStepPage() {
                       <>
                         <div className="uw-block">
                           <div className="uw-kv">
-                            <Kv k="Case ID" v={state.caseId} />
-                            <Kv k="Insured" v={state.insured} />
-                            <Kv k="Product" v={state.product} />
-                            <Kv k="Referral" v={state.referralReason} />
+                            <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                            <Kv k={tr('Insured', 'Versicherungsnehmer')} v={state.insured} />
+                            <Kv k={tr('Product', 'Produkt')} v={state.product} />
+                            <Kv k={tr('Referral', 'Weiterleitung')} v={tr('Senior UW requested compliance validation (override path)', 'Senior UW fordert Compliance-Validierung (Override-Pfad)')} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Scope</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Scope', 'Scope')}</div>
                           <div className="uw-admin-small">
-                            Scope is governance validation only. Underwriting decision remains with Underwriter/Carrier Authority.
+                            {tr(
+                              'Scope is governance validation only. Underwriting decision remains with Underwriter/Carrier Authority.',
+                              'Scope ist ausschließlich Governance-Validierung. Die Underwriting-Entscheidung bleibt beim Underwriter/Carrier Authority.',
+                            )}
                           </div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Verify consent</li>
-                            <li>Verify rule set version and applied rules</li>
-                            <li>Verify evidence completeness</li>
-                            <li>Ensure audit trail is complete</li>
+                            <li>{tr('Verify consent', 'Einwilligung prüfen')}</li>
+                            <li>{tr('Verify rule set version and applied rules', 'Regelset-Version und angewendete Regeln prüfen')}</li>
+                            <li>{tr('Verify evidence completeness', 'Evidenz-Vollständigkeit prüfen')}</li>
+                            <li>{tr('Ensure audit trail is complete', 'Audit-Trail auf Vollständigkeit prüfen')}</li>
                           </ul>
                         </div>
 
@@ -229,11 +250,11 @@ export default function DemoComplianceStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Compliance review started (case received)')
+                              appendAudit(tr('Compliance review started (case received)', 'Compliance-Prüfung gestartet (Fall erhalten)'))
                               goTo('rules')
                             }}
                           >
-                            Start compliance review
+                            {tr('Start compliance review', 'Compliance-Prüfung starten')}
                           </button>
                         </div>
                       </>
@@ -243,21 +264,21 @@ export default function DemoComplianceStepPage() {
                       <>
                         <div className="uw-block">
                           <div className="uw-kv">
-                            <Kv k="RuleSet" v={<span className="badge bg-azure-lt">{state.ruleSetVersion}</span>} />
-                            <Kv k="Model" v={<span className="badge bg-azure-lt">{state.modelVersion}</span>} />
+                            <Kv k={tr('RuleSet', 'Regelset')} v={<span className="badge bg-azure-lt">{state.ruleSetVersion}</span>} />
+                            <Kv k={tr('Model', 'Modell')} v={<span className="badge bg-azure-lt">{state.modelVersion}</span>} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Rules executed</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Rules executed', 'Regeln ausgeführt')}</div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Appetite check: PASS</li>
-                            <li>Sanctions screening: PASS</li>
-                            <li>Geo constraints: PASS</li>
-                            <li>Override used: YES (requires audit justification)</li>
+                            <li>{tr('Appetite check: PASS', 'Appetite-Check: BESTANDEN')}</li>
+                            <li>{tr('Sanctions screening: PASS', 'Sanktionsprüfung: BESTANDEN')}</li>
+                            <li>{tr('Geo constraints: PASS', 'Geo-Constraints: BESTANDEN')}</li>
+                            <li>{tr('Override used: YES (requires audit justification)', 'Override verwendet: JA (Audit-Begründung erforderlich)')}</li>
                           </ul>
                           <div className="uw-admin-small" style={{ marginTop: '0.4rem' }}>
-                            Override path detected. Ensure justification + approval trail exists.
+                            {tr('Override path detected. Ensure justification + approval trail exists.', 'Override-Pfad erkannt. Begründung + Genehmigungspfad sicherstellen.')}
                           </div>
                         </div>
 
@@ -265,22 +286,22 @@ export default function DemoComplianceStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Rules integrity confirmed (ruleset validated)')
+                              appendAudit(tr('Rules integrity confirmed (ruleset validated)', 'Regel-Integrität bestätigt (Regelset validiert)'))
                               setPartial({ rulesChecked: true, exceptionFlagged: false, exceptionReason: 'none' })
                               goTo('evidence')
                             }}
                           >
-                            Confirm rule integrity
+                            {tr('Confirm rule integrity', 'Regel-Integrität bestätigen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Exception flagged: rule conflict (manual review required)')
+                              appendAudit(tr('Exception flagged: rule conflict (manual review required)', 'Ausnahme markiert: Regelkonflikt (manuelle Prüfung erforderlich)'))
                               setPartial({ rulesChecked: true, exceptionFlagged: true, exceptionReason: 'rule_conflict' })
                               goTo('evidence')
                             }}
                           >
-                            Flag rule conflict
+                            {tr('Flag rule conflict', 'Regelkonflikt markieren')}
                           </button>
                         </div>
                       </>
@@ -290,39 +311,39 @@ export default function DemoComplianceStepPage() {
                       <>
                         <div className="uw-block">
                           <div className="uw-kv">
-                            <Kv k="Company registry match" v={<span className="badge bg-green-lt">MATCH</span>} />
-                            <Kv k="Loss history" v={<span className="badge bg-green-lt">YES</span>} />
-                            <Kv k="Financials" v={<span className="badge bg-green-lt">YES</span>} />
-                            <Kv k="Consent record" v={<span className="badge bg-green-lt">PRESENT</span>} />
+                            <Kv k={tr('Company registry match', 'Handelsregister-Abgleich')} v={<span className="badge bg-green-lt">{tr('MATCH', 'MATCH')}</span>} />
+                            <Kv k={tr('Loss history', 'Schadenhistorie')} v={<span className="badge bg-green-lt">{tr('YES', 'JA')}</span>} />
+                            <Kv k={tr('Financials', 'Finanzdaten')} v={<span className="badge bg-green-lt">{tr('YES', 'JA')}</span>} />
+                            <Kv k={tr('Consent record', 'Einwilligungsnachweis')} v={<span className="badge bg-green-lt">{tr('PRESENT', 'VORHANDEN')}</span>} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Evidence quality</div>
-                          <div className="uw-admin-small">Evidence score: {state.evidenceScore}/100</div>
-                          <div className="uw-admin-small">Evidence quality is within threshold. Escalate only if below 70.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Evidence quality', 'Evidenzqualität')}</div>
+                          <div className="uw-admin-small">{tr('Evidence score', 'Evidenz-Score')}: {state.evidenceScore}/100</div>
+                          <div className="uw-admin-small">{tr('Evidence quality is within threshold. Escalate only if below 70.', 'Evidenzqualität liegt im Schwellenbereich. Nur eskalieren, wenn unter 70.')}</div>
                         </div>
 
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Evidence pack confirmed (quality sufficient)')
+                              appendAudit(tr('Evidence pack confirmed (quality sufficient)', 'Evidenzpaket bestätigt (Qualität ausreichend)'))
                               setPartial({ evidenceChecked: true })
                               goTo('exceptions')
                             }}
                           >
-                            Confirm evidence complete
+                            {tr('Confirm evidence complete', 'Evidenz vollständig bestätigen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Exception flagged: low evidence (quality below threshold)')
+                              appendAudit(tr('Exception flagged: low evidence (quality below threshold)', 'Ausnahme markiert: geringe Evidenz (Qualität unter Schwelle)'))
                               setPartial({ evidenceChecked: true, exceptionFlagged: true, exceptionReason: 'low_evidence' })
                               goTo('exceptions')
                             }}
                           >
-                            Flag low evidence
+                            {tr('Flag low evidence', 'Geringe Evidenz markieren')}
                           </button>
                         </div>
                       </>
@@ -333,11 +354,14 @@ export default function DemoComplianceStepPage() {
                         {state.exceptionFlagged ? (
                           <>
                             <div className="uw-block uw-ai">
-                              <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Exception flagged</div>
-                              <div className="uw-admin-small">Reason: {state.exceptionReason}</div>
-                              <div className="uw-admin-small">Recommended action: {exceptionAction}</div>
+                              <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Exception flagged', 'Ausnahme markiert')}</div>
+                              <div className="uw-admin-small">{tr('Reason', 'Grund')}: {exceptionReasonLabel}</div>
+                              <div className="uw-admin-small">{tr('Recommended action', 'Empfohlene Maßnahme')}: {exceptionAction}</div>
                               <div className="uw-admin-small" style={{ marginTop: '0.3rem' }}>
-                                Do not block underwriting automatically unless consent missing. Escalate with clear rationale.
+                                {tr(
+                                  'Do not block underwriting automatically unless consent missing. Escalate with clear rationale.',
+                                  'Underwriting nicht automatisch blockieren, außer Einwilligung fehlt. Mit klarer Begründung eskalieren.',
+                                )}
                               </div>
                             </div>
 
@@ -345,38 +369,38 @@ export default function DemoComplianceStepPage() {
                               <button
                                 className="btn btn-primary"
                                 onClick={() => {
-                                  appendAudit('Escalated to Compliance Lead (exception review)')
+                                  appendAudit(tr('Escalated to Compliance Lead (exception review)', 'An Compliance Lead eskaliert (Ausnahmeprüfung)'))
                                   goTo('signoff')
                                 }}
                               >
-                                Escalate to Compliance Lead
+                                {tr('Escalate to Compliance Lead', 'An Compliance Lead eskalieren')}
                               </button>
                               <button
                                 className="btn btn-outline-secondary"
                                 onClick={() => {
-                                  appendAudit('Exception noted (informational) – underwriting not blocked')
+                                  appendAudit(tr('Exception noted (informational) – underwriting not blocked', 'Ausnahme vermerkt (informational) – Underwriting nicht blockiert'))
                                   goTo('signoff')
                                 }}
                               >
-                                Mark as informational (no block)
+                                {tr('Mark as informational (no block)', 'Als informational markieren (kein Block)')}
                               </button>
                             </div>
                           </>
                         ) : (
                           <>
                             <div className="uw-block">
-                              <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>No exceptions detected</div>
-                              <div className="uw-admin-small">All governance checks passed.</div>
+                              <div style={{ fontWeight: 800, fontSize: '0.9rem' }}>{tr('No exceptions detected', 'Keine Ausnahmen erkannt')}</div>
+                              <div className="uw-admin-small">{tr('All governance checks passed.', 'Alle Governance-Prüfungen bestanden.')}</div>
                             </div>
                             <div className="uw-cta-row">
                               <button
                                 className="btn btn-primary"
                                 onClick={() => {
-                                  appendAudit('No exceptions detected (proceed to audit seal)')
+                                  appendAudit(tr('No exceptions detected (proceed to audit seal)', 'Keine Ausnahmen erkannt (weiter zur Audit-Versiegelung)'))
                                   goTo('signoff')
                                 }}
                               >
-                                Proceed to audit seal
+                                {tr('Proceed to audit seal', 'Zur Audit-Versiegelung')}
                               </button>
                             </div>
                           </>
@@ -387,24 +411,27 @@ export default function DemoComplianceStepPage() {
                     {stepId === 'signoff' && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Compliance summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Compliance summary', 'Compliance-Zusammenfassung')}</div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Rules checked" v={<span className={`badge ${state.rulesChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.rulesChecked ? 'Yes' : 'No'}</span>} />
-                            <Kv k="Evidence checked" v={<span className={`badge ${state.evidenceChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.evidenceChecked ? 'Yes' : 'No'}</span>} />
-                            <Kv k="Consent logged" v={<span className={`badge ${state.consentLogged ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.consentLogged ? 'Yes' : 'No'}</span>} />
-                            <Kv k="Exception" v={<span className={`badge ${state.exceptionFlagged ? 'bg-yellow-lt' : 'bg-green-lt'}`}>{state.exceptionFlagged ? 'Flagged' : 'None'}</span>} />
+                            <Kv k={tr('Rules checked', 'Regeln geprüft')} v={<span className={`badge ${state.rulesChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.rulesChecked ? tr('Yes', 'Ja') : tr('No', 'Nein')}</span>} />
+                            <Kv k={tr('Evidence checked', 'Evidenz geprüft')} v={<span className={`badge ${state.evidenceChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.evidenceChecked ? tr('Yes', 'Ja') : tr('No', 'Nein')}</span>} />
+                            <Kv k={tr('Consent logged', 'Einwilligung erfasst')} v={<span className={`badge ${state.consentLogged ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.consentLogged ? tr('Yes', 'Ja') : tr('No', 'Nein')}</span>} />
+                            <Kv k={tr('Exception', 'Ausnahme')} v={<span className={`badge ${state.exceptionFlagged ? 'bg-yellow-lt' : 'bg-green-lt'}`}>{state.exceptionFlagged ? tr('Flagged', 'Markiert') : tr('None', 'Keine')}</span>} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Output</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Output', 'Ergebnis')}</div>
                           <div className="uw-admin-small">
                             {state.exceptionFlagged || !state.rulesChecked || !state.evidenceChecked
-                              ? 'Compliance exception flagged'
-                              : 'Compliance cleared'}
+                              ? tr('Compliance exception flagged', 'Compliance-Ausnahme markiert')
+                              : tr('Compliance cleared', 'Compliance freigegeben')}
                           </div>
                           <div className="uw-admin-small" style={{ marginTop: '0.3rem' }}>
-                            Sealing audit trail ensures traceability for governance & regulators.
+                            {tr(
+                              'Sealing audit trail ensures traceability for governance & regulators.',
+                              'Das Versiegeln des Audit-Trails sichert Nachvollziehbarkeit für Governance & Regulatoren.',
+                            )}
                           </div>
                         </div>
 
@@ -413,19 +440,19 @@ export default function DemoComplianceStepPage() {
                             className="btn btn-primary"
                             onClick={() => {
                               if (!state.auditSealed) {
-                                appendAudit('Audit sealed (compliance sign-off recorded)')
+                                appendAudit(tr('Audit sealed (compliance sign-off recorded)', 'Audit versiegelt (Compliance-Sign-off erfasst)'))
                                 setPartial({ auditSealed: true })
                               }
                               nav('/demo-underwriter/compliance')
                             }}
                           >
-                            Seal audit trail
+                            {tr('Seal audit trail', 'Audit-Trail versiegeln')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => nav('/demo-underwriter/compliance')}
                           >
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -436,9 +463,9 @@ export default function DemoComplianceStepPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -451,28 +478,28 @@ export default function DemoComplianceStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )
                     })}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortung')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> rule & audit integrity checks</div>
-                      <div><strong>Accountable:</strong> audit trail & governance discipline</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('rule & audit integrity checks', 'Regel- & Audit-Integritätsprüfungen')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('audit trail & governance discipline', 'Audit-Trail & Governance-Disziplin')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>Validates ruleset + model versions</li>
-                      <li>Confirms evidence completeness</li>
-                      <li>Flags exceptions with rationale</li>
-                      <li>Seals audit trail for regulators</li>
+                      <li>{tr('Validates ruleset + model versions', 'Validiert Regelset- und Modellversionen')}</li>
+                      <li>{tr('Confirms evidence completeness', 'Bestätigt Evidenz-Vollständigkeit')}</li>
+                      <li>{tr('Flags exceptions with rationale', 'Markiert Ausnahmen mit Begründung')}</li>
+                      <li>{tr('Seals audit trail for regulators', 'Versiegelt Audit-Trail für Regulatoren')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -483,11 +510,11 @@ export default function DemoComplianceStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

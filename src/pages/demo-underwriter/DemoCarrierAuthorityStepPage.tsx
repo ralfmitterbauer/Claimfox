@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_UW_CARRIER_STATE'
 const KEY_AUDIT = 'DEMO_UW_CARRIER_AUDIT'
@@ -21,14 +22,6 @@ type CarrierAuthorityState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'handover', title: 'Escalation handover', subtitle: 'Review escalation summary' },
-  { id: 'capacity', title: 'Capacity check', subtitle: 'Confirm carrier capacity' },
-  { id: 'limits', title: 'Limit approval', subtitle: 'Approve full or reduced limit' },
-  { id: 'compliance', title: 'Compliance check', subtitle: 'Regulatory checklist review' },
-  { id: 'final', title: 'Final decision', subtitle: 'Lock capacity & limits' },
-]
 
 function nowTs() {
   return Date.now()
@@ -87,14 +80,24 @@ function Kv({ k, v }: { k: string; v: React.ReactNode }) {
   )
 }
 
-function money(n: number) {
-  return `€ ${n} M`
+function money(n: number, isEn: boolean) {
+  return isEn ? `€ ${n} M` : `€ ${n} Mio.`
 }
 
 export default function DemoCarrierAuthorityStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'handover', title: tr('Escalation handover', 'Eskalations-Übergabe'), subtitle: tr('Review escalation summary', 'Eskalationszusammenfassung prüfen') },
+    { id: 'capacity', title: tr('Capacity check', 'Kapazitätsprüfung'), subtitle: tr('Confirm carrier capacity', 'Carrier-Kapazität bestätigen') },
+    { id: 'limits', title: tr('Limit approval', 'Limitfreigabe'), subtitle: tr('Approve full or reduced limit', 'Volles oder reduziertes Limit freigeben') },
+    { id: 'compliance', title: tr('Compliance check', 'Compliance-Prüfung'), subtitle: tr('Regulatory checklist review', 'Regulatorische Checkliste prüfen') },
+    { id: 'final', title: tr('Final decision', 'Finale Entscheidung'), subtitle: tr('Lock capacity & limits', 'Kapazität & Limits sperren') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<CarrierAuthorityState>(() => readState())
 
@@ -105,7 +108,7 @@ export default function DemoCarrierAuthorityStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-underwriter/carrier/step/handover" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<CarrierAuthorityState>) {
     const next = { ...state, ...p }
@@ -118,10 +121,10 @@ export default function DemoCarrierAuthorityStepPage() {
   }
 
   const snapshotBadges = [
-    { label: 'Capacity Confirmed', ok: state.capacityConfirmed },
-    { label: 'Limit Approved', ok: state.limitApproved },
-    { label: 'Compliance Checked', ok: state.complianceChecked },
-    { label: 'Decision Locked', ok: state.decisionLocked },
+    { label: tr('Capacity Confirmed', 'Kapazität bestätigt'), ok: state.capacityConfirmed },
+    { label: tr('Limit Approved', 'Limit freigegeben'), ok: state.limitApproved },
+    { label: tr('Compliance Checked', 'Compliance geprüft'), ok: state.complianceChecked },
+    { label: tr('Decision Locked', 'Entscheidung gesperrt'), ok: state.decisionLocked },
   ]
 
   const canGoNext = (() => {
@@ -140,28 +143,28 @@ export default function DemoCarrierAuthorityStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">UNDERWRITER DEMO</div>
+                <div className="page-pretitle">{tr('UNDERWRITER DEMO', 'UNDERWRITER DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-underwriter/carrier')}>
-                    Restart
+                    {tr('Restart', 'Neustart')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={!canGoNext || stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={!canGoNext || stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -177,32 +180,32 @@ export default function DemoCarrierAuthorityStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · one decision</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('one decision', 'eine Entscheidung')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Carrier Authority</span>
+                    <span className="badge bg-indigo-lt">{tr('Carrier Authority', 'Carrier Authority')}</span>
                   </div>
 
                   <div className="uw-decision-body">
                     <div className="uw-block">
                       <div className="uw-kv">
-                        <Kv k="Case ID" v={state.caseId} />
-                        <Kv k="Insured" v={state.insured} />
-                        <Kv k="Product" v={state.product} />
-                        <Kv k="Requested limit" v={<span className="badge bg-azure-lt">{money(state.requestedLimit)}</span>} />
-                        <Kv k="Capacity available" v={<span className="badge bg-azure-lt">{money(state.capacityAvailable)}</span>} />
+                        <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                        <Kv k={tr('Insured', 'Versicherter')} v={state.insured} />
+                        <Kv k={tr('Product', 'Produkt')} v={tr('Fleet Liability + Cargo Extension', 'Flottenhaftpflicht + Fracht-Erweiterung')} />
+                        <Kv k={tr('Requested limit', 'Angefragtes Limit')} v={<span className="badge bg-azure-lt">{money(state.requestedLimit, isEn)}</span>} />
+                        <Kv k={tr('Capacity available', 'Verfügbare Kapazität')} v={<span className="badge bg-azure-lt">{money(state.capacityAvailable, isEn)}</span>} />
                       </div>
                     </div>
 
                     {stepId === 'handover' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI escalation summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI escalation summary', 'KI-Eskalationszusammenfassung')}</div>
                           <div className="uw-admin-small">
-                            Senior UW escalated due to override requirements and concentration guardrails.
+                            {tr('Senior UW escalated due to override requirements and concentration guardrails.', 'Senior UW hat wegen Override-Anforderungen und Konzentrations-Leitplanken eskaliert.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Reason" v="Limit exceeds senior authority, portfolio concentration check required" />
-                            <Kv k="AI note" v="Capacity sufficient but concentrated; compliance clear" />
+                            <Kv k={tr('Reason', 'Grund')} v={tr('Limit exceeds senior authority, portfolio concentration check required', 'Limit überschreitet Senior-Autorität, Portfolio-Konzentrationsprüfung erforderlich')} />
+                            <Kv k={tr('AI note', 'KI-Hinweis')} v={tr('Capacity sufficient but concentrated; compliance clear', 'Kapazität ausreichend aber konzentriert; Compliance unauffällig')} />
                           </div>
                         </div>
 
@@ -210,11 +213,11 @@ export default function DemoCarrierAuthorityStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Carrier Authority received escalation')
+                              appendAudit(tr('Carrier Authority received escalation', 'Carrier Authority erhielt Eskalation'))
                               goTo('capacity')
                             }}
                           >
-                            Review capacity
+                            {tr('Review capacity', 'Kapazität prüfen')}
                           </button>
                         </div>
                       </>
@@ -223,14 +226,14 @@ export default function DemoCarrierAuthorityStepPage() {
                     {stepId === 'capacity' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Capacity assessment</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Capacity assessment', 'Kapazitätsbewertung')}</div>
                           <div className="uw-admin-small">
-                            AI flags concentration risk but indicates overall capacity suffices.
+                            {tr('AI flags concentration risk but indicates overall capacity suffices.', 'KI markiert Konzentrationsrisiko, insgesamt reicht die Kapazität.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Capacity" v={<span className="badge bg-green-lt">Sufficient</span>} />
-                            <Kv k="Concentration" v={<span className="badge bg-yellow-lt">Elevated</span>} />
-                            <Kv k="Recommendation" v="Confirm capacity or restrict exposure" />
+                            <Kv k={tr('Capacity', 'Kapazität')} v={<span className="badge bg-green-lt">{tr('Sufficient', 'Ausreichend')}</span>} />
+                            <Kv k={tr('Concentration', 'Konzentration')} v={<span className="badge bg-yellow-lt">{tr('Elevated', 'Erhöht')}</span>} />
+                            <Kv k={tr('Recommendation', 'Empfehlung')} v={tr('Confirm capacity or restrict exposure', 'Kapazität bestätigen oder Exponierung begrenzen')} />
                           </div>
                         </div>
 
@@ -238,22 +241,22 @@ export default function DemoCarrierAuthorityStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Capacity confirmed (sufficient)')
+                              appendAudit(tr('Capacity confirmed (sufficient)', 'Kapazität bestätigt (ausreichend)'))
                               setPartial({ capacityConfirmed: true })
                               goTo('limits')
                             }}
                           >
-                            Confirm capacity
+                            {tr('Confirm capacity', 'Kapazität bestätigen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Capacity restricted (exposure limited)')
+                              appendAudit(tr('Capacity restricted (exposure limited)', 'Kapazität begrenzt (Exponierung limitiert)'))
                               setPartial({ decision: 'restrict' })
                               goTo('limits')
                             }}
                           >
-                            Restrict exposure
+                            {tr('Restrict exposure', 'Exponierung begrenzen')}
                           </button>
                         </div>
                       </>
@@ -262,14 +265,14 @@ export default function DemoCarrierAuthorityStepPage() {
                     {stepId === 'limits' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Limit recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Limit recommendation', 'Limit-Empfehlung')}</div>
                           <div className="uw-admin-small">
-                            AI recommends a full limit approval if capacity confirmed, otherwise reduce limit.
+                            {tr('AI recommends a full limit approval if capacity confirmed, otherwise reduce limit.', 'KI empfiehlt volle Limitfreigabe bei bestätigter Kapazität, sonst Limit reduzieren.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Requested" v={<span className="badge bg-azure-lt">{money(state.requestedLimit)}</span>} />
-                            <Kv k="Suggested" v={<span className="badge bg-azure-lt">{money(state.requestedLimit - 4)}</span>} />
-                            <Kv k="Why" v="Reduce tail exposure while staying within appetite" />
+                            <Kv k={tr('Requested', 'Angefragt')} v={<span className="badge bg-azure-lt">{money(state.requestedLimit, isEn)}</span>} />
+                            <Kv k={tr('Suggested', 'Vorgeschlagen')} v={<span className="badge bg-azure-lt">{money(state.requestedLimit - 4, isEn)}</span>} />
+                            <Kv k={tr('Why', 'Warum')} v={tr('Reduce tail exposure while staying within appetite', 'Tail-Exposure reduzieren und im Appetite bleiben')} />
                           </div>
                         </div>
 
@@ -277,22 +280,22 @@ export default function DemoCarrierAuthorityStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Full limit approved')
+                              appendAudit(tr('Full limit approved', 'Volles Limit freigegeben'))
                               setPartial({ limitApproved: true, decision: 'approve' })
                               goTo('compliance')
                             }}
                           >
-                            Approve full limit
+                            {tr('Approve full limit', 'Volles Limit freigeben')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Reduced limit approved')
+                              appendAudit(tr('Reduced limit approved', 'Reduziertes Limit freigegeben'))
                               setPartial({ limitApproved: true, decision: 'restrict' })
                               goTo('compliance')
                             }}
                           >
-                            Approve reduced limit
+                            {tr('Approve reduced limit', 'Reduziertes Limit freigeben')}
                           </button>
                         </div>
                       </>
@@ -301,12 +304,12 @@ export default function DemoCarrierAuthorityStepPage() {
                     {stepId === 'compliance' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Regulatory checklist</div>
-                          <div className="uw-admin-small">No regulatory conflicts detected.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Regulatory checklist', 'Regulatorische Checkliste')}</div>
+                          <div className="uw-admin-small">{tr('No regulatory conflicts detected.', 'Keine regulatorischen Konflikte erkannt.')}</div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Sanctions" v={<span className="badge bg-green-lt">Clear</span>} />
-                            <Kv k="Jurisdiction" v={<span className="badge bg-green-lt">Compliant</span>} />
-                            <Kv k="Documentation" v={<span className="badge bg-green-lt">Complete</span>} />
+                            <Kv k={tr('Sanctions', 'Sanktionen')} v={<span className="badge bg-green-lt">{tr('Clear', 'Unauffällig')}</span>} />
+                            <Kv k={tr('Jurisdiction', 'Jurisdiktion')} v={<span className="badge bg-green-lt">{tr('Compliant', 'Konform')}</span>} />
+                            <Kv k={tr('Documentation', 'Dokumentation')} v={<span className="badge bg-green-lt">{tr('Complete', 'Vollständig')}</span>} />
                           </div>
                         </div>
 
@@ -314,12 +317,12 @@ export default function DemoCarrierAuthorityStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Compliance confirmed')
+                              appendAudit(tr('Compliance confirmed', 'Compliance bestätigt'))
                               setPartial({ complianceChecked: true })
                               goTo('final')
                             }}
                           >
-                            Confirm compliance
+                            {tr('Confirm compliance', 'Compliance bestätigen')}
                           </button>
                         </div>
                       </>
@@ -328,24 +331,24 @@ export default function DemoCarrierAuthorityStepPage() {
                     {stepId === 'final' && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Decision summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Decision summary', 'Entscheidungsübersicht')}</div>
                           <div className="uw-admin-small">
-                            This decision locks final capacity and limit approval.
+                            {tr('This decision locks final capacity and limit approval.', 'Diese Entscheidung sperrt die finale Kapazitäts- und Limitfreigabe.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Decision" v={<span className="badge bg-indigo-lt">{state.decision === 'restrict' ? 'Approve reduced limit' : state.decision === 'approve' ? 'Approve full limit' : 'Pending'}</span>} />
-                            <Kv k="Capacity" v={<span className={`badge ${state.capacityConfirmed ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.capacityConfirmed ? 'Confirmed' : 'Pending'}</span>} />
-                            <Kv k="Compliance" v={<span className={`badge ${state.complianceChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.complianceChecked ? 'Checked' : 'Pending'}</span>} />
+                            <Kv k={tr('Decision', 'Entscheidung')} v={<span className="badge bg-indigo-lt">{state.decision === 'restrict' ? tr('Approve reduced limit', 'Reduziertes Limit freigeben') : state.decision === 'approve' ? tr('Approve full limit', 'Volles Limit freigeben') : tr('Pending', 'Ausstehend')}</span>} />
+                            <Kv k={tr('Capacity', 'Kapazität')} v={<span className={`badge ${state.capacityConfirmed ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.capacityConfirmed ? tr('Confirmed', 'Bestätigt') : tr('Pending', 'Ausstehend')}</span>} />
+                            <Kv k={tr('Compliance', 'Compliance')} v={<span className={`badge ${state.complianceChecked ? 'bg-green-lt' : 'bg-muted-lt'}`}>{state.complianceChecked ? tr('Checked', 'Geprüft') : tr('Pending', 'Ausstehend')}</span>} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI audit note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI audit note', 'KI-Audit-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            AI records why this capacity/limit decision is safe and compliant.
+                            {tr('AI records why this capacity/limit decision is safe and compliant.', 'KI dokumentiert, warum die Kapazitäts-/Limitentscheidung sicher und konform ist.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Rationale stored" v="Capacity available, concentration mitigated, compliance clear" />
+                            <Kv k={tr('Rationale stored', 'Begründung gespeichert')} v={tr('Capacity available, concentration mitigated, compliance clear', 'Kapazität verfügbar, Konzentration mitigiert, Compliance unauffällig')} />
                           </div>
                         </div>
 
@@ -354,16 +357,16 @@ export default function DemoCarrierAuthorityStepPage() {
                             className="btn btn-primary"
                             onClick={() => {
                               if (!state.decisionLocked) {
-                                appendAudit('Decision locked (audit-ready)')
+                                appendAudit(tr('Decision locked (audit-ready)', 'Entscheidung gesperrt (audit-ready)'))
                                 setPartial({ decisionLocked: true })
                               }
                               nav('/demo-underwriter/carrier')
                             }}
                           >
-                            Lock decision
+                            {tr('Lock decision', 'Entscheidung sperren')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/demo-underwriter/carrier')}>
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -374,9 +377,9 @@ export default function DemoCarrierAuthorityStepPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -389,28 +392,28 @@ export default function DemoCarrierAuthorityStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )
                     })}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortlichkeit')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> final capacity & limits</div>
-                      <div><strong>Accountable:</strong> risk bearing & regulatory compliance</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('final capacity & limits', 'finale Kapazität & Limits')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('risk bearing & regulatory compliance', 'Risikotragung & regulatorische Compliance')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>AI summarizes escalation rationale</li>
-                      <li>Capacity review checks concentration</li>
-                      <li>Limit approval sets final exposure</li>
-                      <li>Compliance must be confirmed before lock</li>
+                      <li>{tr('AI summarizes escalation rationale', 'KI fasst Eskalationsbegründung zusammen')}</li>
+                      <li>{tr('Capacity review checks concentration', 'Kapazitätsprüfung prüft Konzentration')}</li>
+                      <li>{tr('Limit approval sets final exposure', 'Limitfreigabe setzt finales Exposure')}</li>
+                      <li>{tr('Compliance must be confirmed before lock', 'Compliance muss vor Sperre bestätigt sein')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -421,11 +424,11 @@ export default function DemoCarrierAuthorityStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/demo-shell.css'
 import { appendAudit, resetKeys, writeJson } from './_financeStorage'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_FIN_BILLING_STATE'
 const KEY_AUDIT = 'DEMO_FIN_BILLING_AUDIT'
@@ -32,11 +33,14 @@ function defaultState(): BillingState {
 
 export default function DemoPremiumBillingOpsPage() {
   const nav = useNavigate()
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
 
   useEffect(() => {
     resetKeys([KEY_STATE, KEY_AUDIT])
     writeJson(KEY_STATE, defaultState())
-    appendAudit(KEY_AUDIT, 'Demo started (state reset)')
+    appendAudit(KEY_AUDIT, tr('Demo started (state reset)', 'Demo gestartet (State zurückgesetzt)'))
   }, [])
 
   return (
@@ -46,9 +50,9 @@ export default function DemoPremiumBillingOpsPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">FINANCE DEMO</div>
-                <h2 className="page-title">Premium & Billing Operations</h2>
-                <div className="text-muted">Click-only · Invoice release & exceptions</div>
+                <div className="page-pretitle">{tr('FINANCE DEMO', 'FINANCE-DEMO')}</div>
+                <h2 className="page-title">{tr('Premium & Billing Operations', 'Premium- & Billing Operations')}</h2>
+                <div className="text-muted">{tr('Click-only · Invoice release & exceptions', 'Click-only · Rechnungsfreigabe & Ausnahmen')}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
@@ -57,13 +61,13 @@ export default function DemoPremiumBillingOpsPage() {
                     onClick={() => {
                       resetKeys([KEY_STATE, KEY_AUDIT])
                       writeJson(KEY_STATE, defaultState())
-                      appendAudit(KEY_AUDIT, 'Demo reset (manual)')
+                      appendAudit(KEY_AUDIT, tr('Demo reset (manual)', 'Demo zurückgesetzt (manuell)'))
                     }}
                   >
-                    Reset
+                    {tr('Reset', 'Zurücksetzen')}
                   </button>
                   <button className="btn btn-primary" onClick={() => nav('/demo-finance/billing/step/intake')}>
-                    Start billing flow
+                    {tr('Start billing flow', 'Billing-Flow starten')}
                   </button>
                 </div>
               </div>
@@ -78,19 +82,19 @@ export default function DemoPremiumBillingOpsPage() {
                 <div className="card">
                   <div className="card-header">
                     <div>
-                      <div className="text-muted">What you will review</div>
-                      <h3 className="card-title">5 steps · invoice & exceptions</h3>
+                      <div className="text-muted">{tr('What you will review', 'Was du prüfst')}</div>
+                      <h3 className="card-title">{tr('5 steps · invoice & exceptions', '5 Schritte · Rechnung & Ausnahmen')}</h3>
                     </div>
                   </div>
                   <div className="card-body">
-                    <div className="text-muted">Account</div>
+                    <div className="text-muted">{tr('Account', 'Konto')}</div>
                     <div className="fw-semibold">ACC-44021 · Nordstadt Logistics GmbH</div>
                     <div className="mt-3 d-grid gap-2">
                       <button className="btn btn-primary" onClick={() => nav('/demo-finance/billing/step/intake')}>
-                        Start at step 1 (intake)
+                        {tr('Start at step 1 (intake)', 'Start bei Schritt 1 (Intake)')}
                       </button>
                       <button className="btn btn-outline-secondary" onClick={() => nav('/demo')}>
-                        Back to demo overview
+                        {tr('Back to demo overview', 'Zur Demo-Übersicht')}
                       </button>
                     </div>
                   </div>
@@ -99,9 +103,9 @@ export default function DemoPremiumBillingOpsPage() {
 
               <div className="finance-admin">
                 <div className="admin-panel">
-                  <h4>Billing Ops – Accountability</h4>
-                  <div>Decides: invoice release + exception handling</div>
-                  <div>Accountable: premium capture integrity</div>
+                  <h4>{tr('Billing Ops – Accountability', 'Billing Ops – Verantwortung')}</h4>
+                  <div>{tr('Decides: invoice release + exception handling', 'Entscheidet: Rechnungsfreigabe + Ausnahmebehandlung')}</div>
+                  <div>{tr('Accountable: premium capture integrity', 'Verantwortlich: Prämienerfassungs-Integrität')}</div>
                 </div>
               </div>
             </div>

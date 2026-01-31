@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_LEGAL_COUNSEL_STATE'
 const KEY_AUDIT = 'DEMO_LEGAL_COUNSEL_AUDIT'
@@ -23,14 +24,6 @@ type LegalCounselState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Legal intake', subtitle: 'Scope & governance only' },
-  { id: 'coverage', title: 'Coverage position', subtitle: 'Set legal stance' },
-  { id: 'wording', title: 'Wording actions', subtitle: 'Clarify or endorse' },
-  { id: 'comms', title: 'Communications', subtitle: 'Select legal template' },
-  { id: 'signoff', title: 'Legal sign-off', subtitle: 'Record defensibility' },
-]
 
 function nowTs() {
   return Date.now()
@@ -94,7 +87,17 @@ function Kv({ k, v }: { k: string; v: React.ReactNode }) {
 export default function DemoLegalCounselStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Legal intake', 'Legal-Intake'), subtitle: tr('Scope & governance only', 'Nur Scope & Governance') },
+    { id: 'coverage', title: tr('Coverage position', 'Deckungsposition'), subtitle: tr('Set legal stance', 'Rechtliche Position festlegen') },
+    { id: 'wording', title: tr('Wording actions', 'Wortlaut-Aktionen'), subtitle: tr('Clarify or endorse', 'Klarstellen oder Endorsement') },
+    { id: 'comms', title: tr('Communications', 'Kommunikation'), subtitle: tr('Select legal template', 'Rechtsvorlage auswählen') },
+    { id: 'signoff', title: tr('Legal sign-off', 'Legal Sign-off'), subtitle: tr('Record defensibility', 'Rechtliche Belastbarkeit dokumentieren') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<LegalCounselState>(() => readState())
 
@@ -105,7 +108,7 @@ export default function DemoLegalCounselStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-legal/counsel/step/intake" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<LegalCounselState>) {
     const next = { ...state, ...p }
@@ -117,12 +120,48 @@ export default function DemoLegalCounselStepPage() {
     nav(`/demo-legal/counsel/step/${next}`)
   }
 
+  const coveragePositionLabel = (value: LegalCounselState['coveragePosition']) => {
+    switch (value) {
+      case 'cover':
+        return tr('Cover', 'Deckung')
+      case 'reserve_rights':
+        return tr('ROR', 'ROR')
+      case 'deny':
+        return tr('Deny', 'Ablehnen')
+      default:
+        return tr('Pending', 'Offen')
+    }
+  }
+  const wordingActionLabel = (value: LegalCounselState['wordingAction']) => {
+    switch (value) {
+      case 'clarify_wording':
+        return tr('Clarify wording', 'Wortlaut klarstellen')
+      case 'endorsement_needed':
+        return tr('Endorsement needed', 'Endorsement erforderlich')
+      default:
+        return tr('No action', 'Keine Aktion')
+    }
+  }
+  const commsLabel = (value: LegalCounselState['commsTemplate']) => {
+    switch (value) {
+      case 'ror':
+        return tr('ROR', 'ROR')
+      case 'deny':
+        return tr('Deny', 'Ablehnung')
+      default:
+        return tr('Neutral', 'Neutral')
+    }
+  }
+
+  const coverageLabel = state.coveragePosition === 'pending'
+    ? tr('Coverage: Pending', 'Deckung: Offen')
+    : tr('Coverage', 'Deckung') + `: ${coveragePositionLabel(state.coveragePosition)}`
   const snapshotBadges = [
-    { label: state.coveragePosition === 'pending' ? 'Coverage: Pending' : `Coverage: ${state.coveragePosition === 'reserve_rights' ? 'ROR' : state.coveragePosition}`, ok: state.coveragePosition !== 'pending' },
-    { label: 'Wording Action set', ok: state.wordingAction !== 'none' },
-    { label: 'Comms template set', ok: state.commsTemplate !== 'neutral' },
-    { label: 'Governance escalated', ok: state.governanceEscalated },
-    { label: 'Legal sign-off', ok: state.legalSignoff },
+    { label: coverageLabel, ok: state.coveragePosition !== 'pending' },
+    { label: tr('Wording action set', 'Wortlaut-Aktion gesetzt'), ok: state.wordingAction !== 'none' },
+    { label: tr('Comms template set', 'Kommunikationsvorlage gesetzt'), ok: state.commsTemplate !== 'neutral' },
+    { label: tr('Governance escalated', 'Governance eskaliert'), ok: state.governanceEscalated },
+    { label: tr('Legal sign-off', 'Legal Sign-off'), ok: state.legalSignoff },
   ]
 
   const canGoNext = (() => {
@@ -141,28 +180,28 @@ export default function DemoLegalCounselStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">LEGAL DEMO</div>
+                <div className="page-pretitle">{tr('LEGAL DEMO', 'LEGAL-DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/counsel')}>
-                    Restart
+                    {tr('Restart', 'Neu starten')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={!canGoNext || stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={!canGoNext || stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -178,9 +217,9 @@ export default function DemoLegalCounselStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · legal review</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('legal review', 'Legal-Review')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Legal Counsel</span>
+                    <span className="badge bg-indigo-lt">{tr('Legal Counsel', 'Legal Counsel')}</span>
                   </div>
 
                   <div className="uw-decision-body">
@@ -188,19 +227,22 @@ export default function DemoLegalCounselStepPage() {
                       <>
                         <div className="uw-block">
                           <div className="uw-kv">
-                            <Kv k="Case ID" v={state.caseId} />
-                            <Kv k="Insured" v={state.insured} />
-                            <Kv k="Product" v={state.product} />
-                            <Kv k="Incident" v={state.incidentType} />
-                            <Kv k="Policy" v={state.policyNumber} />
-                            <Kv k="Jurisdiction" v={state.jurisdiction} />
+                            <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                            <Kv k={tr('Insured', 'Versicherungsnehmer')} v={state.insured} />
+                            <Kv k={tr('Product', 'Produkt')} v={state.product} />
+                            <Kv k={tr('Incident', 'Schadentyp')} v={tr(state.incidentType, state.incidentType === 'accident' ? 'Unfall' : state.incidentType === 'theft' ? 'Diebstahl' : 'Glas')} />
+                            <Kv k={tr('Policy', 'Police')} v={state.policyNumber} />
+                            <Kv k={tr('Jurisdiction', 'Gerichtsstand')} v={state.jurisdiction} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI note', 'KI-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            Coverage appears ambiguous due to exclusion wording; recommend ROR until facts complete.
+                            {tr(
+                              'Coverage appears ambiguous due to exclusion wording; recommend ROR until facts complete.',
+                              'Deckung wirkt wegen Ausschluss-Wortlaut uneindeutig; ROR bis zur Klärung empfehlen.',
+                            )}
                           </div>
                         </div>
 
@@ -208,11 +250,11 @@ export default function DemoLegalCounselStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Legal Counsel review started (case received)')
+                              appendAudit(tr('Legal Counsel review started (case received)', 'Legal Counsel Review gestartet (Fall erhalten)'))
                               goTo('coverage')
                             }}
                           >
-                            Begin coverage review
+                            {tr('Begin coverage review', 'Deckungsprüfung starten')}
                           </button>
                         </div>
                       </>
@@ -221,28 +263,31 @@ export default function DemoLegalCounselStepPage() {
                     {(stepId === 'coverage') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Key clauses</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Key clauses', 'Wichtige Klauseln')}</div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Exclusions – §4.2 (Ambiguous phrasing)</li>
-                            <li>Conditions – §2.1 (Notice obligations)</li>
-                            <li>Definitions – §1.7 (Use of vehicle)</li>
+                            <li>{tr('Exclusions – §4.2 (Ambiguous phrasing)', 'Ausschlüsse – §4.2 (uneindeutiger Wortlaut)')}</li>
+                            <li>{tr('Conditions – §2.1 (Notice obligations)', 'Bedingungen – §2.1 (Anzeigepflichten)')}</li>
+                            <li>{tr('Definitions – §1.7 (Use of vehicle)', 'Definitionen – §1.7 (Fahrzeugnutzung)')}</li>
                           </ul>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
-                          <div className="uw-admin-small">Set reservation of rights (ROR) pending fact confirmation.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
+                          <div className="uw-admin-small">{tr('Set reservation of rights (ROR) pending fact confirmation.', 'ROR setzen bis Fakten bestätigt sind.')}</div>
                         </div>
                         <div className="uw-cta-row">
                           {([
-                            { label: 'Set position: Cover', value: 'cover' },
-                            { label: 'Set position: ROR', value: 'reserve_rights' },
-                            { label: 'Set position: Deny', value: 'deny' },
+                            { label: tr('Set position: Cover', 'Position setzen: Deckung'), value: 'cover' },
+                            { label: tr('Set position: ROR', 'Position setzen: ROR'), value: 'reserve_rights' },
+                            { label: tr('Set position: Deny', 'Position setzen: Ablehnen'), value: 'deny' },
                           ] as const).map((item) => (
                             <button
                               key={item.value}
                               className={`btn ${item.value === 'reserve_rights' ? 'btn-primary' : 'btn-outline-secondary'}`}
                               onClick={() => {
-                                appendAudit(`Coverage position set: ${item.value === 'reserve_rights' ? 'ROR' : item.value}`)
+                                appendAudit(tr(
+                                  `Coverage position set: ${coveragePositionLabel(item.value)}`,
+                                  `Deckungsposition gesetzt: ${coveragePositionLabel(item.value)}`,
+                                ))
                                 setPartial({ coveragePosition: item.value })
                                 goTo('wording')
                               }}
@@ -257,43 +302,43 @@ export default function DemoLegalCounselStepPage() {
                     {(stepId === 'wording') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Wording risk indicator</div>
-                          <div className="uw-admin-small">Ambiguous phrasing detected in exclusion §4.2.</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Wording risk indicator', 'Wortlaut-Risikoindikator')}</div>
+                          <div className="uw-admin-small">{tr('Ambiguous phrasing detected in exclusion §4.2.', 'Uneindeutiger Wortlaut im Ausschluss §4.2 erkannt.')}</div>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI note</div>
-                          <div className="uw-admin-small">Clarify wording for future renewals; endorsement may reduce disputes.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI note', 'KI-Hinweis')}</div>
+                          <div className="uw-admin-small">{tr('Clarify wording for future renewals; endorsement may reduce disputes.', 'Wortlaut für zukünftige Erneuerungen klarstellen; Endorsement kann Streit reduzieren.')}</div>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Wording action set: clarify wording')
+                              appendAudit(tr('Wording action set: clarify wording', 'Wortlaut-Aktion gesetzt: Klarstellung'))
                               setPartial({ wordingAction: 'clarify_wording' })
                               goTo('comms')
                             }}
                           >
-                            Action: Clarify wording
+                            {tr('Action: Clarify wording', 'Aktion: Wortlaut klarstellen')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Wording action set: endorsement needed')
+                              appendAudit(tr('Wording action set: endorsement needed', 'Wortlaut-Aktion gesetzt: Endorsement erforderlich'))
                               setPartial({ wordingAction: 'endorsement_needed' })
                               goTo('comms')
                             }}
                           >
-                            Action: Endorsement needed
+                            {tr('Action: Endorsement needed', 'Aktion: Endorsement erforderlich')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Wording action set: no action')
+                              appendAudit(tr('Wording action set: no action', 'Wortlaut-Aktion gesetzt: keine Aktion'))
                               setPartial({ wordingAction: 'none' })
                               goTo('comms')
                             }}
                           >
-                            No action
+                            {tr('No action', 'Keine Aktion')}
                           </button>
                         </div>
                       </>
@@ -302,57 +347,57 @@ export default function DemoLegalCounselStepPage() {
                     {(stepId === 'comms') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Communication constraints</div>
-                          <div className="uw-admin-small">No admissions. Factual language only. Reference policy clauses.</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Communication constraints', 'Kommunikationsvorgaben')}</div>
+                          <div className="uw-admin-small">{tr('No admissions. Factual language only. Reference policy clauses.', 'Keine Schuldeingeständnisse. Nur sachliche Sprache. Policenklauseln referenzieren.')}</div>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
                           <div className="uw-admin-small">
                             {state.coveragePosition === 'reserve_rights'
-                              ? 'Use ROR template with legal basis + evidence request.'
+                              ? tr('Use ROR template with legal basis + evidence request.', 'ROR-Template mit Rechtsgrundlage + Evidenzanforderung nutzen.')
                               : state.coveragePosition === 'deny'
-                                ? 'Use denial template with clause reference and appeal path.'
-                                : 'Use neutral update template with fact request.'}
+                                ? tr('Use denial template with clause reference and appeal path.', 'Ablehnungs-Template mit Klausel-Referenz und Rechtsbehelfsweg nutzen.')
+                                : tr('Use neutral update template with fact request.', 'Neutrales Update-Template mit Faktenanforderung nutzen.')}
                           </div>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Comms template set: neutral')
+                              appendAudit(tr('Comms template set: neutral', 'Kommunikationsvorlage gesetzt: neutral'))
                               setPartial({ commsTemplate: 'neutral' })
                             }}
                           >
-                            Select template: Neutral
+                            {tr('Select template: Neutral', 'Vorlage wählen: Neutral')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Comms template set: ROR')
+                              appendAudit(tr('Comms template set: ROR', 'Kommunikationsvorlage gesetzt: ROR'))
                               setPartial({ commsTemplate: 'ror' })
                             }}
                           >
-                            Select template: ROR
+                            {tr('Select template: ROR', 'Vorlage wählen: ROR')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Comms template set: deny')
+                              appendAudit(tr('Comms template set: deny', 'Kommunikationsvorlage gesetzt: Ablehnung'))
                               setPartial({ commsTemplate: 'deny' })
                             }}
                           >
-                            Select template: Deny
+                            {tr('Select template: Deny', 'Vorlage wählen: Ablehnung')}
                           </button>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className={`btn ${state.governanceEscalated ? 'btn-primary' : 'btn-outline-secondary'}`}
                             onClick={() => {
-                              appendAudit(state.governanceEscalated ? 'Governance escalation removed' : 'Escalated to governance counsel')
+                              appendAudit(state.governanceEscalated ? tr('Governance escalation removed', 'Governance-Eskalation entfernt') : tr('Escalated to governance counsel', 'An Governance Counsel eskaliert'))
                               setPartial({ governanceEscalated: !state.governanceEscalated })
                             }}
                           >
-                            {state.governanceEscalated ? 'Governance escalated' : 'Escalate to governance counsel'}
+                            {state.governanceEscalated ? tr('Governance escalated', 'Governance eskaliert') : tr('Escalate to governance counsel', 'An Governance Counsel eskalieren')}
                           </button>
                         </div>
                       </>
@@ -361,18 +406,18 @@ export default function DemoLegalCounselStepPage() {
                     {(stepId === 'signoff') && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Sign-off summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Sign-off summary', 'Sign-off Zusammenfassung')}</div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Coverage" v={state.coveragePosition === 'pending' ? 'Pending' : state.coveragePosition === 'reserve_rights' ? 'ROR' : state.coveragePosition} />
-                            <Kv k="Wording" v={state.wordingAction === 'none' ? 'No action' : state.wordingAction} />
-                            <Kv k="Comms" v={state.commsTemplate} />
-                            <Kv k="Governance" v={state.governanceEscalated ? 'Escalated' : 'No'} />
+                            <Kv k={tr('Coverage', 'Deckung')} v={coveragePositionLabel(state.coveragePosition)} />
+                            <Kv k={tr('Wording', 'Wortlaut')} v={wordingActionLabel(state.wordingAction)} />
+                            <Kv k={tr('Comms', 'Kommunikation')} v={commsLabel(state.commsTemplate)} />
+                            <Kv k={tr('Governance', 'Governance')} v={state.governanceEscalated ? tr('Escalated', 'Eskaliert') : tr('No', 'Nein')} />
                           </div>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>Output</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('Output', 'Ergebnis')}</div>
                           <div className="uw-admin-small">
-                            {state.coveragePosition !== 'pending' ? 'Legal ready' : 'Blocked: incomplete'}
+                            {state.coveragePosition !== 'pending' ? tr('Legal ready', 'Legal bereit') : tr('Blocked: incomplete', 'Blockiert: unvollständig')}
                           </div>
                         </div>
                         <div className="uw-cta-row">
@@ -380,15 +425,15 @@ export default function DemoLegalCounselStepPage() {
                             className="btn btn-primary"
                             disabled={state.coveragePosition === 'pending'}
                             onClick={() => {
-                              appendAudit('Legal sign-off recorded (defensibility confirmed)')
+                              appendAudit(tr('Legal sign-off recorded (defensibility confirmed)', 'Legal Sign-off erfasst (rechtliche Belastbarkeit bestätigt)'))
                               setPartial({ legalSignoff: true })
                               nav('/demo-legal/counsel')
                             }}
                           >
-                            Record legal sign-off
+                            {tr('Record legal sign-off', 'Legal Sign-off erfassen')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/counsel')}>
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -399,9 +444,9 @@ export default function DemoLegalCounselStepPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -414,28 +459,28 @@ export default function DemoLegalCounselStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )
                     })}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortung')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> coverage position & wording actions</div>
-                      <div><strong>Accountable:</strong> legal defensibility & governance</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('coverage position & wording actions', 'Deckungsposition & Wortlaut-Aktionen')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('legal defensibility & governance', 'rechtliche Belastbarkeit & Governance')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>Coverage stance must be defensible</li>
-                      <li>Wording actions prevent future disputes</li>
-                      <li>Comms must stay factual and clause-based</li>
-                      <li>Escalations recorded in audit</li>
+                      <li>{tr('Coverage stance must be defensible', 'Deckungsposition muss belastbar sein')}</li>
+                      <li>{tr('Wording actions prevent future disputes', 'Wortlaut-Aktionen vermeiden spätere Streitfälle')}</li>
+                      <li>{tr('Comms must stay factual and clause-based', 'Kommunikation muss sachlich und klauselbasiert sein')}</li>
+                      <li>{tr('Escalations recorded in audit', 'Eskalationen werden im Audit erfasst')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -446,11 +491,11 @@ export default function DemoLegalCounselStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

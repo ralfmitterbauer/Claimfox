@@ -666,6 +666,7 @@ a {
     display: inline-flex !important;
     position: relative;
     z-index: 2;
+    margin: 0.8rem 0 1rem;
   }
 
   .home-hero-card[aria-label="Insurfox Logo"] {
@@ -682,17 +683,6 @@ a {
 
 }
 
-.insurance-hero-cta-row {
-  display: none;
-}
-
-@media (max-width: 720px) {
-  .insurance-hero-cta-row {
-    display: flex;
-    justify-content: flex-start;
-    padding: 0.75rem 4vw 0;
-  }
-}
 
 .home-mobile-bottom-bar {
   display: none;

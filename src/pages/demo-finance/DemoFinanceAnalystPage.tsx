@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/demo-shell.css'
 import { appendAudit, resetKeys, writeJson } from './_financeStorage'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_FIN_ANALYST_STATE'
 const KEY_AUDIT = 'DEMO_FIN_ANALYST_AUDIT'
@@ -30,11 +31,14 @@ function defaultState(): FinanceAnalystState {
 
 export default function DemoFinanceAnalystPage() {
   const nav = useNavigate()
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
 
   useEffect(() => {
     resetKeys([KEY_STATE, KEY_AUDIT])
     writeJson(KEY_STATE, defaultState())
-    appendAudit(KEY_AUDIT, 'Demo started (state reset)')
+    appendAudit(KEY_AUDIT, tr('Demo started (state reset)', 'Demo gestartet (State zurückgesetzt)'))
   }, [])
 
   return (
@@ -44,9 +48,9 @@ export default function DemoFinanceAnalystPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">FINANCE DEMO</div>
-                <h2 className="page-title">Finance Analyst – Variance Review</h2>
-                <div className="text-muted">Click-only · Variance classification · No dashboards</div>
+                <div className="page-pretitle">{tr('FINANCE DEMO', 'FINANCE-DEMO')}</div>
+                <h2 className="page-title">{tr('Finance Analyst – Variance Review', 'Finance Analyst – Varianzprüfung')}</h2>
+                <div className="text-muted">{tr('Click-only · Variance classification · No dashboards', 'Click-only · Varianzklassifizierung · Keine Dashboards')}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
@@ -55,13 +59,13 @@ export default function DemoFinanceAnalystPage() {
                     onClick={() => {
                       resetKeys([KEY_STATE, KEY_AUDIT])
                       writeJson(KEY_STATE, defaultState())
-                      appendAudit(KEY_AUDIT, 'Demo reset (manual)')
+                      appendAudit(KEY_AUDIT, tr('Demo reset (manual)', 'Demo zurückgesetzt (manuell)'))
                     }}
                   >
-                    Reset
+                    {tr('Reset', 'Zurücksetzen')}
                   </button>
                   <button className="btn btn-primary" onClick={() => nav('/demo-finance/analyst/step/intake')}>
-                    Start review
+                    {tr('Start review', 'Prüfung starten')}
                   </button>
                 </div>
               </div>
@@ -76,31 +80,31 @@ export default function DemoFinanceAnalystPage() {
                 <div className="card">
                   <div className="card-header">
                     <div>
-                      <div className="text-muted">What you will review</div>
-                      <h3 className="card-title">4 steps · variance classification</h3>
+                      <div className="text-muted">{tr('What you will review', 'Was du prüfst')}</div>
+                      <h3 className="card-title">{tr('4 steps · variance classification', '4 Schritte · Varianzklassifizierung')}</h3>
                     </div>
                   </div>
                   <div className="card-body">
                     <div className="row g-2">
                       <div className="col-12">
-                        <div className="text-muted">Report</div>
-                        <div className="fw-semibold">FIN-REP-118 · MTD · Loss ratio</div>
+                        <div className="text-muted">{tr('Report', 'Report')}</div>
+                        <div className="fw-semibold">FIN-REP-118 · MTD · {tr('Loss ratio', 'Schadenquote')}</div>
                       </div>
                       <div className="col-12">
-                        <div className="text-muted">Goal</div>
-                        <div className="fw-semibold">Classify variance and decide control action</div>
+                        <div className="text-muted">{tr('Goal', 'Ziel')}</div>
+                        <div className="fw-semibold">{tr('Classify variance and decide control action', 'Varianz klassifizieren und Kontrollmaßnahme entscheiden')}</div>
                       </div>
                     </div>
                     <div className="mt-3 d-grid gap-2">
                       <button className="btn btn-primary" onClick={() => nav('/demo-finance/analyst/step/intake')}>
-                        Start at step 1 (intake)
+                        {tr('Start at step 1 (intake)', 'Start bei Schritt 1 (Intake)')}
                       </button>
                       <button className="btn btn-outline-secondary" onClick={() => nav('/demo')}>
-                        Back to demo overview
+                        {tr('Back to demo overview', 'Zur Demo-Übersicht')}
                       </button>
                     </div>
                     <div className="text-muted mt-3" style={{ fontSize: '0.82rem' }}>
-                      Auto-reset on entry ensures a clean click flow every time.
+                      {tr('Auto-reset on entry ensures a clean click flow every time.', 'Auto-Reset beim Einstieg sorgt immer für einen sauberen Click-Flow.')}
                     </div>
                   </div>
                 </div>
@@ -108,15 +112,15 @@ export default function DemoFinanceAnalystPage() {
 
               <div className="finance-admin">
                 <div className="admin-panel">
-                  <h4>Finance Analyst – Accountability</h4>
-                  <div>Decides: variance classification + follow-up route</div>
-                  <div>Accountable: signal quality & actionability</div>
+                  <h4>{tr('Finance Analyst – Accountability', 'Finance Analyst – Verantwortung')}</h4>
+                  <div>{tr('Decides: variance classification + follow-up route', 'Entscheidet: Varianzklassifizierung + Folgeroute')}</div>
+                  <div>{tr('Accountable: signal quality & actionability', 'Verantwortlich: Signalqualität & Handlungsfähigkeit')}</div>
                   <hr />
-                  <h4>Audit log</h4>
+                  <h4>{tr('Audit log', 'Audit-Log')}</h4>
                   <div className="admin-audit">
                     {(() => {
                       const items = [] as { ts: string; message: string }[]
-                      return items.length ? null : <div className="text-muted">No entries yet.</div>
+                      return items.length ? null : <div className="text-muted">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                     })()}
                   </div>
                 </div>

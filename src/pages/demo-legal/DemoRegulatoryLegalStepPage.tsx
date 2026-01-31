@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_LEGAL_REGULATORY_STATE'
 const KEY_AUDIT = 'DEMO_LEGAL_REGULATORY_AUDIT'
@@ -23,14 +24,6 @@ type RegulatoryLegalState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Regulatory intake', subtitle: 'Supervisory scope review' },
-  { id: 'materiality', title: 'Materiality', subtitle: 'Assess reporting threshold' },
-  { id: 'disclosure', title: 'Disclosure', subtitle: 'Define disclosure scope' },
-  { id: 'escalation', title: 'Escalation', subtitle: 'Internal escalation decision' },
-  { id: 'signoff', title: 'Regulatory sign-off', subtitle: 'Lock supervisory position' },
-]
 
 function nowTs() {
   return Date.now()
@@ -94,7 +87,17 @@ function Kv({ k, v }: { k: string; v: React.ReactNode }) {
 export default function DemoRegulatoryLegalStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Regulatory intake', 'Regulatory-Intake'), subtitle: tr('Supervisory scope review', 'Aufsichts-Scope prüfen') },
+    { id: 'materiality', title: tr('Materiality', 'Materialität'), subtitle: tr('Assess reporting threshold', 'Meldeschwelle bewerten') },
+    { id: 'disclosure', title: tr('Disclosure', 'Offenlegung'), subtitle: tr('Define disclosure scope', 'Offenlegungsscope definieren') },
+    { id: 'escalation', title: tr('Escalation', 'Eskalation'), subtitle: tr('Internal escalation decision', 'Interne Eskalation entscheiden') },
+    { id: 'signoff', title: tr('Regulatory sign-off', 'Regulatory Sign-off'), subtitle: tr('Lock supervisory position', 'Aufsichtsposition fixieren') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<RegulatoryLegalState>(() => readState())
 
@@ -105,7 +108,7 @@ export default function DemoRegulatoryLegalStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-legal/regulatory/step/intake" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<RegulatoryLegalState>) {
     const next = { ...state, ...p }
@@ -117,12 +120,33 @@ export default function DemoRegulatoryLegalStepPage() {
     nav(`/demo-legal/regulatory/step/${next}`)
   }
 
+  const materialityLabel = (value: RegulatoryLegalState['materialityLevel']) => {
+    switch (value) {
+      case 'low':
+        return tr('Low', 'Niedrig')
+      case 'medium':
+        return tr('Medium', 'Mittel')
+      default:
+        return tr('High', 'Hoch')
+    }
+  }
+  const disclosureLabel = (value: RegulatoryLegalState['disclosureScope']) => {
+    switch (value) {
+      case 'none':
+        return tr('None', 'Keine')
+      case 'partial':
+        return tr('Partial', 'Teilweise')
+      default:
+        return tr('Full', 'Vollständig')
+    }
+  }
+
   const snapshotBadges = [
-    { label: `Materiality: ${state.materialityLevel}`, ok: true },
-    { label: `Reportable: ${state.reportable ? 'Yes' : 'No'}`, ok: state.reportable },
-    { label: `Disclosure: ${state.disclosureScope}`, ok: state.disclosureScope !== 'none' },
-    { label: 'Escalation Required', ok: state.escalationRequired },
-    { label: 'Decision Locked', ok: state.decisionLocked },
+    { label: `${tr('Materiality', 'Materialität')}: ${materialityLabel(state.materialityLevel)}`, ok: true },
+    { label: `${tr('Reportable', 'Meldepflicht')}: ${state.reportable ? tr('Yes', 'Ja') : tr('No', 'Nein')}`, ok: state.reportable },
+    { label: `${tr('Disclosure', 'Offenlegung')}: ${disclosureLabel(state.disclosureScope)}`, ok: state.disclosureScope !== 'none' },
+    { label: tr('Escalation Required', 'Eskalation erforderlich'), ok: state.escalationRequired },
+    { label: tr('Decision Locked', 'Entscheidung gesperrt'), ok: state.decisionLocked },
   ]
 
   const canGoNext = (() => {
@@ -135,10 +159,10 @@ export default function DemoRegulatoryLegalStepPage() {
   })()
 
   const disclosureHint = state.materialityLevel === 'high'
-    ? 'Full disclosure required; notify immediately.'
+    ? tr('Full disclosure required; notify immediately.', 'Volle Offenlegung erforderlich; sofort melden.')
     : state.materialityLevel === 'medium'
-      ? 'Partial disclosure to BaFin recommended.'
-      : 'No disclosure required if materiality is low.'
+      ? tr('Partial disclosure to BaFin recommended.', 'Teiloffenlegung an BaFin empfohlen.')
+      : tr('No disclosure required if materiality is low.', 'Keine Offenlegung erforderlich bei niedriger Materialität.')
 
   return (
     <div className="page">
@@ -147,28 +171,28 @@ export default function DemoRegulatoryLegalStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">LEGAL DEMO</div>
+                <div className="page-pretitle">{tr('LEGAL DEMO', 'LEGAL-DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/regulatory')}>
-                    Restart
+                    {tr('Restart', 'Neu starten')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={!canGoNext || stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={!canGoNext || stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -184,9 +208,9 @@ export default function DemoRegulatoryLegalStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · supervisory review</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('supervisory review', 'Aufsichtsprüfung')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Regulatory Legal</span>
+                    <span className="badge bg-indigo-lt">{tr('Regulatory Legal', 'Regulatory Legal')}</span>
                   </div>
 
                   <div className="uw-decision-body">
@@ -194,34 +218,37 @@ export default function DemoRegulatoryLegalStepPage() {
                       <>
                         <div className="uw-block">
                           <div className="uw-kv">
-                            <Kv k="Case ID" v={state.caseId} />
-                            <Kv k="Source" v={state.sourceRole} />
-                            <Kv k="Insured" v={state.insured} />
-                            <Kv k="Product" v={state.product} />
-                            <Kv k="Trigger" v={state.triggerType} />
-                            <Kv k="Jurisdiction" v={state.jurisdiction} />
+                            <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                            <Kv k={tr('Source', 'Quelle')} v={tr(state.sourceRole, state.sourceRole === 'Underwriting' ? 'Underwriting' : state.sourceRole === 'Claims' ? 'Claims' : 'Compliance')} />
+                            <Kv k={tr('Insured', 'Versicherungsnehmer')} v={state.insured} />
+                            <Kv k={tr('Product', 'Produkt')} v={state.product} />
+                            <Kv k={tr('Trigger', 'Auslöser')} v={tr(state.triggerType, state.triggerType === 'override' ? 'Override' : state.triggerType === 'systemic_issue' ? 'Systemisches Thema' : state.triggerType === 'complaint' ? 'Beschwerde' : 'Vorfall')} />
+                            <Kv k={tr('Jurisdiction', 'Gerichtsstand')} v={state.jurisdiction} />
                           </div>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI note', 'KI-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            Override-based underwriting decisions may trigger supervisory notification depending on materiality.
+                            {tr(
+                              'Override-based underwriting decisions may trigger supervisory notification depending on materiality.',
+                              'Override-basierte Underwriting-Entscheidungen können je nach Materialität eine Aufsichtsmitteilung auslösen.',
+                            )}
                           </div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Regulatory reporting assessment</li>
-                            <li>Disclosure scope definition</li>
-                            <li>Escalation obligation check</li>
+                            <li>{tr('Regulatory reporting assessment', 'Bewertung der Meldepflicht')}</li>
+                            <li>{tr('Disclosure scope definition', 'Definition des Offenlegungsscopes')}</li>
+                            <li>{tr('Escalation obligation check', 'Prüfung der Eskalationspflicht')}</li>
                           </ul>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Regulatory Legal received case for supervisory assessment')
+                              appendAudit(tr('Regulatory Legal received case for supervisory assessment', 'Regulatory Legal hat Fall zur Aufsichtsprüfung erhalten'))
                               goTo('materiality')
                             }}
                           >
-                            Assess materiality
+                            {tr('Assess materiality', 'Materialität bewerten')}
                           </button>
                         </div>
                       </>
@@ -230,16 +257,16 @@ export default function DemoRegulatoryLegalStepPage() {
                     {(stepId === 'materiality') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Materiality factors</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Materiality factors', 'Materialitätsfaktoren')}</div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Financial impact: Moderate</li>
-                            <li>Systemic relevance: Low</li>
-                            <li>Customer detriment risk: Medium</li>
+                            <li>{tr('Financial impact: Moderate', 'Finanzielle Auswirkung: Moderat')}</li>
+                            <li>{tr('Systemic relevance: Low', 'Systemische Relevanz: Niedrig')}</li>
+                            <li>{tr('Customer detriment risk: Medium', 'Kundennachteil-Risiko: Mittel')}</li>
                           </ul>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
-                          <div className="uw-admin-small">Materiality likely medium; reporting may be required depending on disclosure scope.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
+                          <div className="uw-admin-small">{tr('Materiality likely medium; reporting may be required depending on disclosure scope.', 'Materialität vermutlich mittel; Meldepflicht abhängig vom Offenlegungsscope.')}</div>
                         </div>
                         <div className="uw-cta-row">
                           {(['low', 'medium', 'high'] as const).map((level) => (
@@ -247,12 +274,12 @@ export default function DemoRegulatoryLegalStepPage() {
                               key={level}
                               className={level === 'medium' ? 'btn btn-primary' : 'btn btn-outline-secondary'}
                               onClick={() => {
-                                appendAudit(`Materiality set to ${level}`)
+                                appendAudit(tr(`Materiality set to ${level}`, `Materialität gesetzt: ${level === 'low' ? 'niedrig' : level === 'medium' ? 'mittel' : 'hoch'}`))
                                 setPartial({ materialityLevel: level })
                                 goTo('disclosure')
                               }}
                             >
-                              Set materiality: {level.charAt(0).toUpperCase() + level.slice(1)}
+                              {tr('Set materiality', 'Materialität setzen')}: {tr(level.charAt(0).toUpperCase() + level.slice(1), level === 'low' ? 'Niedrig' : level === 'medium' ? 'Mittel' : 'Hoch')}
                             </button>
                           ))}
                         </div>
@@ -262,46 +289,46 @@ export default function DemoRegulatoryLegalStepPage() {
                     {(stepId === 'disclosure') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Regulatory guidance</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Regulatory guidance', 'Regulatorische Leitlinie')}</div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Medium materiality → selective disclosure recommended</li>
-                            <li>High materiality → mandatory notification</li>
+                            <li>{tr('Medium materiality → selective disclosure recommended', 'Mittlere Materialität → selektive Offenlegung empfohlen')}</li>
+                            <li>{tr('High materiality → mandatory notification', 'Hohe Materialität → Pflichtmeldung')}</li>
                           </ul>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
                           <div className="uw-admin-small">{disclosureHint}</div>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Disclosure scope set: none')
+                              appendAudit(tr('Disclosure scope set: none', 'Offenlegungsscope gesetzt: keiner'))
                               setPartial({ disclosureScope: 'none', reportable: false })
                               goTo('escalation')
                             }}
                           >
-                            No disclosure required
+                            {tr('No disclosure required', 'Keine Offenlegung erforderlich')}
                           </button>
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Disclosure scope set: partial')
+                              appendAudit(tr('Disclosure scope set: partial', 'Offenlegungsscope gesetzt: teilweise'))
                               setPartial({ disclosureScope: 'partial', reportable: true })
                               goTo('escalation')
                             }}
                           >
-                            Partial disclosure
+                            {tr('Partial disclosure', 'Teiloffenlegung')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Disclosure scope set: full')
+                              appendAudit(tr('Disclosure scope set: full', 'Offenlegungsscope gesetzt: vollständig'))
                               setPartial({ disclosureScope: 'full', reportable: true })
                               goTo('escalation')
                             }}
                           >
-                            Full disclosure
+                            {tr('Full disclosure', 'Vollständige Offenlegung')}
                           </button>
                         </div>
                       </>
@@ -310,46 +337,46 @@ export default function DemoRegulatoryLegalStepPage() {
                     {(stepId === 'escalation') && (
                       <>
                         <div className="uw-block">
-                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>Escalation rules</div>
+                          <div className="uw-admin-small" style={{ fontWeight: 700 }}>{tr('Escalation rules', 'Eskalationsregeln')}</div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>High materiality → CRO + Board notification</li>
-                            <li>Regulatory deadline risk → escalation required</li>
+                            <li>{tr('High materiality → CRO + Board notification', 'Hohe Materialität → CRO + Board informieren')}</li>
+                            <li>{tr('Regulatory deadline risk → escalation required', 'Regulatorisches Fristrisiko → Eskalation erforderlich')}</li>
                           </ul>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI note</div>
-                          <div className="uw-admin-small">Escalation ensures governance alignment before regulator contact.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI note', 'KI-Hinweis')}</div>
+                          <div className="uw-admin-small">{tr('Escalation ensures governance alignment before regulator contact.', 'Eskalation stellt Governance-Abstimmung vor Regulator-Kontakt sicher.')}</div>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Escalation set: none')
+                              appendAudit(tr('Escalation set: none', 'Eskalation gesetzt: keine'))
                               setPartial({ escalationRequired: false })
                               goTo('signoff')
                             }}
                           >
-                            No escalation required
+                            {tr('No escalation required', 'Keine Eskalation erforderlich')}
                           </button>
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Escalation set: CRO')
+                              appendAudit(tr('Escalation set: CRO', 'Eskalation gesetzt: CRO'))
                               setPartial({ escalationRequired: true })
                               goTo('signoff')
                             }}
                           >
-                            Escalate to CRO
+                            {tr('Escalate to CRO', 'An CRO eskalieren')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Escalation set: Board')
+                              appendAudit(tr('Escalation set: Board', 'Eskalation gesetzt: Board'))
                               setPartial({ escalationRequired: true })
                               goTo('signoff')
                             }}
                           >
-                            Escalate to Board
+                            {tr('Escalate to Board', 'An Board eskalieren')}
                           </button>
                         </div>
                       </>
@@ -358,31 +385,31 @@ export default function DemoRegulatoryLegalStepPage() {
                     {(stepId === 'signoff') && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Decision summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Decision summary', 'Entscheidungszusammenfassung')}</div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Materiality" v={state.materialityLevel} />
-                            <Kv k="Disclosure" v={state.disclosureScope} />
-                            <Kv k="Reportable" v={state.reportable ? 'Yes' : 'No'} />
-                            <Kv k="Escalation" v={state.escalationRequired ? 'Required' : 'No'} />
+                            <Kv k={tr('Materiality', 'Materialität')} v={materialityLabel(state.materialityLevel)} />
+                            <Kv k={tr('Disclosure', 'Offenlegung')} v={disclosureLabel(state.disclosureScope)} />
+                            <Kv k={tr('Reportable', 'Meldepflicht')} v={state.reportable ? tr('Yes', 'Ja') : tr('No', 'Nein')} />
+                            <Kv k={tr('Escalation', 'Eskalation')} v={state.escalationRequired ? tr('Required', 'Erforderlich') : tr('No', 'Nein')} />
                           </div>
                         </div>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI audit note</div>
-                          <div className="uw-admin-small">Decision aligned with jurisdictional supervisory guidance.</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI audit note', 'KI-Audit-Hinweis')}</div>
+                          <div className="uw-admin-small">{tr('Decision aligned with jurisdictional supervisory guidance.', 'Entscheidung entspricht jurisdiktionaler Aufsichtsleitlinie.')}</div>
                         </div>
                         <div className="uw-cta-row">
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Regulatory decision locked (supervisory position recorded)')
+                              appendAudit(tr('Regulatory decision locked (supervisory position recorded)', 'Regulatorische Entscheidung gesperrt (Aufsichtsposition erfasst)'))
                               setPartial({ decisionLocked: true })
                               nav('/demo-legal/regulatory')
                             }}
                           >
-                            Lock regulatory decision
+                            {tr('Lock regulatory decision', 'Regulatorische Entscheidung sperren')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/regulatory')}>
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -393,9 +420,9 @@ export default function DemoRegulatoryLegalStepPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -408,28 +435,28 @@ export default function DemoRegulatoryLegalStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )
                     })}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortung')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> reportability, disclosure scope, escalation</div>
-                      <div><strong>Accountable:</strong> supervisory compliance & timeliness</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('reportability, disclosure scope, escalation', 'Meldepflicht, Offenlegungsscope, Eskalation')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('supervisory compliance & timeliness', 'Aufsichts-Compliance & Timeliness')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>Materiality sets reporting threshold</li>
-                      <li>Disclosure scope must match guidance</li>
-                      <li>Escalation ensures governance alignment</li>
-                      <li>Audit trail locked for regulators</li>
+                      <li>{tr('Materiality sets reporting threshold', 'Materialität setzt Meldeschwelle')}</li>
+                      <li>{tr('Disclosure scope must match guidance', 'Offenlegungsscope muss Leitlinie entsprechen')}</li>
+                      <li>{tr('Escalation ensures governance alignment', 'Eskalation stellt Governance-Abstimmung sicher')}</li>
+                      <li>{tr('Audit trail locked for regulators', 'Audit-Trail für Regulatoren gesperrt')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -440,11 +467,11 @@ export default function DemoRegulatoryLegalStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

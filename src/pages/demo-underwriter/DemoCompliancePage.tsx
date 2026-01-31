@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_UW_COMPLIANCE_STATE'
 const KEY_AUDIT = 'DEMO_UW_COMPLIANCE_AUDIT'
@@ -64,11 +65,14 @@ function appendAudit(message: string) {
 
 export default function DemoCompliancePage() {
   const nav = useNavigate()
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
 
   useEffect(() => {
     clearAll()
     writeState(defaultState())
-    appendAudit('Demo started (state reset)')
+    appendAudit(tr('Demo started (state reset)', 'Demo gestartet (Status zurückgesetzt)'))
   }, [])
 
   return (
@@ -78,9 +82,9 @@ export default function DemoCompliancePage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">UNDERWRITER DEMO</div>
-                <h2 className="page-title">Compliance – Audit & Governance Review</h2>
-                <div className="text-muted">Click-only · Audit validation · No underwriting decisions</div>
+                <div className="page-pretitle">{tr('UNDERWRITER DEMO', 'UNDERWRITER DEMO')}</div>
+                <h2 className="page-title">{tr('Compliance – Audit & Governance Review', 'Compliance – Audit & Governance Review')}</h2>
+                <div className="text-muted">{tr('Click-only · Audit validation · No underwriting decisions', 'Nur Klicks · Audit-Prüfung · Keine Underwriting-Entscheidungen')}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
@@ -89,19 +93,19 @@ export default function DemoCompliancePage() {
                     onClick={() => {
                       clearAll()
                       writeState(defaultState())
-                      appendAudit('Demo reset (manual)')
+                      appendAudit(tr('Demo reset (manual)', 'Demo zurückgesetzt (manuell)'))
                     }}
                   >
-                    Reset
+                    {tr('Reset', 'Zurücksetzen')}
                   </button>
                   <button
                     className="btn btn-primary"
                     onClick={() => {
-                      appendAudit('Case opened')
+                      appendAudit(tr('Case opened', 'Fall geöffnet'))
                       nav('/demo-underwriter/compliance/step/intake')
                     }}
                   >
-                    Start review
+                    {tr('Start review', 'Review starten')}
                   </button>
                 </div>
               </div>
@@ -116,46 +120,46 @@ export default function DemoCompliancePage() {
                 <div className="uw-decision">
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
-                      <strong>What you will click through</strong>
-                      <span>5 screens · audit-only validation</span>
+                      <strong>{tr('What you will click through', 'Was Sie durchklicken')}</strong>
+                      <span>{tr('5 screens · audit-only validation', '5 Screens · Audit-only Validierung')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Compliance</span>
+                    <span className="badge bg-indigo-lt">{tr('Compliance', 'Compliance')}</span>
                   </div>
 
                   <div className="uw-decision-body">
                     <div className="uw-block">
                       <div className="uw-kv">
-                        <div className="k">Case</div><div className="v">UW-CA-77102</div>
-                        <div className="k">Insured</div><div className="v">Nordstadt Logistics GmbH</div>
-                        <div className="k">Product</div><div className="v">Carrier Liability + Fleet</div>
-                        <div className="k">Goal</div><div className="v">Audit integrity & governance discipline</div>
+                        <div className="k">{tr('Case', 'Fall')}</div><div className="v">UW-CA-77102</div>
+                        <div className="k">{tr('Insured', 'Versicherter')}</div><div className="v">Nordstadt Logistics GmbH</div>
+                        <div className="k">{tr('Product', 'Produkt')}</div><div className="v">{tr('Carrier Liability + Fleet', 'Carrier Liability + Fleet')}</div>
+                        <div className="k">{tr('Goal', 'Ziel')}</div><div className="v">{tr('Audit integrity & governance discipline', 'Audit-Integrität & Governance-Disziplin')}</div>
                       </div>
                     </div>
 
                     <div className="uw-block uw-ai">
-                      <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI stance (non-binding)</div>
+                      <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI stance (non-binding)', 'KI-Position (unverbindlich)')}</div>
                       <div className="uw-admin-small">
-                        Compliance validates rules, evidence, consent, and audit completeness only.
+                        {tr('Compliance validates rules, evidence, consent, and audit completeness only.', 'Compliance validiert ausschließlich Regeln, Evidenz, Einwilligung und Audit-Vollständigkeit.')}
                       </div>
                       <div className="d-flex flex-wrap gap-2">
-                        <span className="badge bg-azure-lt">Rules</span>
-                        <span className="badge bg-azure-lt">Evidence</span>
-                        <span className="badge bg-azure-lt">Consent</span>
-                        <span className="badge bg-azure-lt">Audit trail</span>
+                        <span className="badge bg-azure-lt">{tr('Rules', 'Regeln')}</span>
+                        <span className="badge bg-azure-lt">{tr('Evidence', 'Evidenz')}</span>
+                        <span className="badge bg-azure-lt">{tr('Consent', 'Einwilligung')}</span>
+                        <span className="badge bg-azure-lt">{tr('Audit trail', 'Audit-Trail')}</span>
                       </div>
                     </div>
 
                     <div className="uw-cta-row">
                       <button className="btn btn-primary" onClick={() => nav('/demo-underwriter/compliance/step/intake')}>
-                        Start at step 1 (intake)
+                        {tr('Start at step 1 (intake)', 'Start bei Schritt 1 (Intake)')}
                       </button>
                       <button className="btn btn-outline-secondary" onClick={() => nav('/roles/underwriter/compliance')}>
-                        Back to role page
+                        {tr('Back to role page', 'Zurück zur Rollen-Seite')}
                       </button>
                     </div>
 
                     <div className="text-muted" style={{ fontSize: '0.82rem' }}>
-                      Note: This start screen auto-resets session state on every visit to ensure the click flow always works.
+                      {tr('Note: This start screen auto-resets session state on every visit to ensure the click flow always works.', 'Hinweis: Dieser Startscreen setzt den Status bei jedem Besuch zurück, damit der Klick-Flow immer funktioniert.')}
                     </div>
                   </div>
                 </div>
@@ -163,25 +167,25 @@ export default function DemoCompliancePage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Compliance – Accountability</h4>
+                  <h4>{tr('Compliance – Accountability', 'Compliance – Verantwortlichkeit')}</h4>
                   <div className="uw-admin-small">
-                    <div><strong>Decides:</strong> rule & audit integrity checks</div>
-                    <div><strong>Accountable:</strong> audit trail & governance discipline</div>
+                    <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('rule & audit integrity checks', 'Regel- & Audit-Integritätsprüfungen')}</div>
+                    <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('audit trail & governance discipline', 'Audit-Trail & Governance-Disziplin')}</div>
                   </div>
                   <div className="d-flex flex-wrap gap-2">
-                    <span className="badge bg-indigo-lt">Rules</span>
-                    <span className="badge bg-indigo-lt">Evidence</span>
-                    <span className="badge bg-indigo-lt">Consent</span>
-                    <span className="badge bg-indigo-lt">Audit</span>
+                    <span className="badge bg-indigo-lt">{tr('Rules', 'Regeln')}</span>
+                    <span className="badge bg-indigo-lt">{tr('Evidence', 'Evidenz')}</span>
+                    <span className="badge bg-indigo-lt">{tr('Consent', 'Einwilligung')}</span>
+                    <span className="badge bg-indigo-lt">{tr('Audit', 'Audit')}</span>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit (live)</h4>
+                    <h4>{tr('Audit (live)', 'Audit (live)')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const raw = sessionStorage.getItem(KEY_AUDIT)
                         const items: { ts: number; message: string }[] = raw ? JSON.parse(raw) : []
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 6).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>

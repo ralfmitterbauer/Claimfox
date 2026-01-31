@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '@/styles/demo-shell.css'
 import { appendAudit, resetKeys, writeJson } from './_claimsStorage'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_CLAIMS_REGRESS_STATE'
 const KEY_AUDIT = 'DEMO_CLAIMS_REGRESS_AUDIT'
@@ -34,11 +35,14 @@ function defaultState(): RegressState {
 
 export default function DemoRegressPage() {
   const nav = useNavigate()
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
 
   useEffect(() => {
     resetKeys([KEY_STATE, KEY_AUDIT])
     writeJson(KEY_STATE, defaultState())
-    appendAudit(KEY_AUDIT, 'Demo started (state reset)')
+    appendAudit(KEY_AUDIT, tr('Demo started (state reset)', 'Demo gestartet (Status zurückgesetzt)'))
   }, [])
 
   return (
@@ -48,19 +52,19 @@ export default function DemoRegressPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">CLAIMS DEMO</div>
-                <h2 className="page-title">Regressierung – Recovery Path</h2>
-                <div className="text-muted">Click-only · Liability & recovery posture</div>
+                <div className="page-pretitle">{tr('CLAIMS DEMO', 'SCHADEN DEMO')}</div>
+                <h2 className="page-title">{tr('Regress – Recovery Path', 'Regress – Recovery-Pfad')}</h2>
+                <div className="text-muted">{tr('Click-only · Liability & recovery posture', 'Nur Klicks · Haftung & Recovery-Posture')}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => {
                     resetKeys([KEY_STATE, KEY_AUDIT])
                     writeJson(KEY_STATE, defaultState())
-                    appendAudit(KEY_AUDIT, 'Demo reset (manual)')
-                  }}>Reset</button>
+                    appendAudit(KEY_AUDIT, tr('Demo reset (manual)', 'Demo zurückgesetzt (manuell)'))
+                  }}>{tr('Reset', 'Zurücksetzen')}</button>
                   <button className="btn btn-primary" onClick={() => nav('/demo-claims/regress/step/intake')}>
-                    Start recovery flow
+                    {tr('Start recovery flow', 'Recovery-Flow starten')}
                   </button>
                 </div>
               </div>
@@ -74,19 +78,19 @@ export default function DemoRegressPage() {
                 <div className="card">
                   <div className="card-header">
                     <div>
-                      <div className="text-muted">What you will review</div>
-                      <h3 className="card-title">5 steps · recovery</h3>
+                      <div className="text-muted">{tr('What you will review', 'Was Sie prüfen')}</div>
+                      <h3 className="card-title">{tr('5 steps · recovery', '5 Schritte · Recovery')}</h3>
                     </div>
                   </div>
                   <div className="card-body">
-                    <div className="text-muted">Case</div>
+                    <div className="text-muted">{tr('Case', 'Fall')}</div>
                     <div className="fw-semibold">CLM-10421 · Stadtwerke München</div>
                     <div className="mt-3 d-grid gap-2">
                       <button className="btn btn-primary" onClick={() => nav('/demo-claims/regress/step/intake')}>
-                        Start at step 1 (intake)
+                        {tr('Start at step 1 (intake)', 'Start bei Schritt 1 (Intake)')}
                       </button>
                       <button className="btn btn-outline-secondary" onClick={() => nav('/demo')}>
-                        Back to demo overview
+                        {tr('Back to demo overview', 'Zurück zur Demo-Übersicht')}
                       </button>
                     </div>
                   </div>
@@ -94,9 +98,9 @@ export default function DemoRegressPage() {
               </div>
               <div className="finance-admin">
                 <div className="admin-panel">
-                  <h4>Regress – Accountability</h4>
-                  <div>Decides: liability assessment + recovery posture</div>
-                  <div>Accountable: recoverable value & defensibility</div>
+                  <h4>{tr('Regress – Accountability', 'Regress – Verantwortung')}</h4>
+                  <div>{tr('Decides: liability assessment + recovery posture', 'Entscheidet: Haftung + Recovery-Posture')}</div>
+                  <div>{tr('Accountable: recoverable value & defensibility', 'Verantwortlich: Recoverable-Wert & Nachvollziehbarkeit')}</div>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import '@/styles/uw-demo.css'
+import { useI18n } from '@/i18n/I18nContext'
 
 const KEY_STATE = 'DEMO_LEGAL_PRIVACY_STATE'
 const KEY_AUDIT = 'DEMO_LEGAL_PRIVACY_AUDIT'
@@ -23,14 +24,6 @@ type PrivacyLegalState = {
 }
 
 type AuditItem = { ts: number; message: string }
-
-const STEPS: { id: StepId; title: string; subtitle: string }[] = [
-  { id: 'intake', title: 'Privacy intake', subtitle: 'GDPR scope confirmation' },
-  { id: 'lawful-basis', title: 'Lawful basis', subtitle: 'Art. 6 GDPR assessment' },
-  { id: 'data-scope', title: 'Data scope', subtitle: 'Minimisation check' },
-  { id: 'risk', title: 'Privacy risk', subtitle: 'DPIA screening' },
-  { id: 'signoff', title: 'Privacy sign-off', subtitle: 'Lock GDPR position' }
-]
 
 function nowTs() {
   return Date.now()
@@ -98,7 +91,17 @@ function toTitle(s: string) {
 export default function DemoPrivacyLegalStepPage() {
   const nav = useNavigate()
   const { stepId } = useParams<{ stepId: StepId }>()
-  const current = useMemo(() => STEPS.find((s) => s.id === stepId), [stepId])
+  const { lang } = useI18n()
+  const isEn = lang === 'en'
+  const tr = (en: string, de: string) => (isEn ? en : de)
+  const STEPS_LOCAL = useMemo(() => ([
+    { id: 'intake', title: tr('Privacy intake', 'Privacy-Intake'), subtitle: tr('GDPR scope confirmation', 'GDPR-Scope bestätigen') },
+    { id: 'lawful-basis', title: tr('Lawful basis', 'Rechtsgrundlage'), subtitle: tr('Art. 6 GDPR assessment', 'Art. 6 DSGVO Bewertung') },
+    { id: 'data-scope', title: tr('Data scope', 'Datenscope'), subtitle: tr('Minimisation check', 'Datenminimierung prüfen') },
+    { id: 'risk', title: tr('Privacy risk', 'Privacy-Risiko'), subtitle: tr('DPIA screening', 'DPIA-Screening') },
+    { id: 'signoff', title: tr('Privacy sign-off', 'Privacy Sign-off'), subtitle: tr('Lock GDPR position', 'GDPR-Position fixieren') },
+  ] as const), [tr])
+  const current = useMemo(() => STEPS_LOCAL.find((s) => s.id === stepId), [stepId, STEPS_LOCAL])
 
   const [state, setState] = useState<PrivacyLegalState>(() => readState())
 
@@ -109,7 +112,7 @@ export default function DemoPrivacyLegalStepPage() {
   }, [stepId])
 
   if (!stepId || !current) return <Navigate to="/demo-legal/privacy/step/intake" replace />
-  const stepIndex = STEPS.findIndex((s) => s.id === stepId)
+  const stepIndex = STEPS_LOCAL.findIndex((s) => s.id === stepId)
 
   function setPartial(p: Partial<PrivacyLegalState>) {
     const next = { ...state, ...p }
@@ -121,12 +124,59 @@ export default function DemoPrivacyLegalStepPage() {
     nav(`/demo-legal/privacy/step/${next}`)
   }
 
+  const lawfulBasisLabel = (value: PrivacyLegalState['lawfulBasis']) => {
+    switch (value) {
+      case 'contract':
+        return tr('Contract', 'Vertrag')
+      case 'legal_obligation':
+        return tr('Legal obligation', 'Rechtliche Verpflichtung')
+      case 'legitimate_interest':
+        return tr('Legitimate interest', 'Berechtigtes Interesse')
+      case 'consent':
+        return tr('Consent', 'Einwilligung')
+      default:
+        return tr('None', 'Keine')
+    }
+  }
+  const dataScopeLabel = (value: PrivacyLegalState['dataScope']) => {
+    switch (value) {
+      case 'minimised':
+        return tr('Minimised', 'Minimiert')
+      case 'standard':
+        return tr('Standard', 'Standard')
+      default:
+        return tr('Extended', 'Erweitert')
+    }
+  }
+  const riskLabel = (value: PrivacyLegalState['riskLevel']) => {
+    switch (value) {
+      case 'low':
+        return tr('Low', 'Niedrig')
+      case 'medium':
+        return tr('Medium', 'Mittel')
+      default:
+        return tr('High', 'Hoch')
+    }
+  }
+  const dataCategoryLabel = (value: PrivacyLegalState['dataCategories'][number]) => {
+    switch (value) {
+      case 'personal':
+        return tr('personal', 'personenbezogen')
+      case 'financial':
+        return tr('financial', 'finanziell')
+      case 'health':
+        return tr('health', 'gesundheitlich')
+      default:
+        return tr('telematics', 'Telematik')
+    }
+  }
+
   const snapshotBadges = [
-    { label: `Lawful basis: ${state.lawfulBasis === 'none' ? 'none' : toTitle(state.lawfulBasis)}`, ok: state.lawfulBasis !== 'none' },
-    { label: `Data scope: ${state.dataScope}`, ok: state.dataScope !== 'extended' },
-    { label: `Risk: ${state.riskLevel}`, ok: state.riskLevel !== 'high' },
-    { label: 'Escalation required', ok: state.escalationRequired },
-    { label: 'Decision locked', ok: state.decisionLocked }
+    { label: `${tr('Lawful basis', 'Rechtsgrundlage')}: ${lawfulBasisLabel(state.lawfulBasis)}`, ok: state.lawfulBasis !== 'none' },
+    { label: `${tr('Data scope', 'Datenscope')}: ${dataScopeLabel(state.dataScope)}`, ok: state.dataScope !== 'extended' },
+    { label: `${tr('Risk', 'Risiko')}: ${riskLabel(state.riskLevel)}`, ok: state.riskLevel !== 'high' },
+    { label: tr('Escalation required', 'Eskalation erforderlich'), ok: state.escalationRequired },
+    { label: tr('Decision locked', 'Entscheidung gesperrt'), ok: state.decisionLocked }
   ]
 
   return (
@@ -136,28 +186,28 @@ export default function DemoPrivacyLegalStepPage() {
           <div className="container-xl">
             <div className="row g-2 align-items-center">
               <div className="col">
-                <div className="page-pretitle">LEGAL DEMO</div>
+                <div className="page-pretitle">{tr('LEGAL DEMO', 'LEGAL-DEMO')}</div>
                 <h2 className="page-title">{current.title}</h2>
                 <div className="text-muted">{current.subtitle}</div>
               </div>
               <div className="col-auto ms-auto d-print-none">
                 <div className="btn-list">
                   <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/privacy')}>
-                    Restart
+                    {tr('Restart', 'Neu starten')}
                   </button>
                   <button
                     className="btn btn-outline-secondary"
-                    onClick={() => goTo(STEPS[Math.max(0, stepIndex - 1)].id)}
+                    onClick={() => goTo(STEPS_LOCAL[Math.max(0, stepIndex - 1)].id)}
                     disabled={stepIndex === 0}
                   >
-                    Back
+                    {tr('Back', 'Zurück')}
                   </button>
                   <button
                     className="btn btn-primary"
-                    onClick={() => goTo(STEPS[Math.min(STEPS.length - 1, stepIndex + 1)].id)}
-                    disabled={stepIndex === STEPS.length - 1}
+                    onClick={() => goTo(STEPS_LOCAL[Math.min(STEPS_LOCAL.length - 1, stepIndex + 1)].id)}
+                    disabled={stepIndex === STEPS_LOCAL.length - 1}
                   >
-                    Next
+                    {tr('Next', 'Weiter')}
                   </button>
                 </div>
               </div>
@@ -173,33 +223,36 @@ export default function DemoPrivacyLegalStepPage() {
                   <div className="uw-decision-header">
                     <div className="uw-decision-title">
                       <strong>{current.title}</strong>
-                      <span>Step {stepIndex + 1}/{STEPS.length} · GDPR review</span>
+                      <span>{tr('Step', 'Schritt')} {stepIndex + 1}/{STEPS_LOCAL.length} · {tr('GDPR review', 'GDPR-Review')}</span>
                     </div>
-                    <span className="badge bg-indigo-lt">Privacy Legal</span>
+                    <span className="badge bg-indigo-lt">{tr('Privacy Legal', 'Privacy Legal')}</span>
                   </div>
 
                   <div className="uw-decision-body">
                     <div className="uw-block">
                       <div className="uw-kv">
-                        <Kv k="Case ID" v={state.caseId} />
-                        <Kv k="Process" v={state.sourceProcess} />
-                        <Kv k="Insured" v={state.insured} />
-                        <Kv k="Jurisdiction" v={state.jurisdiction} />
-                        <Kv k="Data categories" v={state.dataCategories.join(', ')} />
+                        <Kv k={tr('Case ID', 'Fall-ID')} v={state.caseId} />
+                        <Kv k={tr('Process', 'Prozess')} v={tr(state.sourceProcess, state.sourceProcess === 'Underwriting' ? 'Underwriting' : state.sourceProcess === 'Claims' ? 'Claims' : 'Reporting')} />
+                        <Kv k={tr('Insured', 'Versicherungsnehmer')} v={state.insured} />
+                        <Kv k={tr('Jurisdiction', 'Gerichtsstand')} v={state.jurisdiction} />
+                        <Kv k={tr('Data categories', 'Datenkategorien')} v={state.dataCategories.map(dataCategoryLabel).join(', ')} />
                       </div>
                     </div>
 
                     {stepId === 'intake' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI note', 'KI-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            Processing involves personal data under GDPR. Lawful basis must be confirmed before continuation.
+                            {tr(
+                              'Processing involves personal data under GDPR. Lawful basis must be confirmed before continuation.',
+                              'Verarbeitung umfasst personenbezogene Daten nach GDPR. Rechtsgrundlage muss vor Fortsetzung bestätigt werden.',
+                            )}
                           </div>
                           <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25 }}>
-                            <li>Lawful basis assessment</li>
-                            <li>Data minimisation check</li>
-                            <li>Risk & DPIA screening</li>
+                            <li>{tr('Lawful basis assessment', 'Bewertung der Rechtsgrundlage')}</li>
+                            <li>{tr('Data minimisation check', 'Prüfung der Datenminimierung')}</li>
+                            <li>{tr('Risk & DPIA screening', 'Risiko- & DPIA-Screening')}</li>
                           </ul>
                         </div>
 
@@ -207,11 +260,11 @@ export default function DemoPrivacyLegalStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Privacy Legal received case for GDPR assessment')
+                              appendAudit(tr('Privacy Legal received case for GDPR assessment', 'Privacy Legal hat Fall zur GDPR-Bewertung erhalten'))
                               goTo('lawful-basis')
                             }}
                           >
-                            Assess lawful basis
+                            {tr('Assess lawful basis', 'Rechtsgrundlage prüfen')}
                           </button>
                         </div>
                       </>
@@ -220,13 +273,13 @@ export default function DemoPrivacyLegalStepPage() {
                     {stepId === 'lawful-basis' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
                           <div className="uw-admin-small">
-                            Legitimate interest appears applicable for underwriting risk assessment.
+                            {tr('Legitimate interest appears applicable for underwriting risk assessment.', 'Berechtigtes Interesse scheint für Underwriting-Risikobewertung anwendbar.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Suggested" v={<span className="badge bg-azure-lt">Legitimate interest</span>} />
-                            <Kv k="Special category" v={state.specialCategoryData ? 'Yes' : 'No'} />
+                            <Kv k={tr('Suggested', 'Vorgeschlagen')} v={<span className="badge bg-azure-lt">{tr('Legitimate interest', 'Berechtigtes Interesse')}</span>} />
+                            <Kv k={tr('Special category', 'Besondere Kategorie')} v={state.specialCategoryData ? tr('Yes', 'Ja') : tr('No', 'Nein')} />
                           </div>
                         </div>
 
@@ -234,42 +287,42 @@ export default function DemoPrivacyLegalStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Lawful basis set: Contract')
+                              appendAudit(tr('Lawful basis set: Contract', 'Rechtsgrundlage gesetzt: Vertrag'))
                               setPartial({ lawfulBasis: 'contract', processingAllowed: true })
                               goTo('data-scope')
                             }}
                           >
-                            Set lawful basis: Contract
+                            {tr('Set lawful basis: Contract', 'Rechtsgrundlage setzen: Vertrag')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Lawful basis set: Legitimate interest')
+                              appendAudit(tr('Lawful basis set: Legitimate interest', 'Rechtsgrundlage gesetzt: Berechtigtes Interesse'))
                               setPartial({ lawfulBasis: 'legitimate_interest', processingAllowed: true })
                               goTo('data-scope')
                             }}
                           >
-                            Set lawful basis: Legitimate interest
+                            {tr('Set lawful basis: Legitimate interest', 'Rechtsgrundlage setzen: Berechtigtes Interesse')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Lawful basis set: Consent')
+                              appendAudit(tr('Lawful basis set: Consent', 'Rechtsgrundlage gesetzt: Einwilligung'))
                               setPartial({ lawfulBasis: 'consent', processingAllowed: true })
                               goTo('data-scope')
                             }}
                           >
-                            Set lawful basis: Consent
+                            {tr('Set lawful basis: Consent', 'Rechtsgrundlage setzen: Einwilligung')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Lawful basis set: none')
+                              appendAudit(tr('Lawful basis set: none', 'Rechtsgrundlage gesetzt: keine'))
                               setPartial({ lawfulBasis: 'none', processingAllowed: false })
                               goTo('data-scope')
                             }}
                           >
-                            No lawful basis
+                            {tr('No lawful basis', 'Keine Rechtsgrundlage')}
                           </button>
                         </div>
                       </>
@@ -278,13 +331,13 @@ export default function DemoPrivacyLegalStepPage() {
                     {stepId === 'data-scope' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
                           <div className="uw-admin-small">
-                            Standard scope is sufficient; avoid expansion unless strictly necessary.
+                            {tr('Standard scope is sufficient; avoid expansion unless strictly necessary.', 'Standard-Scope ist ausreichend; Ausweitung nur bei strenger Notwendigkeit.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Required for purpose" v="Yes" />
-                            <Kv k="Excess fields" v="No" />
+                            <Kv k={tr('Required for purpose', 'Für Zweck erforderlich')} v={tr('Yes', 'Ja')} />
+                            <Kv k={tr('Excess fields', 'Überflüssige Felder')} v={tr('No', 'Nein')} />
                           </div>
                         </div>
 
@@ -292,32 +345,32 @@ export default function DemoPrivacyLegalStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Data scope set: minimised')
+                              appendAudit(tr('Data scope set: minimised', 'Datenscope gesetzt: minimiert'))
                               setPartial({ dataScope: 'minimised', riskLevel: state.riskLevel === 'high' ? 'medium' : state.riskLevel })
                               goTo('risk')
                             }}
                           >
-                            Set scope: Minimised
+                            {tr('Set scope: Minimised', 'Scope setzen: Minimiert')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Data scope set: standard')
+                              appendAudit(tr('Data scope set: standard', 'Datenscope gesetzt: standard'))
                               setPartial({ dataScope: 'standard' })
                               goTo('risk')
                             }}
                           >
-                            Set scope: Standard
+                            {tr('Set scope: Standard', 'Scope setzen: Standard')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Data scope set: extended')
+                              appendAudit(tr('Data scope set: extended', 'Datenscope gesetzt: erweitert'))
                               setPartial({ dataScope: 'extended', riskLevel: 'high' })
                               goTo('risk')
                             }}
                           >
-                            Set scope: Extended
+                            {tr('Set scope: Extended', 'Scope setzen: Erweitert')}
                           </button>
                         </div>
                       </>
@@ -326,14 +379,14 @@ export default function DemoPrivacyLegalStepPage() {
                     {stepId === 'risk' && (
                       <>
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI recommendation</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI recommendation', 'KI-Empfehlung')}</div>
                           <div className="uw-admin-small">
-                            Risk is medium. DPIA not mandatory but escalation is optional.
+                            {tr('Risk is medium. DPIA not mandatory but escalation is optional.', 'Risiko ist mittel. DPIA nicht verpflichtend, Eskalation optional.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Volume" v="Moderate" />
-                            <Kv k="Sensitivity" v="Standard personal data" />
-                            <Kv k="Automation impact" v="Medium" />
+                            <Kv k={tr('Volume', 'Volumen')} v={tr('Moderate', 'Moderat')} />
+                            <Kv k={tr('Sensitivity', 'Sensitivität')} v={tr('Standard personal data', 'Standard personenbezogene Daten')} />
+                            <Kv k={tr('Automation impact', 'Automatisierungswirkung')} v={tr('Medium', 'Mittel')} />
                           </div>
                         </div>
 
@@ -341,44 +394,44 @@ export default function DemoPrivacyLegalStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Privacy risk set: low')
+                              appendAudit(tr('Privacy risk set: low', 'Privacy-Risiko gesetzt: niedrig'))
                               setPartial({ riskLevel: 'low' })
                             }}
                           >
-                            Set risk: Low
+                            {tr('Set risk: Low', 'Risiko setzen: Niedrig')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Privacy risk set: medium')
+                              appendAudit(tr('Privacy risk set: medium', 'Privacy-Risiko gesetzt: mittel'))
                               setPartial({ riskLevel: 'medium' })
                             }}
                           >
-                            Set risk: Medium
+                            {tr('Set risk: Medium', 'Risiko setzen: Mittel')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('Privacy risk set: high')
+                              appendAudit(tr('Privacy risk set: high', 'Privacy-Risiko gesetzt: hoch'))
                               setPartial({ riskLevel: 'high' })
                             }}
                           >
-                            Set risk: High
+                            {tr('Set risk: High', 'Risiko setzen: Hoch')}
                           </button>
                           <button
                             className="btn btn-outline-secondary"
                             onClick={() => {
-                              appendAudit('DPIA escalation triggered')
+                              appendAudit(tr('DPIA escalation triggered', 'DPIA-Eskalation ausgelöst'))
                               setPartial({ escalationRequired: true })
                             }}
                           >
-                            Escalate for DPIA review
+                            {tr('Escalate for DPIA review', 'Zur DPIA-Prüfung eskalieren')}
                           </button>
                         </div>
 
                         <div className="uw-cta-row">
                           <button className="btn btn-primary" onClick={() => goTo('signoff')}>
-                            Proceed to sign-off
+                            {tr('Proceed to sign-off', 'Weiter zum Sign-off')}
                           </button>
                         </div>
                       </>
@@ -387,30 +440,33 @@ export default function DemoPrivacyLegalStepPage() {
                     {stepId === 'signoff' && (
                       <>
                         <div className="uw-block">
-                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>Decision summary</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.92rem' }}>{tr('Decision summary', 'Entscheidungszusammenfassung')}</div>
                           <div className="uw-admin-small">
-                            GDPR processing is permitted only with lawful basis and proportionate risk controls.
+                            {tr('GDPR processing is permitted only with lawful basis and proportionate risk controls.', 'GDPR-Verarbeitung ist nur mit Rechtsgrundlage und angemessenen Risikokontrollen zulässig.')}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
-                            <Kv k="Lawful basis" v={state.lawfulBasis === 'none' ? 'None' : toTitle(state.lawfulBasis)} />
-                            <Kv k="Data scope" v={state.dataScope} />
-                            <Kv k="Risk" v={state.riskLevel} />
-                            <Kv k="Escalation" v={state.escalationRequired ? 'DPIA' : 'None'} />
+                            <Kv k={tr('Lawful basis', 'Rechtsgrundlage')} v={lawfulBasisLabel(state.lawfulBasis)} />
+                            <Kv k={tr('Data scope', 'Datenscope')} v={dataScopeLabel(state.dataScope)} />
+                            <Kv k={tr('Risk', 'Risiko')} v={riskLabel(state.riskLevel)} />
+                            <Kv k={tr('Escalation', 'Eskalation')} v={state.escalationRequired ? 'DPIA' : tr('None', 'Keine')} />
                           </div>
                         </div>
 
                         <div className="uw-block uw-ai">
-                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>AI audit note</div>
+                          <div style={{ fontWeight: 800, fontSize: '0.88rem' }}>{tr('AI audit note', 'KI-Audit-Hinweis')}</div>
                           <div className="uw-admin-small">
-                            Decision aligned with GDPR principles of lawfulness, minimisation, and accountability.
+                            {tr(
+                              'Decision aligned with GDPR principles of lawfulness, minimisation, and accountability.',
+                              'Entscheidung entspricht GDPR-Prinzipien (Rechtmäßigkeit, Minimierung, Verantwortlichkeit).',
+                            )}
                           </div>
                           <div className="uw-kv" style={{ marginTop: '0.4rem' }}>
                             <Kv
-                              k="Output"
+                              k={tr('Output', 'Ergebnis')}
                               v={
                                 state.lawfulBasis !== 'none' && state.riskLevel !== 'high'
-                                  ? 'GDPR processing permitted'
-                                  : 'Processing restricted / blocked'
+                                  ? tr('GDPR processing permitted', 'GDPR-Verarbeitung erlaubt')
+                                  : tr('Processing restricted / blocked', 'Verarbeitung eingeschränkt / blockiert')
                               }
                             />
                           </div>
@@ -420,15 +476,15 @@ export default function DemoPrivacyLegalStepPage() {
                           <button
                             className="btn btn-primary"
                             onClick={() => {
-                              appendAudit('Privacy decision locked (GDPR position recorded)')
+                              appendAudit(tr('Privacy decision locked (GDPR position recorded)', 'Privacy-Entscheidung gesperrt (GDPR-Position erfasst)'))
                               setPartial({ decisionLocked: true })
                               nav('/demo-legal/privacy')
                             }}
                           >
-                            Lock privacy decision
+                            {tr('Lock privacy decision', 'Privacy-Entscheidung sperren')}
                           </button>
                           <button className="btn btn-outline-secondary" onClick={() => nav('/demo-legal/privacy')}>
-                            Restart demo
+                            {tr('Restart demo', 'Demo neu starten')}
                           </button>
                         </div>
                       </>
@@ -439,9 +495,9 @@ export default function DemoPrivacyLegalStepPage() {
 
               <div className="uw-admin">
                 <div className="uw-admin-panel">
-                  <h4>Step navigation</h4>
+                  <h4>{tr('Step navigation', 'Schritt-Navigation')}</h4>
                   <div className="list-group list-group-flush">
-                    {STEPS.map((s, idx) => {
+                    {STEPS_LOCAL.map((s, idx) => {
                       const active = s.id === stepId
                       return (
                         <button
@@ -454,27 +510,27 @@ export default function DemoPrivacyLegalStepPage() {
                             <span className="badge bg-indigo-lt">{idx + 1}</span>
                             <span>{s.title}</span>
                           </span>
-                          {active ? <span className="badge bg-white text-indigo">Current</span> : <span className="badge bg-indigo-lt">Open</span>}
+                          {active ? <span className="badge bg-white text-indigo">{tr('Current', 'Aktuell')}</span> : <span className="badge bg-indigo-lt">{tr('Open', 'Offen')}</span>}
                         </button>
                       )}
                     )}
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>AI & Accountability</h4>
+                    <h4>{tr('AI & Accountability', 'KI & Verantwortung')}</h4>
                     <div className="uw-admin-small">
-                      <div><strong>Decides:</strong> lawful basis, data scope, risk</div>
-                      <div><strong>Accountable:</strong> GDPR compliance & defensibility</div>
+                      <div><strong>{tr('Decides', 'Entscheidet')}:</strong> {tr('lawful basis, data scope, risk', 'Rechtsgrundlage, Datenscope, Risiko')}</div>
+                      <div><strong>{tr('Accountable', 'Verantwortlich')}:</strong> {tr('GDPR compliance & defensibility', 'GDPR-Compliance & rechtliche Belastbarkeit')}</div>
                     </div>
                     <ul className="m-0 ps-3" style={{ fontSize: '0.78rem', lineHeight: 1.25, marginTop: '0.4rem' }}>
-                      <li>Lawful basis under Art. 6</li>
-                      <li>Data minimisation and scope</li>
-                      <li>DPIA escalation if risk is high</li>
+                      <li>{tr('Lawful basis under Art. 6', 'Rechtsgrundlage nach Art. 6')}</li>
+                      <li>{tr('Data minimisation and scope', 'Datenminimierung und Scope')}</li>
+                      <li>{tr('DPIA escalation if risk is high', 'DPIA-Eskalation bei hohem Risiko')}</li>
                     </ul>
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Snapshot</h4>
+                    <h4>{tr('Snapshot', 'Snapshot')}</h4>
                     <div className="d-flex flex-wrap gap-2">
                       {snapshotBadges.map((b) => (
                         <span key={b.label} className={`badge ${b.ok ? 'bg-green-lt' : 'bg-muted-lt'}`}>
@@ -485,11 +541,11 @@ export default function DemoPrivacyLegalStepPage() {
                   </div>
 
                   <div style={{ borderTop: '1px solid rgba(15,23,42,0.10)', paddingTop: '0.6rem' }}>
-                    <h4>Audit log</h4>
+                    <h4>{tr('Audit log', 'Audit-Log')}</h4>
                     <div className="uw-audit">
                       {(() => {
                         const items = readAudit()
-                        if (!items.length) return <div className="uw-admin-small">No entries yet.</div>
+                        if (!items.length) return <div className="uw-admin-small">{tr('No entries yet.', 'Noch keine Einträge.')}</div>
                         return items.slice(0, 8).map((it) => (
                           <div className="uw-audit-item" key={it.ts}>
                             <div className="ts">{fmt(it.ts)}</div>
