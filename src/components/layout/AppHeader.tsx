@@ -9,7 +9,7 @@ export default function AppHeader() {
   const headerRef = useRef<HTMLElement>(null)
   const navigate = useNavigate()
   const { lang, setLang, t } = useI18n()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, user } = useAuth()
 
   const authLabel = isAuthenticated ? t('header.logout') : t('header.login')
 
@@ -29,7 +29,7 @@ export default function AppHeader() {
     { label: t('header.nav.fleet'), route: '/fleet' },
     { label: t('header.nav.partner'), route: '/partner' },
     { label: t('header.nav.demo'), route: '/demo' }
-  ]
+  ].filter((item) => (user?.mode === 'insurance-only' ? item.route === '/insurance' : true))
 
   useEffect(() => {
     const header = headerRef.current

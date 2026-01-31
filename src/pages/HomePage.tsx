@@ -11,7 +11,7 @@ import { useAuth } from '@/features/auth/AuthContext'
 export default function HomePage() {
   const navigate = useNavigate()
   const { lang, setLang } = useI18n()
-  const { isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout, user } = useAuth()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
 
   const copy = {
@@ -157,11 +157,15 @@ export default function HomePage() {
           </button>
           <nav className="home-marketing-nav">
             <button type="button" onClick={() => navigate('/insurance')}>{copy.nav.insurance}</button>
-            <button type="button" onClick={() => navigate('/broker-portal')}>{copy.nav.broker}</button>
-            <button type="button" onClick={() => navigate('/logistics')}>{copy.nav.logistics}</button>
-            <button type="button" onClick={() => navigate('/fleet')}>{copy.nav.fleet}</button>
-            <button type="button" onClick={() => navigate('/partner')}>{copy.nav.partner}</button>
-            <button type="button" onClick={() => navigate('/demo')}>{copy.nav.demo}</button>
+            {user?.mode !== 'insurance-only' && (
+              <>
+                <button type="button" onClick={() => navigate('/broker-portal')}>{copy.nav.broker}</button>
+                <button type="button" onClick={() => navigate('/logistics')}>{copy.nav.logistics}</button>
+                <button type="button" onClick={() => navigate('/fleet')}>{copy.nav.fleet}</button>
+                <button type="button" onClick={() => navigate('/partner')}>{copy.nav.partner}</button>
+                <button type="button" onClick={() => navigate('/demo')}>{copy.nav.demo}</button>
+              </>
+            )}
             <div className="home-marketing-lang-switch" role="group" aria-label="Language switch">
               <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
                 DE

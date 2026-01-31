@@ -7,7 +7,7 @@ type ProtectedRouteProps = {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, user } = useAuth()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
   const isPrintMode = searchParams.get('print') === '1'
@@ -18,6 +18,13 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   if (!isAuthenticated && !isPrintAllowed) {
     return <Navigate to="/login" replace />
+  }
+
+  if (isAuthenticated && user?.mode === 'insurance-only') {
+    const allowedRoutes = new Set(['/home', '/insurance'])
+    if (!allowedRoutes.has(location.pathname)) {
+      return <Navigate to="/home" replace />
+    }
   }
 
   return children
