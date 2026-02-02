@@ -5,7 +5,7 @@ import UnderwriterIcon from '@/assets/images/underwriter.png'
 import LegalIcon from '@/assets/images/legal.png'
 import InsuranceIcon from '@/assets/images/insurance_icon.png'
 import ClaimIcon from '@/assets/images/claim.png'
-import FleetIcon from '@/assets/images/flotte.png'
+import FleetIcon from '@/assets/images/fleetmgmnt.png'
 import LogisticsIcon from '@/assets/images/logistic_icon.png'
 import BrokerIcon from '@/assets/images/broker_icon.png'
 import PartnerIcon from '@/assets/images/partner_icon.png'
@@ -376,8 +376,7 @@ export default function DemoOverviewPage() {
                                     { label: 'Fleetmanager international', to: '/fleet-management' },
                                     { label: 'Fleetmanager national', to: '/fleet-management' },
                                     { label: 'Fleetmanager regional', to: '/fleet-management' },
-                                    { label: 'Fleet Reporting', to: '/fleet-reporting' },
-                                    { label: 'Fleet Management', to: '/fleet-management' },
+                                    { label: 'Fleetmanager', to: '/fleet-management' },
                                     { label: 'Fahrer', to: '/demo-driver/step/register' },
                                   ].map((item) => (
                                     <button
