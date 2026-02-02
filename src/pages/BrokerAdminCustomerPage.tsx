@@ -774,7 +774,16 @@ export default function BrokerAdminCustomerPage() {
           </button>
         </div>
 
-        <div className="uw-grid uw-kpi">
+        <style>
+          {`
+            .broker-admin-detail-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.9rem; margin-bottom: 1.6rem; }
+            @media (max-width: 900px) {
+              .broker-admin-detail-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            }
+            .broker-admin-detail-section { margin-bottom: 1.6rem; }
+          `}
+        </style>
+        <div className="uw-grid uw-kpi broker-admin-detail-kpis">
           {kpis.map((item) => (
             <Card key={item.label} title={item.label} variant="glass" className="uw-card">
               <div className="uw-card-body">
@@ -784,7 +793,7 @@ export default function BrokerAdminCustomerPage() {
           ))}
         </div>
 
-        <div className="uw-grid uw-split">
+        <div className="uw-grid uw-split broker-admin-detail-section">
           <Card title={copy.overviewTitle} variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
               {copy.overviewItems.map((item) => (
@@ -813,7 +822,7 @@ export default function BrokerAdminCustomerPage() {
           </Card>
         </div>
 
-        <div className="uw-grid uw-split">
+        <div className="uw-grid uw-split broker-admin-detail-section">
           <Card title={copy.policiesTitle} variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
               {customer.policies.map((policy) => (
@@ -864,7 +873,7 @@ export default function BrokerAdminCustomerPage() {
           </Card>
         </div>
 
-        <div className="uw-grid uw-split">
+        <div className="uw-grid uw-split broker-admin-detail-section">
           <Card title={copy.billingTitle} variant="glass" className="uw-card">
             <div className="uw-card-body" style={{ gap: '0.75rem' }}>
               {customer.billing.map((item) => (

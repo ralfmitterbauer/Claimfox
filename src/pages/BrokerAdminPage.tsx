@@ -181,7 +181,7 @@ export default function BrokerAdminPage() {
             }
           `}
         </style>
-        <div className="uw-grid uw-kpi broker-admin-kpis">
+        <div className="uw-grid uw-kpi broker-admin-kpis" style={{ marginBottom: '1.6rem' }}>
           {kpis.map((item) => (
             <Card key={item.label} title={item.label} variant="glass" className="uw-card">
               <div className="uw-card-body">
@@ -191,7 +191,7 @@ export default function BrokerAdminPage() {
           ))}
         </div>
 
-        <Card title={copy.filtersTitle} variant="glass" className="uw-card">
+        <Card title={copy.filtersTitle} variant="glass" className="uw-card" style={{ marginBottom: '1.6rem' }}>
           <div className="uw-card-body" style={{ gap: '0.75rem' }}>
             <style>
               {`
@@ -202,11 +202,11 @@ export default function BrokerAdminPage() {
                   .broker-admin-filters.is-open { display: grid; }
                 }
                 .broker-admin-chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-                .broker-admin-chip { border-radius: 999px; font-size: 0.72rem; padding: 0.25rem 0.6rem; }
-                .broker-admin-quick-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.4rem; }
-                .broker-admin-chip-row { gap: 0.7rem; margin-top: 0.6rem; }
+                .broker-admin-chip { border-radius: 999px; font-size: 0.7rem; padding: 0.2rem 0.55rem; }
+                .broker-admin-quick-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.6rem; }
+                .broker-admin-chip-row { gap: 0.9rem; margin-top: 0.8rem; }
                 @media (max-width: 900px) {
-                  .broker-admin-chip-row { gap: 0.5rem; }
+                  .broker-admin-chip-row { gap: 0.6rem; }
                 }
               `}
             </style>
