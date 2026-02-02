@@ -376,7 +376,7 @@ export default function DemoOverviewPage() {
                                     { label: 'Fleetmanager international', to: '/fleet-management' },
                                     { label: 'Fleetmanager national', to: '/fleet-management' },
                                     { label: 'Fleetmanager regional', to: '/fleet-management' },
-                                    { label: 'Fleetmanager', to: '/fleet-management' },
+                                    { label: 'Fleet Manager', to: '/fleet-management' },
                                     { label: 'Fahrer', to: '/demo-driver/step/register' },
                                   ].map((item) => (
                                     <button

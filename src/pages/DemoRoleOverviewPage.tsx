@@ -93,10 +93,9 @@ export default function DemoRoleOverviewPage() {
     },
     'fleet-management': {
       title: t('roles.cards.fleetManagement.title'),
-      subtitle: isEn ? 'Fleet subroles' : 'Fleet Unterrollen',
+      subtitle: isEn ? 'Fleet roles' : 'Flottenrollen',
       subroles: [
-        { label: isEn ? 'Fleet Management' : 'Fuhrparkverwaltung', route: '/fleet-management' },
-        { label: isEn ? 'Fleet Reporting' : 'Fleet Reporting', route: '/fleet-reporting' }
+        { label: isEn ? 'Fleet Manager' : 'Fleet Manager', route: '/fleet-management' }
       ]
     },
     logistics: {
