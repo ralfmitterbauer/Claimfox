@@ -1,5 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
+import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 import HomeHeroBackground from '@/assets/images/Home1.png'
 import FleetHeroImage from '@/assets/images/flotte_fuhrpark.png'
@@ -97,6 +98,34 @@ export default function FleetLandingPage() {
               <p style={{ marginTop: '1rem', maxWidth: '720px', color: 'rgba(255,255,255,0.82)', fontSize: '1.2rem' }}>
                 {copy.subtitle}
               </p>
+              <div style={{ marginTop: '1.4rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <Button
+                  onClick={() => navigate('/fleet-dashboard')}
+                  style={{
+                    background: '#D4380D',
+                    color: '#ffffff',
+                    border: '1px solid #D4380D',
+                    paddingInline: '1.75rem',
+                    fontWeight: 700
+                  }}
+                  disableHover
+                >
+                  {lang === 'en' ? 'Dashboard' : 'Dashboard'}
+                </Button>
+                <Button
+                  onClick={() => navigate('/fleet-management')}
+                  style={{
+                    background: '#ffffff',
+                    color: '#D4380D',
+                    border: '1px solid #D4380D',
+                    paddingInline: '1.75rem',
+                    fontWeight: 700
+                  }}
+                  disableHover
+                >
+                  {lang === 'en' ? 'Fleet Management' : 'Flottenmanagement'}
+                </Button>
+              </div>
             </div>
             <div
               style={{

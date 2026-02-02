@@ -44,6 +44,8 @@ import GovernanceAccessMandatesPage from '@/pages/insurance-dashboard/Governance
 import GovernanceRulesVersionsPage from '@/pages/insurance-dashboard/GovernanceRulesVersionsPage'
 import GovernanceAuditTrailPage from '@/pages/insurance-dashboard/GovernanceAuditTrailPage'
 import FleetLandingPage from '@/pages/FleetLandingPage'
+import FleetDashboardPage from '@/pages/FleetDashboardPage'
+import FleetRecordPage from '@/pages/FleetRecordPage'
 import PartnerLandingPage from '@/pages/PartnerLandingPage'
 import LogisticsAppPage from '@/pages/LogisticsAppPage'
 import MvpPage from '@/pages/MvpPage'
@@ -270,6 +272,8 @@ export default function AppRouter() {
         <Route path="/insurance-dashboard/governance/rules-versions" element={<GovernanceRulesVersionsPage />} />
         <Route path="/insurance-dashboard/governance/audit-trail" element={<GovernanceAuditTrailPage />} />
         <Route path="/fleet" element={<FleetLandingPage />} />
+        <Route path="/fleet-dashboard" element={<FleetDashboardPage />} />
+        <Route path="/fleet-dashboard/record/:recordId" element={<FleetRecordPage />} />
         <Route path="/partner" element={<PartnerLandingPage />} />
         <Route path="/logistics-app" element={<LogisticsAppPage />} />
         <Route path="/mvp" element={<MvpPage />} />
