@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useI18n } from '@/i18n/I18nContext'
+import Button from '@/components/ui/Button'
 import HomeHeroBackground from '@/assets/images/Home1.png'
 import PartnerHeroImage from '@/assets/images/partner_insurance.png'
 
@@ -100,6 +101,21 @@ export default function PartnerLandingPage() {
               <p style={{ marginTop: '1rem', maxWidth: '720px', color: 'rgba(255,255,255,0.82)', fontSize: '1.2rem' }}>
                 {copy.subtitle}
               </p>
+              <div style={{ marginTop: '1.4rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <Button
+                  onClick={() => navigate('/partner-management-overview')}
+                  style={{
+                    background: '#D4380D',
+                    color: '#ffffff',
+                    border: '1px solid #D4380D',
+                    paddingInline: '1.75rem',
+                    fontWeight: 700
+                  }}
+                  disableHover
+                >
+                  {lang === 'en' ? 'Partner Management' : 'Partner Management'}
+                </Button>
+              </div>
             </div>
             <div
               style={{
