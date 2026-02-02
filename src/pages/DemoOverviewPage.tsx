@@ -373,9 +373,12 @@ export default function DemoOverviewPage() {
                               {fleetOpen && (
                                 <div className="list-group list-group-flush">
                                   {[
-                                    { label: 'Fahrer', to: '/demo-driver/step/register' },
+                                    { label: 'Fleetmanager international', to: '/fleet-management' },
+                                    { label: 'Fleetmanager national', to: '/fleet-management' },
+                                    { label: 'Fleetmanager regional', to: '/fleet-management' },
                                     { label: 'Fleet Reporting', to: '/fleet-reporting' },
                                     { label: 'Fleet Management', to: '/fleet-management' },
+                                    { label: 'Fahrer', to: '/demo-driver/step/register' },
                                   ].map((item) => (
                                     <button
                                       key={item.label}
@@ -383,7 +386,12 @@ export default function DemoOverviewPage() {
                                       className="list-group-item list-group-item-action d-flex align-items-center justify-content-between ps-5"
                                       onClick={() => navigate(item.to)}
                                     >
-                                      <span className="fw-semibold">{item.label}</span>
+                                      <span className="d-flex align-items-center gap-2 flex-grow-1 text-start">
+                                        {item.label === 'Fahrer' && (
+                                          <img src={DriverIcon} alt="" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+                                        )}
+                                        <span className="fw-semibold">{item.label}</span>
+                                      </span>
                                       <span className="badge bg-blue-lt text-blue">Demo</span>
                                     </button>
                                   ))}
@@ -488,12 +496,16 @@ export default function DemoOverviewPage() {
                             }}
                           >
                             <span className="d-flex align-items-center gap-2">
-                              <span className="avatar avatar-xs bg-blue-lt text-blue">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M12 5v14" />
-                                  <path d="M5 12h14" />
-                                </svg>
-                              </span>
+                              {role.roleId === 'driver-demo' ? (
+                                <img src={DriverIcon} alt="" style={{ width: 22, height: 22, objectFit: 'contain' }} />
+                              ) : (
+                                <span className="avatar avatar-xs bg-blue-lt text-blue">
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 5v14" />
+                                    <path d="M5 12h14" />
+                                  </svg>
+                                </span>
+                              )}
                               <span className="fw-semibold">{role.label}</span>
                             </span>
                             <span className="badge bg-blue-lt text-blue">Demo</span>
