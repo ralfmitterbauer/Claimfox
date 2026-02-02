@@ -183,7 +183,9 @@ export default function BrokerAdminPage() {
           gap: '1.5rem'
         }}
       >
-        <Header title={copy.title} subtitle={copy.subtitle} subtitleColor={GLASS_SUBTLE} titleColor={GLASS_TEXT} />
+        <div style={{ marginTop: '1.5rem' }}>
+          <Header title={copy.title} subtitle={copy.subtitle} subtitleColor={GLASS_SUBTLE} titleColor="#D4380D" />
+        </div>
 
         <div
           style={{

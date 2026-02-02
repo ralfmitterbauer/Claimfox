@@ -92,12 +92,14 @@ export default function BrokerCrmPage() {
             gap: '1.5rem'
           }}
         >
-      <Header
-        title={t('brokerCrm.title')}
-        subtitle={t('brokerCrm.subtitle')}
-        titleColor="#0e0d1c"
-        subtitleColor="#65748b"
-      />
+      <div style={{ marginTop: '1.5rem' }}>
+        <Header
+          title={t('brokerCrm.title')}
+          subtitle={t('brokerCrm.subtitle')}
+          titleColor="#D4380D"
+          subtitleColor="#65748b"
+        />
+      </div>
 
       <div
         style={{
