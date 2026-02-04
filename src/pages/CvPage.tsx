@@ -21,6 +21,23 @@ export default function CvPage() {
   }, [])
 
   useEffect(() => {
+    if (typeof document === 'undefined') return
+    const style = document.createElement('style')
+    style.setAttribute('data-cv-print', 'true')
+    style.textContent = `
+      @media print {
+        @page { size: A4 portrait !important; margin: 16mm 18mm 18mm 18mm; }
+        html, body { width: 210mm !important; height: 297mm !important; }
+        body.cv-route, body.cv-route * { background: #ffffff !important; box-shadow: none !important; }
+      }
+    `
+    document.head.appendChild(style)
+    return () => {
+      style.remove()
+    }
+  }, [])
+
+  useEffect(() => {
     function handleAfterPrint() {
       setPrintMode('cv')
     }
