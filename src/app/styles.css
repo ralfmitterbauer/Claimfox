@@ -4613,3 +4613,11 @@ input[type="reset"]:disabled,
     grid-template-columns: 1fr;
   }
 }
+
+@media print {
+  body.cv-route,
+  body.cv-route * {
+    background: #ffffff !important;
+    box-shadow: none !important;
+  }
+}
