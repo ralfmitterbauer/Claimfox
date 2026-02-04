@@ -2038,20 +2038,15 @@ body.bcia-deck-route {
 }
 
 @media print {
-  @page {
-    size: A4 landscape !important;
-    margin: 0 !important;
-  }
-
-  html,
-  body {
+  html.bcia-deck-route,
+  body.bcia-deck-route {
     margin: 0;
     padding: 0;
     width: 297mm !important;
     height: 210mm !important;
   }
 
-  body {
+  body.bcia-deck-route {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -2097,9 +2092,4 @@ body.bcia-deck-route {
     display: flex;
     flex-direction: column;
   }
-}
-
-@page {
-  size: A4 landscape !important;
-  margin: 0 !important;
 }

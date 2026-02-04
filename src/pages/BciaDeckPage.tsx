@@ -1052,8 +1052,23 @@ export default function BciaDeckPage({
   const isProgrammatic = useRef(false)
 
   useEffect(() => {
+    if (typeof document === 'undefined') return
     document.body.classList.add('bcia-deck-route')
-    return () => document.body.classList.remove('bcia-deck-route')
+    document.documentElement.classList.add('bcia-deck-route')
+    const style = document.createElement('style')
+    style.setAttribute('data-bcia-print', 'true')
+    style.textContent = `
+      @media print {
+        @page { size: A4 landscape; margin: 0 !important; }
+        html.bcia-deck-route, body.bcia-deck-route { width: 297mm !important; height: 210mm !important; margin: 0 !important; padding: 0 !important; }
+      }
+    `
+    document.head.appendChild(style)
+    return () => {
+      document.body.classList.remove('bcia-deck-route')
+      document.documentElement.classList.remove('bcia-deck-route')
+      style.remove()
+    }
   }, [scaleFactor])
 
   useLayoutEffect(() => {
