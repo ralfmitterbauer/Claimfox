@@ -2378,6 +2378,14 @@ a {
   gap: 1.5rem;
 }
 
+.cv-page.cv-a4 .cv-shell {
+  max-width: 210mm;
+}
+
+.cv-page.cv-a4 {
+  padding: 2rem 0 3rem;
+}
+
 .cv-shell {
   width: 100%;
   max-width: 1100px;
@@ -2535,6 +2543,14 @@ a {
   }
 
   body.print-combined .cv-print-combined {
+    display: block;
+  }
+
+  body.print-cover .cv-print {
+    display: none;
+  }
+
+  body.print-cover .cv-print-cover {
     display: block;
   }
 
