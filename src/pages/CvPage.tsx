@@ -407,10 +407,12 @@ export default function CvPage() {
             <p>Phone: +49 (0)151 22644067</p>
             <p>Email: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
-          <p>Remote (Germany)</p>
+            <p>Remote (Germany)</p>
           </div>
 
+          <div className="cv-letter-space cv-letter-space-3" />
           <h3 className="cv-letter-heading">Statement of Interest</h3>
+          <div className="cv-letter-space cv-letter-space-2" />
           <p>Dear Hiring Team,</p>
           <p>
             I am writing to express my interest in the Senior Technical Product Manager – Platform &amp; Workflow Orchestration role. The
@@ -590,10 +592,12 @@ export default function CvPage() {
             <p>Phone: +49 (0)151 22644067</p>
             <p>Email: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
-          <p>Remote (Germany)</p>
+            <p>Remote (Germany)</p>
           </div>
 
+          <div className="cv-letter-space cv-letter-space-3" />
           <h3 className="cv-letter-heading">Statement of Interest</h3>
+          <div className="cv-letter-space cv-letter-space-2" />
           <p>Dear Hiring Team,</p>
           <p>
             I am writing to express my interest in the Senior Technical Product Manager – Platform &amp; Workflow Orchestration role. The
