@@ -26,8 +26,8 @@ export default function CvPage() {
     style.setAttribute('data-cv-print', 'true')
     style.textContent = `
       @media print {
-        @page { size: A4 portrait !important; margin: 16mm 18mm 18mm 18mm; }
-        html, body { width: 210mm !important; height: 297mm !important; }
+        @page { size: 210mm 297mm !important; margin: 16mm 18mm 18mm 18mm !important; }
+        html, body { width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; }
         body.cv-route, body.cv-route * { background: #ffffff !important; box-shadow: none !important; }
       }
     `
@@ -42,6 +42,10 @@ export default function CvPage() {
       setPrintMode('cv')
       const existing = document.querySelector('[data-cv-portrait]')
       if (existing) existing.remove()
+      document.documentElement.style.removeProperty('width')
+      document.documentElement.style.removeProperty('height')
+      document.body.style.removeProperty('width')
+      document.body.style.removeProperty('height')
     }
     window.addEventListener('afterprint', handleAfterPrint)
     return () => window.removeEventListener('afterprint', handleAfterPrint)
@@ -54,29 +58,42 @@ export default function CvPage() {
     style.setAttribute('data-cv-portrait', 'true')
     style.textContent = `
       @media print {
-        @page { size: A4 portrait !important; margin: 16mm 18mm 18mm 18mm; }
-        html, body { width: 210mm !important; height: 297mm !important; }
+        @page { size: 210mm 297mm !important; margin: 16mm 18mm 18mm 18mm !important; }
+        html, body { width: 210mm !important; height: 297mm !important; margin: 0 !important; padding: 0 !important; }
       }
     `
     document.head.appendChild(style)
+    document.documentElement.style.setProperty('width', '210mm', 'important')
+    document.documentElement.style.setProperty('height', '297mm', 'important')
+    document.body.style.setProperty('width', '210mm', 'important')
+    document.body.style.setProperty('height', '297mm', 'important')
   }
 
   function handlePrintCv() {
     ensurePortraitPrint()
     setPrintMode('cv')
-    window.print()
+    window.setTimeout(() => {
+      document.body.offsetHeight
+      window.print()
+    }, 250)
   }
 
   function handlePrintCombined() {
     ensurePortraitPrint()
     setPrintMode('combined')
-    window.setTimeout(() => window.print(), 0)
+    window.setTimeout(() => {
+      document.body.offsetHeight
+      window.print()
+    }, 250)
   }
 
   function handlePrintCover() {
     ensurePortraitPrint()
     setPrintMode('cover')
-    window.setTimeout(() => window.print(), 0)
+    window.setTimeout(() => {
+      document.body.offsetHeight
+      window.print()
+    }, 250)
   }
 
   return (
