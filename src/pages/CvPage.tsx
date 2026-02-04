@@ -40,22 +40,41 @@ export default function CvPage() {
   useEffect(() => {
     function handleAfterPrint() {
       setPrintMode('cv')
+      const existing = document.querySelector('[data-cv-portrait]')
+      if (existing) existing.remove()
     }
     window.addEventListener('afterprint', handleAfterPrint)
     return () => window.removeEventListener('afterprint', handleAfterPrint)
   }, [])
 
+  function ensurePortraitPrint() {
+    const existing = document.querySelector('[data-cv-portrait]')
+    if (existing) existing.remove()
+    const style = document.createElement('style')
+    style.setAttribute('data-cv-portrait', 'true')
+    style.textContent = `
+      @media print {
+        @page { size: A4 portrait !important; margin: 16mm 18mm 18mm 18mm; }
+        html, body { width: 210mm !important; height: 297mm !important; }
+      }
+    `
+    document.head.appendChild(style)
+  }
+
   function handlePrintCv() {
+    ensurePortraitPrint()
     setPrintMode('cv')
     window.print()
   }
 
   function handlePrintCombined() {
+    ensurePortraitPrint()
     setPrintMode('combined')
     window.setTimeout(() => window.print(), 0)
   }
 
   function handlePrintCover() {
+    ensurePortraitPrint()
     setPrintMode('cover')
     window.setTimeout(() => window.print(), 0)
   }
