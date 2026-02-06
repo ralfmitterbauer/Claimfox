@@ -104,7 +104,7 @@ export default function CvPage() {
       <section className="page cv-page cv-a4">
         <div className="cv-shell">
           <div className="cv-header">
-            <Header title="CURRICULUM VITAE" subtitle="Ralf Mitterbauer" subtitleColor="#65748b" />
+            <Header title="LEBENSLAUF" subtitle="Ralf Mitterbauer" subtitleColor="#65748b" />
             <div className="cv-actions">
               <Button className="cv-download" onClick={handlePrintCv}>
                 PDF herunterladen
@@ -120,26 +120,27 @@ export default function CvPage() {
 
           <div className="cv-hero">
             <div className="cv-hero-left">
-              <h2>Senior Technical Product Manager | Platform &amp; Workflow Orchestration</h2>
-              <p>Bad Salzdetfuth (Region Hannover), Germany</p>
-              <p>Phone: +49 (0)151 22644067 · Email: ralf.mitterbauer@t-online.de</p>
+              <h2>Director Product &amp; Operations | Product Leadership &amp; Execution</h2>
+              <p>Bad Salzdetfuth (Region Hannover)</p>
+              <p>Bereit für hybrides Arbeiten in Bremen</p>
+              <p>Telefon: +49 (0)151 22644067</p>
+              <p>E-Mail: ralf.mitterbauer@t-online.de</p>
               <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
               <p>Remote (Germany)</p>
             </div>
             <Card className="cv-profile-card">
               <img className="cv-profile-image" src={profileImage} alt="Ralf Mitterbauer" />
               <div>
-                <strong>Professional Summary</strong>
+                <strong>Profil</strong>
                 <p>
-                  Senior Technical Product Manager with extensive experience owning and evolving mission-critical platforms, partner systems,
-                  and end-to-end workflows in complex, regulated, and revenue-generating environments. Strong background in platform
-                  orchestration, workflow coordination, and system integration, with a proven ability to translate business, operational,
-                  and compliance requirements into robust and scalable product capabilities.
+                  Erfahrener Product- und Operations-Leader mit klarer Verantwortung für Outcome, Fokus und verlässliche Execution in
+                  technologiegetriebenen Organisationen. Langjährige Erfahrung darin, strategische Ziele (OKRs) in klare Prioritäten,
+                  wirksame Initiativen und messbare Ergebnisse zu übersetzen – auch unter hoher Komplexität und Zeitdruck.
                 </p>
                 <p>
-                  Highly experienced in operating as a horizontal product lead, aligning multiple domains, engineering teams, and external
-                  partners while safeguarding long-term platform integrity. Structured, systems-oriented, and comfortable taking ownership
-                  in high-complexity environments with a strong focus on reliability, performance, and operational efficiency.
+                  Stark in der Führung interdisziplinärer Teams, im Aufbau klarer Entscheidungs- und Priorisierungslogiken sowie in der
+                  End-to-End-Verantwortung für Customer Journeys, Delivery und operative Wirksamkeit. Ruhig, entscheidungsstark und
+                  konsequent in der Umsetzung – mit hohem Anspruch an Klarheit, Ownership und Wirkung.
                 </p>
               </div>
             </Card>
@@ -147,98 +148,91 @@ export default function CvPage() {
 
           <div className="cv-grid">
             <Card className="cv-card">
-              <h3>Professional Summary</h3>
+              <h3>Profil</h3>
               <p>
-                Senior Technical Product Manager with extensive experience owning and evolving mission-critical platforms, partner systems,
-                and end-to-end workflows in complex, regulated, and revenue-generating environments.
+                Erfahrener Product- und Operations-Leader mit klarer Verantwortung für Outcome, Fokus und verlässliche Execution in
+                technologiegetriebenen Organisationen.
               </p>
               <p>
-                Strong background in platform orchestration, workflow coordination, and system integration, with a proven ability to translate
-                business, operational, and compliance requirements into robust and scalable product capabilities.
+                Langjährige Erfahrung darin, strategische Ziele (OKRs) in klare Prioritäten, wirksame Initiativen und messbare Ergebnisse zu
+                übersetzen – auch unter hoher Komplexität und Zeitdruck.
               </p>
               <p>
-                Highly experienced in operating as a horizontal product lead, aligning multiple domains, engineering teams, and external partners
-                while safeguarding long-term platform integrity.
+                Stark in der Führung interdisziplinärer Teams, im Aufbau klarer Entscheidungs- und Priorisierungslogiken sowie in der
+                End-to-End-Verantwortung für Customer Journeys, Delivery und operative Wirksamkeit.
               </p>
             </Card>
 
             <Card className="cv-card">
-              <h3>Core Competencies</h3>
+              <h3>Kernkompetenzen</h3>
               <ul>
-                <li>Technical Product Management (Platform &amp; Backend Products)</li>
-                <li>Platform &amp; Workflow Orchestration</li>
-                <li>End-to-End Process Design &amp; Coordination</li>
-                <li>API-driven Systems &amp; Service Integration</li>
-                <li>State-based Workflows, Rules &amp; Exception Handling</li>
-                <li>Product Vision, Roadmaps &amp; Strategic Prioritization</li>
-                <li>Backlog Ownership &amp; Value-based Prioritization</li>
-                <li>Cross-functional Stakeholder Alignment</li>
-                <li>KPI Ownership (Reliability, Conversion, Cost, Performance)</li>
-                <li>Change, Transformation &amp; Product Leadership</li>
+                <li>Product &amp; Operations Leadership</li>
+                <li>Verantwortung für Outcome, KPIs &amp; Delivery</li>
+                <li>OKR-basierte Zielsteuerung &amp; Priorisierung</li>
+                <li>Aufbau stabiler Produkt- &amp; Execution-Systeme</li>
+                <li>Customer Journey Ownership (SaaS / Plattform / SMB)</li>
+                <li>Fokusdisziplin, Scope-Shaping &amp; Entscheidungsfindung</li>
+                <li>Führung interdisziplinärer Teams (Product, Tech, Ops)</li>
+                <li>Enge Zusammenarbeit mit Geschäftsführung &amp; Stakeholdern</li>
+                <li>Change, Skalierung &amp; Organisationsentwicklung</li>
               </ul>
             </Card>
           </div>
 
           <div className="cv-section">
-            <h3>Professional Experience</h3>
+            <h3>Beruflicher Werdegang</h3>
             <div className="cv-timeline">
               <div>
-                <strong>Insurfox GmbH – Hamburg, Germany</strong>
-                <span>Product Owner / Technical Product Manager – Claims Platform · Since 11/2025</span>
+                <strong>Insurfox GmbH</strong>
+                <span>Product Lead / Product Owner – Plattform &amp; Operations-nahe Prozesse · seit 11/2025</span>
                 <ul>
-                  <li>Product lead for a central, revenue-critical platform coordinating end-to-end insurance workflows across multiple internal systems and external partners.</li>
-                  <li>Own the vision, roadmap, and priorities for a central claims and partner platform.</li>
-                  <li>Design and evolve end-to-end workflows covering intake, validation, decision logic, fulfillment, and communication.</li>
-                  <li>Translate business, regulatory, and operational requirements into reusable platform capabilities.</li>
-                  <li>Own and maintain the product backlog, ensuring transparency and value-driven prioritization.</li>
-                  <li>Act as the central interface between Engineering, Business, Operations, and external service providers.</li>
-                  <li>Collaborate closely with senior engineers and architects on system boundaries, scalability, and long-term maintainability.</li>
-                  <li>Support the ongoing evolution of the platform toward higher reliability, scalability, and operational efficiency.</li>
+                  <li>Gesamtverantwortung für den Produkterfolg einer zentralen, geschäftskritischen Plattform mit hoher operativer Relevanz.</li>
+                  <li>Verantwortung für Produktvision, Roadmap und Prioritäten mit klarem Fokus auf messbare Outcomes.</li>
+                  <li>Übersetzung strategischer Ziele in konkrete Initiativen, sauberes Scope-Shaping und stabile Execution.</li>
+                  <li>Sicherstellung einer ruhigen, vorhersehbaren Delivery über Produkt, Entwicklung und angrenzende operative Bereiche hinweg.</li>
+                  <li>Enge Zusammenarbeit mit Geschäftsführung, Fachbereichen und externen Partnern.</li>
+                  <li>Etablierung klarer Regeln für Priorisierung, Entscheidungsfindung sowie Start/Stop von Initiativen.</li>
+                  <li>Stärkung von Ownership, Verantwortung und Entscheidungsfähigkeit im Team.</li>
                 </ul>
               </div>
               <div>
-                <strong>RLE Nova GmbH – Germany</strong>
-                <span>Product Manager / Product Owner – Digital Platforms · 01/2022 – 10/2025</span>
+                <strong>RLE Nova GmbH</strong>
+                <span>Produktmanager / Product Lead · 01/2022 – 10/2025</span>
                 <ul>
-                  <li>Owned digital platform and partner products from concept to market launch.</li>
-                  <li>Led the restructuring and further development of existing products in agile environments.</li>
-                  <li>Coordinated the integration of external systems, partners, and service providers.</li>
-                  <li>Defined product requirements, roadmaps, and success metrics.</li>
-                  <li>Worked closely with Engineering, Business stakeholders, and customers to deliver scalable solutions.</li>
+                  <li>Verantwortung für digitale Produkte und Angebotslogiken von der Idee bis zum Marktbetrieb.</li>
+                  <li>Aufbau klarer Produktstrukturen, Prioritäten und Entscheidungswege.</li>
+                  <li>Führung und Koordination interdisziplinärer Teams (Tech, Business, externe Partner).</li>
+                  <li>Fokus auf Wirkung, Kundennutzen und nachhaltige Delivery statt Feature-Output.</li>
                 </ul>
               </div>
               <div>
-                <strong>RLE INTERNATIONAL GmbH &amp; Co. KG – Germany / International</strong>
-                <span>Senior Consultant / Project Manager (After Sales &amp; Operations) · 05/2017 – 12/2021</span>
+                <strong>RLE INTERNATIONAL GmbH &amp; Co. KG</strong>
+                <span>Senior Berater / Projektleiter · 05/2017 – 12/2021</span>
                 <ul>
-                  <li>Led complex, cross-market transformation and optimization initiatives.</li>
-                  <li>Designed and implemented data-driven service and operational strategies.</li>
-                  <li>Moderated senior stakeholders across business and operational units.</li>
-                  <li>Coordinated international, cross-functional teams.</li>
-                  <li>Delivered measurable improvements in efficiency, performance, and revenue.</li>
+                  <li>Verantwortung für komplexe Transformations- und Optimierungsprogramme.</li>
+                  <li>Steuerung mehrerer paralleler Initiativen mit klarer Ergebnisverantwortung.</li>
+                  <li>Moderation anspruchsvoller Stakeholder-Situationen auf Management-Ebene.</li>
+                  <li>Nachweisliche Verbesserung von Effizienz, Qualität und wirtschaftlichem Ergebnis.</li>
                 </ul>
               </div>
               <div>
-                <strong>A.T.U. GmbH &amp; Co. KG – Germany</strong>
-                <span>Branch Manager / Business Leader · 06/2015 – 05/2017</span>
+                <strong>A.T.U. GmbH &amp; Co. KG</strong>
+                <span>Geschäftsleiter · 06/2015 – 05/2017</span>
                 <ul>
-                  <li>Full operational and commercial responsibility for a large business unit.</li>
-                  <li>Leadership and development of teams with 36+ employees.</li>
-                  <li>Ownership of performance, quality, cost, and operational KPIs.</li>
-                  <li>Execution of organizational and process transformations.</li>
+                  <li>Gesamtverantwortung für einen großen Standort mit über 36 Mitarbeitenden.</li>
+                  <li>Führung, Zielsteuerung und operative Exzellenz.</li>
+                  <li>Klare Entscheidungen auch unter Unsicherheit und Zeitdruck.</li>
+                  <li>Verantwortung für Ergebnis, Qualität, Prozesse und Teamleistung.</li>
                 </ul>
               </div>
               <div>
-                <strong>Nobilas GmbH (Akzo Nobel) – Germany (Nationwide)</strong>
-                <span>Service Manager – Claims Steering &amp; Partner Networks · 12/2006 – 04/2008</span>
+                <strong>Nobilas GmbH (Akzo Nobel)</strong>
+                <span>Service Manager – Schadensteuerung &amp; Partnernetzwerke · 12/2006 – 04/2008</span>
                 <ul>
-                  <li>Senior management role within the insurance and claims ecosystem.</li>
-                  <li>Strategic and operational ownership of a nationwide workshop and partner network.</li>
-                  <li>Key partner for major insurance groups in claims and repair management.</li>
-                  <li>Coordination of end-to-end claims workflows across insurers, service partners, and internal teams.</li>
-                  <li>Leadership responsibility for more than 50 employees in operational and coordinating roles.</li>
-                  <li>Design and implementation of partner, quality, and control frameworks.</li>
-                  <li>Moderation of complex stakeholder environments at management and operational level.</li>
+                  <li>Verantwortung für ein bundesweites Partner- und Werkstattnetzwerk.</li>
+                  <li>Zentrale Schnittstelle zu namhaften Versicherungskonzernen.</li>
+                  <li>Führung von über 50 Mitarbeitenden.</li>
+                  <li>Steuerung komplexer End-to-End-Prozesse mit hoher operativer Wirkung.</li>
                 </ul>
               </div>
             </div>
@@ -246,26 +240,16 @@ export default function CvPage() {
 
           <div className="cv-grid">
             <Card className="cv-card">
-              <h3>Additional Experience (Selection)</h3>
+              <h3>Ausbildung</h3>
               <ul>
-                <li>Service Manager – AH Lier GmbH &amp; Co. KG</li>
-                <li>Operations / Innovation Manager – GIMS UG</li>
-                <li>Senior Consultant – IFL Consulting Group</li>
-                <li>Management &amp; Business Development Roles – Akzo Nobel</li>
-                <li>Marketing Manager – Porsche Racing Team Kadach</li>
-                <li>Founder / Managing Director – own companies</li>
+                <li>Karosserie- und Fahrzeugbauer-Meister (DQR 6 – Bachelor-Niveau)</li>
+                <li>Handwerkskammer Hannover</li>
               </ul>
             </Card>
             <Card className="cv-card">
-              <h3>Education</h3>
-              <ul>
-                <li>Master Craftsman (DQR Level 6 – equivalent to Bachelor level)</li>
-                <li>Body &amp; Vehicle Construction</li>
-                <li>Chamber of Crafts Hannover, Germany</li>
-              </ul>
-              <h3>Skills &amp; Languages</h3>
-              <p><strong>Languages:</strong> German – Native (C1+), English – Fluent / Professional Working Proficiency</p>
-              <p><strong>Tools &amp; Methods:</strong> Jira, Confluence, Miro, MS Office, agile delivery tools, process modeling, platform backlogs</p>
+              <h3>Sprachen &amp; Tools</h3>
+              <p><strong>Sprachen:</strong> Deutsch (Muttersprache), Englisch (verhandlungssicher)</p>
+              <p><strong>Tools &amp; Methoden:</strong> OKRs, Jira, Confluence, Miro, MS Office, agile &amp; hybride Delivery-Modelle</p>
             </Card>
           </div>
         </div>
@@ -274,128 +258,110 @@ export default function CvPage() {
           <div className="cv-print-header">
             <div>
               <h1>Ralf Mitterbauer</h1>
-              <h2>Senior Technical Product Manager | Platform &amp; Workflow Orchestration</h2>
+              <h2>Director Product &amp; Operations | Product Leadership &amp; Execution</h2>
             </div>
             <div className="cv-print-photo">
               <img src={profileImage} alt="Ralf Mitterbauer" />
             </div>
           </div>
           <div className="cv-print-contact">
-            <p>Bad Salzdetfuth (Region Hannover), Germany</p>
-            <p>Phone: +49 (0)151 22644067</p>
-            <p>Email: ralf.mitterbauer@t-online.de</p>
+            <p>Bad Salzdetfuth (Region Hannover)</p>
+            <p>Bereit für hybrides Arbeiten in Bremen</p>
+            <p>Telefon: +49 (0)151 22644067</p>
+            <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
             <p>Remote (Germany)</p>
           </div>
 
-          <h3>Professional Summary</h3>
+          <h3>Profil</h3>
           <p>
-            Senior Technical Product Manager with extensive experience owning and evolving mission-critical platforms, partner systems,
-            and end-to-end workflows in complex, regulated, and revenue-generating environments. Strong background in platform orchestration,
-            workflow coordination, and system integration, with a proven ability to translate business, operational, and compliance requirements
-            into robust and scalable product capabilities.
+            Erfahrener Product- und Operations-Leader mit klarer Verantwortung für Outcome, Fokus und verlässliche Execution in
+            technologiegetriebenen Organisationen. Langjährige Erfahrung darin, strategische Ziele (OKRs) in klare Prioritäten, wirksame
+            Initiativen und messbare Ergebnisse zu übersetzen – auch unter hoher Komplexität und Zeitdruck.
           </p>
           <p>
-            Highly experienced in operating as a horizontal product lead, aligning multiple domains, engineering teams, and external partners
-            while safeguarding long-term platform integrity. Structured, systems-oriented, and comfortable taking ownership in high-complexity
-            environments with a strong focus on reliability, performance, and operational efficiency.
+            Stark in der Führung interdisziplinärer Teams, im Aufbau klarer Entscheidungs- und Priorisierungslogiken sowie in der
+            End-to-End-Verantwortung für Customer Journeys, Delivery und operative Wirksamkeit. Ruhig, entscheidungsstark und konsequent
+            in der Umsetzung – mit hohem Anspruch an Klarheit, Ownership und Wirkung.
           </p>
 
-          <h3>Core Competencies</h3>
+          <h3>Kernkompetenzen</h3>
           <ul>
-            <li>Technical Product Management (Platform &amp; Backend Products)</li>
-            <li>Platform &amp; Workflow Orchestration</li>
-            <li>End-to-End Process Design &amp; Coordination</li>
-            <li>API-driven Systems &amp; Service Integration</li>
-            <li>State-based Workflows, Rules &amp; Exception Handling</li>
-            <li>Product Vision, Roadmaps &amp; Strategic Prioritization</li>
-            <li>Backlog Ownership &amp; Value-based Prioritization</li>
-            <li>Cross-functional Stakeholder Alignment</li>
-            <li>KPI Ownership (Reliability, Conversion, Cost, Performance)</li>
-            <li>Change, Transformation &amp; Product Leadership</li>
+            <li>Product &amp; Operations Leadership</li>
+            <li>Verantwortung für Outcome, KPIs &amp; Delivery</li>
+            <li>OKR-basierte Zielsteuerung &amp; Priorisierung</li>
+            <li>Aufbau stabiler Produkt- &amp; Execution-Systeme</li>
+            <li>Customer Journey Ownership (SaaS / Plattform / SMB)</li>
+            <li>Fokusdisziplin, Scope-Shaping &amp; Entscheidungsfindung</li>
+            <li>Führung interdisziplinärer Teams (Product, Tech, Ops)</li>
+            <li>Enge Zusammenarbeit mit Geschäftsführung &amp; Stakeholdern</li>
+            <li>Change, Skalierung &amp; Organisationsentwicklung</li>
           </ul>
 
-          <h3>Professional Experience</h3>
-          <h4>Insurfox GmbH – Hamburg, Germany</h4>
-          <p>Product Owner / Technical Product Manager – Claims Platform · Since 11/2025</p>
+          <h3>Beruflicher Werdegang</h3>
+          <h4>Insurfox GmbH</h4>
+          <p>Product Lead / Product Owner – Plattform &amp; Operations-nahe Prozesse · seit 11/2025</p>
           <ul>
-            <li>Product lead for a central, revenue-critical platform coordinating end-to-end insurance workflows across multiple internal systems and external partners.</li>
-            <li>Own the vision, roadmap, and priorities for a central claims and partner platform.</li>
-            <li>Design and evolve end-to-end workflows covering intake, validation, decision logic, fulfillment, and communication.</li>
-            <li>Translate business, regulatory, and operational requirements into reusable platform capabilities.</li>
-            <li>Own and maintain the product backlog, ensuring transparency and value-driven prioritization.</li>
-            <li>Act as the central interface between Engineering, Business, Operations, and external service providers.</li>
-            <li>Collaborate closely with senior engineers and architects on system boundaries, scalability, and long-term maintainability.</li>
-            <li>Support the ongoing evolution of the platform toward higher reliability, scalability, and operational efficiency.</li>
+            <li>Gesamtverantwortung für den Produkterfolg einer zentralen, geschäftskritischen Plattform mit hoher operativer Relevanz.</li>
+            <li>Verantwortung für Produktvision, Roadmap und Prioritäten mit klarem Fokus auf messbare Outcomes.</li>
+            <li>Übersetzung strategischer Ziele in konkrete Initiativen, sauberes Scope-Shaping und stabile Execution.</li>
+            <li>Sicherstellung einer ruhigen, vorhersehbaren Delivery über Produkt, Entwicklung und angrenzende operative Bereiche hinweg.</li>
+            <li>Enge Zusammenarbeit mit Geschäftsführung, Fachbereichen und externen Partnern.</li>
+            <li>Etablierung klarer Regeln für Priorisierung, Entscheidungsfindung sowie Start/Stop von Initiativen.</li>
+            <li>Stärkung von Ownership, Verantwortung und Entscheidungsfähigkeit im Team.</li>
           </ul>
 
-          <h4>RLE Nova GmbH – Germany</h4>
-          <p>Product Manager / Product Owner – Digital Platforms · 01/2022 – 10/2025</p>
+          <h4>RLE Nova GmbH</h4>
+          <p>Produktmanager / Product Lead · 01/2022 – 10/2025</p>
           <ul>
-            <li>Owned digital platform and partner products from concept to market launch.</li>
-            <li>Led the restructuring and further development of existing products in agile environments.</li>
-            <li>Coordinated the integration of external systems, partners, and service providers.</li>
-            <li>Defined product requirements, roadmaps, and success metrics.</li>
-            <li>Worked closely with Engineering, Business stakeholders, and customers to deliver scalable solutions.</li>
+            <li>Verantwortung für digitale Produkte und Angebotslogiken von der Idee bis zum Marktbetrieb.</li>
+            <li>Aufbau klarer Produktstrukturen, Prioritäten und Entscheidungswege.</li>
+            <li>Führung und Koordination interdisziplinärer Teams (Tech, Business, externe Partner).</li>
+            <li>Fokus auf Wirkung, Kundennutzen und nachhaltige Delivery statt Feature-Output.</li>
           </ul>
 
-          <h4>RLE INTERNATIONAL GmbH &amp; Co. KG – Germany / International</h4>
-          <p>Senior Consultant / Project Manager (After Sales &amp; Operations) · 05/2017 – 12/2021</p>
+          <h4>RLE INTERNATIONAL GmbH &amp; Co. KG</h4>
+          <p>Senior Berater / Projektleiter · 05/2017 – 12/2021</p>
           <ul>
-            <li>Led complex, cross-market transformation and optimization initiatives.</li>
-            <li>Designed and implemented data-driven service and operational strategies.</li>
-            <li>Moderated senior stakeholders across business and operational units.</li>
-            <li>Coordinated international, cross-functional teams.</li>
-            <li>Delivered measurable improvements in efficiency, performance, and revenue.</li>
+            <li>Verantwortung für komplexe Transformations- und Optimierungsprogramme.</li>
+            <li>Steuerung mehrerer paralleler Initiativen mit klarer Ergebnisverantwortung.</li>
+            <li>Moderation anspruchsvoller Stakeholder-Situationen auf Management-Ebene.</li>
+            <li>Nachweisliche Verbesserung von Effizienz, Qualität und wirtschaftlichem Ergebnis.</li>
           </ul>
 
-          <h4>A.T.U. GmbH &amp; Co. KG – Germany</h4>
-          <p>Branch Manager / Business Leader · 06/2015 – 05/2017</p>
+          <h4>A.T.U. GmbH &amp; Co. KG</h4>
+          <p>Geschäftsleiter · 06/2015 – 05/2017</p>
           <ul>
-            <li>Full operational and commercial responsibility for a large business unit.</li>
-            <li>Leadership and development of teams with 36+ employees.</li>
-            <li>Ownership of performance, quality, cost, and operational KPIs.</li>
-            <li>Execution of organizational and process transformations.</li>
+            <li>Gesamtverantwortung für einen großen Standort mit über 36 Mitarbeitenden.</li>
+            <li>Führung, Zielsteuerung und operative Exzellenz.</li>
+            <li>Klare Entscheidungen auch unter Unsicherheit und Zeitdruck.</li>
+            <li>Verantwortung für Ergebnis, Qualität, Prozesse und Teamleistung.</li>
           </ul>
 
-          <h4>Nobilas GmbH (Akzo Nobel) – Germany (Nationwide)</h4>
-          <p>Service Manager – Claims Steering &amp; Partner Networks · 12/2006 – 04/2008</p>
+          <h4>Nobilas GmbH (Akzo Nobel)</h4>
+          <p>Service Manager – Schadensteuerung &amp; Partnernetzwerke · 12/2006 – 04/2008</p>
           <ul>
-            <li>Senior management role within the insurance and claims ecosystem.</li>
-            <li>Strategic and operational ownership of a nationwide workshop and partner network.</li>
-            <li>Key partner for major insurance groups in claims and repair management.</li>
-            <li>Coordination of end-to-end claims workflows across insurers, service partners, and internal teams.</li>
-            <li>Leadership responsibility for more than 50 employees in operational and coordinating roles.</li>
-            <li>Design and implementation of partner, quality, and control frameworks.</li>
-            <li>Moderation of complex stakeholder environments at management and operational level.</li>
+            <li>Verantwortung für ein bundesweites Partner- und Werkstattnetzwerk.</li>
+            <li>Zentrale Schnittstelle zu namhaften Versicherungskonzernen.</li>
+            <li>Führung von über 50 Mitarbeitenden.</li>
+            <li>Steuerung komplexer End-to-End-Prozesse mit hoher operativer Wirkung.</li>
           </ul>
 
-          <h3>Additional Experience (Selection)</h3>
+          <h3>Ausbildung</h3>
           <ul>
-            <li>Service Manager – AH Lier GmbH &amp; Co. KG</li>
-            <li>Operations / Innovation Manager – GIMS UG</li>
-            <li>Senior Consultant – IFL Consulting Group</li>
-            <li>Management &amp; Business Development Roles – Akzo Nobel</li>
-            <li>Marketing Manager – Porsche Racing Team Kadach</li>
-            <li>Founder / Managing Director – own companies</li>
+            <li>Karosserie- und Fahrzeugbauer-Meister (DQR 6 – Bachelor-Niveau)</li>
+            <li>Handwerkskammer Hannover</li>
           </ul>
 
-          <h3>Education</h3>
-          <ul>
-            <li>Master Craftsman (DQR Level 6 – equivalent to Bachelor level)</li>
-            <li>Body &amp; Vehicle Construction</li>
-            <li>Chamber of Crafts Hannover, Germany</li>
-          </ul>
-
-          <h3>Skills &amp; Languages</h3>
-          <p><strong>Languages:</strong> German – Native (C1+), English – Fluent / Professional Working Proficiency</p>
-          <p><strong>Tools &amp; Methods:</strong> Jira, Confluence, Miro, MS Office, agile delivery tools, process modeling, platform backlogs</p>
+          <h3>Sprachen &amp; Tools</h3>
+          <p><strong>Sprachen:</strong> Deutsch (Muttersprache), Englisch (verhandlungssicher)</p>
+          <p><strong>Tools &amp; Methoden:</strong> OKRs, Jira, Confluence, Miro, MS Office, agile &amp; hybride Delivery-Modelle</p>
         </div>
 
         <div className="cv-print cv-print-combined">
           <div className="cv-print-header">
             <div>
-              <h1>Senior Technical Product Manager – Platform &amp; Workflow Orchestration</h1>
+              <h1>Statement of Interest – Director Product &amp; Operations</h1>
               <h2>Ralf Mitterbauer</h2>
             </div>
             <div className="cv-print-photo">
@@ -403,55 +369,50 @@ export default function CvPage() {
             </div>
           </div>
           <div className="cv-print-contact">
-            <p>Bad Salzdetfuth (Region Hannover), Germany</p>
-            <p>Phone: +49 (0)151 22644067</p>
-            <p>Email: ralf.mitterbauer@t-online.de</p>
+            <p>Bad Salzdetfuth (Region Hannover)</p>
+            <p>Bereit für hybrides Arbeiten in Bremen</p>
+            <p>Telefon: +49 (0)151 22644067</p>
+            <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
             <p>Remote (Germany)</p>
           </div>
 
           <div className="cv-letter-space cv-letter-space-3" />
-          <h3 className="cv-letter-heading">Statement of Interest</h3>
+          <h3 className="cv-letter-heading">Statement of Interest – Director Product &amp; Operations</h3>
           <div className="cv-letter-space cv-letter-space-2" />
-          <p>Dear Hiring Team,</p>
+          <p>Sehr geehrte Damen und Herren,</p>
           <p>
-            I am writing to express my interest in the Senior Technical Product Manager – Platform &amp; Workflow Orchestration role. The
-            position strongly resonates with my background in owning and evolving mission-critical, horizontal platforms that coordinate
-            complex workflows across multiple services, stakeholders, and regulatory constraints.
+            die Rolle Director Product &amp; Operations bei Robin Cook spricht mich sehr an, da sie genau dort ansetzt, wo nachhaltiger
+            Produkterfolg entsteht: bei klarer Verantwortung für Outcome, Fokusdisziplin und verlässlicher Execution – über Produkt,
+            Operations und Customer Journey hinweg.
           </p>
           <p>
-            In my current role as Product Owner / Technical Product Manager at Insurfox, I take end-to-end ownership of a central,
-            revenue-generating platform within the insurance domain. This platform coordinates complex workflows across intake, validation,
-            decision logic, partner interaction, and communication. My responsibilities include defining product vision and roadmaps, owning
-            and prioritizing the backlog, and translating business, operational, and compliance requirements into robust, reusable platform
-            capabilities. I work closely with senior engineers and architects to ensure scalability, reliability, and long-term
-            maintainability while actively managing dependencies across multiple domains.
+            In meinen bisherigen Rollen habe ich wiederholt die Verantwortung übernommen, strategische Ziele in klare Prioritäten,
+            wirksame Initiativen und messbare Ergebnisse zu übersetzen. Dabei lag mein Fokus nie auf einzelnen Features, sondern auf dem
+            Gesamterfolg des Produkts im Alltag der Kund:innen. Als Product Lead bei Insurfox verantworte ich heute den Produkterfolg
+            einer zentralen, operativ hochrelevanten Plattform und sorge für ruhige, vorhersehbare Delivery auch unter hoher Komplexität.
           </p>
           <p>
-            Throughout my career, I have consistently focused on orchestration, coordination, and platform ownership in complex environments.
-            Earlier, as Service Manager at Nobilas (Akzo Nobel), I was responsible for steering nationwide partner networks within the
-            insurance claims ecosystem. I coordinated end-to-end workflows across insurers, service partners, and internal teams and held
-            leadership responsibility for more than 50 employees. This experience significantly shaped my systems-oriented mindset and my
-            understanding of how platform decisions directly impact operational efficiency, partner performance, and customer outcomes.
+            Ein wiederkehrendes Muster meiner Laufbahn ist die Führung interdisziplinärer Teams, das Etablieren klarer Entscheidungslogiken
+            sowie die konsequente Ausrichtung auf Wirkung statt Aktivität. Ob in Produktrollen, in der operativen Geschäftsleitung oder in
+            der Steuerung großer Partnernetzwerke – ich bin es gewohnt, Verantwortung zu übernehmen, Entscheidungen zu treffen und sie auch
+            unter Unsicherheit konsequent zu vertreten.
           </p>
           <p>
-            What particularly attracts me to this role is the focus on an already live, business-critical orchestration layer, where the
-            challenge lies not in validation but in continuously improving performance, reliability, scalability, and economic efficiency
-            under increasing complexity. I am comfortable operating in environments where workflows are revenue-critical, highly
-            interconnected, and subject to regulatory requirements, and where product decisions must carefully balance technical integrity
-            with business impact.
+            Besonders reizt mich an Robin Cook die klare Mission und die Phase, in der sich das Unternehmen befindet: Das Produkt
+            funktioniert, der Markt ist da – jetzt geht es darum, Strukturen, Fokus und Execution auf das nächste Level zu heben. Genau
+            hier sehe ich meine Stärke und meinen Beitrag.
           </p>
           <p>
-            I view the orchestration platform not as a technical abstraction, but as a product in its own right—one that enables
-            consistency, quality, and speed across multiple services while protecting long-term platform health. I enjoy working at this
-            horizontal layer, aligning product, engineering, operations, and compliance, and taking clear ownership when trade-offs are
-            required.
+            Ich arbeite ruhig, klar und verbindlich – auch in stressigen Phasen – und scheue keine Konflikte, wenn sie notwendig sind, um
+            Qualität, Fokus und gemeinsame Ziele zu sichern. Die enge Zusammenarbeit mit der Geschäftsführung sowie die Bereitschaft,
+            Verantwortung vor Ort in Bremen zu übernehmen, sehe ich als selbstverständlichen Teil dieser Rolle.
           </p>
           <p>
-            I would welcome the opportunity to discuss how my experience in platform ownership, workflow coordination, and cross-functional
-            leadership can contribute to the continued evolution of your orchestration platform. Thank you for your time and consideration.
+            Gerne würde ich meine Erfahrung und Haltung bei Robin Cook einbringen und gemeinsam den messbaren Produkterfolg
+            weiterentwickeln. Über ein persönliches Gespräch freue ich mich sehr.
           </p>
-          <p>Kind regards,</p>
+          <p>Mit freundlichen Grüßen</p>
           <p>Ralf Mitterbauer</p>
 
           <div className="print-page-break" />
@@ -459,128 +420,110 @@ export default function CvPage() {
           <div className="cv-print-header">
             <div>
               <h1>Ralf Mitterbauer</h1>
-              <h2>Senior Technical Product Manager | Platform &amp; Workflow Orchestration</h2>
+              <h2>Director Product &amp; Operations | Product Leadership &amp; Execution</h2>
             </div>
             <div className="cv-print-photo">
               <img src={profileImage} alt="Ralf Mitterbauer" />
             </div>
           </div>
           <div className="cv-print-contact">
-            <p>Bad Salzdetfuth (Region Hannover), Germany</p>
-            <p>Phone: +49 (0)151 22644067</p>
-            <p>Email: ralf.mitterbauer@t-online.de</p>
+            <p>Bad Salzdetfuth (Region Hannover)</p>
+            <p>Bereit für hybrides Arbeiten in Bremen</p>
+            <p>Telefon: +49 (0)151 22644067</p>
+            <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
             <p>Remote (Germany)</p>
           </div>
 
-          <h3>Professional Summary</h3>
+          <h3>Profil</h3>
           <p>
-            Senior Technical Product Manager with extensive experience owning and evolving mission-critical platforms, partner systems,
-            and end-to-end workflows in complex, regulated, and revenue-generating environments. Strong background in platform orchestration,
-            workflow coordination, and system integration, with a proven ability to translate business, operational, and compliance requirements
-            into robust and scalable product capabilities.
+            Erfahrener Product- und Operations-Leader mit klarer Verantwortung für Outcome, Fokus und verlässliche Execution in
+            technologiegetriebenen Organisationen. Langjährige Erfahrung darin, strategische Ziele (OKRs) in klare Prioritäten, wirksame
+            Initiativen und messbare Ergebnisse zu übersetzen – auch unter hoher Komplexität und Zeitdruck.
           </p>
           <p>
-            Highly experienced in operating as a horizontal product lead, aligning multiple domains, engineering teams, and external partners
-            while safeguarding long-term platform integrity. Structured, systems-oriented, and comfortable taking ownership in high-complexity
-            environments with a strong focus on reliability, performance, and operational efficiency.
+            Stark in der Führung interdisziplinärer Teams, im Aufbau klarer Entscheidungs- und Priorisierungslogiken sowie in der
+            End-to-End-Verantwortung für Customer Journeys, Delivery und operative Wirksamkeit. Ruhig, entscheidungsstark und konsequent
+            in der Umsetzung – mit hohem Anspruch an Klarheit, Ownership und Wirkung.
           </p>
 
-          <h3>Core Competencies</h3>
+          <h3>Kernkompetenzen</h3>
           <ul>
-            <li>Technical Product Management (Platform &amp; Backend Products)</li>
-            <li>Platform &amp; Workflow Orchestration</li>
-            <li>End-to-End Process Design &amp; Coordination</li>
-            <li>API-driven Systems &amp; Service Integration</li>
-            <li>State-based Workflows, Rules &amp; Exception Handling</li>
-            <li>Product Vision, Roadmaps &amp; Strategic Prioritization</li>
-            <li>Backlog Ownership &amp; Value-based Prioritization</li>
-            <li>Cross-functional Stakeholder Alignment</li>
-            <li>KPI Ownership (Reliability, Conversion, Cost, Performance)</li>
-            <li>Change, Transformation &amp; Product Leadership</li>
+            <li>Product &amp; Operations Leadership</li>
+            <li>Verantwortung für Outcome, KPIs &amp; Delivery</li>
+            <li>OKR-basierte Zielsteuerung &amp; Priorisierung</li>
+            <li>Aufbau stabiler Produkt- &amp; Execution-Systeme</li>
+            <li>Customer Journey Ownership (SaaS / Plattform / SMB)</li>
+            <li>Fokusdisziplin, Scope-Shaping &amp; Entscheidungsfindung</li>
+            <li>Führung interdisziplinärer Teams (Product, Tech, Ops)</li>
+            <li>Enge Zusammenarbeit mit Geschäftsführung &amp; Stakeholdern</li>
+            <li>Change, Skalierung &amp; Organisationsentwicklung</li>
           </ul>
 
-          <h3>Professional Experience</h3>
-          <h4>Insurfox GmbH – Hamburg, Germany</h4>
-          <p>Product Owner / Technical Product Manager – Claims Platform · Since 11/2025</p>
+          <h3>Beruflicher Werdegang</h3>
+          <h4>Insurfox GmbH</h4>
+          <p>Product Lead / Product Owner – Plattform &amp; Operations-nahe Prozesse · seit 11/2025</p>
           <ul>
-            <li>Product lead for a central, revenue-critical platform coordinating end-to-end insurance workflows across multiple internal systems and external partners.</li>
-            <li>Own the vision, roadmap, and priorities for a central claims and partner platform.</li>
-            <li>Design and evolve end-to-end workflows covering intake, validation, decision logic, fulfillment, and communication.</li>
-            <li>Translate business, regulatory, and operational requirements into reusable platform capabilities.</li>
-            <li>Own and maintain the product backlog, ensuring transparency and value-driven prioritization.</li>
-            <li>Act as the central interface between Engineering, Business, Operations, and external service providers.</li>
-            <li>Collaborate closely with senior engineers and architects on system boundaries, scalability, and long-term maintainability.</li>
-            <li>Support the ongoing evolution of the platform toward higher reliability, scalability, and operational efficiency.</li>
+            <li>Gesamtverantwortung für den Produkterfolg einer zentralen, geschäftskritischen Plattform mit hoher operativer Relevanz.</li>
+            <li>Verantwortung für Produktvision, Roadmap und Prioritäten mit klarem Fokus auf messbare Outcomes.</li>
+            <li>Übersetzung strategischer Ziele in konkrete Initiativen, sauberes Scope-Shaping und stabile Execution.</li>
+            <li>Sicherstellung einer ruhigen, vorhersehbaren Delivery über Produkt, Entwicklung und angrenzende operative Bereiche hinweg.</li>
+            <li>Enge Zusammenarbeit mit Geschäftsführung, Fachbereichen und externen Partnern.</li>
+            <li>Etablierung klarer Regeln für Priorisierung, Entscheidungsfindung sowie Start/Stop von Initiativen.</li>
+            <li>Stärkung von Ownership, Verantwortung und Entscheidungsfähigkeit im Team.</li>
           </ul>
 
-          <h4>RLE Nova GmbH – Germany</h4>
-          <p>Product Manager / Product Owner – Digital Platforms · 01/2022 – 10/2025</p>
+          <h4>RLE Nova GmbH</h4>
+          <p>Produktmanager / Product Lead · 01/2022 – 10/2025</p>
           <ul>
-            <li>Owned digital platform and partner products from concept to market launch.</li>
-            <li>Led the restructuring and further development of existing products in agile environments.</li>
-            <li>Coordinated the integration of external systems, partners, and service providers.</li>
-            <li>Defined product requirements, roadmaps, and success metrics.</li>
-            <li>Worked closely with Engineering, Business stakeholders, and customers to deliver scalable solutions.</li>
+            <li>Verantwortung für digitale Produkte und Angebotslogiken von der Idee bis zum Marktbetrieb.</li>
+            <li>Aufbau klarer Produktstrukturen, Prioritäten und Entscheidungswege.</li>
+            <li>Führung und Koordination interdisziplinärer Teams (Tech, Business, externe Partner).</li>
+            <li>Fokus auf Wirkung, Kundennutzen und nachhaltige Delivery statt Feature-Output.</li>
           </ul>
 
-          <h4>RLE INTERNATIONAL GmbH &amp; Co. KG – Germany / International</h4>
-          <p>Senior Consultant / Project Manager (After Sales &amp; Operations) · 05/2017 – 12/2021</p>
+          <h4>RLE INTERNATIONAL GmbH &amp; Co. KG</h4>
+          <p>Senior Berater / Projektleiter · 05/2017 – 12/2021</p>
           <ul>
-            <li>Led complex, cross-market transformation and optimization initiatives.</li>
-            <li>Designed and implemented data-driven service and operational strategies.</li>
-            <li>Moderated senior stakeholders across business and operational units.</li>
-            <li>Coordinated international, cross-functional teams.</li>
-            <li>Delivered measurable improvements in efficiency, performance, and revenue.</li>
+            <li>Verantwortung für komplexe Transformations- und Optimierungsprogramme.</li>
+            <li>Steuerung mehrerer paralleler Initiativen mit klarer Ergebnisverantwortung.</li>
+            <li>Moderation anspruchsvoller Stakeholder-Situationen auf Management-Ebene.</li>
+            <li>Nachweisliche Verbesserung von Effizienz, Qualität und wirtschaftlichem Ergebnis.</li>
           </ul>
 
-          <h4>A.T.U. GmbH &amp; Co. KG – Germany</h4>
-          <p>Branch Manager / Business Leader · 06/2015 – 05/2017</p>
+          <h4>A.T.U. GmbH &amp; Co. KG</h4>
+          <p>Geschäftsleiter · 06/2015 – 05/2017</p>
           <ul>
-            <li>Full operational and commercial responsibility for a large business unit.</li>
-            <li>Leadership and development of teams with 36+ employees.</li>
-            <li>Ownership of performance, quality, cost, and operational KPIs.</li>
-            <li>Execution of organizational and process transformations.</li>
+            <li>Gesamtverantwortung für einen großen Standort mit über 36 Mitarbeitenden.</li>
+            <li>Führung, Zielsteuerung und operative Exzellenz.</li>
+            <li>Klare Entscheidungen auch unter Unsicherheit und Zeitdruck.</li>
+            <li>Verantwortung für Ergebnis, Qualität, Prozesse und Teamleistung.</li>
           </ul>
 
-          <h4>Nobilas GmbH (Akzo Nobel) – Germany (Nationwide)</h4>
-          <p>Service Manager – Claims Steering &amp; Partner Networks · 12/2006 – 04/2008</p>
+          <h4>Nobilas GmbH (Akzo Nobel)</h4>
+          <p>Service Manager – Schadensteuerung &amp; Partnernetzwerke · 12/2006 – 04/2008</p>
           <ul>
-            <li>Senior management role within the insurance and claims ecosystem.</li>
-            <li>Strategic and operational ownership of a nationwide workshop and partner network.</li>
-            <li>Key partner for major insurance groups in claims and repair management.</li>
-            <li>Coordination of end-to-end claims workflows across insurers, service partners, and internal teams.</li>
-            <li>Leadership responsibility for more than 50 employees in operational and coordinating roles.</li>
-            <li>Design and implementation of partner, quality, and control frameworks.</li>
-            <li>Moderation of complex stakeholder environments at management and operational level.</li>
+            <li>Verantwortung für ein bundesweites Partner- und Werkstattnetzwerk.</li>
+            <li>Zentrale Schnittstelle zu namhaften Versicherungskonzernen.</li>
+            <li>Führung von über 50 Mitarbeitenden.</li>
+            <li>Steuerung komplexer End-to-End-Prozesse mit hoher operativer Wirkung.</li>
           </ul>
 
-          <h3>Additional Experience (Selection)</h3>
+          <h3>Ausbildung</h3>
           <ul>
-            <li>Service Manager – AH Lier GmbH &amp; Co. KG</li>
-            <li>Operations / Innovation Manager – GIMS UG</li>
-            <li>Senior Consultant – IFL Consulting Group</li>
-            <li>Management &amp; Business Development Roles – Akzo Nobel</li>
-            <li>Marketing Manager – Porsche Racing Team Kadach</li>
-            <li>Founder / Managing Director – own companies</li>
+            <li>Karosserie- und Fahrzeugbauer-Meister (DQR 6 – Bachelor-Niveau)</li>
+            <li>Handwerkskammer Hannover</li>
           </ul>
 
-          <h3>Education</h3>
-          <ul>
-            <li>Master Craftsman (DQR Level 6 – equivalent to Bachelor level)</li>
-            <li>Body &amp; Vehicle Construction</li>
-            <li>Chamber of Crafts Hannover, Germany</li>
-          </ul>
-
-          <h3>Skills &amp; Languages</h3>
-          <p><strong>Languages:</strong> German – Native (C1+), English – Fluent / Professional Working Proficiency</p>
-          <p><strong>Tools &amp; Methods:</strong> Jira, Confluence, Miro, MS Office, agile delivery tools, process modeling, platform backlogs</p>
+          <h3>Sprachen &amp; Tools</h3>
+          <p><strong>Sprachen:</strong> Deutsch (Muttersprache), Englisch (verhandlungssicher)</p>
+          <p><strong>Tools &amp; Methoden:</strong> OKRs, Jira, Confluence, Miro, MS Office, agile &amp; hybride Delivery-Modelle</p>
         </div>
 
         <div className="cv-print cv-print-cover">
           <div className="cv-print-header">
             <div>
-              <h1>Senior Technical Product Manager – Platform &amp; Workflow Orchestration</h1>
+              <h1>Statement of Interest – Director Product &amp; Operations</h1>
               <h2>Ralf Mitterbauer</h2>
             </div>
             <div className="cv-print-photo">
@@ -588,55 +531,50 @@ export default function CvPage() {
             </div>
           </div>
           <div className="cv-print-contact">
-            <p>Bad Salzdetfuth (Region Hannover), Germany</p>
-            <p>Phone: +49 (0)151 22644067</p>
-            <p>Email: ralf.mitterbauer@t-online.de</p>
+            <p>Bad Salzdetfuth (Region Hannover)</p>
+            <p>Bereit für hybrides Arbeiten in Bremen</p>
+            <p>Telefon: +49 (0)151 22644067</p>
+            <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
             <p>Remote (Germany)</p>
           </div>
 
           <div className="cv-letter-space cv-letter-space-3" />
-          <h3 className="cv-letter-heading">Statement of Interest</h3>
+          <h3 className="cv-letter-heading">Statement of Interest – Director Product &amp; Operations</h3>
           <div className="cv-letter-space cv-letter-space-2" />
-          <p>Dear Hiring Team,</p>
+          <p>Sehr geehrte Damen und Herren,</p>
           <p>
-            I am writing to express my interest in the Senior Technical Product Manager – Platform &amp; Workflow Orchestration role. The
-            position strongly resonates with my background in owning and evolving mission-critical, horizontal platforms that coordinate
-            complex workflows across multiple services, stakeholders, and regulatory constraints.
+            die Rolle Director Product &amp; Operations bei Robin Cook spricht mich sehr an, da sie genau dort ansetzt, wo nachhaltiger
+            Produkterfolg entsteht: bei klarer Verantwortung für Outcome, Fokusdisziplin und verlässlicher Execution – über Produkt,
+            Operations und Customer Journey hinweg.
           </p>
           <p>
-            In my current role as Product Owner / Technical Product Manager at Insurfox, I take end-to-end ownership of a central,
-            revenue-generating platform within the insurance domain. This platform coordinates complex workflows across intake, validation,
-            decision logic, partner interaction, and communication. My responsibilities include defining product vision and roadmaps, owning
-            and prioritizing the backlog, and translating business, operational, and compliance requirements into robust, reusable platform
-            capabilities. I work closely with senior engineers and architects to ensure scalability, reliability, and long-term
-            maintainability while actively managing dependencies across multiple domains.
+            In meinen bisherigen Rollen habe ich wiederholt die Verantwortung übernommen, strategische Ziele in klare Prioritäten,
+            wirksame Initiativen und messbare Ergebnisse zu übersetzen. Dabei lag mein Fokus nie auf einzelnen Features, sondern auf dem
+            Gesamterfolg des Produkts im Alltag der Kund:innen. Als Product Lead bei Insurfox verantworte ich heute den Produkterfolg
+            einer zentralen, operativ hochrelevanten Plattform und sorge für ruhige, vorhersehbare Delivery auch unter hoher Komplexität.
           </p>
           <p>
-            Throughout my career, I have consistently focused on orchestration, coordination, and platform ownership in complex environments.
-            Earlier, as Service Manager at Nobilas (Akzo Nobel), I was responsible for steering nationwide partner networks within the
-            insurance claims ecosystem. I coordinated end-to-end workflows across insurers, service partners, and internal teams and held
-            leadership responsibility for more than 50 employees. This experience significantly shaped my systems-oriented mindset and my
-            understanding of how platform decisions directly impact operational efficiency, partner performance, and customer outcomes.
+            Ein wiederkehrendes Muster meiner Laufbahn ist die Führung interdisziplinärer Teams, das Etablieren klarer Entscheidungslogiken
+            sowie die konsequente Ausrichtung auf Wirkung statt Aktivität. Ob in Produktrollen, in der operativen Geschäftsleitung oder in
+            der Steuerung großer Partnernetzwerke – ich bin es gewohnt, Verantwortung zu übernehmen, Entscheidungen zu treffen und sie auch
+            unter Unsicherheit konsequent zu vertreten.
           </p>
           <p>
-            What particularly attracts me to this role is the focus on an already live, business-critical orchestration layer, where the
-            challenge lies not in validation but in continuously improving performance, reliability, scalability, and economic efficiency
-            under increasing complexity. I am comfortable operating in environments where workflows are revenue-critical, highly
-            interconnected, and subject to regulatory requirements, and where product decisions must carefully balance technical integrity
-            with business impact.
+            Besonders reizt mich an Robin Cook die klare Mission und die Phase, in der sich das Unternehmen befindet: Das Produkt
+            funktioniert, der Markt ist da – jetzt geht es darum, Strukturen, Fokus und Execution auf das nächste Level zu heben. Genau
+            hier sehe ich meine Stärke und meinen Beitrag.
           </p>
           <p>
-            I view the orchestration platform not as a technical abstraction, but as a product in its own right—one that enables
-            consistency, quality, and speed across multiple services while protecting long-term platform health. I enjoy working at this
-            horizontal layer, aligning product, engineering, operations, and compliance, and taking clear ownership when trade-offs are
-            required.
+            Ich arbeite ruhig, klar und verbindlich – auch in stressigen Phasen – und scheue keine Konflikte, wenn sie notwendig sind, um
+            Qualität, Fokus und gemeinsame Ziele zu sichern. Die enge Zusammenarbeit mit der Geschäftsführung sowie die Bereitschaft,
+            Verantwortung vor Ort in Bremen zu übernehmen, sehe ich als selbstverständlichen Teil dieser Rolle.
           </p>
           <p>
-            I would welcome the opportunity to discuss how my experience in platform ownership, workflow coordination, and cross-functional
-            leadership can contribute to the continued evolution of your orchestration platform. Thank you for your time and consideration.
+            Gerne würde ich meine Erfahrung und Haltung bei Robin Cook einbringen und gemeinsam den messbaren Produkterfolg
+            weiterentwickeln. Über ein persönliches Gespräch freue ich mich sehr.
           </p>
-          <p>Kind regards,</p>
+          <p>Mit freundlichen Grüßen</p>
           <p>Ralf Mitterbauer</p>
         </div>
       </section>
