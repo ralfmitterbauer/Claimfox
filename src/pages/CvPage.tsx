@@ -122,7 +122,6 @@ export default function CvPage() {
             <div className="cv-hero-left">
               <h2>Head of Product | Insurgo GmbH</h2>
               <p>Bad Salzdetfuth (Region Hannover), Deutschland</p>
-              <p>Bereit für Präsenz in Berlin &amp; Remote-Arbeit</p>
               <p>Telefon: +49 (0)151 22644067</p>
               <p>E-Mail: ralf.mitterbauer@t-online.de</p>
               <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
@@ -428,7 +427,6 @@ export default function CvPage() {
           </div>
           <div className="cv-print-contact">
             <p>Bad Salzdetfuth (Region Hannover), Deutschland</p>
-            <p>Bereit für Präsenz in Berlin &amp; Remote-Arbeit</p>
             <p>Telefon: +49 (0)151 22644067</p>
             <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
@@ -532,7 +530,6 @@ export default function CvPage() {
           </div>
           <div className="cv-print-contact">
             <p>Bad Salzdetfuth (Region Hannover), Deutschland</p>
-            <p>Bereit für Präsenz in Berlin &amp; Remote-Arbeit</p>
             <p>Telefon: +49 (0)151 22644067</p>
             <p>E-Mail: ralf.mitterbauer@t-online.de</p>
             <p>LinkedIn: www.linkedin.com/in/ralf-mitterbauer-6a9a319/</p>
