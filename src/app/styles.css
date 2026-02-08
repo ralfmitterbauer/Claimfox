@@ -2591,6 +2591,10 @@ a {
     display: none;
   }
 
+  .cv-print-cover {
+    display: none;
+  }
+
   .print-page-break {
     break-before: page;
     page-break-before: always;
