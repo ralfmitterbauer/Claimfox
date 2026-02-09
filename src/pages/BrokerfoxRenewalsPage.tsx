@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
-import Header from '@/components/ui/Header'
+import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
 import Button from '@/components/ui/Button'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
@@ -77,7 +77,7 @@ export default function BrokerfoxRenewalsPage() {
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Header title={t('brokerfox.renewals.title')} subtitle={t('brokerfox.renewals.subtitle')} titleColor="#0f172a" />
+        <BrokerfoxHeader title={t('brokerfox.renewals.title')} subtitle={t('brokerfox.renewals.subtitle')} />
         <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />
         <BrokerfoxNav />
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/ui/Card'
-import Header from '@/components/ui/Header'
+import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
@@ -42,7 +42,7 @@ export default function BrokerfoxIntegrationsPage() {
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Header title={t('brokerfox.integrations.title')} subtitle={t('brokerfox.integrations.subtitle')} titleColor="#0f172a" />
+        <BrokerfoxHeader title={t('brokerfox.integrations.title')} subtitle={t('brokerfox.integrations.subtitle')} />
         <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />
         <BrokerfoxNav />
         <Card variant="glass" title={t('brokerfox.integrations.listTitle')} subtitle={t('brokerfox.integrations.listSubtitle')}>

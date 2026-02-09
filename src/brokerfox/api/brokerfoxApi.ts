@@ -1,4 +1,5 @@
 import type {
+  CalendarEvent,
   Client,
   ComparisonResult,
   CoverageRequest,
@@ -6,6 +7,7 @@ import type {
   EntityType,
   IntegrationItem,
   IntegrationStatus,
+  MailboxItem,
   Offer,
   OfferLine,
   RenewalItem,
@@ -84,6 +86,8 @@ export function ensureSeeded(tenantId: string) {
   writeList(tenantId, 'documents', seed.documents)
   writeList(tenantId, 'tasks', seed.tasks)
   writeList(tenantId, 'integrations', seed.integrations)
+  writeList(tenantId, 'calendar', seed.calendarEvents)
+  writeList(tenantId, 'mailbox', seed.mailboxItems)
   writeList(tenantId, 'timeline', seed.timeline)
   writeValue(tenantId, 'hero', seed.hero)
   window.localStorage.setItem(flagKey, 'true')
@@ -97,7 +101,7 @@ export function seedAllTenantsIfEmpty() {
 
 export function resetDemoData(tenantId: string) {
   if (!isBrowser()) return
-  const keys = ['clients', 'tenders', 'offers', 'renewals', 'documents', 'tasks', 'integrations', 'timeline', 'hero', 'seeded']
+  const keys = ['clients', 'tenders', 'offers', 'renewals', 'documents', 'tasks', 'integrations', 'calendar', 'mailbox', 'timeline', 'hero', 'seeded']
   keys.forEach((entity) => window.localStorage.removeItem(key(tenantId, entity)))
   ensureSeeded(tenantId)
 }
@@ -291,6 +295,21 @@ export async function listDocuments(ctx: TenantContext) {
   return readList<DocumentMeta>(ctx.tenantId, 'documents')
 }
 
+export async function listMailboxItems(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<MailboxItem>(ctx.tenantId, 'mailbox')
+}
+
+export async function updateMailboxItem(ctx: TenantContext, itemId: string, update: Partial<MailboxItem>) {
+  ensureSeeded(ctx.tenantId)
+  const items = readList<MailboxItem>(ctx.tenantId, 'mailbox')
+  const idx = items.findIndex((item) => item.id === itemId)
+  if (idx === -1) return null
+  items[idx] = { ...items[idx], ...update }
+  writeList(ctx.tenantId, 'mailbox', items)
+  return items[idx]
+}
+
 export async function uploadDocument(ctx: TenantContext, input: Omit<DocumentMeta, 'id' | 'tenantId' | 'uploadedAt' | 'uploadedBy'>) {
   ensureSeeded(ctx.tenantId)
   const docs = readList<DocumentMeta>(ctx.tenantId, 'documents')
@@ -341,6 +360,27 @@ export async function assignDocument(ctx: TenantContext, docId: string, entityTy
 export async function listTasks(ctx: TenantContext) {
   ensureSeeded(ctx.tenantId)
   return readList<TaskItem>(ctx.tenantId, 'tasks')
+}
+
+export async function listCalendarEvents(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<CalendarEvent>(ctx.tenantId, 'calendar')
+}
+
+export async function addCalendarEvent(ctx: TenantContext, event: Omit<CalendarEvent, 'id' | 'tenantId'>) {
+  ensureSeeded(ctx.tenantId)
+  const events = readList<CalendarEvent>(ctx.tenantId, 'calendar')
+  const entry: CalendarEvent = { id: makeId('cal'), tenantId: ctx.tenantId, ...event }
+  events.unshift(entry)
+  writeList(ctx.tenantId, 'calendar', events)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: event.entityType ?? 'document',
+    entityId: event.entityId ?? entry.id,
+    type: 'statusUpdate',
+    title: 'Calendar event added',
+    message: event.title
+  })
+  return entry
 }
 
 export async function createTask(ctx: TenantContext, input: Omit<TaskItem, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>) {

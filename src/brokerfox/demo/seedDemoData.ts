@@ -2,8 +2,10 @@ import { carriers, demoTenants, docTemplates, industries, integrationTemplates, 
 import type {
   Client,
   CoverageRequest,
+  CalendarEvent,
   DocumentMeta,
   IntegrationItem,
+  MailboxItem,
   Offer,
   OfferLine,
   RenewalItem,
@@ -22,6 +24,8 @@ export type SeededData = {
   documents: DocumentMeta[]
   tasks: TaskItem[]
   integrations: IntegrationItem[]
+  calendarEvents: CalendarEvent[]
+  mailboxItems: MailboxItem[]
   timeline: TimelineEvent[]
   hero: {
     clientId: string
@@ -52,6 +56,15 @@ function buildClients(tenantId: string, count: number, heroName: string) {
       name,
       segment: pick(segments, idx),
       industry: pick(industries, idx + 2),
+      revenue: `${30 + idx * 5} Mio €`,
+      employees: 120 + idx * 12,
+      locationsCount: 2 + (idx % 4),
+      address: `${pick(['Hafenstrasse', 'Industriestrasse', 'Werkallee', 'Hauptweg'], idx)} ${10 + idx}, 20${10 + idx} Hamburg`,
+      lossHistory: [
+        { year: 2022, count: 2 + (idx % 3), paid: `€ ${120 + idx * 10}k`, reserved: `€ ${40 + idx * 4}k` },
+        { year: 2023, count: 1 + (idx % 4), paid: `€ ${80 + idx * 9}k`, reserved: `€ ${30 + idx * 3}k` },
+        { year: 2024, count: 2 + (idx % 2), paid: `€ ${110 + idx * 8}k`, reserved: `€ ${35 + idx * 2}k` }
+      ],
       ownerId: 'broker-1',
       createdAt: stableNow(idx),
       updatedAt: stableNow(idx + 1),
@@ -133,6 +146,9 @@ function buildOffers(tenantId: string, tenders: Tender[]) {
         carrier: { id: stableId('party', tenantId, tenderIdx * 10 + i + 99), name: carrierName, role: 'carrier' },
         status: 'received',
         lines,
+        exclusions: ['US exposure', 'War risk', 'Cyber extortion cap'].slice(0, 2 + (i % 2)),
+        conditions: ['Quarterly loss updates', 'Cyber controls review', 'Fleet telematics summary'],
+        premiumTotal: `€ ${420 + tenderIdx * 15 + i * 18}k`,
         createdAt: stableNow(tenderIdx * 5 + i),
         updatedAt: stableNow(tenderIdx * 5 + i + 1)
       })
@@ -234,7 +250,107 @@ function buildIntegrations(tenantId: string) {
   }))
 }
 
-function buildTimeline(tenantId: string, hero: { clientId: string; tenderId: string }, offers: Offer[]) {
+function buildCalendarEvents(tenantId: string, tenders: Tender[], renewals: RenewalItem[]) {
+  const events: CalendarEvent[] = []
+  tenders.slice(0, 6).forEach((tender, idx) => {
+    events.push({
+      id: stableId('cal', tenantId, idx + 1),
+      tenantId,
+      title: `Tender deadline: ${tender.title}`,
+      date: tender.dueDate ?? new Date(Date.now() + (idx + 5) * 86400000).toISOString(),
+      entityType: 'tender',
+      entityId: tender.id,
+      description: 'Deadline for carrier submissions.'
+    })
+  })
+  renewals.slice(0, 6).forEach((renewal, idx) => {
+    events.push({
+      id: stableId('cal', tenantId, idx + 20),
+      tenantId,
+      title: `Renewal review: ${renewal.policyName}`,
+      date: renewal.renewalDate,
+      entityType: 'renewal',
+      entityId: renewal.id,
+      description: 'Prepare renewal review pack.'
+    })
+  })
+  return events
+}
+
+function buildMailboxItems(tenantId: string, clients: Client[], tenders: Tender[], offers: Offer[]) {
+  return [
+    {
+      id: stableId('mail', tenantId, 1),
+      tenantId,
+      sender: 'carrier@allianz.example',
+      subject: `Offer update for ${tenders[0].title}`,
+      receivedAt: stableNow(90),
+      attachments: [
+        {
+          id: stableId('doc', tenantId, 200),
+          tenantId,
+          name: 'Offer_Allianz.pdf',
+          type: 'application/pdf',
+          size: 160000,
+          uploadedAt: stableNow(90),
+          uploadedBy: 'carrier',
+          url: '/demo-docs/Offer_Allianz.pdf',
+          source: 'demo'
+        }
+      ],
+      extractedEntities: [{ type: 'tender', label: tenders[0].title }],
+      status: 'unassigned'
+    },
+    {
+      id: stableId('mail', tenantId, 2),
+      tenantId,
+      sender: `risk@${clients[0].name.replace(/\\s+/g, '').toLowerCase()}.example`,
+      subject: 'Updated risk information',
+      receivedAt: stableNow(92),
+      attachments: [
+        {
+          id: stableId('doc', tenantId, 201),
+          tenantId,
+          name: 'Risk_Assessment_2024.pdf',
+          type: 'application/pdf',
+          size: 145000,
+          uploadedAt: stableNow(92),
+          uploadedBy: 'client',
+          url: '/demo-docs/Risk_Assessment_2024.pdf',
+          source: 'demo'
+        }
+      ],
+      extractedEntities: [{ type: 'client', label: clients[0].name }],
+      status: 'unassigned',
+      body: 'Please find the updated risk assessment and facility overview.'
+    },
+    {
+      id: stableId('mail', tenantId, 3),
+      tenantId,
+      sender: 'renewals@carrier.example',
+      subject: `Renewal reminder for ${clients[1].name}`,
+      receivedAt: stableNow(95),
+      attachments: [
+        {
+          id: stableId('doc', tenantId, 202),
+          tenantId,
+          name: 'Loss_History_2022_2024.xlsx',
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          size: 90000,
+          uploadedAt: stableNow(95),
+          uploadedBy: 'carrier',
+          url: '/demo-docs/Loss_History_2022_2024.xlsx',
+          source: 'demo'
+        }
+      ],
+      extractedEntities: [{ type: 'client', label: clients[1].name }],
+      status: 'unassigned',
+      body: 'Please provide updated loss history and renewal preferences.'
+    }
+  ] as MailboxItem[]
+}
+
+function buildTimeline(tenantId: string, hero: { clientId: string; tenderId: string }, offers: Offer[], mailboxItems: MailboxItem[]) {
   const events: TimelineEvent[] = []
   const makeEvent = (entityType: TimelineEvent['entityType'], entityId: string, type: TimelineEvent['type'], title: string, message: string, idx: number) => {
     events.push({
@@ -267,6 +383,10 @@ function buildTimeline(tenantId: string, hero: { clientId: string; tenderId: str
     makeEvent('offer', offerSample.id, 'externalMessage', 'Carrier update', 'Carrier confirmed revised terms and pricing.', 52)
   }
 
+  mailboxItems.forEach((item, idx) => {
+    makeEvent('document', item.id, 'statusUpdate', 'Mail received', `Mailbox item received: ${item.subject}`, 70 + idx)
+  })
+
   return events
 }
 
@@ -281,10 +401,12 @@ export function seedDemoData(tenantId: string): SeededData {
   const documents = buildDocuments(tenantId, clients, tenders, offers, renewals)
   const tasks = buildTasks(tenantId, clients, tenders, renewals)
   const integrations = buildIntegrations(tenantId)
+  const calendarEvents = buildCalendarEvents(tenantId, tenders, renewals)
+  const mailboxItems = buildMailboxItems(tenantId, clients, tenders, offers)
   const hero = { clientId: clients[0].id, tenderId: tenders[0].id }
-  const timeline = buildTimeline(tenantId, hero, offers)
+  const timeline = buildTimeline(tenantId, hero, offers, mailboxItems)
 
-  return { clients, tenders, offers, renewals, documents, tasks, integrations, timeline, hero }
+  return { clients, tenders, offers, renewals, documents, tasks, integrations, calendarEvents, mailboxItems, timeline, hero }
 }
 
 export function seedAllTenants() {

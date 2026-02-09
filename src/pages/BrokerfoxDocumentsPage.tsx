@@ -1,13 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import Header from '@/components/ui/Header'
+import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
 import Button from '@/components/ui/Button'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, assignDocument, listClients, listDocuments, listOffers, listRenewals, listTenders, uploadDocument } from '@/brokerfox/api/brokerfoxApi'
+import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
 import type { Client, DocumentMeta } from '@/brokerfox/types'
 
 export default function BrokerfoxDocumentsPage() {
@@ -115,12 +116,33 @@ export default function BrokerfoxDocumentsPage() {
     })
   }
 
+  async function handleGeneratedDownload(doc: DocumentMeta) {
+    const client = clients.find((item) => item.id === doc.entityId) ?? null
+    const tender = tenders.find((item) => item.id === doc.entityId) ?? null
+    const offer = offers.find((item) => item.id === doc.entityId) ?? null
+    const text = generateDocumentText({ doc, client, tender, offer })
+    const blob = new Blob([text], { type: 'text/plain' })
+    const url = window.URL.createObjectURL(blob)
+    const anchor = document.createElement('a')
+    anchor.href = url
+    anchor.download = doc.name.replace(/\\.[^.]+$/, '') + '_generated.txt'
+    anchor.click()
+    window.URL.revokeObjectURL(url)
+    await addTimelineEvent(ctx, {
+      entityType: doc.entityType ?? 'document',
+      entityId: doc.entityId ?? doc.id,
+      type: 'statusUpdate',
+      title: t('brokerfox.documents.generated'),
+      message: `${doc.name} ${t('brokerfox.documents.generatedMessage')}`
+    })
+  }
+
   const entityOptions = entityType === 'client' ? clients : entityType === 'tender' ? tenders : entityType === 'offer' ? offers : renewals
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Header title={t('brokerfox.documents.title')} subtitle={t('brokerfox.documents.subtitle')} titleColor="#0f172a" />
+        <BrokerfoxHeader title={t('brokerfox.documents.title')} subtitle={t('brokerfox.documents.subtitle')} />
         <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
         <BrokerfoxNav />
         <Card variant="glass" title={t('brokerfox.documents.uploadTitle')} subtitle={t('brokerfox.documents.uploadSubtitle')}>
@@ -175,13 +197,14 @@ export default function BrokerfoxDocumentsPage() {
           {error ? <p>{error}</p> : null}
           {filtered.length === 0 ? <p>{t('brokerfox.empty.noDocuments')}</p> : null}
           {filtered.map((doc) => (
-            <div key={doc.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
+            <div key={doc.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
               <div>
                 <strong>{doc.name}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{doc.entityType ?? t('brokerfox.documents.unassigned')}</div>
               </div>
               <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
               <Button onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
+              <Button onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
               {!doc.entityId ? <Button onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
             </div>
           ))}

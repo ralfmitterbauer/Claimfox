@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import Header from '@/components/ui/Header'
+import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
 import Button from '@/components/ui/Button'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
+import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import { useI18n } from '@/i18n/I18nContext'
@@ -17,6 +18,7 @@ import {
   uploadDocument
 } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta } from '@/brokerfox/types'
+import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
 
 export default function BrokerfoxClientDetailPage() {
   const { t } = useI18n()
@@ -28,6 +30,8 @@ export default function BrokerfoxClientDetailPage() {
   const [client, setClient] = useState<any>(null)
   const [documents, setDocuments] = useState<DocumentMeta[]>([])
   const [events, setEvents] = useState([])
+  const [draftMessage, setDraftMessage] = useState('')
+  const [approved, setApproved] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -59,6 +63,7 @@ export default function BrokerfoxClientDetailPage() {
   }, [clientId, ctx, t])
 
   const contacts = useMemo(() => client?.contacts ?? [], [client])
+  const analysis = useMemo(() => buildRiskAnalysis(client, null), [client])
 
   async function handleComposer(payload: { type: any; message: string; attachments: DocumentMeta[] }) {
     if (!clientId) {
@@ -88,6 +93,21 @@ export default function BrokerfoxClientDetailPage() {
     setEvents(nextEvents)
   }
 
+  async function handleSendDraft() {
+    if (!clientId || !draftMessage.trim() || !approved) return
+    await addTimelineEvent(ctx, {
+      entityType: 'client',
+      entityId: clientId,
+      type: 'externalMessage',
+      title: t('brokerfox.ai.draftSentTitle'),
+      message: draftMessage
+    })
+    const nextEvents = await listTimelineEvents(ctx, 'client', clientId)
+    setEvents(nextEvents)
+    setDraftMessage('')
+    setApproved(false)
+  }
+
   if (loading) {
     return (
       <section className="page">
@@ -108,7 +128,7 @@ export default function BrokerfoxClientDetailPage() {
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Header title={client.name} subtitle={t('brokerfox.clients.detailSubtitle')} titleColor="#0f172a" />
+        <BrokerfoxHeader title={client.name} subtitle={t('brokerfox.clients.detailSubtitle')} />
         <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
         <BrokerfoxNav />
         <Button onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
@@ -147,6 +167,44 @@ export default function BrokerfoxClientDetailPage() {
           <TimelineComposer onSubmit={handleComposer} />
           <TimelineThread events={events} />
         </div>
+
+        <RiskAnalysisPanel
+          analysis={analysis}
+          onCopyMessage={() => setDraftMessage(t('brokerfox.ai.draftTemplate', { client: client.name }))}
+          onCreateTask={async () => {
+            await addTimelineEvent(ctx, {
+              entityType: 'client',
+              entityId: clientId,
+              type: 'statusUpdate',
+              title: t('brokerfox.ai.taskCreatedTitle'),
+              message: t('brokerfox.ai.taskCreatedMessage')
+            })
+            const nextEvents = await listTimelineEvents(ctx, 'client', clientId)
+            setEvents(nextEvents)
+          }}
+          onMarkReviewed={async () => {
+            await addTimelineEvent(ctx, {
+              entityType: 'client',
+              entityId: clientId,
+              type: 'statusUpdate',
+              title: t('brokerfox.ai.reviewedTitle'),
+              message: t('brokerfox.ai.reviewedMessage')
+            })
+            const nextEvents = await listTimelineEvents(ctx, 'client', clientId)
+            setEvents(nextEvents)
+          }}
+        />
+
+        {draftMessage ? (
+          <Card variant="glass" title={t('brokerfox.ai.draftTitle')} subtitle={t('brokerfox.ai.draftSubtitle')}>
+            <textarea value={draftMessage} onChange={(event) => setDraftMessage(event.target.value)} rows={4} style={{ width: '100%', padding: '0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }} />
+            <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} />
+              {t('brokerfox.ai.approvalLabel')}
+            </label>
+            <Button onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
+          </Card>
+        ) : null}
       </div>
     </section>
   )

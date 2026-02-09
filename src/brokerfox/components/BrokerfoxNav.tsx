@@ -5,10 +5,12 @@ import { useI18n } from '@/i18n/I18nContext'
 const navItems = [
   { key: 'dashboard', to: '/brokerfox' },
   { key: 'clients', to: '/brokerfox/clients' },
+  { key: 'mailbox', to: '/brokerfox/mailbox' },
   { key: 'tenders', to: '/brokerfox/tenders' },
   { key: 'offers', to: '/brokerfox/offers' },
   { key: 'renewals', to: '/brokerfox/renewals' },
   { key: 'documents', to: '/brokerfox/documents' },
+  { key: 'reporting', to: '/brokerfox/reporting' },
   { key: 'tasks', to: '/brokerfox/tasks' },
   { key: 'integrations', to: '/brokerfox/integrations' }
 ]

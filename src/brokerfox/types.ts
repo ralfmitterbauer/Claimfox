@@ -30,6 +30,11 @@ export type Client = {
   name: string
   segment?: string
   industry?: string
+  revenue?: string
+  employees?: number
+  locationsCount?: number
+  address?: string
+  lossHistory?: LossHistoryEntry[]
   ownerId: string
   createdAt: string
   updatedAt: string
@@ -78,6 +83,9 @@ export type Offer = {
   carrier: Party
   status: 'draft' | 'received' | 'compared' | 'sent'
   lines: OfferLine[]
+  conditions?: string[]
+  exclusions?: string[]
+  premiumTotal?: string
   createdAt: string
   updatedAt: string
 }
@@ -172,4 +180,37 @@ export type ComparisonResult = {
   summary: string
   highlights: string[]
   risks: string[]
+}
+
+export type LossHistoryEntry = {
+  year: number
+  count: number
+  paid: string
+  reserved: string
+}
+
+export type CalendarEvent = {
+  id: string
+  tenantId: string
+  title: string
+  date: string
+  entityType?: EntityType
+  entityId?: string
+  description?: string
+}
+
+export type MailboxItemStatus = 'unassigned' | 'assigned' | 'done'
+
+export type MailboxItem = {
+  id: string
+  tenantId: string
+  sender: string
+  subject: string
+  receivedAt: string
+  attachments: DocumentMeta[]
+  extractedEntities?: Array<{ type: EntityType; label: string }>
+  status: MailboxItemStatus
+  entityType?: EntityType
+  entityId?: string
+  body?: string
 }

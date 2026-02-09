@@ -27,10 +27,12 @@ type TranslationTree = {
       title: string
       dashboard: string
       clients: string
+      mailbox: string
       tenders: string
       offers: string
       renewals: string
       documents: string
+      reporting: string
       integrations: string
       tasks: string
     }
@@ -65,6 +67,112 @@ type TranslationTree = {
       composeTitle: string
       composeSubtitle: string
       empty: string
+    }
+    calendar: {
+      title: string
+      subtitle: string
+      upcoming: string
+      addEvent: string
+      eventTitle: string
+      empty: string
+    }
+    mailbox: {
+      title: string
+      subtitle: string
+      inboxTitle: string
+      detailTitle: string
+      status: {
+        unassigned: string
+        assigned: string
+        done: string
+      }
+      previewPlaceholder: string
+      attachments: string
+      assignTo: string
+      assignAction: string
+      convertTask: string
+      markDone: string
+      noSelection: string
+      assignedTitle: string
+      assignedMessage: string
+      doneTitle: string
+      doneMessage: string
+      downloadedTitle: string
+      downloadedMessage: string
+      taskPrefix: string
+      taskCreatedTitle: string
+      taskCreatedMessage: string
+    }
+    reporting: {
+      title: string
+      subtitle: string
+      filtersTitle: string
+      range30: string
+      range90: string
+      range365: string
+      allIndustries: string
+      kpi: {
+        clients: string
+        openTenders: string
+        offers: string
+        renewals: string
+        avgOffer: string
+        mailboxBacklog: string
+      }
+      days: string
+      timeSeriesTitle: string
+      statusTitle: string
+      premiumTitle: string
+      tasksTitle: string
+    }
+    ai: {
+      suggestionNotice: string
+      inputs: string
+      inputIndustry: string
+      inputRevenue: string
+      inputEmployees: string
+      inputLocations: string
+      inputClaims: string
+      inputCoverages: string
+      riskAnalysis: {
+        title: string
+        subtitle: string
+      }
+      riskBreakdown: string
+      risk: {
+        property: string
+        liability: string
+        cyber: string
+        businessInterruption: string
+        compliance: string
+      }
+      level: {
+        low: string
+        medium: string
+        high: string
+      }
+      drivers: string
+      missingInfo: string
+      policySuggestion: {
+        title: string
+        coverages: string
+        limits: string
+        deductibles: string
+        endorsements: string
+      }
+      copyToMessage: string
+      createTask: string
+      markReviewed: string
+      draftTitle: string
+      draftSubtitle: string
+      draftTemplate: string
+      approvalLabel: string
+      sendDraft: string
+      draftSentTitle: string
+      taskCreatedTitle: string
+      taskCreatedMessage: string
+      reviewedTitle: string
+      reviewedMessage: string
     }
     empty: {
       noClients: string
@@ -217,8 +325,11 @@ type TranslationTree = {
       unassigned: string
       assignAction: string
       download: string
+      downloadGenerated: string
       downloaded: string
       downloadedMessage: string
+      generated: string
+      generatedMessage: string
     }
     demo: {
       title: string
@@ -1219,10 +1330,12 @@ export const translations: Record<Lang, TranslationTree> = {
         title: 'Brokerfox',
         dashboard: 'Dashboard',
         clients: 'Kunden',
+        mailbox: 'Mailbox',
         tenders: 'Ausschreibungen',
         offers: 'Angebote',
         renewals: 'Erneuerungen',
         documents: 'Dokumente',
+        reporting: 'Reporting',
         integrations: 'Integrationen',
         tasks: 'Aufgaben'
       },
@@ -1257,6 +1370,112 @@ export const translations: Record<Lang, TranslationTree> = {
         composeTitle: 'Neue Timeline-Aktion',
         composeSubtitle: 'AI-Vorschläge sind assistierend und müssen freigegeben werden.',
         empty: 'Noch keine Timeline-Einträge.'
+      },
+      calendar: {
+        title: 'Kalender',
+        subtitle: 'Termine & Fristen im Blick.',
+        upcoming: 'Anstehend',
+        addEvent: 'Termin hinzufügen',
+        eventTitle: 'Titel',
+        empty: 'Keine Termine gefunden.'
+      },
+      mailbox: {
+        title: 'Mailbox',
+        subtitle: 'Eingehende Nachrichten & Dokumente.',
+        inboxTitle: 'Eingang',
+        detailTitle: 'Detailansicht',
+        status: {
+          unassigned: 'Nicht zugeordnet',
+          assigned: 'Zugeordnet',
+          done: 'Erledigt'
+        },
+        previewPlaceholder: 'Wähle eine Nachricht, um Details zu sehen.',
+        attachments: 'Anhänge',
+        assignTo: 'Zuordnen zu',
+        assignAction: 'Zuordnen',
+        convertTask: 'Als Aufgabe anlegen',
+        markDone: 'Erledigt markieren',
+        noSelection: 'Keine Nachricht ausgewählt.',
+        assignedTitle: 'Mailbox zugeordnet',
+        assignedMessage: 'wurde zugeordnet.',
+        doneTitle: 'Mailbox erledigt',
+        doneMessage: 'Mailbox-Eintrag als erledigt markiert.',
+        downloadedTitle: 'Anhang heruntergeladen',
+        downloadedMessage: 'Anhang wurde heruntergeladen.',
+        taskPrefix: 'Mailbox',
+        taskCreatedTitle: 'Aufgabe erstellt',
+        taskCreatedMessage: 'Mailbox-Eintrag in Aufgabe umgewandelt.'
+      },
+      reporting: {
+        title: 'Reporting',
+        subtitle: 'KPI-Übersicht und Trends.',
+        filtersTitle: 'Filter',
+        range30: 'Letzte 30 Tage',
+        range90: 'Letzte 90 Tage',
+        range365: 'Letztes Jahr',
+        allIndustries: 'Alle Branchen',
+        kpi: {
+          clients: 'Aktive Kunden',
+          openTenders: 'Offene Ausschreibungen',
+          offers: 'Angebote erhalten',
+          renewals: 'Erneuerungen',
+          avgOffer: 'Ø Tage bis Angebote',
+          mailboxBacklog: 'Mailbox Backlog'
+        },
+        days: 'Tage',
+        timeSeriesTitle: 'Zeitverlauf',
+        statusTitle: 'Statusverteilung',
+        premiumTitle: 'Prämie nach Sparte',
+        tasksTitle: 'Aufgaben nach Status'
+      },
+      ai: {
+        suggestionNotice: 'Vorschlag — benötigt menschliche Freigabe.',
+        inputs: 'Eingaben',
+        inputIndustry: 'Branche',
+        inputRevenue: 'Umsatz',
+        inputEmployees: 'Mitarbeitende',
+        inputLocations: 'Standorte',
+        inputClaims: 'Schadenverlauf',
+        inputCoverages: 'Deckungen',
+        riskAnalysis: {
+          title: 'Risikoanalyse',
+          subtitle: 'Erklärbare Bewertung & Empfehlungen.'
+        },
+        riskBreakdown: 'Risikoprofil',
+        risk: {
+          property: 'Sach',
+          liability: 'Haftpflicht',
+          cyber: 'Cyber',
+          businessInterruption: 'Betriebsunterbrechung',
+          compliance: 'Compliance'
+        },
+        level: {
+          low: 'Niedrig',
+          medium: 'Mittel',
+          high: 'Hoch'
+        },
+        drivers: 'Treiber',
+        missingInfo: 'Fehlende Informationen',
+        policySuggestion: {
+          title: 'Policy-Empfehlung (Vorschlag)',
+          coverages: 'Empfohlene Deckungen',
+          limits: 'Limits',
+          deductibles: 'Selbstbehalte',
+          endorsements: 'Empfohlene Endorsements'
+        },
+        copyToMessage: 'In Nachricht übernehmen',
+        createTask: 'Aufgabe erstellen',
+        markReviewed: 'Als geprüft markieren',
+        draftTitle: 'Entwurf Nachricht',
+        draftSubtitle: 'Bitte prüfen und manuell freigeben.',
+        draftTemplate: 'Vorschlag für {{client}}: Wir empfehlen die beigefügten Deckungen und Limits basierend auf der Risikoanalyse.',
+        approvalLabel: 'Ich habe geprüft und freigegeben.',
+        sendDraft: 'Entwurf senden',
+        draftSentTitle: 'Entwurf gesendet',
+        taskCreatedTitle: 'Aufgabe angelegt',
+        taskCreatedMessage: 'AI-Empfehlung als Aufgabe erfasst.',
+        reviewedTitle: 'AI geprüft',
+        reviewedMessage: 'AI-Empfehlung wurde geprüft.'
       },
       empty: {
         noClients: 'Noch keine Kunden vorhanden.',
@@ -1409,8 +1628,11 @@ export const translations: Record<Lang, TranslationTree> = {
         unassigned: 'Nicht zugeordnet',
         assignAction: 'Zuordnen',
         download: 'Download',
+        downloadGenerated: 'Download (generiert)',
         downloaded: 'Download protokolliert',
-        downloadedMessage: 'heruntergeladen'
+        downloadedMessage: 'heruntergeladen',
+        generated: 'Dokument generiert',
+        generatedMessage: 'generiert'
       },
       demo: {
         title: 'Demo Utilities',
@@ -3561,10 +3783,12 @@ export const translations: Record<Lang, TranslationTree> = {
         title: 'Brokerfox',
         dashboard: 'Dashboard',
         clients: 'Clients',
+        mailbox: 'Mailbox',
         tenders: 'Tenders',
         offers: 'Offers',
         renewals: 'Renewals',
         documents: 'Documents',
+        reporting: 'Reporting',
         integrations: 'Integrations',
         tasks: 'Tasks'
       },
@@ -3599,6 +3823,112 @@ export const translations: Record<Lang, TranslationTree> = {
         composeTitle: 'New timeline action',
         composeSubtitle: 'AI suggestions are assistive and require approval.',
         empty: 'No timeline entries yet.'
+      },
+      calendar: {
+        title: 'Calendar',
+        subtitle: 'Upcoming deadlines and meetings.',
+        upcoming: 'Upcoming',
+        addEvent: 'Add event',
+        eventTitle: 'Title',
+        empty: 'No events found.'
+      },
+      mailbox: {
+        title: 'Mailbox',
+        subtitle: 'Inbound messages and documents.',
+        inboxTitle: 'Inbox',
+        detailTitle: 'Detail view',
+        status: {
+          unassigned: 'Unassigned',
+          assigned: 'Assigned',
+          done: 'Done'
+        },
+        previewPlaceholder: 'Select a message to see details.',
+        attachments: 'Attachments',
+        assignTo: 'Assign to',
+        assignAction: 'Assign',
+        convertTask: 'Convert to task',
+        markDone: 'Mark done',
+        noSelection: 'No message selected.',
+        assignedTitle: 'Mailbox assigned',
+        assignedMessage: 'was assigned.',
+        doneTitle: 'Mailbox done',
+        doneMessage: 'Mailbox item marked as done.',
+        downloadedTitle: 'Attachment downloaded',
+        downloadedMessage: 'Attachment downloaded.',
+        taskPrefix: 'Mailbox',
+        taskCreatedTitle: 'Task created',
+        taskCreatedMessage: 'Mailbox item converted to task.'
+      },
+      reporting: {
+        title: 'Reporting',
+        subtitle: 'KPI overview and trends.',
+        filtersTitle: 'Filters',
+        range30: 'Last 30 days',
+        range90: 'Last 90 days',
+        range365: 'Last year',
+        allIndustries: 'All industries',
+        kpi: {
+          clients: 'Active clients',
+          openTenders: 'Open tenders',
+          offers: 'Offers received',
+          renewals: 'Renewals',
+          avgOffer: 'Avg days to offers',
+          mailboxBacklog: 'Mailbox backlog'
+        },
+        days: 'days',
+        timeSeriesTitle: 'Time series',
+        statusTitle: 'Status distribution',
+        premiumTitle: 'Premium by line',
+        tasksTitle: 'Tasks by status'
+      },
+      ai: {
+        suggestionNotice: 'Suggestion — requires human approval.',
+        inputs: 'Inputs',
+        inputIndustry: 'Industry',
+        inputRevenue: 'Revenue',
+        inputEmployees: 'Employees',
+        inputLocations: 'Locations',
+        inputClaims: 'Claims history',
+        inputCoverages: 'Coverages',
+        riskAnalysis: {
+          title: 'Risk analysis',
+          subtitle: 'Explainable assessment and recommendations.'
+        },
+        riskBreakdown: 'Risk breakdown',
+        risk: {
+          property: 'Property',
+          liability: 'Liability',
+          cyber: 'Cyber',
+          businessInterruption: 'Business interruption',
+          compliance: 'Compliance'
+        },
+        level: {
+          low: 'Low',
+          medium: 'Medium',
+          high: 'High'
+        },
+        drivers: 'Drivers',
+        missingInfo: 'Missing information',
+        policySuggestion: {
+          title: 'Policy suggestion (non-binding)',
+          coverages: 'Recommended coverages',
+          limits: 'Limits',
+          deductibles: 'Deductibles',
+          endorsements: 'Suggested endorsements'
+        },
+        copyToMessage: 'Copy to message',
+        createTask: 'Create task',
+        markReviewed: 'Mark reviewed',
+        draftTitle: 'Draft message',
+        draftSubtitle: 'Please review and manually approve.',
+        draftTemplate: 'Suggestion for {{client}}: We recommend the listed coverages and limits based on the risk analysis.',
+        approvalLabel: 'I reviewed and approve.',
+        sendDraft: 'Send draft',
+        draftSentTitle: 'Draft sent',
+        taskCreatedTitle: 'Task created',
+        taskCreatedMessage: 'AI recommendation captured as task.',
+        reviewedTitle: 'AI reviewed',
+        reviewedMessage: 'AI recommendation reviewed.'
       },
       empty: {
         noClients: 'No clients yet.',
@@ -3751,8 +4081,11 @@ export const translations: Record<Lang, TranslationTree> = {
         unassigned: 'Unassigned',
         assignAction: 'Assign',
         download: 'Download',
+        downloadGenerated: 'Download (generated)',
         downloaded: 'Download logged',
-        downloadedMessage: 'downloaded'
+        downloadedMessage: 'downloaded',
+        generated: 'Document generated',
+        generatedMessage: 'generated'
       },
       demo: {
         title: 'Demo Utilities',

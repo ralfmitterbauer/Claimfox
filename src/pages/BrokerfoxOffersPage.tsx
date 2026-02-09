@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
-import Header from '@/components/ui/Header'
+import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
 import Button from '@/components/ui/Button'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
+import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import {
@@ -18,6 +19,7 @@ import {
   listTenders
 } from '@/brokerfox/api/brokerfoxApi'
 import type { Offer } from '@/brokerfox/types'
+import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
 
 export default function BrokerfoxOffersPage() {
   const { t } = useI18n()
@@ -33,6 +35,8 @@ export default function BrokerfoxOffersPage() {
   const [summary, setSummary] = useState('')
   const [approved, setApproved] = useState(false)
   const [events, setEvents] = useState([])
+  const [draftMessage, setDraftMessage] = useState('')
+  const [draftApproved, setDraftApproved] = useState(false)
 
   useEffect(() => {
     let mounted = true
@@ -58,6 +62,8 @@ export default function BrokerfoxOffersPage() {
   const tenderOffers = useMemo(() => offers.filter((offer) => offer.tenderId === selectedTenderId), [offers, selectedTenderId])
   const selectedTender = useMemo(() => tenders.find((tender) => tender.id === selectedTenderId), [tenders, selectedTenderId])
   const clientName = useMemo(() => clients.find((client) => client.id === selectedTender?.clientId)?.name ?? t('brokerfox.offers.clientUnknown'), [clients, selectedTender, t])
+  const selectedClient = useMemo(() => clients.find((client) => client.id === selectedTender?.clientId) ?? null, [clients, selectedTender])
+  const analysis = useMemo(() => buildRiskAnalysis(selectedClient, selectedTender ?? null), [selectedClient, selectedTender])
 
   useEffect(() => {
     const nextOfferId = tenderOffers[0]?.id ?? ''
@@ -143,6 +149,19 @@ export default function BrokerfoxOffersPage() {
     setApproved(false)
   }
 
+  async function handleSendDraft() {
+    if (!selectedTenderId || !draftMessage.trim() || !draftApproved) return
+    await addTimelineEvent(ctx, {
+      entityType: 'tender',
+      entityId: selectedTenderId,
+      type: 'externalMessage',
+      title: t('brokerfox.ai.draftSentTitle'),
+      message: draftMessage
+    })
+    setDraftMessage('')
+    setDraftApproved(false)
+  }
+
   async function handleComposer(payload: { type: any; message: string; attachments: any[] }) {
     if (!selectedOfferId) return
     await addTimelineEvent(ctx, {
@@ -160,7 +179,7 @@ export default function BrokerfoxOffersPage() {
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Header title={t('brokerfox.offers.title')} subtitle={t('brokerfox.offers.subtitle')} titleColor="#0f172a" />
+        <BrokerfoxHeader title={t('brokerfox.offers.title')} subtitle={t('brokerfox.offers.subtitle')} />
         <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />
         <BrokerfoxNav />
         <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
@@ -240,6 +259,42 @@ export default function BrokerfoxOffersPage() {
             <p>{t('brokerfox.offers.noOfferSelected')}</p>
           </Card>
         )}
+
+        <RiskAnalysisPanel
+          analysis={analysis}
+          onCopyMessage={() => setDraftMessage(t('brokerfox.ai.draftTemplate', { client: clientName }))}
+          onCreateTask={async () => {
+            if (!selectedTenderId) return
+            await addTimelineEvent(ctx, {
+              entityType: 'tender',
+              entityId: selectedTenderId,
+              type: 'statusUpdate',
+              title: t('brokerfox.ai.taskCreatedTitle'),
+              message: t('brokerfox.ai.taskCreatedMessage')
+            })
+          }}
+          onMarkReviewed={async () => {
+            if (!selectedTenderId) return
+            await addTimelineEvent(ctx, {
+              entityType: 'tender',
+              entityId: selectedTenderId,
+              type: 'statusUpdate',
+              title: t('brokerfox.ai.reviewedTitle'),
+              message: t('brokerfox.ai.reviewedMessage')
+            })
+          }}
+        />
+
+        {draftMessage ? (
+          <Card variant="glass" title={t('brokerfox.ai.draftTitle')} subtitle={t('brokerfox.ai.draftSubtitle')}>
+            <textarea value={draftMessage} onChange={(event) => setDraftMessage(event.target.value)} rows={4} style={{ width: '100%', padding: '0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }} />
+            <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <input type="checkbox" checked={draftApproved} onChange={(event) => setDraftApproved(event.target.checked)} />
+              {t('brokerfox.ai.approvalLabel')}
+            </label>
+            <Button onClick={handleSendDraft} disabled={!draftApproved}>{t('brokerfox.ai.sendDraft')}</Button>
+          </Card>
+        ) : null}
       </div>
     </section>
   )

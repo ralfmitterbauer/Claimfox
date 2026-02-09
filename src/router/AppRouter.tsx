@@ -156,6 +156,8 @@ import BrokerfoxRenewalsPage from '@/pages/BrokerfoxRenewalsPage'
 import BrokerfoxDocumentsPage from '@/pages/BrokerfoxDocumentsPage'
 import BrokerfoxIntegrationsPage from '@/pages/BrokerfoxIntegrationsPage'
 import BrokerfoxTasksPage from '@/pages/BrokerfoxTasksPage'
+import BrokerfoxMailboxPage from '@/pages/BrokerfoxMailboxPage'
+import BrokerfoxReportingPage from '@/pages/BrokerfoxReportingPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -253,11 +255,13 @@ export default function AppRouter() {
         <Route path="/brokerfox" element={<BrokerfoxDashboardPage />} />
         <Route path="/brokerfox/clients" element={<BrokerfoxClientsPage />} />
         <Route path="/brokerfox/clients/:clientId" element={<BrokerfoxClientDetailPage />} />
+        <Route path="/brokerfox/mailbox" element={<BrokerfoxMailboxPage />} />
         <Route path="/brokerfox/tenders" element={<BrokerfoxTendersPage />} />
         <Route path="/brokerfox/tenders/:tenderId" element={<BrokerfoxTenderDetailPage />} />
         <Route path="/brokerfox/offers" element={<BrokerfoxOffersPage />} />
         <Route path="/brokerfox/renewals" element={<BrokerfoxRenewalsPage />} />
         <Route path="/brokerfox/documents" element={<BrokerfoxDocumentsPage />} />
+        <Route path="/brokerfox/reporting" element={<BrokerfoxReportingPage />} />
         <Route path="/brokerfox/integrations" element={<BrokerfoxIntegrationsPage />} />
         <Route path="/brokerfox/tasks" element={<BrokerfoxTasksPage />} />
         <Route path="/fleet-reporting" element={<FleetReportingPage />} />
