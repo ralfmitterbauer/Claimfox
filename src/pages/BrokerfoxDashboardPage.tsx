@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import {
   createClient,
@@ -98,10 +96,7 @@ export default function BrokerfoxDashboardPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.dashboard.title')} subtitle={t('brokerfox.dashboard.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.dashboard.title')} subtitle={t('brokerfox.dashboard.subtitle')}>
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
         {error ? <p>{error}</p> : null}
 
@@ -168,7 +163,7 @@ export default function BrokerfoxDashboardPage() {
             </div>
           </div>
         </Card>
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

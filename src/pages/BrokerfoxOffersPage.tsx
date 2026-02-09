@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
 import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
@@ -178,10 +176,7 @@ export default function BrokerfoxOffersPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.offers.title')} subtitle={t('brokerfox.offers.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.offers.title')} subtitle={t('brokerfox.offers.subtitle')}>
         <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}
@@ -295,7 +290,7 @@ export default function BrokerfoxOffersPage() {
             <Button onClick={handleSendDraft} disabled={!draftApproved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

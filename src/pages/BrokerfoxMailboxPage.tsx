@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, createTask, listClients, listMailboxItems, listOffers, listRenewals, listTenders, updateMailboxItem } from '@/brokerfox/api/brokerfoxApi'
@@ -129,10 +127,7 @@ export default function BrokerfoxMailboxPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.mailbox.title')} subtitle={t('brokerfox.mailbox.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.mailbox.title')} subtitle={t('brokerfox.mailbox.subtitle')}>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'minmax(260px, 1fr) minmax(300px, 1fr)' }}>
           <Card variant="glass" title={t('brokerfox.mailbox.inboxTitle')}>
@@ -197,7 +192,7 @@ export default function BrokerfoxMailboxPage() {
             )}
           </Card>
         </div>
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

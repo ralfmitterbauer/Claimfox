@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, assignDocument, listClients, listDocuments, listOffers, listRenewals, listTenders, uploadDocument } from '@/brokerfox/api/brokerfoxApi'
@@ -141,10 +139,7 @@ export default function BrokerfoxDocumentsPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.documents.title')} subtitle={t('brokerfox.documents.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.documents.title')} subtitle={t('brokerfox.documents.subtitle')}>
         <Card variant="glass" title={t('brokerfox.documents.uploadTitle')} subtitle={t('brokerfox.documents.uploadSubtitle')}>
           <div
             onDragOver={(event) => { event.preventDefault(); setIsDragging(true) }}
@@ -209,7 +204,7 @@ export default function BrokerfoxDocumentsPage() {
             </div>
           ))}
         </Card>
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

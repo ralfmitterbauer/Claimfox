@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Bar, BarChart, CartesianGrid, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Card from '@/components/ui/Card'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClients, listMailboxItems, listOffers, listRenewals, listTasks, listTenders } from '@/brokerfox/api/brokerfoxApi'
@@ -124,10 +122,7 @@ export default function BrokerfoxReportingPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.reporting.title')} subtitle={t('brokerfox.reporting.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.reporting.title')} subtitle={t('brokerfox.reporting.subtitle')}>
 
         <Card variant="glass" title={t('brokerfox.reporting.filtersTitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
@@ -210,7 +205,7 @@ export default function BrokerfoxReportingPage() {
             </ResponsiveContainer>
           </Card>
         </div>
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

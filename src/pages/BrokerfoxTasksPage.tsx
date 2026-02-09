@@ -1,9 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createTask, listClients, listTasks, listTenders, listRenewals, updateTaskStatus } from '@/brokerfox/api/brokerfoxApi'
@@ -98,10 +96,7 @@ export default function BrokerfoxTasksPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={t('brokerfox.tasks.title')} subtitle={t('brokerfox.tasks.subtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={t('brokerfox.tasks.title')} subtitle={t('brokerfox.tasks.subtitle')}>
         <Card variant="glass" title={t('brokerfox.tasks.createTitle')} subtitle={t('brokerfox.tasks.createSubtitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
             <input
@@ -156,7 +151,7 @@ export default function BrokerfoxTasksPage() {
             </Card>
           ))}
         </div>
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
@@ -139,10 +137,7 @@ export default function BrokerfoxTenderDetailPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={tender.title} subtitle={t('brokerfox.tenders.detailSubtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={tender.title} subtitle={t('brokerfox.tenders.detailSubtitle')}>
         <Button onClick={() => navigate('/brokerfox/tenders')}>{t('brokerfox.tenders.back')}</Button>
 
         <Card variant="glass" title={t('brokerfox.tenders.statusTitle')}>
@@ -272,7 +267,7 @@ export default function BrokerfoxTenderDetailPage() {
             <Button onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }

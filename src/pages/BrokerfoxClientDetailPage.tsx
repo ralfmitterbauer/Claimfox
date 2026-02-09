@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Card from '@/components/ui/Card'
-import BrokerfoxHeader from '@/brokerfox/components/BrokerfoxHeader'
+import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
-import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
@@ -127,10 +125,7 @@ export default function BrokerfoxClientDetailPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <BrokerfoxHeader title={client.name} subtitle={t('brokerfox.clients.detailSubtitle')} />
-        <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-        <BrokerfoxNav />
+      <BrokerfoxLayout title={client.name} subtitle={t('brokerfox.clients.detailSubtitle')}>
         <Button onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
@@ -205,7 +200,7 @@ export default function BrokerfoxClientDetailPage() {
             <Button onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
-      </div>
+      </BrokerfoxLayout>
     </section>
   )
 }
