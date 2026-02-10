@@ -63,15 +63,30 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: 1200, margin: '0 auto', paddingTop: 28, display: 'flex', flexDirection: 'column', gap: 0 }}>
-      <BrokerfoxNav />
+    <div style={{ width: '100%', maxWidth: 1200, margin: '18px auto 0', display: 'flex', flexDirection: 'column' }}>
       <div
         style={{
-          border: '1px solid #d6d9e0',
-          borderRadius: 16,
+          position: 'relative',
+          zIndex: 3,
+          marginBottom: -12,
+          background: 'linear-gradient(#ffffff, #f6f8fc)',
+          borderBottom: '1px solid #cfd6e3',
+          borderTopLeftRadius: 18,
+          borderTopRightRadius: 18
+        }}
+      >
+        <BrokerfoxNav />
+      </div>
+      <div
+        style={{
+          border: '1px solid #d7dde7',
+          borderTop: '0',
+          borderRadius: 18,
           background: '#ffffff',
-          padding: 22,
-          marginTop: -1,
+          padding: '22px 22px 24px',
+          boxShadow: '0 6px 20px rgba(15, 23, 42, 0.06)',
+          position: 'relative',
+          zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
           gap: '1.5rem'

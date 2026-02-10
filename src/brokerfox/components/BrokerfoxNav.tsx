@@ -1,4 +1,3 @@
-import React from 'react'
 import { NavLink, matchPath, useLocation } from 'react-router-dom'
 import { useI18n } from '@/i18n/I18nContext'
 
@@ -28,8 +27,7 @@ export default function BrokerfoxNav() {
           display: 'flex',
           gap: 8,
           alignItems: 'flex-end',
-          paddingBottom: 0,
-          borderBottom: '1px solid #d6d9e0',
+          padding: '0 12px',
           overflowX: 'auto',
           WebkitOverflowScrolling: 'touch'
         }}
@@ -54,21 +52,36 @@ export default function BrokerfoxNav() {
                 display: 'inline-flex',
                 alignItems: 'center',
                 padding: '0 14px',
-                borderRadius: '12px 12px 0 0',
+                borderRadius: '12px 12px 10px 10px',
                 textDecoration: 'none',
                 fontSize: 14,
-                fontWeight: isActive ? 600 : 500,
-                background: isActive ? '#ffffff' : '#eef2f7',
+                fontWeight: isActive ? 700 : 500,
+                background: isActive ? '#ffffff' : '#f3f6fb',
                 color: '#0f172a',
-                border: '1px solid #d6d9e0',
-                borderBottomColor: isActive ? 'transparent' : '#d6d9e0',
-                boxShadow: isActive ? '0 1px 0 rgba(15,23,42,0.04)' : 'none',
+                border: '1px solid #cfd6e3',
+                borderBottomColor: isActive ? 'transparent' : '#cfd6e3',
+                boxShadow: isActive ? '0 1px 0 rgba(15,23,42,0.06)' : 'none',
                 position: isActive ? 'relative' : 'static',
-                top: isActive ? 1 : 0,
+                transform: isActive ? 'translateY(0)' : 'translateY(2px)',
+                opacity: isActive ? 1 : 0.95,
+                zIndex: isActive ? 4 : 1,
                 whiteSpace: 'nowrap'
               }}
             >
               {t(`brokerfox.nav.${item.key}`)}
+              {isActive && (
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: 'absolute',
+                    left: 1,
+                    right: 1,
+                    bottom: -1,
+                    height: 2,
+                    background: '#ffffff'
+                  }}
+                />
+              )}
             </NavLink>
           )
         })}
@@ -80,7 +93,7 @@ export default function BrokerfoxNav() {
             outline-offset: 2px;
           }
           .brokerfox-tab:not(.active):hover {
-            background: #e7edf6;
+            background: #eef3fb;
           }
         `}
       </style>
