@@ -60,7 +60,7 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
     setIsAdding(false)
   }
 
-  const listMaxHeight = height ? Math.max(height - 160, 110) : undefined
+  const listMaxHeight = height ? Math.max(height - 170, 110) : undefined
 
   return (
     <Card
@@ -71,14 +71,15 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', height: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <strong style={{ color: '#0f172a' }}>{monthLabel}</strong>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <strong style={{ color: '#0f172a', fontSize: density === 'compact' ? '0.95rem' : '1rem' }}>{monthLabel}</strong>
+          <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
             <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() - 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
               ‹
             </button>
             <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() + 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
               ›
             </button>
+            <Button size="sm" variant="secondary" onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
           </div>
         </div>
 
@@ -113,7 +114,6 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <strong style={{ color: '#0f172a' }}>{t('brokerfox.calendar.upcoming')}</strong>
-          <Button size="sm" variant="secondary" onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
         </div>
 
         {isAdding ? (

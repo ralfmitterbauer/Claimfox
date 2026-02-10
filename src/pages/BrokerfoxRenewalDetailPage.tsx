@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
@@ -82,17 +82,37 @@ export default function BrokerfoxRenewalDetailPage() {
       <BrokerfoxLayout
         title={t('brokerfox.renewals.detailTitle')}
         subtitle={renewal.policyName}
-        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={(
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Button size="sm" variant="secondary" onClick={() => navigate('/brokerfox/renewals')}>{t('brokerfox.renewals.back')}</Button>
+              <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', color: '#475569', fontSize: '0.9rem' }}>
+              <span><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</span>
+              <span><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</span>
+              <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</span>
+              <span><strong>{t('brokerfox.renewals.statusLabel')}:</strong> {t(`brokerfox.renewals.status.${renewal.status}`)}</span>
+              <span><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</span>
+            </div>
+          </div>
+        )}
       >
-        <Button size="sm" onClick={() => navigate('/brokerfox/renewals')}>{t('brokerfox.renewals.back')}</Button>
+        <Card variant="glass" title={t('brokerfox.renewals.detailSubtitle')}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+            <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</div>
+            <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
+            <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
+            <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</div>
+          </div>
+        </Card>
 
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
-          <Card variant="glass" title={t('brokerfox.renewals.detailSubtitle')}>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.policyLabel')}: {renewal.policyName}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.carrierLabel')}: {renewal.carrier}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.premiumLabel')}: {renewal.premium}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.statusLabel')}: {t(`brokerfox.renewals.status.${renewal.status}`)}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.dueDateLabel')}: {new Date(renewal.renewalDate).toLocaleDateString()}</p>
+        <div className="renewal-detail-grid">
+          <Card variant="glass" title={t('brokerfox.renewals.statusLabel')}>
+            <p style={{ margin: 0 }}>{t(`brokerfox.renewals.status.${renewal.status}`)}</p>
+            <div style={{ marginTop: '0.75rem' }}>
+              <TimelineComposer onSubmit={handleComposer} />
+            </div>
           </Card>
           <Card variant="glass" title={t('brokerfox.renewals.linksTitle')}>
             <p style={{ margin: 0 }}>{t('brokerfox.renewals.clientLabel')}: {clientName || t('brokerfox.clients.clientUnknown')}</p>
@@ -117,10 +137,26 @@ export default function BrokerfoxRenewalDetailPage() {
           ))}
         </Card>
 
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
-          <TimelineComposer onSubmit={handleComposer} />
-          <TimelineThread events={events} />
-        </div>
+        <TimelineThread events={events} />
+        <style>
+          {`
+            .renewal-detail-grid {
+              display: grid;
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: 1.25rem;
+            }
+            @media (max-width: 1024px) {
+              .renewal-detail-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+              }
+            }
+            @media (max-width: 720px) {
+              .renewal-detail-grid {
+                grid-template-columns: 1fr;
+              }
+            }
+          `}
+        </style>
       </BrokerfoxLayout>
     </section>
   )

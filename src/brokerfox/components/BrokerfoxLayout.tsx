@@ -14,7 +14,7 @@ type BrokerfoxLayoutProps = {
   children: ReactNode
 }
 
-const TOP_ROW_HEIGHT = 260
+const TOP_ROW_HEIGHT = 220
 const RIGHT_RAIL_WIDTH = 280
 
 export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: BrokerfoxLayoutProps) {
@@ -63,7 +63,7 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: 1200, margin: '18px auto 0', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ width: '100%', maxWidth: 1200, margin: '1rem auto 0', display: 'flex', flexDirection: 'column' }}>
       <div
         style={{
           background: '#f1f5f9',
@@ -106,7 +106,7 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
             <Header title={title} subtitle={subtitle} titleColor="#0f172a" />
             {topLeft}
           </div>
-          <div style={{ height: TOP_ROW_HEIGHT }}>
+          <div style={{ height: TOP_ROW_HEIGHT, alignSelf: 'stretch' }}>
             <CalendarWidget
               events={events}
               onAddEvent={handleAdd}
