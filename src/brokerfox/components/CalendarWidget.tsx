@@ -34,8 +34,6 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
   const { lang, t } = useI18n()
   const [activeMonth, setActiveMonth] = useState(() => new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
-  const [isAdding, setIsAdding] = useState(false)
-  const [newEvent, setNewEvent] = useState({ title: '', date: '' })
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null)
 
   const days = useMemo(() => getMonthDays(activeMonth), [activeMonth])
@@ -53,19 +51,12 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
     return Array.from({ length: 7 }).map((_, idx) => formatter.format(new Date(base.getTime() + idx * 86400000)))
   }, [lang])
 
-  function handleSubmit() {
-    if (!newEvent.title.trim() || !newEvent.date) return
-    onAddEvent({ title: newEvent.title.trim(), date: newEvent.date })
-    setNewEvent({ title: '', date: '' })
-    setIsAdding(false)
-  }
-
   return (
     <Card
       variant="glass"
       style={{ minWidth: density === 'compact' ? 260 : 300, height, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
     >
-      <header className="ui-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
+      <header className="ui-card__header" style={{ display: 'grid', gap: '0.2rem' }}>
         <div style={{ display: 'grid', gap: '0.2rem' }}>
           <h2 className="ui-card__title">
             {t('brokerfox.calendar.title')}
@@ -74,19 +65,10 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
             {t('brokerfox.calendar.subtitle')}
           </p>
         </div>
-        <Button size="sm" variant="secondary" onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
       </header>
       <div style={{ display: 'flex', flexDirection: 'column', gap: density === 'compact' ? '0.45rem' : '0.6rem', flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: 4 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <strong style={{ color: '#0f172a', fontSize: density === 'compact' ? '0.95rem' : '1rem' }}>{monthLabel}</strong>
-          <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
-            <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() - 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
-              ‹
-            </button>
-            <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() + 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
-              ›
-            </button>
-          </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: density === 'compact' ? '0.12rem' : '0.2rem' }}>
@@ -118,26 +100,6 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
           })}
         </div>
 
-        {isAdding ? (
-          <div style={{ display: 'grid', gap: '0.35rem' }}>
-            <input
-              value={newEvent.title}
-              onChange={(event) => setNewEvent((prev) => ({ ...prev, title: event.target.value }))}
-              placeholder={t('brokerfox.calendar.eventTitle')}
-              style={{ padding: '0.35rem 0.55rem', borderRadius: 8, border: '1px solid #d6d9e0', fontSize: '0.85rem' }}
-            />
-            <input
-              type="date"
-              value={newEvent.date}
-              onChange={(event) => setNewEvent((prev) => ({ ...prev, date: event.target.value }))}
-              style={{ padding: '0.35rem 0.55rem', borderRadius: 8, border: '1px solid #d6d9e0', fontSize: '0.85rem' }}
-            />
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <Button size="sm" onClick={handleSubmit}>{t('brokerfox.actions.save')}</Button>
-              <Button size="sm" variant="secondary" onClick={() => setIsAdding(false)}>{t('brokerfox.actions.cancel')}</Button>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       {selectedEvent ? (
