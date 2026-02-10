@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '@/components/ui/Header'
 import BrokerfoxNav from '@/brokerfox/components/BrokerfoxNav'
@@ -14,13 +14,14 @@ type BrokerfoxLayoutProps = {
   children: ReactNode
 }
 
-const TOP_ROW_HEIGHT = 220
 const RIGHT_RAIL_WIDTH = 280
 
 export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: BrokerfoxLayoutProps) {
   const navigate = useNavigate()
   const ctx = useTenantContext()
   const [events, setEvents] = useState<CalendarEvent[]>([])
+  const headerRef = useRef<HTMLDivElement | null>(null)
+  const [headerHeight, setHeaderHeight] = useState<number | null>(null)
 
   useEffect(() => {
     let mounted = true
@@ -32,6 +33,19 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
     load()
     return () => { mounted = false }
   }, [ctx])
+
+  useEffect(() => {
+    if (!headerRef.current) return
+    const element = headerRef.current
+    const observer = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        const nextHeight = Math.ceil(entry.contentRect.height)
+        setHeaderHeight(nextHeight)
+      })
+    })
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   async function handleAdd(input: { title: string; date: string }) {
     const event = await addCalendarEvent(ctx, {
@@ -93,11 +107,11 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
       >
         <div style={{ display: 'grid', gridTemplateColumns: `minmax(0, 1fr) ${RIGHT_RAIL_WIDTH}px`, gap: '1.5rem', alignItems: 'stretch' }}>
           <div
+            ref={headerRef}
             style={{
               border: '1px solid #e2e8f0',
               borderRadius: 12,
               padding: '1rem 1.1rem',
-              minHeight: TOP_ROW_HEIGHT,
               display: 'grid',
               gap: '0.75rem',
               background: '#fff'
@@ -106,13 +120,13 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
             <Header title={title} subtitle={subtitle} titleColor="#0f172a" />
             {topLeft}
           </div>
-          <div style={{ height: TOP_ROW_HEIGHT, alignSelf: 'stretch' }}>
+          <div style={{ height: headerHeight ? `${headerHeight}px` : 'auto', alignSelf: 'stretch', minHeight: 0 }}>
             <CalendarWidget
               events={events}
               onAddEvent={handleAdd}
               onSelectEvent={handleOpenRelated}
               density="compact"
-              height={TOP_ROW_HEIGHT}
+              height={headerHeight ?? undefined}
             />
           </div>
         </div>

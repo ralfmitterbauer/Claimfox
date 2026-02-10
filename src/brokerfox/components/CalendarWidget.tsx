@@ -27,7 +27,7 @@ type CalendarWidgetProps = {
   onAddEvent: (input: { title: string; date: string }) => void
   onSelectEvent: (event: CalendarEvent) => void
   density?: 'compact' | 'regular'
-  height?: number
+  height?: number | string
 }
 
 export default function CalendarWidget({ events, onAddEvent, onSelectEvent, density = 'regular', height }: CalendarWidgetProps) {
@@ -60,16 +60,23 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
     setIsAdding(false)
   }
 
-  const listMaxHeight = height ? Math.max(height - 170, 110) : undefined
-
   return (
     <Card
       variant="glass"
-      title={t('brokerfox.calendar.title')}
-      subtitle={t('brokerfox.calendar.subtitle')}
-      style={{ minWidth: density === 'compact' ? 260 : 300, height }}
+      style={{ minWidth: density === 'compact' ? 260 : 300, height, display: 'flex', flexDirection: 'column' }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', height: '100%' }}>
+      <header className="ui-card__header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{ display: 'grid', gap: '0.2rem' }}>
+          <h2 className="ui-card__title">
+            {t('brokerfox.calendar.title')}
+          </h2>
+          <p className="ui-card__subtitle">
+            {t('brokerfox.calendar.subtitle')}
+          </p>
+        </div>
+        <Button size="sm" variant="secondary" onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
+      </header>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', flex: 1, minHeight: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <strong style={{ color: '#0f172a', fontSize: density === 'compact' ? '0.95rem' : '1rem' }}>{monthLabel}</strong>
           <div style={{ display: 'flex', gap: '0.35rem', alignItems: 'center' }}>
@@ -79,7 +86,6 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
             <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() + 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
               ›
             </button>
-            <Button size="sm" variant="secondary" onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
           </div>
         </div>
 
@@ -137,7 +143,7 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent, dens
           </div>
         ) : null}
 
-        <div style={{ flex: 1, overflowY: 'auto', paddingRight: 4, maxHeight: listMaxHeight }}>
+        <div style={{ flex: 1, minHeight: 0, overflowY: 'auto', paddingRight: 4 }}>
           {filteredEvents.length === 0 ? <p style={{ margin: 0, color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.calendar.empty')}</p> : null}
           {filteredEvents.map((event) => (
             <button

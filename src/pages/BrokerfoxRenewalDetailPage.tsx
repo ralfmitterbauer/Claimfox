@@ -83,30 +83,21 @@ export default function BrokerfoxRenewalDetailPage() {
         title={t('brokerfox.renewals.detailTitle')}
         subtitle={renewal.policyName}
         topLeft={(
-          <div style={{ display: 'grid', gap: '0.75rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Button size="sm" variant="secondary" onClick={() => navigate('/brokerfox/renewals')}>{t('brokerfox.renewals.back')}</Button>
-              <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', color: '#475569', fontSize: '0.9rem' }}>
+          <div style={{ display: 'grid', gap: '0.65rem' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem 1rem', color: '#475569', fontSize: '0.9rem' }}>
               <span><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</span>
               <span><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</span>
               <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</span>
               <span><strong>{t('brokerfox.renewals.statusLabel')}:</strong> {t(`brokerfox.renewals.status.${renewal.status}`)}</span>
               <span><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</span>
             </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <Button size="sm" variant="secondary" onClick={() => navigate('/brokerfox/renewals')}>{t('brokerfox.renewals.back')}</Button>
+              <DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />
+            </div>
           </div>
         )}
       >
-        <Card variant="glass" title={t('brokerfox.renewals.detailSubtitle')}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
-            <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</div>
-            <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
-            <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
-            <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</div>
-          </div>
-        </Card>
-
         <div className="renewal-detail-grid">
           <Card variant="glass" title={t('brokerfox.renewals.statusLabel')}>
             <p style={{ margin: 0 }}>{t(`brokerfox.renewals.status.${renewal.status}`)}</p>
@@ -126,6 +117,15 @@ export default function BrokerfoxRenewalDetailPage() {
             </ul>
           </Card>
         </div>
+
+        <Card variant="glass" title={t('brokerfox.renewals.detailSubtitle')}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
+            <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</div>
+            <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
+            <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
+            <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</div>
+          </div>
+        </Card>
 
         <Card variant="glass" title={t('brokerfox.renewals.documentsTitle')}>
           {documents.length === 0 ? <p>{t('brokerfox.empty.noDocuments')}</p> : null}
