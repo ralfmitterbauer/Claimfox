@@ -27,11 +27,13 @@ export default function BrokerfoxNav() {
           display: 'flex',
           gap: 8,
           alignItems: 'center',
-          flexWrap: 'wrap',
-          padding: '6px 4px 8px',
+          flexWrap: 'nowrap',
+          padding: '4px 4px 6px',
           background: '#f1f5f9',
           borderRadius: 14,
-          overflow: 'visible'
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          WebkitOverflowScrolling: 'touch'
         }}
       >
         {navItems.map((item) => {
@@ -53,10 +55,10 @@ export default function BrokerfoxNav() {
                 height: 36,
                 display: 'inline-flex',
                 alignItems: 'center',
-                padding: '0 14px',
+                padding: '0 12px',
                 borderRadius: 999,
                 textDecoration: 'none',
-                fontSize: 14,
+                fontSize: 13,
                 fontWeight: isActive ? 600 : 500,
                 background: isActive ? '#ffffff' : 'transparent',
                 color: isActive ? '#0f172a' : '#475569',
