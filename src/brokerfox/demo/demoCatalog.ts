@@ -32,6 +32,16 @@ export const carriers = [
   'Swiss Re'
 ]
 
+export const lobs = [
+  'Property',
+  'General Liability',
+  'Cargo',
+  'Fleet',
+  'Cyber',
+  'D&O',
+  'Professional Indemnity'
+]
+
 export const integrationTemplates = [
   { key: 'bipro', name: 'BiPRO connector', description: 'Standard carrier messaging and data exchange.' },
   { key: 'pool', name: 'Pool connector', description: 'Broker pool connection for quotes and renewals.' },

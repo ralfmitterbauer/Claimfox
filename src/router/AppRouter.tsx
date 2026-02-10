@@ -149,6 +149,8 @@ import DemoPartnerPartsStepPage from '@/pages/demo-partners/DemoPartnerPartsStep
 import BrokerfoxDashboardPage from '@/pages/BrokerfoxDashboardPage'
 import BrokerfoxClientsPage from '@/pages/BrokerfoxClientsPage'
 import BrokerfoxClientDetailPage from '@/pages/BrokerfoxClientDetailPage'
+import BrokerfoxContractsPage from '@/pages/BrokerfoxContractsPage'
+import BrokerfoxContractDetailPage from '@/pages/BrokerfoxContractDetailPage'
 import BrokerfoxTendersPage from '@/pages/BrokerfoxTendersPage'
 import BrokerfoxTenderDetailPage from '@/pages/BrokerfoxTenderDetailPage'
 import BrokerfoxOffersPage from '@/pages/BrokerfoxOffersPage'
@@ -255,6 +257,8 @@ export default function AppRouter() {
         <Route path="/brokerfox" element={<BrokerfoxDashboardPage />} />
         <Route path="/brokerfox/clients" element={<BrokerfoxClientsPage />} />
         <Route path="/brokerfox/clients/:clientId" element={<BrokerfoxClientDetailPage />} />
+        <Route path="/brokerfox/contracts" element={<BrokerfoxContractsPage />} />
+        <Route path="/brokerfox/contracts/:contractId" element={<BrokerfoxContractDetailPage />} />
         <Route path="/brokerfox/mailbox" element={<BrokerfoxMailboxPage />} />
         <Route path="/brokerfox/tenders" element={<BrokerfoxTendersPage />} />
         <Route path="/brokerfox/tenders/:tenderId" element={<BrokerfoxTenderDetailPage />} />

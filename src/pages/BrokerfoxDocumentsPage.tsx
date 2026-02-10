@@ -6,7 +6,22 @@ import Button from '@/components/ui/Button'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { addTimelineEvent, assignDocument, listClients, listDocuments, listOffers, listRenewals, listTenders, uploadDocument } from '@/brokerfox/api/brokerfoxApi'
+import {
+  addTimelineEvent,
+  applyExtraction,
+  assignDocument,
+  createSignatureRequest,
+  listClients,
+  listContracts,
+  listDocuments,
+  listExtractions,
+  listOffers,
+  listRenewals,
+  listSignatures,
+  listTenders,
+  updateSignatureStatus,
+  uploadDocument
+} from '@/brokerfox/api/brokerfoxApi'
 import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
 import type { Client, DocumentMeta } from '@/brokerfox/types'
 
@@ -21,23 +36,31 @@ export default function BrokerfoxDocumentsPage() {
   const [tenders, setTenders] = useState<any[]>([])
   const [offers, setOffers] = useState<any[]>([])
   const [renewals, setRenewals] = useState<any[]>([])
+  const [contracts, setContracts] = useState<any[]>([])
+  const [extractions, setExtractions] = useState<any[]>([])
+  const [signatures, setSignatures] = useState<any[]>([])
   const [inboxOnly, setInboxOnly] = useState(false)
   const [file, setFile] = useState<File | null>(null)
-  const [entityType, setEntityType] = useState<'client' | 'tender' | 'offer' | 'renewal'>('client')
+  const [entityType, setEntityType] = useState<'client' | 'tender' | 'offer' | 'renewal' | 'contract'>('client')
   const [entityId, setEntityId] = useState('')
   const [isDragging, setIsDragging] = useState(false)
   const [progress, setProgress] = useState(0)
+  const [approvedExtraction, setApprovedExtraction] = useState<Record<string, boolean>>({})
+  const [signatureDraft, setSignatureDraft] = useState<{ docId: string; name: string; email: string }>({ docId: '', name: '', email: '' })
 
   useEffect(() => {
     let mounted = true
     async function load() {
       try {
-        const [docs, clientData, tenderData, offerData, renewalData] = await Promise.all([
+        const [docs, clientData, tenderData, offerData, renewalData, contractData, extractionData, signatureData] = await Promise.all([
           listDocuments(ctx),
           listClients(ctx),
           listTenders(ctx),
           listOffers(ctx),
-          listRenewals(ctx)
+          listRenewals(ctx),
+          listContracts(ctx),
+          listExtractions(ctx),
+          listSignatures(ctx)
         ])
         if (!mounted) return
         setDocuments(docs)
@@ -45,7 +68,10 @@ export default function BrokerfoxDocumentsPage() {
         setTenders(tenderData)
         setOffers(offerData)
         setRenewals(renewalData)
-        setEntityId(clientData[0]?.id ?? tenderData[0]?.id ?? offerData[0]?.id ?? renewalData[0]?.id ?? '')
+        setContracts(contractData)
+        setExtractions(extractionData)
+        setSignatures(signatureData)
+        setEntityId(clientData[0]?.id ?? tenderData[0]?.id ?? offerData[0]?.id ?? renewalData[0]?.id ?? contractData[0]?.id ?? '')
         setLoading(false)
       } catch {
         if (!mounted) return
@@ -77,6 +103,8 @@ export default function BrokerfoxDocumentsPage() {
     setProgress(100)
     setTimeout(() => setProgress(0), 600)
     setDocuments((prev) => [doc, ...prev])
+    const extractionData = await listExtractions(ctx)
+    setExtractions(extractionData)
     setFile(null)
   }
 
@@ -136,7 +164,43 @@ export default function BrokerfoxDocumentsPage() {
     })
   }
 
-  const entityOptions = entityType === 'client' ? clients : entityType === 'tender' ? tenders : entityType === 'offer' ? offers : renewals
+  async function handleApplyExtraction(docId: string) {
+    if (!approvedExtraction[docId]) return
+    await applyExtraction(ctx, docId)
+    const [docData, extractionData] = await Promise.all([listDocuments(ctx), listExtractions(ctx)])
+    setDocuments(docData)
+    setExtractions(extractionData)
+    setApprovedExtraction((prev) => ({ ...prev, [docId]: false }))
+  }
+
+  async function handleRequestSignature(doc: DocumentMeta) {
+    if (!signatureDraft.name.trim() || !signatureDraft.email.trim()) return
+    const entry = await createSignatureRequest(ctx, {
+      documentId: doc.id,
+      status: 'SENT',
+      recipientName: signatureDraft.name.trim(),
+      recipientEmail: signatureDraft.email.trim()
+    })
+    setSignatures((prev) => [entry, ...prev])
+    setSignatureDraft({ docId: '', name: '', email: '' })
+  }
+
+  async function handleMarkSigned(signatureId: string) {
+    const updated = await updateSignatureStatus(ctx, signatureId, 'SIGNED')
+    if (!updated) return
+    setSignatures((prev) => prev.map((item) => (item.id === signatureId ? updated : item)))
+  }
+
+  const entityOptions =
+    entityType === 'client'
+      ? clients
+      : entityType === 'tender'
+        ? tenders
+        : entityType === 'offer'
+          ? offers
+          : entityType === 'contract'
+            ? contracts
+            : renewals
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
@@ -173,10 +237,11 @@ export default function BrokerfoxDocumentsPage() {
               <option value="tender">{t('brokerfox.documents.entityTender')}</option>
               <option value="offer">{t('brokerfox.documents.entityOffer')}</option>
               <option value="renewal">{t('brokerfox.documents.entityRenewal')}</option>
+              <option value="contract">{t('brokerfox.documents.entityContract')}</option>
             </select>
             <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               {entityOptions.map((item: any) => (
-                <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.carrier?.name}</option>
+                <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
               ))}
             </select>
             <Button onClick={() => handleUpload()}>{t('brokerfox.actions.uploadDocument')}</Button>
@@ -196,18 +261,86 @@ export default function BrokerfoxDocumentsPage() {
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}
           {filtered.length === 0 ? <p>{t('brokerfox.empty.noDocuments')}</p> : null}
-          {filtered.map((doc) => (
-            <div key={doc.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
-              <div>
-                <strong>{doc.name}</strong>
-                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{doc.entityType ?? t('brokerfox.documents.unassigned')}</div>
+          {filtered.map((doc) => {
+            const extraction = extractions.find((entry) => entry.documentId === doc.id)
+            const signature = signatures.find((entry) => entry.documentId === doc.id)
+            return (
+              <div key={doc.id} style={{ padding: '0.6rem 0', borderBottom: '1px solid #e2e8f0' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto auto', gap: '0.75rem', alignItems: 'center' }}>
+                  <div>
+                    <strong>{doc.name}</strong>
+                    <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{doc.entityType ?? t('brokerfox.documents.unassigned')}</div>
+                  </div>
+                  <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
+                  <Button onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
+                  <Button onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
+                  {!doc.entityId ? <Button onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
+                </div>
+
+                {extraction ? (
+                  <div style={{ marginTop: '0.6rem', padding: '0.6rem', borderRadius: 12, background: '#f8fafc' }}>
+                    <strong>{t('brokerfox.extraction.title')}</strong>
+                    <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.suggestionNotice')}</div>
+                    <div style={{ marginTop: '0.4rem', display: 'grid', gap: '0.3rem' }}>
+                      <div>{t('brokerfox.extraction.suggestedClient')}: {clients.find((client) => client.id === extraction.suggestedClientId)?.name ?? '-'}</div>
+                      <div>{t('brokerfox.extraction.suggestedContract')}: {contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber ?? '-'}</div>
+                      <div>{t('brokerfox.extraction.confidence')}: {Math.round(extraction.confidence * 100)}%</div>
+                      <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.fieldsTitle')}</div>
+                      {Object.entries(extraction.extractedFields).map(([key, value]) => (
+                        <div key={key} style={{ fontSize: '0.85rem' }}>{key}: {value}</div>
+                      ))}
+                    </div>
+                    <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                      <input
+                        type="checkbox"
+                        checked={Boolean(approvedExtraction[doc.id])}
+                        onChange={(event) => setApprovedExtraction((prev) => ({ ...prev, [doc.id]: event.target.checked }))}
+                      />
+                      {t('brokerfox.extraction.approval')}
+                    </label>
+                    <Button onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
+                      {t('brokerfox.extraction.apply')}
+                    </Button>
+                  </div>
+                ) : null}
+
+                <div style={{ marginTop: '0.6rem', display: 'grid', gap: '0.4rem' }}>
+                  <strong>{t('brokerfox.signature.title')}</strong>
+                  {signature ? (
+                    <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                      <span>{t('brokerfox.signature.statusLabel')}: {t(`brokerfox.signature.status.${signature.status}`)}</span>
+                      {signature.status !== 'SIGNED' ? (
+                        <Button onClick={() => handleMarkSigned(signature.id)}>{t('brokerfox.signature.markSigned')}</Button>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <>
+                      {signatureDraft.docId === doc.id ? (
+                        <div style={{ display: 'grid', gap: '0.5rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
+                          <input
+                            value={signatureDraft.name}
+                            onChange={(event) => setSignatureDraft((prev) => ({ ...prev, name: event.target.value }))}
+                            placeholder={t('brokerfox.signature.recipientName')}
+                            style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
+                          />
+                          <input
+                            value={signatureDraft.email}
+                            onChange={(event) => setSignatureDraft((prev) => ({ ...prev, email: event.target.value }))}
+                            placeholder={t('brokerfox.signature.recipientEmail')}
+                            style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
+                          />
+                          <Button onClick={() => handleRequestSignature(doc)}>{t('brokerfox.signature.requestAction')}</Button>
+                          <Button variant="secondary" onClick={() => setSignatureDraft({ docId: '', name: '', email: '' })}>{t('brokerfox.actions.cancel')}</Button>
+                        </div>
+                      ) : (
+                        <Button onClick={() => setSignatureDraft({ docId: doc.id, name: '', email: '' })}>{t('brokerfox.signature.requestAction')}</Button>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-              <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
-              <Button onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
-              <Button onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
-              {!doc.entityId ? <Button onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
-            </div>
-          ))}
+            )
+          })}
         </Card>
       </BrokerfoxLayout>
     </section>

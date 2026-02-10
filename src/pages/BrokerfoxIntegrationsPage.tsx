@@ -4,7 +4,7 @@ import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { listIntegrations, updateIntegrationStatus } from '@/brokerfox/api/brokerfoxApi'
+import { applyGdvImport, listContracts, listIntegrations, runBiproSync, runPortalFetch, updateIntegrationStatus } from '@/brokerfox/api/brokerfoxApi'
 import type { IntegrationItem, IntegrationStatus } from '@/brokerfox/types'
 
 export default function BrokerfoxIntegrationsPage() {
@@ -13,14 +13,18 @@ export default function BrokerfoxIntegrationsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [items, setItems] = useState<IntegrationItem[]>([])
+  const [contracts, setContracts] = useState<any[]>([])
+  const [gdvFile, setGdvFile] = useState<File | null>(null)
+  const [gdvPreview, setGdvPreview] = useState<any[]>([])
 
   useEffect(() => {
     let mounted = true
     async function load() {
       try {
-        const data = await listIntegrations(ctx)
+        const [data, contractData] = await Promise.all([listIntegrations(ctx), listContracts(ctx)])
         if (!mounted) return
         setItems(data)
+        setContracts(contractData)
         setLoading(false)
       } catch {
         if (!mounted) return
@@ -38,6 +42,35 @@ export default function BrokerfoxIntegrationsPage() {
     setItems((prev) => prev.map((entry) => (entry.id === item.id ? updated : entry)))
   }
 
+  async function handleBiproSync() {
+    await runBiproSync(ctx)
+    const nextContracts = await listContracts(ctx)
+    setContracts(nextContracts)
+  }
+
+  function handleGdvPreview() {
+    if (!gdvFile) return
+    const preview = contracts.slice(0, 3).map((contract: any, idx: number) => ({
+      id: contract.id,
+      premiumEUR: contract.premiumEUR + (idx + 1) * 300,
+      status: contract.status === 'pending' ? 'active' : contract.status
+    }))
+    setGdvPreview(preview)
+  }
+
+  async function handleGdvApply() {
+    if (gdvPreview.length === 0) return
+    await applyGdvImport(ctx, gdvPreview)
+    const nextContracts = await listContracts(ctx)
+    setContracts(nextContracts)
+    setGdvPreview([])
+    setGdvFile(null)
+  }
+
+  async function handlePortalFetch() {
+    await runPortalFetch(ctx)
+  }
+
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
@@ -45,6 +78,53 @@ export default function BrokerfoxIntegrationsPage() {
         subtitle={t('brokerfox.integrations.subtitle')}
         topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
       >
+        <Card variant="glass" title={t('brokerfox.integrations.actionsTitle')} subtitle={t('brokerfox.integrations.actionsSubtitle')}>
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <div>
+                <strong>{t('brokerfox.integrations.biproAction')}</strong>
+                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.integrations.biproHint')}</div>
+              </div>
+              <button type="button" onClick={handleBiproSync} style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 999, padding: '0.35rem 0.9rem' }}>
+                {t('brokerfox.integrations.runAction')}
+              </button>
+            </div>
+
+            <div style={{ display: 'grid', gap: '0.5rem' }}>
+              <strong>{t('brokerfox.integrations.gdvAction')}</strong>
+              <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.integrations.gdvHint')}</div>
+              <input type="file" accept=".csv" onChange={(event) => setGdvFile(event.target.files?.[0] ?? null)} />
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <button type="button" onClick={handleGdvPreview} style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 999, padding: '0.35rem 0.9rem' }}>
+                  {t('brokerfox.integrations.preview')}
+                </button>
+                <button type="button" onClick={handleGdvApply} style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 999, padding: '0.35rem 0.9rem' }}>
+                  {t('brokerfox.integrations.apply')}
+                </button>
+              </div>
+              {gdvPreview.length > 0 ? (
+                <div style={{ display: 'grid', gap: '0.35rem' }}>
+                  {gdvPreview.map((item) => (
+                    <div key={item.id} style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                      {item.id}: € {item.premiumEUR}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <div>
+                <strong>{t('brokerfox.integrations.portalAction')}</strong>
+                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.integrations.portalHint')}</div>
+              </div>
+              <button type="button" onClick={handlePortalFetch} style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 999, padding: '0.35rem 0.9rem' }}>
+                {t('brokerfox.integrations.runAction')}
+              </button>
+            </div>
+          </div>
+        </Card>
+
         <Card variant="glass" title={t('brokerfox.integrations.listTitle')} subtitle={t('brokerfox.integrations.listSubtitle')}>
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}

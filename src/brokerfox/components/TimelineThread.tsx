@@ -7,8 +7,15 @@ const TYPE_COLORS: Record<string, string> = {
   externalMessage: '#2563eb',
   internalNote: '#7c3aed',
   statusUpdate: '#059669',
-  attachment: '#d97706',
-  system: '#475569'
+  documentUploaded: '#d97706',
+  documentAssigned: '#0ea5e9',
+  extractionSuggested: '#f59e0b',
+  extractionApplied: '#10b981',
+  signatureRequested: '#6366f1',
+  signatureSigned: '#22c55e',
+  commissionReminderSent: '#ef4444',
+  integrationSync: '#475569',
+  taskDelegated: '#f97316'
 }
 
 type TimelineThreadProps = {

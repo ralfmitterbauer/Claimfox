@@ -137,14 +137,27 @@ export type TaskItem = {
   linkedEntityType?: EntityType
   linkedEntityId?: string
   dueDate?: string
+  ownerName?: string
   assigneeId?: string
   createdAt: string
   updatedAt: string
 }
 
-export type EntityType = 'client' | 'tender' | 'offer' | 'renewal' | 'task' | 'document' | 'integration'
+export type EntityType = 'client' | 'tender' | 'offer' | 'renewal' | 'task' | 'document' | 'integration' | 'contract'
 
-export type TimelineEventType = 'externalMessage' | 'internalNote' | 'statusUpdate' | 'attachment' | 'system'
+export type TimelineEventType =
+  | 'externalMessage'
+  | 'internalNote'
+  | 'statusUpdate'
+  | 'documentUploaded'
+  | 'documentAssigned'
+  | 'extractionSuggested'
+  | 'extractionApplied'
+  | 'signatureRequested'
+  | 'signatureSigned'
+  | 'commissionReminderSent'
+  | 'integrationSync'
+  | 'taskDelegated'
 
 export type TimelineEvent = {
   id: string
@@ -213,4 +226,57 @@ export type MailboxItem = {
   entityType?: EntityType
   entityId?: string
   body?: string
+}
+
+export type ContractStatus = 'active' | 'pending' | 'cancelled'
+
+export type Contract = {
+  id: string
+  tenantId: string
+  clientId: string
+  carrierName: string
+  lob: string
+  policyNumber: string
+  status: ContractStatus
+  startDate: string
+  endDate: string
+  premiumEUR: number
+  renewalDueDate?: string
+  isHero?: boolean
+}
+
+export type CommissionStatus = 'expected' | 'partial' | 'paid' | 'overdue'
+
+export type Commission = {
+  id: string
+  tenantId: string
+  contractId: string
+  period: string
+  expectedEUR: number
+  paidEUR: number
+  outstandingEUR: number
+  dueDate: string
+  status: CommissionStatus
+}
+
+export type SignatureStatus = 'DRAFT' | 'SENT' | 'SIGNED'
+
+export type SignatureRequest = {
+  id: string
+  tenantId: string
+  documentId: string
+  status: SignatureStatus
+  recipientName: string
+  recipientEmail: string
+  createdAt: string
+  updatedAt: string
+}
+
+export type Extraction = {
+  documentId: string
+  tenantId: string
+  extractedFields: Record<string, string>
+  suggestedClientId?: string
+  suggestedContractId?: string
+  confidence: number
 }

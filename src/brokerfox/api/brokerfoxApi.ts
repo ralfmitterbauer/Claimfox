@@ -3,14 +3,18 @@ import type {
   Client,
   ComparisonResult,
   CoverageRequest,
+  Contract,
+  Commission,
   DocumentMeta,
   EntityType,
+  Extraction,
   IntegrationItem,
   IntegrationStatus,
   MailboxItem,
   Offer,
   OfferLine,
   RenewalItem,
+  SignatureRequest,
   TaskItem,
   TaskStatus,
   TenantContext,
@@ -37,6 +41,15 @@ function nowIso() {
 
 function makeId(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`
+}
+
+function hashString(input: string) {
+  let h = 0
+  for (let i = 0; i < input.length; i += 1) {
+    h = (h << 5) - h + input.charCodeAt(i)
+    h |= 0
+  }
+  return Math.abs(h)
 }
 
 function readList<T>(tenantId: string, entity: string): T[] {
@@ -84,6 +97,10 @@ export function ensureSeeded(tenantId: string) {
   writeList(tenantId, 'offers', seed.offers)
   writeList(tenantId, 'renewals', seed.renewals)
   writeList(tenantId, 'documents', seed.documents)
+  writeList(tenantId, 'contracts', seed.contracts)
+  writeList(tenantId, 'commissions', seed.commissions)
+  writeList(tenantId, 'signatures', seed.signatures)
+  writeList(tenantId, 'extractions', seed.extractions)
   writeList(tenantId, 'tasks', seed.tasks)
   writeList(tenantId, 'integrations', seed.integrations)
   writeList(tenantId, 'calendar', seed.calendarEvents)
@@ -101,14 +118,14 @@ export function seedAllTenantsIfEmpty() {
 
 export function resetDemoData(tenantId: string) {
   if (!isBrowser()) return
-  const keys = ['clients', 'tenders', 'offers', 'renewals', 'documents', 'tasks', 'integrations', 'calendar', 'mailbox', 'timeline', 'hero', 'seeded']
+  const keys = ['clients', 'tenders', 'offers', 'renewals', 'documents', 'contracts', 'commissions', 'signatures', 'extractions', 'tasks', 'integrations', 'calendar', 'mailbox', 'timeline', 'hero', 'seeded']
   keys.forEach((entity) => window.localStorage.removeItem(key(tenantId, entity)))
   ensureSeeded(tenantId)
 }
 
 export function getHeroIds(tenantId: string) {
   ensureSeeded(tenantId)
-  return readValue<{ clientId: string; tenderId: string }>(tenantId, 'hero')
+  return readValue<{ clientId: string; tenderId: string; contractIds?: string[] }>(tenantId, 'hero')
 }
 
 function addTimelineEventInternal(tenantId: string, ctx: TenantContext, event: Omit<TimelineEvent, 'id' | 'tenantId' | 'actorId' | 'timestamp' | 'createdAt'>) {
@@ -158,7 +175,7 @@ export async function createClient(ctx: TenantContext, input: { name: string; se
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: 'client',
     entityId: client.id,
-    type: 'system',
+    type: 'statusUpdate',
     title: 'Client created',
     message: `Client ${client.name} created.`
   })
@@ -187,6 +204,88 @@ export async function updateClient(ctx: TenantContext, clientId: string, update:
     message: 'Client information updated.'
   })
   return next
+}
+
+export async function listContracts(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<Contract>(ctx.tenantId, 'contracts')
+}
+
+export async function listContractsByClient(ctx: TenantContext, clientId: string) {
+  const contracts = await listContracts(ctx)
+  return contracts.filter((contract) => contract.clientId === clientId)
+}
+
+export async function getContract(ctx: TenantContext, contractId: string) {
+  ensureSeeded(ctx.tenantId)
+  const list = readList<Contract>(ctx.tenantId, 'contracts')
+  return list.find((contract) => contract.id === contractId) || null
+}
+
+export async function createContract(ctx: TenantContext, input: Omit<Contract, 'id' | 'tenantId'>) {
+  ensureSeeded(ctx.tenantId)
+  const contracts = readList<Contract>(ctx.tenantId, 'contracts')
+  const contract: Contract = {
+    id: makeId('contract'),
+    tenantId: ctx.tenantId,
+    ...input
+  }
+  contracts.unshift(contract)
+  writeList(ctx.tenantId, 'contracts', contracts)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'contract',
+    entityId: contract.id,
+    type: 'statusUpdate',
+    title: 'Contract created',
+    message: `Contract ${contract.policyNumber} created.`
+  })
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'client',
+    entityId: contract.clientId,
+    type: 'statusUpdate',
+    title: 'Contract linked',
+    message: `Contract ${contract.policyNumber} linked to client.`
+  })
+  return contract
+}
+
+export async function updateContract(ctx: TenantContext, contractId: string, update: Partial<Contract>) {
+  ensureSeeded(ctx.tenantId)
+  const contracts = readList<Contract>(ctx.tenantId, 'contracts')
+  const idx = contracts.findIndex((contract) => contract.id === contractId)
+  if (idx === -1) return null
+  const next = { ...contracts[idx], ...update }
+  contracts[idx] = next
+  writeList(ctx.tenantId, 'contracts', contracts)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'contract',
+    entityId: contractId,
+    type: 'statusUpdate',
+    title: 'Contract updated',
+    message: `Contract ${next.policyNumber} updated.`
+  })
+  return next
+}
+
+export async function listCommissions(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<Commission>(ctx.tenantId, 'commissions')
+}
+
+export async function listCommissionsByContract(ctx: TenantContext, contractId: string) {
+  const list = await listCommissions(ctx)
+  return list.filter((item) => item.contractId === contractId)
+}
+
+export async function sendCommissionReminder(ctx: TenantContext, contractId: string, commissionId: string) {
+  ensureSeeded(ctx.tenantId)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'contract',
+    entityId: contractId,
+    type: 'commissionReminderSent',
+    title: 'Commission reminder sent',
+    message: `Reminder sent for commission ${commissionId}.`
+  })
 }
 
 export async function listTenders(ctx: TenantContext) {
@@ -227,7 +326,7 @@ export async function createTender(ctx: TenantContext, input: {
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: 'tender',
     entityId: tender.id,
-    type: 'system',
+    type: 'statusUpdate',
     title: 'Tender created',
     message: `Tender ${tender.title} created.`
   })
@@ -278,7 +377,7 @@ export async function addOffer(ctx: TenantContext, tenderId: string, carrierName
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: 'offer',
     entityId: offer.id,
-    type: 'system',
+    type: 'statusUpdate',
     title: 'Offer received',
     message: `Offer from ${carrierName} received.`
   })
@@ -293,6 +392,95 @@ export async function listRenewals(ctx: TenantContext) {
 export async function listDocuments(ctx: TenantContext) {
   ensureSeeded(ctx.tenantId)
   return readList<DocumentMeta>(ctx.tenantId, 'documents')
+}
+
+export async function listExtractions(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<Extraction>(ctx.tenantId, 'extractions')
+}
+
+export async function getExtraction(ctx: TenantContext, documentId: string) {
+  ensureSeeded(ctx.tenantId)
+  const list = readList<Extraction>(ctx.tenantId, 'extractions')
+  return list.find((entry) => entry.documentId === documentId) || null
+}
+
+function buildExtractionSuggestion(tenantId: string, doc: DocumentMeta) {
+  const clients = readList<Client>(tenantId, 'clients')
+  const contracts = readList<Contract>(tenantId, 'contracts')
+  const hash = hashString(doc.id + doc.name)
+  const client = clients[hash % clients.length]
+  const contract = contracts[hash % contracts.length]
+  return {
+    documentId: doc.id,
+    tenantId,
+    extractedFields: {
+      policyNumber: contract?.policyNumber ?? `PN-${hash % 9000}`,
+      insurer: contract?.carrierName ?? 'Carrier A',
+      premium: `€ ${320 + (hash % 40)}k`,
+      startDate: contract?.startDate ?? new Date(Date.now() - 86400000 * (hash % 180)).toISOString().split('T')[0],
+      endDate: contract?.endDate ?? new Date(Date.now() + 86400000 * (180 + (hash % 180))).toISOString().split('T')[0]
+    },
+    suggestedClientId: client?.id,
+    suggestedContractId: contract?.id,
+    confidence: 0.74 + (hash % 20) / 100
+  } satisfies Extraction
+}
+
+async function ensureExtraction(ctx: TenantContext, doc: DocumentMeta) {
+  const list = readList<Extraction>(ctx.tenantId, 'extractions')
+  if (list.find((entry) => entry.documentId === doc.id)) return
+  const suggestion = buildExtractionSuggestion(ctx.tenantId, doc)
+  list.unshift(suggestion)
+  writeList(ctx.tenantId, 'extractions', list)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: doc.entityType ?? 'document',
+    entityId: doc.entityId ?? doc.id,
+    type: 'extractionSuggested',
+    title: 'Extraction suggested',
+    message: `Extraction suggestion created for ${doc.name}.`
+  })
+}
+
+export async function applyExtraction(ctx: TenantContext, documentId: string) {
+  ensureSeeded(ctx.tenantId)
+  const list = readList<Extraction>(ctx.tenantId, 'extractions')
+  const entry = list.find((item) => item.documentId === documentId)
+  if (!entry) return null
+  if (entry.suggestedContractId) {
+    const contracts = readList<Contract>(ctx.tenantId, 'contracts')
+    const idx = contracts.findIndex((contract) => contract.id === entry.suggestedContractId)
+    if (idx !== -1) {
+      contracts[idx] = {
+        ...contracts[idx],
+        policyNumber: entry.extractedFields.policyNumber || contracts[idx].policyNumber,
+        carrierName: entry.extractedFields.insurer || contracts[idx].carrierName,
+        premiumEUR: Number(String(entry.extractedFields.premium).replace(/[^0-9.]/g, '')) * 1000 || contracts[idx].premiumEUR
+      }
+      writeList(ctx.tenantId, 'contracts', contracts)
+    }
+    const docs = readList<DocumentMeta>(ctx.tenantId, 'documents')
+    const docIdx = docs.findIndex((doc) => doc.id === documentId)
+    if (docIdx !== -1) {
+      docs[docIdx] = { ...docs[docIdx], entityType: 'contract', entityId: entry.suggestedContractId }
+      writeList(ctx.tenantId, 'documents', docs)
+      addTimelineEventInternal(ctx.tenantId, ctx, {
+        entityType: 'contract',
+        entityId: entry.suggestedContractId,
+        type: 'documentAssigned',
+        title: 'Document assigned',
+        message: 'Document assigned via extraction approval.'
+      })
+    }
+  }
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: entry.suggestedContractId ? 'contract' : 'document',
+    entityId: entry.suggestedContractId ?? documentId,
+    type: 'extractionApplied',
+    title: 'Extraction applied',
+    message: 'Extracted data applied after approval.'
+  })
+  return entry
 }
 
 export async function listMailboxItems(ctx: TenantContext) {
@@ -326,11 +514,12 @@ export async function uploadDocument(ctx: TenantContext, input: Omit<DocumentMet
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: input.entityType ?? 'document',
     entityId: input.entityId ?? doc.id,
-    type: 'attachment',
+    type: 'documentUploaded',
     title: 'Document uploaded',
     message: `Document ${doc.name} uploaded.`,
     attachments: [doc]
   })
+  await ensureExtraction(ctx, doc)
   return doc
 }
 
@@ -350,11 +539,57 @@ export async function assignDocument(ctx: TenantContext, docId: string, entityTy
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType,
     entityId,
-    type: 'statusUpdate',
+    type: 'documentAssigned',
     title: 'Document linked',
     message: `Document linked to ${entityType}.`
   })
   return docs[idx]
+}
+
+export async function listSignatures(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  return readList<SignatureRequest>(ctx.tenantId, 'signatures')
+}
+
+export async function createSignatureRequest(ctx: TenantContext, input: Omit<SignatureRequest, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>) {
+  ensureSeeded(ctx.tenantId)
+  const list = readList<SignatureRequest>(ctx.tenantId, 'signatures')
+  const createdAt = nowIso()
+  const entry: SignatureRequest = {
+    id: makeId('sig'),
+    tenantId: ctx.tenantId,
+    createdAt,
+    updatedAt: createdAt,
+    ...input
+  }
+  list.unshift(entry)
+  writeList(ctx.tenantId, 'signatures', list)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'document',
+    entityId: input.documentId,
+    type: 'signatureRequested',
+    title: 'Signature requested',
+    message: `Signature request sent to ${input.recipientName}.`
+  })
+  return entry
+}
+
+export async function updateSignatureStatus(ctx: TenantContext, signatureId: string, status: SignatureRequest['status']) {
+  ensureSeeded(ctx.tenantId)
+  const list = readList<SignatureRequest>(ctx.tenantId, 'signatures')
+  const idx = list.findIndex((item) => item.id === signatureId)
+  if (idx === -1) return null
+  const updated = { ...list[idx], status, updatedAt: nowIso() }
+  list[idx] = updated
+  writeList(ctx.tenantId, 'signatures', list)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'document',
+    entityId: updated.documentId,
+    type: status === 'SIGNED' ? 'signatureSigned' : 'signatureRequested',
+    title: status === 'SIGNED' ? 'Signature completed' : 'Signature updated',
+    message: `Signature status: ${status}.`
+  })
+  return updated
 }
 
 export async function listTasks(ctx: TenantContext) {
@@ -399,7 +634,7 @@ export async function createTask(ctx: TenantContext, input: Omit<TaskItem, 'id' 
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: 'task',
     entityId: task.id,
-    type: 'system',
+    type: 'statusUpdate',
     title: 'Task created',
     message: `Task ${task.title} created.`
   })
@@ -444,6 +679,33 @@ export async function updateTaskStatus(ctx: TenantContext, taskId: string, statu
   return next
 }
 
+export async function delegateTask(ctx: TenantContext, taskId: string, ownerName: string) {
+  ensureSeeded(ctx.tenantId)
+  const tasks = readList<TaskItem>(ctx.tenantId, 'tasks')
+  const idx = tasks.findIndex((task) => task.id === taskId)
+  if (idx === -1) return null
+  const next = { ...tasks[idx], ownerName, updatedAt: nowIso() }
+  tasks[idx] = next
+  writeList(ctx.tenantId, 'tasks', tasks)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'task',
+    entityId: taskId,
+    type: 'taskDelegated',
+    title: 'Task delegated',
+    message: `Task delegated to ${ownerName}.`
+  })
+  if (next.linkedEntityType && next.linkedEntityId) {
+    addTimelineEventInternal(ctx.tenantId, ctx, {
+      entityType: next.linkedEntityType,
+      entityId: next.linkedEntityId,
+      type: 'taskDelegated',
+      title: 'Task delegated',
+      message: `Task delegated to ${ownerName}.`
+    })
+  }
+  return next
+}
+
 export async function listIntegrations(ctx: TenantContext) {
   ensureSeeded(ctx.tenantId)
   return readList<IntegrationItem>(ctx.tenantId, 'integrations')
@@ -461,11 +723,105 @@ export async function updateIntegrationStatus(ctx: TenantContext, integrationId:
   addTimelineEventInternal(ctx.tenantId, ctx, {
     entityType: 'integration',
     entityId: integrationId,
-    type: 'statusUpdate',
+    type: 'integrationSync',
     title: 'Integration updated',
     message: `Integration status set to ${status}.`
   })
   return items[idx]
+}
+
+export async function runBiproSync(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  const contracts = readList<Contract>(ctx.tenantId, 'contracts')
+  const updated = contracts.slice(0, 4).map((contract, idx) => ({
+    ...contract,
+    premiumEUR: contract.premiumEUR + (idx + 1) * 120,
+    status: contract.status === 'pending' ? 'active' : contract.status
+  }))
+  updated.forEach((contract) => {
+    const index = contracts.findIndex((item) => item.id === contract.id)
+    if (index !== -1) contracts[index] = contract
+    addTimelineEventInternal(ctx.tenantId, ctx, {
+      entityType: 'contract',
+      entityId: contract.id,
+      type: 'integrationSync',
+      title: 'BiPRO sync',
+      message: 'Contract data synced via BiPRO.'
+    })
+  })
+  writeList(ctx.tenantId, 'contracts', contracts)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'integration',
+    entityId: 'bipro',
+    type: 'integrationSync',
+    title: 'BiPRO sync completed',
+    message: 'BiPRO sync updated contract data.'
+  })
+  return updated
+}
+
+export async function applyGdvImport(ctx: TenantContext, updates: Array<Partial<Contract> & { id: string }>) {
+  ensureSeeded(ctx.tenantId)
+  const contracts = readList<Contract>(ctx.tenantId, 'contracts')
+  updates.forEach((update) => {
+    const idx = contracts.findIndex((item) => item.id === update.id)
+    if (idx !== -1) {
+      contracts[idx] = { ...contracts[idx], ...update }
+      addTimelineEventInternal(ctx.tenantId, ctx, {
+        entityType: 'contract',
+        entityId: update.id,
+        type: 'integrationSync',
+        title: 'GDV import',
+        message: 'Contract data updated from GDV import.'
+      })
+    }
+  })
+  writeList(ctx.tenantId, 'contracts', contracts)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'integration',
+    entityId: 'gdv',
+    type: 'integrationSync',
+    title: 'GDV import completed',
+    message: 'GDV import applied updates.'
+  })
+  return contracts
+}
+
+export async function runPortalFetch(ctx: TenantContext) {
+  ensureSeeded(ctx.tenantId)
+  const mailbox = readList<MailboxItem>(ctx.tenantId, 'mailbox')
+  const entry: MailboxItem = {
+    id: makeId('mail'),
+    tenantId: ctx.tenantId,
+    sender: 'carrier-portal@carrier.example',
+    subject: 'Carrier portal update: new offer',
+    receivedAt: nowIso(),
+    attachments: [
+      {
+        id: makeId('doc'),
+        tenantId: ctx.tenantId,
+        name: 'Offer_Portal_Update.pdf',
+        type: 'application/pdf',
+        size: 155000,
+        uploadedAt: nowIso(),
+        uploadedBy: 'carrier',
+        url: '/demo-docs/Offer_Helvetia.pdf',
+        source: 'demo'
+      }
+    ],
+    status: 'unassigned',
+    body: 'New offer uploaded via carrier portal.'
+  }
+  mailbox.unshift(entry)
+  writeList(ctx.tenantId, 'mailbox', mailbox)
+  addTimelineEventInternal(ctx.tenantId, ctx, {
+    entityType: 'integration',
+    entityId: 'portal',
+    type: 'integrationSync',
+    title: 'Portal fetch',
+    message: 'Carrier portal fetch generated new mailbox items.'
+  })
+  return entry
 }
 
 export async function listTimelineEvents(ctx: TenantContext, entityType: EntityType, entityId: string) {

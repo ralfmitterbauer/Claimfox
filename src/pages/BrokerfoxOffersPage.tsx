@@ -82,6 +82,8 @@ export default function BrokerfoxOffersPage() {
       window.location.assign(`/brokerfox/tenders/${event.entityId}`)
     } else if (event.entityType === 'client') {
       window.location.assign(`/brokerfox/clients/${event.entityId}`)
+    } else if (event.entityType === 'contract') {
+      window.location.assign(`/brokerfox/contracts/${event.entityId}`)
     } else if (event.entityType === 'renewal') {
       window.location.assign('/brokerfox/renewals')
     }

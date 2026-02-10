@@ -6,7 +6,20 @@ import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { addTimelineEvent, createTask, listClients, listMailboxItems, listOffers, listRenewals, listTenders, updateMailboxItem } from '@/brokerfox/api/brokerfoxApi'
+import {
+  addTimelineEvent,
+  applyExtraction,
+  createTask,
+  listClients,
+  listContracts,
+  listExtractions,
+  listMailboxItems,
+  listOffers,
+  listRenewals,
+  listTenders,
+  updateMailboxItem,
+  uploadDocument
+} from '@/brokerfox/api/brokerfoxApi'
 import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
 import type { MailboxItem } from '@/brokerfox/types'
 
@@ -20,18 +33,23 @@ export default function BrokerfoxMailboxPage() {
   const [tenders, setTenders] = useState<any[]>([])
   const [offers, setOffers] = useState<any[]>([])
   const [renewals, setRenewals] = useState<any[]>([])
-  const [entityType, setEntityType] = useState<'client' | 'tender' | 'offer' | 'renewal'>('client')
+  const [contracts, setContracts] = useState<any[]>([])
+  const [extractions, setExtractions] = useState<any[]>([])
+  const [entityType, setEntityType] = useState<'client' | 'tender' | 'offer' | 'renewal' | 'contract'>('client')
   const [entityId, setEntityId] = useState('')
+  const [approvedExtraction, setApprovedExtraction] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     let mounted = true
     async function load() {
-      const [mail, clientData, tenderData, offerData, renewalData] = await Promise.all([
+      const [mail, clientData, tenderData, offerData, renewalData, contractData, extractionData] = await Promise.all([
         listMailboxItems(ctx),
         listClients(ctx),
         listTenders(ctx),
         listOffers(ctx),
-        listRenewals(ctx)
+        listRenewals(ctx),
+        listContracts(ctx),
+        listExtractions(ctx)
       ])
       if (!mounted) return
       setItems(mail)
@@ -40,15 +58,25 @@ export default function BrokerfoxMailboxPage() {
       setTenders(tenderData)
       setOffers(offerData)
       setRenewals(renewalData)
-      setEntityId(clientData[0]?.id ?? tenderData[0]?.id ?? offerData[0]?.id ?? renewalData[0]?.id ?? '')
+      setContracts(contractData)
+      setExtractions(extractionData)
+      setEntityId(clientData[0]?.id ?? tenderData[0]?.id ?? offerData[0]?.id ?? renewalData[0]?.id ?? contractData[0]?.id ?? '')
     }
     load()
     return () => { mounted = false }
   }, [ctx])
 
   const entityOptions = useMemo(() => {
-    return entityType === 'client' ? clients : entityType === 'tender' ? tenders : entityType === 'offer' ? offers : renewals
-  }, [clients, tenders, offers, renewals, entityType])
+    return entityType === 'client'
+      ? clients
+      : entityType === 'tender'
+        ? tenders
+        : entityType === 'offer'
+          ? offers
+          : entityType === 'contract'
+            ? contracts
+            : renewals
+  }, [clients, tenders, offers, renewals, contracts, entityType])
 
   async function handleAssign() {
     if (!selected || !entityId) return
@@ -56,10 +84,23 @@ export default function BrokerfoxMailboxPage() {
     if (!updated) return
     setItems((prev) => prev.map((item) => (item.id === selected.id ? updated : item)))
     setSelected(updated)
+    for (const attachment of selected.attachments) {
+      await uploadDocument(ctx, {
+        name: attachment.name,
+        type: attachment.type,
+        size: attachment.size,
+        entityType,
+        entityId,
+        url: attachment.url,
+        source: attachment.source ?? 'demo'
+      })
+    }
+    const extractionData = await listExtractions(ctx)
+    setExtractions(extractionData)
     await addTimelineEvent(ctx, {
       entityType,
       entityId,
-      type: 'statusUpdate',
+      type: 'documentAssigned',
       title: t('brokerfox.mailbox.assignedTitle'),
       message: `${selected.subject} ${t('brokerfox.mailbox.assignedMessage')}`
     })
@@ -126,6 +167,14 @@ export default function BrokerfoxMailboxPage() {
     })
   }
 
+  async function handleApplyExtraction(docId: string) {
+    if (!approvedExtraction[docId]) return
+    await applyExtraction(ctx, docId)
+    const extractionData = await listExtractions(ctx)
+    setExtractions(extractionData)
+    setApprovedExtraction((prev) => ({ ...prev, [docId]: false }))
+  }
+
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
@@ -174,6 +223,35 @@ export default function BrokerfoxMailboxPage() {
                     </div>
                   ))}
                 </div>
+                {selected.attachments.map((doc) => {
+                  const extraction = extractions.find((entry) => entry.documentId === doc.id)
+                  if (!extraction) return null
+                  return (
+                    <div key={`${doc.id}-extraction`} style={{ padding: '0.6rem', borderRadius: 12, background: '#f8fafc' }}>
+                      <strong>{t('brokerfox.extraction.title')}</strong>
+                      <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.suggestionNotice')}</div>
+                      <div style={{ marginTop: '0.4rem', display: 'grid', gap: '0.25rem' }}>
+                        <div>{t('brokerfox.extraction.suggestedClient')}: {clients.find((client) => client.id === extraction.suggestedClientId)?.name ?? '-'}</div>
+                        <div>{t('brokerfox.extraction.suggestedContract')}: {contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber ?? '-'}</div>
+                        <div>{t('brokerfox.extraction.confidence')}: {Math.round(extraction.confidence * 100)}%</div>
+                        {Object.entries(extraction.extractedFields).map(([key, value]) => (
+                          <div key={key} style={{ fontSize: '0.85rem' }}>{key}: {value}</div>
+                        ))}
+                      </div>
+                      <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                        <input
+                          type="checkbox"
+                          checked={Boolean(approvedExtraction[doc.id])}
+                          onChange={(event) => setApprovedExtraction((prev) => ({ ...prev, [doc.id]: event.target.checked }))}
+                        />
+                        {t('brokerfox.extraction.approval')}
+                      </label>
+                      <Button onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
+                        {t('brokerfox.extraction.apply')}
+                      </Button>
+                    </div>
+                  )
+                })}
                 <div style={{ display: 'grid', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('brokerfox.mailbox.assignTo')}</label>
                   <select value={entityType} onChange={(event) => setEntityType(event.target.value as typeof entityType)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
@@ -181,10 +259,11 @@ export default function BrokerfoxMailboxPage() {
                     <option value="tender">{t('brokerfox.documents.entityTender')}</option>
                     <option value="offer">{t('brokerfox.documents.entityOffer')}</option>
                     <option value="renewal">{t('brokerfox.documents.entityRenewal')}</option>
+                    <option value="contract">{t('brokerfox.documents.entityContract')}</option>
                   </select>
                   <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
                     {entityOptions.map((item: any) => (
-                      <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.carrier?.name}</option>
+                      <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
                     ))}
                   </select>
                   <Button onClick={handleAssign}>{t('brokerfox.mailbox.assignAction')}</Button>

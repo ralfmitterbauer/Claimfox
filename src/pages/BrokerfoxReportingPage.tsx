@@ -6,7 +6,7 @@ import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { listClients, listMailboxItems, listOffers, listRenewals, listTasks, listTenders } from '@/brokerfox/api/brokerfoxApi'
+import { listClients, listCommissions, listContracts, listMailboxItems, listOffers, listRenewals, listTasks, listTenders, sendCommissionReminder } from '@/brokerfox/api/brokerfoxApi'
 
 const rangeOptions = [
   { value: '30', labelKey: 'brokerfox.reporting.range30' },
@@ -25,20 +25,26 @@ export default function BrokerfoxReportingPage() {
   useEffect(() => {
     let mounted = true
     async function load() {
-      const [clients, tenders, offers, renewals, tasks, mailbox] = await Promise.all([
+      const [clients, tenders, offers, renewals, tasks, mailbox, contracts, commissions] = await Promise.all([
         listClients(ctx),
         listTenders(ctx),
         listOffers(ctx),
         listRenewals(ctx),
         listTasks(ctx),
-        listMailboxItems(ctx)
+        listMailboxItems(ctx),
+        listContracts(ctx),
+        listCommissions(ctx)
       ])
       if (!mounted) return
-      setData({ clients, tenders, offers, renewals, tasks, mailbox })
+      setData({ clients, tenders, offers, renewals, tasks, mailbox, contracts, commissions })
     }
     load()
     return () => { mounted = false }
   }, [ctx])
+
+  async function handleReminder(contractId: string, commissionId: string) {
+    await sendCommissionReminder(ctx, contractId, commissionId)
+  }
 
   const filteredClients = useMemo(() => {
     if (!data.clients) return []
@@ -99,6 +105,39 @@ export default function BrokerfoxReportingPage() {
     })
     return Object.entries(buckets).map(([name, value]) => ({ name, value }))
   }, [data.offers])
+
+  const commissionSeries = useMemo(() => {
+    const months = Array.from({ length: 12 }).map((_, idx) => {
+      const date = new Date()
+      date.setMonth(date.getMonth() - (11 - idx))
+      return { key: date.toISOString().slice(0, 7), label: date.toLocaleString(undefined, { month: 'short' }) }
+    })
+    return months.map((month) => {
+      const list = (data.commissions ?? []).filter((c: any) => c.period === month.key)
+      const expected = list.reduce((sum: number, item: any) => sum + item.expectedEUR, 0)
+      const paid = list.reduce((sum: number, item: any) => sum + item.paidEUR, 0)
+      const outstanding = list.reduce((sum: number, item: any) => sum + item.outstandingEUR, 0)
+      return { label: month.label, expected, paid, outstanding }
+    })
+  }, [data.commissions])
+
+  const outstandingByCarrier = useMemo(() => {
+    const contractsMap = new Map((data.contracts ?? []).map((contract: any) => [contract.id, contract]))
+    const buckets: Record<string, number> = {}
+    ;(data.commissions ?? []).forEach((item: any) => {
+      if (!item.outstandingEUR) return
+      const carrier = contractsMap.get(item.contractId)?.carrierName ?? 'Unknown'
+      buckets[carrier] = (buckets[carrier] ?? 0) + item.outstandingEUR
+    })
+    return Object.entries(buckets).map(([name, value]) => ({ name, value }))
+  }, [data.contracts, data.commissions])
+
+  const outstandingTable = useMemo(() => {
+    const contractsMap = new Map((data.contracts ?? []).map((contract: any) => [contract.id, contract]))
+    return (data.commissions ?? [])
+      .filter((item: any) => item.outstandingEUR > 0)
+      .map((item: any) => ({ ...item, carrier: contractsMap.get(item.contractId)?.carrierName ?? 'Unknown' }))
+  }, [data.contracts, data.commissions])
 
   const mailboxBacklog = useMemo(() => {
     return (data.mailbox ?? []).filter((item: any) => item.status !== 'done').length
@@ -210,6 +249,53 @@ export default function BrokerfoxReportingPage() {
             </ResponsiveContainer>
           </Card>
         </div>
+
+        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
+          <Card variant="glass" title={t('brokerfox.commissions.chartTitle')}>
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={commissionSeries}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="label" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="expected" stroke="#0f172a" />
+                <Line type="monotone" dataKey="paid" stroke="#10b981" />
+                <Line type="monotone" dataKey="outstanding" stroke="#ef4444" />
+              </LineChart>
+            </ResponsiveContainer>
+          </Card>
+          <Card variant="glass" title={t('brokerfox.commissions.byCarrierTitle')}>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={outstandingByCarrier}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#f97316" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </div>
+
+        <Card variant="glass" title={t('brokerfox.commissions.outstandingTitle')}>
+          {outstandingTable.length === 0 ? <p>{t('brokerfox.commissions.noneOutstanding')}</p> : null}
+          {outstandingTable.map((item: any) => (
+            <div key={item.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
+              <div>
+                <strong>{item.period}</strong>
+                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{item.carrier}</div>
+              </div>
+              <span style={{ color: '#ef4444' }}>€ {item.outstandingEUR.toLocaleString()}</span>
+              <button
+                type="button"
+                onClick={() => handleReminder(item.contractId, item.id)}
+                style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 999, padding: '0.3rem 0.8rem' }}
+              >
+                {t('brokerfox.commissions.sendReminder')}
+              </button>
+            </div>
+          ))}
+        </Card>
       </BrokerfoxLayout>
     </section>
   )
