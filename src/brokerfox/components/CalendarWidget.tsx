@@ -28,10 +28,16 @@ type CalendarWidgetProps = {
 }
 
 export default function CalendarWidget({ events, density = 'regular', height }: CalendarWidgetProps) {
-  const { lang } = useI18n()
+  const { lang, t } = useI18n()
   const activeMonth = useMemo(() => new Date(), [])
 
   const days = useMemo(() => getMonthDays(activeMonth), [activeMonth])
+  const upcomingEvents = useMemo(() => {
+    return [...events]
+      .filter((event) => !Number.isNaN(new Date(event.date).getTime()))
+      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .slice(0, 3)
+  }, [events])
   const weekdayLabels = useMemo(() => {
     const formatter = new Intl.DateTimeFormat(lang, { weekday: 'short' })
     const base = new Date(2025, 0, 5)
@@ -43,7 +49,10 @@ export default function CalendarWidget({ events, density = 'regular', height }: 
       variant="glass"
       style={{ minWidth: density === 'compact' ? 260 : 300, height, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
     >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: density === 'compact' ? '0.35rem' : '0.5rem', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: density === 'compact' ? '0.4rem' : '0.55rem', flex: 1, minHeight: 0 }}>
+        <div style={{ color: '#f97316', fontWeight: 700, fontSize: density === 'compact' ? '0.95rem' : '1rem' }}>
+          {t('brokerfox.calendar.title')}
+        </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: density === 'compact' ? '0.12rem' : '0.2rem' }}>
           {weekdayLabels.map((label) => (
             <span key={label} style={{ fontSize: density === 'compact' ? '0.6rem' : '0.7rem', color: '#64748b', textAlign: 'center' }}>{label}</span>
@@ -70,7 +79,22 @@ export default function CalendarWidget({ events, density = 'regular', height }: 
             )
           })}
         </div>
-
+        <div style={{ display: 'grid', gap: '0.2rem', fontSize: '0.8rem', color: '#475569' }}>
+          {upcomingEvents.length === 0 ? (
+            <span>{t('brokerfox.calendar.empty')}</span>
+          ) : (
+            upcomingEvents.map((event) => (
+              <div key={event.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
+                <span style={{ color: '#0f172a', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {event.title}
+                </span>
+                <span style={{ whiteSpace: 'nowrap', color: '#64748b' }}>
+                  {new Intl.DateTimeFormat(lang, { month: 'short', day: '2-digit' }).format(new Date(event.date))}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
     </Card>

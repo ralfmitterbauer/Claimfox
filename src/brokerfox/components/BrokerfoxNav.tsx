@@ -26,12 +26,12 @@ export default function BrokerfoxNav() {
         style={{
           display: 'flex',
           gap: 8,
-          alignItems: 'flex-end',
-          padding: '0 4px 10px',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          padding: '6px 4px 8px',
           background: '#f1f5f9',
           borderRadius: 14,
-          overflowX: 'auto',
-          WebkitOverflowScrolling: 'touch'
+          overflow: 'visible'
         }}
       >
         {navItems.map((item) => {
