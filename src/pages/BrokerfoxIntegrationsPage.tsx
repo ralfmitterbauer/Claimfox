@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listIntegrations, updateIntegrationStatus } from '@/brokerfox/api/brokerfoxApi'
@@ -39,7 +40,11 @@ export default function BrokerfoxIntegrationsPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={t('brokerfox.integrations.title')} subtitle={t('brokerfox.integrations.subtitle')}>
+      <BrokerfoxLayout
+        title={t('brokerfox.integrations.title')}
+        subtitle={t('brokerfox.integrations.subtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
+      >
         <Card variant="glass" title={t('brokerfox.integrations.listTitle')} subtitle={t('brokerfox.integrations.listSubtitle')}>
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}

@@ -4,6 +4,7 @@ import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, listRenewals, listTimelineEvents } from '@/brokerfox/api/brokerfoxApi'
@@ -74,7 +75,11 @@ export default function BrokerfoxRenewalsPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={t('brokerfox.renewals.title')} subtitle={t('brokerfox.renewals.subtitle')}>
+      <BrokerfoxLayout
+        title={t('brokerfox.renewals.title')}
+        subtitle={t('brokerfox.renewals.subtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+      >
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
         {error ? <p>{error}</p> : null}
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>

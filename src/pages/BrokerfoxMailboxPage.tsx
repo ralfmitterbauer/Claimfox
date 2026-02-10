@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, createTask, listClients, listMailboxItems, listOffers, listRenewals, listTenders, updateMailboxItem } from '@/brokerfox/api/brokerfoxApi'
@@ -127,7 +128,11 @@ export default function BrokerfoxMailboxPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={t('brokerfox.mailbox.title')} subtitle={t('brokerfox.mailbox.subtitle')}>
+      <BrokerfoxLayout
+        title={t('brokerfox.mailbox.title')}
+        subtitle={t('brokerfox.mailbox.subtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+      >
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'minmax(260px, 1fr) minmax(300px, 1fr)' }}>
           <Card variant="glass" title={t('brokerfox.mailbox.inboxTitle')}>

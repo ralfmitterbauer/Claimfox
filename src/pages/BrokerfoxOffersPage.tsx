@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
+import CalendarWidget from '@/brokerfox/components/CalendarWidget'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
 import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
@@ -9,8 +11,10 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import {
   addTimelineEvent,
+  addCalendarEvent,
   aiCompareOffers,
   aiGenerateClientSummary,
+  listCalendarEvents,
   listClients,
   listOffers,
   listTimelineEvents,
@@ -35,16 +39,23 @@ export default function BrokerfoxOffersPage() {
   const [events, setEvents] = useState([])
   const [draftMessage, setDraftMessage] = useState('')
   const [draftApproved, setDraftApproved] = useState(false)
+  const [calendarEvents, setCalendarEvents] = useState([])
 
   useEffect(() => {
     let mounted = true
     async function load() {
       try {
-        const [offerData, tenderData, clientData] = await Promise.all([listOffers(ctx), listTenders(ctx), listClients(ctx)])
+        const [offerData, tenderData, clientData, calendarData] = await Promise.all([
+          listOffers(ctx),
+          listTenders(ctx),
+          listClients(ctx),
+          listCalendarEvents(ctx)
+        ])
         if (!mounted) return
         setOffers(offerData)
         setTenders(tenderData)
         setClients(clientData)
+        setCalendarEvents(calendarData)
         setSelectedTenderId(tenderData[0]?.id ?? '')
         setLoading(false)
       } catch {
@@ -56,6 +67,25 @@ export default function BrokerfoxOffersPage() {
     load()
     return () => { mounted = false }
   }, [ctx, t])
+
+  async function handleAddCalendar(input: { title: string; date: string }) {
+    const event = await addCalendarEvent(ctx, {
+      title: input.title,
+      date: new Date(input.date).toISOString()
+    })
+    setCalendarEvents((prev) => [event, ...prev])
+  }
+
+  function handleSelectCalendar(event: any) {
+    if (!event.entityType || !event.entityId) return
+    if (event.entityType === 'tender') {
+      window.location.assign(`/brokerfox/tenders/${event.entityId}`)
+    } else if (event.entityType === 'client') {
+      window.location.assign(`/brokerfox/clients/${event.entityId}`)
+    } else if (event.entityType === 'renewal') {
+      window.location.assign('/brokerfox/renewals')
+    }
+  }
 
   const tenderOffers = useMemo(() => offers.filter((offer) => offer.tenderId === selectedTenderId), [offers, selectedTenderId])
   const selectedTender = useMemo(() => tenders.find((tender) => tender.id === selectedTenderId), [tenders, selectedTenderId])
@@ -176,8 +206,13 @@ export default function BrokerfoxOffersPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={t('brokerfox.offers.title')} subtitle={t('brokerfox.offers.subtitle')}>
-        <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
+      <BrokerfoxLayout
+        title={t('brokerfox.offers.title')}
+        subtitle={t('brokerfox.offers.subtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
+      >
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '1.5rem', alignItems: 'start' }}>
+          <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}
           {offers.length === 0 ? <p>{t('brokerfox.empty.noOffers')}</p> : null}
@@ -200,6 +235,8 @@ export default function BrokerfoxOffersPage() {
             </div>
           ))}
         </Card>
+          <CalendarWidget events={calendarEvents} onAddEvent={handleAddCalendar} onSelectEvent={handleSelectCalendar} density="compact" />
+        </div>
 
         <Card variant="glass" title={t('brokerfox.offers.compareTitle')} subtitle={t('brokerfox.offers.compareSubtitle')}>
           {comparison ? (

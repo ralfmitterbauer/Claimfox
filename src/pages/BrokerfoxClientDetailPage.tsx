@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import RiskAnalysisPanel from '@/brokerfox/components/RiskAnalysisPanel'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
@@ -125,7 +126,11 @@ export default function BrokerfoxClientDetailPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={client.name} subtitle={t('brokerfox.clients.detailSubtitle')}>
+      <BrokerfoxLayout
+        title={client.name}
+        subtitle={t('brokerfox.clients.detailSubtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+      >
         <Button onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>

@@ -4,6 +4,7 @@ import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
+import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import {
   createClient,
@@ -96,7 +97,11 @@ export default function BrokerfoxDashboardPage() {
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
-      <BrokerfoxLayout title={t('brokerfox.dashboard.title')} subtitle={t('brokerfox.dashboard.subtitle')}>
+      <BrokerfoxLayout
+        title={t('brokerfox.dashboard.title')}
+        subtitle={t('brokerfox.dashboard.subtitle')}
+        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+      >
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
         {error ? <p>{error}</p> : null}
 

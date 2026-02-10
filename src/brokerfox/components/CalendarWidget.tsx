@@ -26,9 +26,10 @@ type CalendarWidgetProps = {
   events: CalendarEvent[]
   onAddEvent: (input: { title: string; date: string }) => void
   onSelectEvent: (event: CalendarEvent) => void
+  density?: 'compact' | 'regular'
 }
 
-export default function CalendarWidget({ events, onAddEvent, onSelectEvent }: CalendarWidgetProps) {
+export default function CalendarWidget({ events, onAddEvent, onSelectEvent, density = 'regular' }: CalendarWidgetProps) {
   const { lang, t } = useI18n()
   const [activeMonth, setActiveMonth] = useState(() => new Date())
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
@@ -58,8 +59,8 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent }: Ca
   }
 
   return (
-    <Card variant="glass" title={t('brokerfox.calendar.title')} subtitle={t('brokerfox.calendar.subtitle')} style={{ minWidth: 300 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+    <Card variant="glass" title={t('brokerfox.calendar.title')} subtitle={t('brokerfox.calendar.subtitle')} style={{ minWidth: density === 'compact' ? 260 : 300 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: density === 'compact' ? '0.35rem' : '0.5rem' }}>
         <strong style={{ color: '#0f172a' }}>{monthLabel}</strong>
         <div style={{ display: 'flex', gap: '0.5rem' }}>
           <button type="button" onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() - 1, 1))} style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.2rem 0.5rem', background: '#fff' }}>
@@ -70,9 +71,9 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent }: Ca
           </button>
         </div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '0.25rem', marginBottom: '0.5rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: density === 'compact' ? '0.15rem' : '0.25rem', marginBottom: density === 'compact' ? '0.35rem' : '0.5rem' }}>
         {weekdayLabels.map((label) => (
-          <span key={label} style={{ fontSize: '0.7rem', color: '#64748b', textAlign: 'center' }}>{label}</span>
+          <span key={label} style={{ fontSize: density === 'compact' ? '0.6rem' : '0.7rem', color: '#64748b', textAlign: 'center' }}>{label}</span>
         ))}
         {days.map((day) => {
           const hasEvent = events.some((event) => new Date(event.date).toDateString() === day.toDateString())
@@ -85,20 +86,20 @@ export default function CalendarWidget({ events, onAddEvent, onSelectEvent }: Ca
               style={{
                 border: '1px solid #e2e8f0',
                 borderRadius: 8,
-                padding: '0.25rem',
+                padding: density === 'compact' ? '0.15rem' : '0.25rem',
                 background: isSelected ? '#0f172a' : '#fff',
                 color: isSelected ? '#fff' : '#0f172a',
                 position: 'relative'
               }}
             >
               {day.getDate()}
-              {hasEvent ? <span style={{ position: 'absolute', bottom: 4, right: 6, width: 6, height: 6, borderRadius: '50%', background: '#f59e0b' }} /> : null}
+              {hasEvent ? <span style={{ position: 'absolute', bottom: 4, right: 6, width: density === 'compact' ? 5 : 6, height: density === 'compact' ? 5 : 6, borderRadius: '50%', background: '#f59e0b' }} /> : null}
             </button>
           )
         })}
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: density === 'compact' ? '0.35rem' : '0.5rem' }}>
         <strong style={{ color: '#0f172a' }}>{t('brokerfox.calendar.upcoming')}</strong>
         <Button onClick={() => setIsAdding((prev) => !prev)}>{t('brokerfox.calendar.addEvent')}</Button>
       </div>
