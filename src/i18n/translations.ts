@@ -27,6 +27,7 @@ type TranslationTree = {
       title: string
       dashboard: string
       clients: string
+      contracts: string
       mailbox: string
       tenders: string
       offers: string
@@ -61,6 +62,15 @@ type TranslationTree = {
       internalNote: string
       statusUpdate: string
       attachment: string
+      documentUploaded: string
+      documentAssigned: string
+      extractionSuggested: string
+      extractionApplied: string
+      signatureRequested: string
+      signatureSigned: string
+      commissionReminderSent: string
+      integrationSync: string
+      taskDelegated: string
       system: string
       searchPlaceholder: string
       messagePlaceholder: string
@@ -75,12 +85,23 @@ type TranslationTree = {
       addEvent: string
       eventTitle: string
       empty: string
+      location: string
+      participants: string
+      description: string
+      locationTbd: string
+      participantsTbd: string
+      descriptionTbd: string
+      openRelated: string
     }
     mailbox: {
       title: string
       subtitle: string
       inboxTitle: string
       detailTitle: string
+      from: string
+      to: string
+      toValue: string
+      date: string
       status: {
         unassigned: string
         assigned: string
@@ -215,6 +236,7 @@ type TranslationTree = {
       listTitle: string
       listSubtitle: string
       searchPlaceholder: string
+      clientUnknown: string
       segmentMissing: string
       industryMissing: string
       viewDetails: string
@@ -228,6 +250,16 @@ type TranslationTree = {
       contactRoleMissing: string
       programsTitle: string
       programsPlaceholder: string
+      digitalFolderTitle: string
+      digitalFolderSubtitle: string
+      folder: {
+        offer: string
+        loss: string
+        policy: string
+        kyc: string
+        other: string
+      }
+      folderEmpty: string
       newPlaceholder: string
     }
     tenders: {
@@ -296,10 +328,23 @@ type TranslationTree = {
       bucket: string
       detailTitle: string
       detailSubtitle: string
+      back: string
       policyLabel: string
       carrierLabel: string
       premiumLabel: string
       statusLabel: string
+      dueDateLabel: string
+      linksTitle: string
+      clientLabel: string
+      contractLabel: string
+      contractMissing: string
+      documentsTitle: string
+      nextStepsTitle: string
+      nextSteps: {
+        updateLossRuns: string
+        confirmExposure: string
+        scheduleReview: string
+      }
       status: {
         upcoming: string
         inReview: string
@@ -319,6 +364,7 @@ type TranslationTree = {
       entityTender: string
       entityOffer: string
       entityRenewal: string
+      entityContract: string
       listTitle: string
       listSubtitle: string
       inboxOnly: string
@@ -341,6 +387,17 @@ type TranslationTree = {
     integrations: {
       title: string
       subtitle: string
+      actionsTitle: string
+      actionsSubtitle: string
+      runAction: string
+      preview: string
+      apply: string
+      biproAction: string
+      biproHint: string
+      gdvAction: string
+      gdvHint: string
+      portalAction: string
+      portalHint: string
       listTitle: string
       listSubtitle: string
       connected: string
@@ -353,13 +410,82 @@ type TranslationTree = {
       createSubtitle: string
       fieldTitle: string
       fieldDescription: string
+      owner: string
+      ownerMissing: string
+      dueDate: string
+      delegate: string
+      delegateAction: string
       linkClient: string
       linkTender: string
       linkRenewal: string
+      linkContract: string
       todo: string
       inProgress: string
       done: string
       noDescription: string
+    }
+    contracts: {
+      title: string
+      subtitle: string
+      filtersTitle: string
+      filterAllLob: string
+      filterAllCarrier: string
+      filterAllStatus: string
+      listTitle: string
+      listSubtitle: string
+      empty: string
+      heroBadge: string
+      viewDetail: string
+      back: string
+      detailTitle: string
+      summaryTitle: string
+      clientLabel: string
+      lobLabel: string
+      carrierLabel: string
+      premiumLabel: string
+      statusLabel: string
+      documentsTitle: string
+      tasksTitle: string
+      sectionTitle: string
+      sectionSubtitle: string
+      createAction: string
+      status: {
+        active: string
+        pending: string
+        cancelled: string
+      }
+    }
+    commissions: {
+      title: string
+      chartTitle: string
+      byCarrierTitle: string
+      outstandingTitle: string
+      sendReminder: string
+      noneOutstanding: string
+      outstanding: string
+    }
+    extraction: {
+      title: string
+      suggestionNotice: string
+      suggestedClient: string
+      suggestedContract: string
+      confidence: string
+      fieldsTitle: string
+      approval: string
+      apply: string
+    }
+    signature: {
+      title: string
+      statusLabel: string
+      requestAction: string
+      recipientName: string
+      recipientEmail: string
+      markSigned: string
+      status: {
+        DRAFT: string
+        SENT: string
+        SIGNED: string
+      }
     }
   }
   roles: {
@@ -375,9 +501,21 @@ type TranslationTree = {
         overview: string
         processes: string
         internal: string
+        internalDocs: string
         governance: string
         presentations: string
         development: string
+        projectLanding: string
+      }
+      internalDocs: {
+        title: string
+        subtitle: string
+      }
+      overviewGroups: {
+        insurance: string
+        fleet: string
+        logistics: string
+        broker: string
       }
       internalAuth: {
         title: string
@@ -570,6 +708,7 @@ type TranslationTree = {
       subtitle: string
       front: string
       back: string
+      placeholder: string
     }
     verify: {
       title: string
@@ -583,6 +722,7 @@ type TranslationTree = {
       title: string
       subtitle: string
       capture: string
+      overlay: string
     }
     summary: {
       title: string
@@ -838,6 +978,7 @@ type TranslationTree = {
   marketing: {
     title: string
     subtitle: string
+    login: string
     highlights: {
       title: string
       ai: string
@@ -992,6 +1133,11 @@ type TranslationTree = {
   partnerManagement: {
     title: string
     subtitle: string
+    overview: {
+      title: string
+      subtitle: string
+      items: Record<string, { title: string; description: string }>
+    }
     actions: {
       addPartner: string
     }
@@ -1150,6 +1296,11 @@ type TranslationTree = {
     voicePlaceholder: string
     voiceLoading: string
     voiceStart: string
+    voiceActiveLabel: string
+    voiceActiveBadge: string
+    voiceStartListening: string
+    voiceStopListening: string
+    voiceNoRecognition: string
     bot: {
       welcome: string
       mode: string
@@ -1176,6 +1327,11 @@ type TranslationTree = {
       voiceInputNotSupported: string
       listening: string
     }
+    messageSource: {
+      voice: string
+      text: string
+      quick: string
+    }
   }
   brokerLanding: {
     title: string
@@ -1185,6 +1341,11 @@ type TranslationTree = {
     valueLine1: string
     valueLine2: string
     valueLine3: string
+    trust: {
+      crm: string
+      tender: string
+      ai: string
+    }
     heroStats: {
       coverage: string
       automation: string
@@ -1204,6 +1365,7 @@ type TranslationTree = {
     }
     sectorsTitle: string
     sectorsSubtitle: string
+    sectorsBanner: string
     sectorsList: {
       carriers: string
       fleet: string
@@ -1334,7 +1496,7 @@ export const translations: Record<Lang, TranslationTree> = {
         mailbox: 'Mailbox',
         tenders: 'Ausschreibungen',
         offers: 'Angebote',
-        renewals: 'Erneuerungen',
+        renewals: 'Prolongierungen',
         documents: 'Dokumente',
         reporting: 'Reporting',
         integrations: 'Integrationen',
@@ -1386,13 +1548,24 @@ export const translations: Record<Lang, TranslationTree> = {
         upcoming: 'Anstehend',
         addEvent: 'Termin hinzufügen',
         eventTitle: 'Titel',
-        empty: 'Keine Termine gefunden.'
+        empty: 'Keine Termine gefunden.',
+        location: 'Ort:',
+        participants: 'Teilnehmende:',
+        description: 'Beschreibung:',
+        locationTbd: 'Noch offen',
+        participantsTbd: 'Noch offen',
+        descriptionTbd: 'Noch offen',
+        openRelated: 'Zugehöriges Element öffnen'
       },
       mailbox: {
         title: 'Mailbox',
         subtitle: 'Eingehende Nachrichten & Dokumente.',
         inboxTitle: 'Eingang',
         detailTitle: 'Detailansicht',
+        from: 'Von',
+        to: 'An',
+        toValue: 'Brokerfox Team',
+        date: 'Datum',
         status: {
           unassigned: 'Nicht zugeordnet',
           assigned: 'Zugeordnet',
@@ -1427,7 +1600,7 @@ export const translations: Record<Lang, TranslationTree> = {
           clients: 'Aktive Kunden',
           openTenders: 'Offene Ausschreibungen',
           offers: 'Angebote erhalten',
-          renewals: 'Erneuerungen',
+          renewals: 'Prolongierungen',
           avgOffer: 'Ø Tage bis Angebote',
           mailboxBacklog: 'Mailbox Backlog'
         },
@@ -1490,7 +1663,7 @@ export const translations: Record<Lang, TranslationTree> = {
         noClients: 'Noch keine Kunden vorhanden.',
         noTenders: 'Noch keine Ausschreibungen vorhanden.',
         noOffers: 'Noch keine Angebote vorhanden.',
-        noRenewals: 'Noch keine Erneuerungen vorhanden.',
+        noRenewals: 'Noch keine Prolongierungen vorhanden.',
         noDocuments: 'Noch keine Dokumente vorhanden.',
         noTasks: 'Noch keine Aufgaben vorhanden.',
         noIntegrations: 'Noch keine Integrationen vorhanden.'
@@ -1507,7 +1680,7 @@ export const translations: Record<Lang, TranslationTree> = {
           clients: 'Kunden',
           tenders: 'Offene Ausschreibungen',
           offers: 'Angebote',
-          renewals: 'Erneuerungen (30T)',
+          renewals: 'Prolongierungen (30T)',
           unread: 'Ungelesene Nachrichten',
           tasks: 'Offene Aufgaben'
         },
@@ -1614,22 +1787,35 @@ export const translations: Record<Lang, TranslationTree> = {
         summarySentMessage: 'Die Angebotszusammenfassung wurde an den Kunden gesendet.'
       },
       renewals: {
-        title: 'Erneuerungen',
+        title: 'Prolongierungen',
         subtitle: 'Pipeline nach Fälligkeit.',
         bucket: 'Fällig in {{days}} Tagen',
-        detailTitle: 'Erneuerungsdetails',
+        detailTitle: 'Prolongierungsdetails',
         detailSubtitle: 'Status und Kommunikation.',
+        back: 'Zurück zur Übersicht',
         policyLabel: 'Police',
         carrierLabel: 'Carrier',
         premiumLabel: 'Prämie',
         statusLabel: 'Status',
+        dueDateLabel: 'Fällig am',
+        linksTitle: 'Verknüpfungen',
+        clientLabel: 'Kunde',
+        contractLabel: 'Vertrag',
+        contractMissing: 'Kein Vertrag verknüpft',
+        documentsTitle: 'Dokumente',
+        nextStepsTitle: 'Nächste Schritte',
+        nextSteps: {
+          updateLossRuns: 'Aktuelle Schadenstatistik einholen',
+          confirmExposure: 'Exposures und Standorte bestätigen',
+          scheduleReview: 'Review-Termin mit Kunde einplanen'
+        },
         status: {
           upcoming: 'Anstehend',
           inReview: 'In Prüfung',
           quoted: 'Angeboten',
           renewed: 'Erneuert'
         },
-        selectFirst: 'Erneuerung auswählen'
+        selectFirst: 'Prolongierung auswählen'
       },
       documents: {
         title: 'Dokumente & Inbox',
@@ -1641,7 +1827,7 @@ export const translations: Record<Lang, TranslationTree> = {
         entityClient: 'Kunde',
         entityTender: 'Ausschreibung',
         entityOffer: 'Angebot',
-        entityRenewal: 'Erneuerung',
+        entityRenewal: 'Prolongierung',
         entityContract: 'Vertrag',
         listTitle: 'Dokumentenliste',
         listSubtitle: 'Inbox und zugeordnete Dokumente.',
@@ -1758,7 +1944,7 @@ export const translations: Record<Lang, TranslationTree> = {
         delegateAction: 'Delegieren',
         linkClient: 'Kunde verknüpfen',
         linkTender: 'Ausschreibung verknüpfen',
-        linkRenewal: 'Erneuerung verknüpfen',
+        linkRenewal: 'Prolongierung verknüpfen',
         linkContract: 'Vertrag verknüpfen',
         todo: 'To Do',
         inProgress: 'In Bearbeitung',
@@ -3940,13 +4126,24 @@ export const translations: Record<Lang, TranslationTree> = {
         upcoming: 'Upcoming',
         addEvent: 'Add event',
         eventTitle: 'Title',
-        empty: 'No events found.'
+        empty: 'No events found.',
+        location: 'Location:',
+        participants: 'Participants:',
+        description: 'Description:',
+        locationTbd: 'TBD',
+        participantsTbd: 'TBD',
+        descriptionTbd: 'TBD',
+        openRelated: 'Open related item'
       },
       mailbox: {
         title: 'Mailbox',
         subtitle: 'Inbound messages and documents.',
         inboxTitle: 'Inbox',
         detailTitle: 'Detail view',
+        from: 'From',
+        to: 'To',
+        toValue: 'Brokerfox Team',
+        date: 'Date',
         status: {
           unassigned: 'Unassigned',
           assigned: 'Assigned',
@@ -4173,10 +4370,23 @@ export const translations: Record<Lang, TranslationTree> = {
         bucket: 'Due in {{days}} days',
         detailTitle: 'Renewal details',
         detailSubtitle: 'Status and communication.',
+        back: 'Back to overview',
         policyLabel: 'Policy',
         carrierLabel: 'Carrier',
         premiumLabel: 'Premium',
         statusLabel: 'Status',
+        dueDateLabel: 'Due date',
+        linksTitle: 'Links',
+        clientLabel: 'Client',
+        contractLabel: 'Contract',
+        contractMissing: 'No contract linked',
+        documentsTitle: 'Documents',
+        nextStepsTitle: 'Next steps',
+        nextSteps: {
+          updateLossRuns: 'Request updated loss runs',
+          confirmExposure: 'Confirm exposures and locations',
+          scheduleReview: 'Schedule client review'
+        },
         status: {
           upcoming: 'Upcoming',
           inReview: 'In review',

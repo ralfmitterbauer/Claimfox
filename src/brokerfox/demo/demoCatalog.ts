@@ -70,6 +70,67 @@ export const taskTemplates = [
   'Confirm pricing assumptions'
 ]
 
+export const calendarTemplates = [
+  {
+    title: 'Tender deadline review',
+    description: 'Finalize tender pack and confirm carrier submissions.',
+    location: 'Video call',
+    participants: ['Broker team', 'Lead carrier']
+  },
+  {
+    title: 'Prolongation strategy session',
+    description: 'Review loss history and renewal positioning.',
+    location: 'Client HQ',
+    participants: ['Client CFO', 'Broker account lead']
+  },
+  {
+    title: 'Contract governance check',
+    description: 'Validate endorsements and coverage alignment.',
+    location: 'Broker office',
+    participants: ['Broker compliance', 'Legal']
+  },
+  {
+    title: 'Client steering meeting',
+    description: 'Discuss risk improvements and next steps.',
+    location: 'Teams',
+    participants: ['Client risk manager', 'Broker advisor']
+  },
+  {
+    title: 'Carrier negotiation slot',
+    description: 'Discuss premium adjustments and exclusions.',
+    location: 'Phone call',
+    participants: ['Carrier underwriter', 'Broker placement']
+  }
+]
+
+export const mailboxTemplates = [
+  {
+    subject: 'Updated loss run attachment',
+    sender: 'Laura Stein <l.stein@client.example>',
+    body: `Hello team,\n\nPlease find attached the updated loss run for the last 24 months. We have highlighted two larger events for your review.\n\nLet us know if you need anything else.\n\nRegards,\nLaura Stein`
+  },
+  {
+    subject: 'Carrier offer update — revised premium',
+    sender: 'M. Keller <underwriting@carrier.example>',
+    body: `Hi Brokerfox team,\n\nWe reviewed the submitted exposure updates and can provide revised terms. Please see the attached offer and summary in the email below.\n\nBest,\nM. Keller`
+  },
+  {
+    subject: 'Renewal reminder and documentation request',
+    sender: 'renewals@carrier.example',
+    body: `Dear all,\n\nYour renewal is approaching in the next 60 days. Please provide updated fleet lists and recent claims summaries to proceed.\n\nThanks,\nCarrier Renewals Desk`
+  },
+  {
+    subject: 'Client update — new location added',
+    sender: 'Jonas Weber <j.weber@client.example>',
+    body: `Hello,\n\nWe have opened a new warehouse location in Bremen. Please advise if additional coverage documentation is required.\n\nRegards,\nJonas`
+  },
+  {
+    subject: 'Loss history clarification needed',
+    sender: 'risk@client.example',
+    body: `Hi,\n\nWe noticed a discrepancy in the reported losses for Q4. Can you confirm whether the reserve has been released?\n\nBest,\nRisk Team`
+  }
+]
+
 export const timelinePhrases = {
   external: [
     'Shared updated requirements with carriers.',

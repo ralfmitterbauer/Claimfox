@@ -63,7 +63,7 @@ export default function BrokerfoxClientsPage() {
       <BrokerfoxLayout
         title={t('brokerfox.clients.title')}
         subtitle={t('brokerfox.clients.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         <Card variant="glass" title={t('brokerfox.clients.createTitle')} subtitle={t('brokerfox.clients.createSubtitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
@@ -85,7 +85,7 @@ export default function BrokerfoxClientsPage() {
               placeholder={t('brokerfox.clients.fieldIndustry')}
               style={{ padding: '0.6rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
             />
-            <Button onClick={handleCreate}>{t('brokerfox.actions.newClient')}</Button>
+            <Button size="sm" onClick={handleCreate}>{t('brokerfox.actions.newClient')}</Button>
           </div>
         </Card>
         <Card variant="glass" title={t('brokerfox.clients.listTitle')} subtitle={t('brokerfox.clients.listSubtitle')}>

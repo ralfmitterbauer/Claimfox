@@ -94,11 +94,13 @@ export type RenewalItem = {
   id: string
   tenantId: string
   clientId: string
+  contractId?: string
   policyName: string
   carrier: string
   renewalDate: string
   premium: string
   status: 'upcoming' | 'inReview' | 'quoted' | 'renewed'
+  isHero?: boolean
 }
 
 export type DocumentMeta = {
@@ -210,6 +212,8 @@ export type CalendarEvent = {
   entityType?: EntityType
   entityId?: string
   description?: string
+  location?: string
+  participants?: string[]
 }
 
 export type MailboxItemStatus = 'unassigned' | 'assigned' | 'done'

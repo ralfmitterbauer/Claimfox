@@ -1,4 +1,4 @@
-import { carriers, demoTenants, docTemplates, industries, integrationTemplates, lobs, segments, taskTemplates, timelinePhrases } from './demoCatalog'
+import { calendarTemplates, carriers, demoTenants, docTemplates, industries, integrationTemplates, lobs, mailboxTemplates, segments, taskTemplates, timelinePhrases } from './demoCatalog'
 import type {
   Client,
   CoverageRequest,
@@ -166,19 +166,22 @@ function buildOffers(tenantId: string, tenders: Tender[]) {
   return offers
 }
 
-function buildRenewals(tenantId: string, clients: Client[], count: number) {
+function buildRenewals(tenantId: string, clients: Client[], contracts: Contract[], count: number) {
   return Array.from({ length: count }).map((_, idx) => {
     const id = stableId('renewal', tenantId, idx + 1)
     const status = pick(['upcoming', 'inReview', 'quoted', 'renewed'], idx)
+    const contract = contracts[idx % contracts.length]
     return {
       id,
       tenantId,
       clientId: clients[idx % clients.length].id,
+      contractId: contract?.id,
       policyName: `${pick(['Fleet Liability', 'Property All Risk', 'Cyber Shield', 'Cargo Protect'], idx)} ${2025 + (idx % 2)}`,
       carrier: pick(carriers, idx + 4),
       renewalDate: new Date(Date.now() + (15 + idx * 6) * 86400000).toISOString(),
       premium: `€ ${90 + idx * 7}k`,
-      status
+      status,
+      isHero: idx < 3
     } satisfies RenewalItem
   })
 }
@@ -369,115 +372,66 @@ function buildIntegrations(tenantId: string) {
   }))
 }
 
-function buildCalendarEvents(tenantId: string, tenders: Tender[], renewals: RenewalItem[], contracts: Contract[]) {
-  const events: CalendarEvent[] = []
-  tenders.slice(0, 6).forEach((tender, idx) => {
-    events.push({
-      id: stableId('cal', tenantId, idx + 1),
-      tenantId,
-      title: `Tender deadline: ${tender.title}`,
-      date: tender.dueDate ?? new Date(Date.now() + (idx + 5) * 86400000).toISOString(),
-      entityType: 'tender',
-      entityId: tender.id,
-      description: 'Deadline for carrier submissions.'
-    })
-  })
-  renewals.slice(0, 6).forEach((renewal, idx) => {
-    events.push({
-      id: stableId('cal', tenantId, idx + 20),
-      tenantId,
-      title: `Renewal review: ${renewal.policyName}`,
-      date: renewal.renewalDate,
-      entityType: 'renewal',
-      entityId: renewal.id,
-      description: 'Prepare renewal review pack.'
-    })
-  })
-  contracts.slice(0, 4).forEach((contract, idx) => {
-    events.push({
-      id: stableId('cal', tenantId, idx + 40),
-      tenantId,
-      title: `Contract review: ${contract.policyNumber}`,
-      date: contract.renewalDueDate ?? new Date(Date.now() + (idx + 12) * 86400000).toISOString(),
-      entityType: 'contract',
-      entityId: contract.id,
-      description: 'Annual contract review meeting.'
-    })
-  })
-  return events
+function buildCalendarEvents(tenantId: string, tenders: Tender[], renewals: RenewalItem[], contracts: Contract[], clients: Client[]) {
+  const picks: Array<{ entityType: CalendarEvent['entityType']; entityId: string; title: string }> = [
+    { entityType: 'tender', entityId: tenders[0]?.id ?? '', title: tenders[0]?.title ?? 'Tender review' },
+    { entityType: 'renewal', entityId: renewals[0]?.id ?? '', title: renewals[0]?.policyName ?? 'Prolongation review' },
+    { entityType: 'contract', entityId: contracts[0]?.id ?? '', title: contracts[0]?.policyNumber ?? 'Contract check' },
+    { entityType: 'client', entityId: clients[0]?.id ?? '', title: clients[0]?.name ?? 'Client steering' },
+    { entityType: 'renewal', entityId: renewals[1]?.id ?? renewals[0]?.id ?? '', title: renewals[1]?.policyName ?? 'Prolongation follow-up' }
+  ]
+
+  return calendarTemplates.slice(0, 5).map((template, idx) => ({
+    id: stableId('cal', tenantId, idx + 1),
+    tenantId,
+    title: `${template.title}: ${picks[idx]?.title ?? ''}`.trim(),
+    date: new Date(Date.now() + (idx + 3) * 86400000).toISOString(),
+    entityType: picks[idx]?.entityType,
+    entityId: picks[idx]?.entityId,
+    description: template.description,
+    location: template.location,
+    participants: template.participants
+  }))
 }
 
 function buildMailboxItems(tenantId: string, clients: Client[], tenders: Tender[], offers: Offer[], contracts: Contract[]) {
-  return [
-    {
-      id: stableId('mail', tenantId, 1),
+  const items: MailboxItem[] = []
+  for (let i = 0; i < 20; i += 1) {
+    const template = mailboxTemplates[i % mailboxTemplates.length]
+    const client = clients[i % clients.length]
+    const tender = tenders[i % tenders.length]
+    const contract = contracts[i % contracts.length]
+    const attachment = docTemplates[i % docTemplates.length]
+    const status = pick(['unassigned', 'assigned', 'done'], i) as MailboxItem['status']
+    items.push({
+      id: stableId('mail', tenantId, i + 1),
       tenantId,
-      sender: 'carrier@allianz.example',
-      subject: `Offer update for ${tenders[0].title}`,
-      receivedAt: stableNow(90),
+      sender: template.sender,
+      subject: `${template.subject} — ${client.name}`,
+      receivedAt: stableNow(90 + i),
       attachments: [
         {
-          id: stableId('doc', tenantId, 200),
+          id: stableId('doc', tenantId, 200 + i),
           tenantId,
-          name: 'Offer_Allianz.pdf',
-          type: 'application/pdf',
-          size: 160000,
-          uploadedAt: stableNow(90),
-          uploadedBy: 'carrier',
-          url: '/demo-docs/Offer_Allianz.pdf',
+          name: attachment.name,
+          type: attachment.type,
+          size: 120000 + i * 1200,
+          uploadedAt: stableNow(90 + i),
+          uploadedBy: template.sender,
+          url: attachment.url,
           source: 'demo'
         }
       ],
-      extractedEntities: [{ type: 'tender', label: tenders[0].title }],
-      status: 'unassigned'
-    },
-    {
-      id: stableId('mail', tenantId, 2),
-      tenantId,
-      sender: `risk@${clients[0].name.replace(/\\s+/g, '').toLowerCase()}.example`,
-      subject: 'Updated risk information',
-      receivedAt: stableNow(92),
-      attachments: [
-        {
-          id: stableId('doc', tenantId, 201),
-          tenantId,
-          name: 'Risk_Assessment_2024.pdf',
-          type: 'application/pdf',
-          size: 145000,
-          uploadedAt: stableNow(92),
-          uploadedBy: 'client',
-          url: '/demo-docs/Risk_Assessment_2024.pdf',
-          source: 'demo'
-        }
+      extractedEntities: [
+        { type: 'client', label: client.name },
+        { type: 'tender', label: tender.title },
+        { type: 'contract', label: contract.policyNumber }
       ],
-      extractedEntities: [{ type: 'client', label: clients[0].name }, { type: 'contract', label: contracts[0].policyNumber }],
-      status: 'unassigned',
-      body: 'Please find the updated risk assessment and facility overview.'
-    },
-    {
-      id: stableId('mail', tenantId, 3),
-      tenantId,
-      sender: 'renewals@carrier.example',
-      subject: `Renewal reminder for ${clients[1].name}`,
-      receivedAt: stableNow(95),
-      attachments: [
-        {
-          id: stableId('doc', tenantId, 202),
-          tenantId,
-          name: 'Loss_History_2022_2024.xlsx',
-          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-          size: 90000,
-          uploadedAt: stableNow(95),
-          uploadedBy: 'carrier',
-          url: '/demo-docs/Loss_History_2022_2024.xlsx',
-          source: 'demo'
-        }
-      ],
-      extractedEntities: [{ type: 'client', label: clients[1].name }],
-      status: 'unassigned',
-      body: 'Please provide updated loss history and renewal preferences.'
-    }
-  ] as MailboxItem[]
+      status,
+      body: template.body
+    })
+  }
+  return items
 }
 
 function buildTimeline(tenantId: string, hero: { clientId: string; tenderId: string; contractIds: string[] }, offers: Offer[], mailboxItems: MailboxItem[]) {
@@ -543,8 +497,8 @@ export function seedDemoData(tenantId: string): SeededData {
   const clients = buildClients(tenantId, 12, heroClientName)
   const tenders = buildTenders(tenantId, clients, 10, heroTenderTitle)
   const offers = buildOffers(tenantId, tenders)
-  const renewals = buildRenewals(tenantId, clients, 14)
   const contracts = buildContracts(tenantId, clients, 30)
+  const renewals = buildRenewals(tenantId, clients, contracts, 14)
   const documents = buildDocuments(tenantId, clients, tenders, offers, renewals, contracts)
   const mailboxItems = buildMailboxItems(tenantId, clients, tenders, offers, contracts)
   const extractions = buildExtractions(tenantId, documents, contracts, clients, mailboxItems)
@@ -552,7 +506,7 @@ export function seedDemoData(tenantId: string): SeededData {
   const signatures: SignatureRequest[] = []
   const tasks = buildTasks(tenantId, clients, tenders, renewals, contracts)
   const integrations = buildIntegrations(tenantId)
-  const calendarEvents = buildCalendarEvents(tenantId, tenders, renewals, contracts)
+  const calendarEvents = buildCalendarEvents(tenantId, tenders, renewals, contracts, clients)
   const hero = { clientId: clients[0].id, tenderId: tenders[0].id, contractIds: contracts.filter((contract) => contract.isHero).map((contract) => contract.id) }
   const timeline = buildTimeline(tenantId, hero, offers, mailboxItems)
 

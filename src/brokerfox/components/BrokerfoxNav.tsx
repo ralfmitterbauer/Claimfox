@@ -21,7 +21,7 @@ export default function BrokerfoxNav() {
   const location = useLocation()
 
   return (
-    <nav aria-label={t('brokerfox.nav.title')}>
+    <nav aria-label={t('brokerfox.nav.title')} style={{ position: 'relative', zIndex: 2 }}>
       <div
         role="tablist"
         style={{

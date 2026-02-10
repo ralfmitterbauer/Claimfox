@@ -114,7 +114,7 @@ export default function BrokerfoxTasksPage() {
       <BrokerfoxLayout
         title={t('brokerfox.tasks.title')}
         subtitle={t('brokerfox.tasks.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
       >
         <Card variant="glass" title={t('brokerfox.tasks.createTitle')} subtitle={t('brokerfox.tasks.createSubtitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
@@ -154,7 +154,7 @@ export default function BrokerfoxTasksPage() {
                 <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName}</option>
               ))}
             </select>
-            <Button onClick={handleCreate}>{t('brokerfox.actions.save')}</Button>
+            <Button size="sm" onClick={handleCreate}>{t('brokerfox.actions.save')}</Button>
           </div>
         </Card>
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
@@ -178,7 +178,7 @@ export default function BrokerfoxTasksPage() {
                       placeholder={t('brokerfox.tasks.delegate')}
                       style={{ padding: '0.4rem 0.6rem', borderRadius: 8, border: '1px solid #d6d9e0' }}
                     />
-                    <Button onClick={() => handleDelegate(task.id)}>{t('brokerfox.tasks.delegateAction')}</Button>
+                    <Button size="sm" onClick={() => handleDelegate(task.id)}>{t('brokerfox.tasks.delegateAction')}</Button>
                   </div>
                   <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.35rem', flexWrap: 'wrap' }}>
                     {columns.filter((col) => col.key !== column.key).map((col) => (

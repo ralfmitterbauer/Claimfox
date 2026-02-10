@@ -183,7 +183,7 @@ export default function BrokerfoxClientDetailPage() {
     return (
       <section className="page">
         <p>{error ?? t('brokerfox.state.notFound')}</p>
-        <Button onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
+        <Button size="sm" onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
       </section>
     )
   }
@@ -193,13 +193,13 @@ export default function BrokerfoxClientDetailPage() {
       <BrokerfoxLayout
         title={client.name}
         subtitle={t('brokerfox.clients.detailSubtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
-        <Button onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
+        <Button size="sm" onClick={() => navigate('/brokerfox/clients')}>{t('brokerfox.clients.back')}</Button>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <Button onClick={handleCreateContract}>{t('brokerfox.contracts.createAction')}</Button>
-          <Button onClick={handleSyncBipro}>{t('brokerfox.integrations.biproAction')}</Button>
-          <Button onClick={handleCommissionReminder}>{t('brokerfox.commissions.sendReminder')}</Button>
+          <Button size="sm" onClick={handleCreateContract}>{t('brokerfox.contracts.createAction')}</Button>
+          <Button size="sm" onClick={handleSyncBipro}>{t('brokerfox.integrations.biproAction')}</Button>
+          <Button size="sm" onClick={handleCommissionReminder}>{t('brokerfox.commissions.sendReminder')}</Button>
         </div>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
@@ -252,7 +252,7 @@ export default function BrokerfoxClientDetailPage() {
               </div>
               <span style={{ color: '#94a3b8' }}>€ {contract.premiumEUR.toLocaleString()}</span>
               <span style={{ color: '#64748b' }}>{t(`brokerfox.contracts.status.${contract.status}`)}</span>
-              <Button onClick={() => navigate(`/brokerfox/contracts/${contract.id}`)}>{t('brokerfox.contracts.viewDetail')}</Button>
+              <Button size="sm" onClick={() => navigate(`/brokerfox/contracts/${contract.id}`)}>{t('brokerfox.contracts.viewDetail')}</Button>
             </div>
           ))}
         </Card>
@@ -314,7 +314,7 @@ export default function BrokerfoxClientDetailPage() {
               <input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} />
               {t('brokerfox.ai.approvalLabel')}
             </label>
-            <Button onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
+            <Button size="sm" onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
       </BrokerfoxLayout>

@@ -131,7 +131,7 @@ export default function BrokerfoxTenderDetailPage() {
     return (
       <section className="page">
         <p>{error ?? t('brokerfox.state.notFound')}</p>
-        <Button onClick={() => navigate('/brokerfox/tenders')}>{t('brokerfox.tenders.back')}</Button>
+        <Button size="sm" onClick={() => navigate('/brokerfox/tenders')}>{t('brokerfox.tenders.back')}</Button>
       </section>
     )
   }
@@ -141,9 +141,9 @@ export default function BrokerfoxTenderDetailPage() {
       <BrokerfoxLayout
         title={tender.title}
         subtitle={t('brokerfox.tenders.detailSubtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
-        <Button onClick={() => navigate('/brokerfox/tenders')}>{t('brokerfox.tenders.back')}</Button>
+        <Button size="sm" onClick={() => navigate('/brokerfox/tenders')}>{t('brokerfox.tenders.back')}</Button>
 
         <Card variant="glass" title={t('brokerfox.tenders.statusTitle')}>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -269,7 +269,7 @@ export default function BrokerfoxTenderDetailPage() {
               <input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} />
               {t('brokerfox.ai.approvalLabel')}
             </label>
-            <Button onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
+            <Button size="sm" onClick={handleSendDraft} disabled={!approved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
       </BrokerfoxLayout>

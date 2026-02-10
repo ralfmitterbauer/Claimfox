@@ -51,10 +51,10 @@ export default function DemoUtilitiesPanel({ tenantId, onTenantChange }: DemoUti
           </select>
         </div>
         <div style={{ display: 'grid', gap: '0.4rem', alignContent: 'end' }}>
-          <Button onClick={handleReset}>{t('brokerfox.demo.reset')}</Button>
+          <Button size="sm" onClick={handleReset}>{t('brokerfox.demo.reset')}</Button>
         </div>
         <div style={{ display: 'grid', gap: '0.4rem', alignContent: 'end' }}>
-          <Button onClick={handleSeedAll}>{t('brokerfox.demo.seedAll')}</Button>
+          <Button size="sm" onClick={handleSeedAll}>{t('brokerfox.demo.seedAll')}</Button>
         </div>
       </div>
     </Card>

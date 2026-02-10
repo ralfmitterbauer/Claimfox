@@ -155,6 +155,7 @@ import BrokerfoxTendersPage from '@/pages/BrokerfoxTendersPage'
 import BrokerfoxTenderDetailPage from '@/pages/BrokerfoxTenderDetailPage'
 import BrokerfoxOffersPage from '@/pages/BrokerfoxOffersPage'
 import BrokerfoxRenewalsPage from '@/pages/BrokerfoxRenewalsPage'
+import BrokerfoxRenewalDetailPage from '@/pages/BrokerfoxRenewalDetailPage'
 import BrokerfoxDocumentsPage from '@/pages/BrokerfoxDocumentsPage'
 import BrokerfoxIntegrationsPage from '@/pages/BrokerfoxIntegrationsPage'
 import BrokerfoxTasksPage from '@/pages/BrokerfoxTasksPage'
@@ -264,6 +265,7 @@ export default function AppRouter() {
         <Route path="/brokerfox/tenders/:tenderId" element={<BrokerfoxTenderDetailPage />} />
         <Route path="/brokerfox/offers" element={<BrokerfoxOffersPage />} />
         <Route path="/brokerfox/renewals" element={<BrokerfoxRenewalsPage />} />
+        <Route path="/brokerfox/renewals/:renewalId" element={<BrokerfoxRenewalDetailPage />} />
         <Route path="/brokerfox/documents" element={<BrokerfoxDocumentsPage />} />
         <Route path="/brokerfox/reporting" element={<BrokerfoxReportingPage />} />
         <Route path="/brokerfox/integrations" element={<BrokerfoxIntegrationsPage />} />

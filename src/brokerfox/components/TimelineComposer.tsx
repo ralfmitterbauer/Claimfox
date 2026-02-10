@@ -70,7 +70,7 @@ export default function TimelineComposer({ onSubmit }: TimelineComposerProps) {
             ))}
           </div>
         ) : null}
-        <Button onClick={handleSubmit}>{t('brokerfox.actions.newMessage')}</Button>
+        <Button size="sm" onClick={handleSubmit}>{t('brokerfox.actions.newMessage')}</Button>
       </div>
     </Card>
   )

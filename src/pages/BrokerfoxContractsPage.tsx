@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
-import Button from '@/components/ui/Button'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClients, listContracts } from '@/brokerfox/api/brokerfoxApi'
@@ -50,7 +49,7 @@ export default function BrokerfoxContractsPage() {
       <BrokerfoxLayout
         title={t('brokerfox.contracts.title')}
         subtitle={t('brokerfox.contracts.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         <Card variant="glass" title={t('brokerfox.contracts.filtersTitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
@@ -78,7 +77,16 @@ export default function BrokerfoxContractsPage() {
         <Card variant="glass" title={t('brokerfox.contracts.listTitle')} subtitle={t('brokerfox.contracts.listSubtitle')}>
           {sorted.length === 0 ? <p>{t('brokerfox.contracts.empty')}</p> : null}
           {sorted.map((contract) => (
-            <div key={contract.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #e2e8f0' }}>
+            <div
+              key={contract.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(`/brokerfox/contracts/${contract.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') navigate(`/brokerfox/contracts/${contract.id}`)
+              }}
+              style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #e2e8f0', cursor: 'pointer' }}
+            >
               <div>
                 <strong>{contract.policyNumber}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>
@@ -88,7 +96,6 @@ export default function BrokerfoxContractsPage() {
               </div>
               <span style={{ color: '#94a3b8' }}>€ {contract.premiumEUR.toLocaleString()}</span>
               <span style={{ color: '#64748b' }}>{t(`brokerfox.contracts.status.${contract.status}`)}</span>
-              <Button onClick={() => navigate(`/brokerfox/contracts/${contract.id}`)}>{t('brokerfox.contracts.viewDetail')}</Button>
             </div>
           ))}
         </Card>

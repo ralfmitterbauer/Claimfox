@@ -207,7 +207,7 @@ export default function BrokerfoxDocumentsPage() {
       <BrokerfoxLayout
         title={t('brokerfox.documents.title')}
         subtitle={t('brokerfox.documents.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         <Card variant="glass" title={t('brokerfox.documents.uploadTitle')} subtitle={t('brokerfox.documents.uploadSubtitle')}>
           <div
@@ -244,7 +244,7 @@ export default function BrokerfoxDocumentsPage() {
                 <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
               ))}
             </select>
-            <Button onClick={() => handleUpload()}>{t('brokerfox.actions.uploadDocument')}</Button>
+            <Button size="sm" onClick={() => handleUpload()}>{t('brokerfox.actions.uploadDocument')}</Button>
           </div>
           {progress > 0 ? (
             <div style={{ marginTop: '0.75rem', height: 8, borderRadius: 999, background: '#e2e8f0', overflow: 'hidden' }}>
@@ -272,9 +272,9 @@ export default function BrokerfoxDocumentsPage() {
                     <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{doc.entityType ?? t('brokerfox.documents.unassigned')}</div>
                   </div>
                   <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
-                  <Button onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
-                  <Button onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
-                  {!doc.entityId ? <Button onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
+                  <Button size="sm" onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
+                  <Button size="sm" onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
+                  {!doc.entityId ? <Button size="sm" onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
                 </div>
 
                 {extraction ? (
@@ -298,7 +298,7 @@ export default function BrokerfoxDocumentsPage() {
                       />
                       {t('brokerfox.extraction.approval')}
                     </label>
-                    <Button onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
+                    <Button size="sm" onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
                       {t('brokerfox.extraction.apply')}
                     </Button>
                   </div>
@@ -310,7 +310,7 @@ export default function BrokerfoxDocumentsPage() {
                     <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', flexWrap: 'wrap' }}>
                       <span>{t('brokerfox.signature.statusLabel')}: {t(`brokerfox.signature.status.${signature.status}`)}</span>
                       {signature.status !== 'SIGNED' ? (
-                        <Button onClick={() => handleMarkSigned(signature.id)}>{t('brokerfox.signature.markSigned')}</Button>
+                        <Button size="sm" onClick={() => handleMarkSigned(signature.id)}>{t('brokerfox.signature.markSigned')}</Button>
                       ) : null}
                     </div>
                   ) : (
@@ -329,11 +329,11 @@ export default function BrokerfoxDocumentsPage() {
                             placeholder={t('brokerfox.signature.recipientEmail')}
                             style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
                           />
-                          <Button onClick={() => handleRequestSignature(doc)}>{t('brokerfox.signature.requestAction')}</Button>
-                          <Button variant="secondary" onClick={() => setSignatureDraft({ docId: '', name: '', email: '' })}>{t('brokerfox.actions.cancel')}</Button>
+                          <Button size="sm" onClick={() => handleRequestSignature(doc)}>{t('brokerfox.signature.requestAction')}</Button>
+                          <Button size="sm" variant="secondary" onClick={() => setSignatureDraft({ docId: '', name: '', email: '' })}>{t('brokerfox.actions.cancel')}</Button>
                         </div>
                       ) : (
-                        <Button onClick={() => setSignatureDraft({ docId: doc.id, name: '', email: '' })}>{t('brokerfox.signature.requestAction')}</Button>
+                        <Button size="sm" onClick={() => setSignatureDraft({ docId: doc.id, name: '', email: '' })}>{t('brokerfox.signature.requestAction')}</Button>
                       )}
                     </>
                   )}

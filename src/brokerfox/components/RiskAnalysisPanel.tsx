@@ -77,9 +77,9 @@ export default function RiskAnalysisPanel({ analysis, onCopyMessage, onCreateTas
           </ul>
         </div>
         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-          <Button onClick={onCopyMessage}>{t('brokerfox.ai.copyToMessage')}</Button>
-          <Button onClick={onCreateTask}>{t('brokerfox.ai.createTask')}</Button>
-          <Button onClick={onMarkReviewed}>{t('brokerfox.ai.markReviewed')}</Button>
+          <Button size="sm" onClick={onCopyMessage}>{t('brokerfox.ai.copyToMessage')}</Button>
+          <Button size="sm" onClick={onCreateTask}>{t('brokerfox.ai.createTask')}</Button>
+          <Button size="sm" onClick={onMarkReviewed}>{t('brokerfox.ai.markReviewed')}</Button>
         </div>
       </div>
     </Card>

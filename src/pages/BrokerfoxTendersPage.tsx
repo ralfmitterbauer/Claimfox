@@ -66,7 +66,7 @@ export default function BrokerfoxTendersPage() {
       <BrokerfoxLayout
         title={t('brokerfox.tenders.title')}
         subtitle={t('brokerfox.tenders.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         <Card variant="glass" title={t('brokerfox.tenders.createTitle')} subtitle={t('brokerfox.tenders.createSubtitle')}>
           <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))' }}>
@@ -91,7 +91,7 @@ export default function BrokerfoxTendersPage() {
               placeholder={t('brokerfox.tenders.fieldDescription')}
               style={{ padding: '0.6rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
             />
-            <Button onClick={handleCreate}>{t('brokerfox.actions.newTender')}</Button>
+            <Button size="sm" onClick={handleCreate}>{t('brokerfox.actions.newTender')}</Button>
           </div>
         </Card>
         <Card variant="glass" title={t('brokerfox.tenders.listTitle')} subtitle={t('brokerfox.tenders.listSubtitle')}>

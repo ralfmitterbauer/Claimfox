@@ -76,7 +76,7 @@ export default function BrokerfoxIntegrationsPage() {
       <BrokerfoxLayout
         title={t('brokerfox.integrations.title')}
         subtitle={t('brokerfox.integrations.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
       >
         <Card variant="glass" title={t('brokerfox.integrations.actionsTitle')} subtitle={t('brokerfox.integrations.actionsSubtitle')}>
           <div style={{ display: 'grid', gap: '0.75rem' }}>

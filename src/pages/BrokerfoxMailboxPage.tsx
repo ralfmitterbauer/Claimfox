@@ -180,10 +180,10 @@ export default function BrokerfoxMailboxPage() {
       <BrokerfoxLayout
         title={t('brokerfox.mailbox.title')}
         subtitle={t('brokerfox.mailbox.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
 
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'minmax(260px, 1fr) minmax(300px, 1fr)' }}>
+        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'minmax(260px, 1fr) minmax(320px, 1fr)' }}>
           <Card variant="glass" title={t('brokerfox.mailbox.inboxTitle')}>
             {items.map((item) => (
               <button
@@ -191,7 +191,8 @@ export default function BrokerfoxMailboxPage() {
                 type="button"
                 onClick={() => setSelected(item)}
                 style={{
-                  display: 'block',
+                  display: 'grid',
+                  gridTemplateColumns: 'minmax(0, 1fr) auto',
                   width: '100%',
                   textAlign: 'left',
                   padding: '0.6rem 0',
@@ -199,9 +200,22 @@ export default function BrokerfoxMailboxPage() {
                   background: 'transparent'
                 }}
               >
-                <strong>{item.subject}</strong>
-                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{item.sender} · {new Date(item.receivedAt).toLocaleString()}</div>
-                <div style={{ color: '#94a3b8', fontSize: '0.8rem' }}>{t(`brokerfox.mailbox.status.${item.status}`)}</div>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'baseline' }}>
+                    <strong style={{ fontSize: '0.95rem' }}>{item.sender}</strong>
+                    <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{item.attachments.length} {t('brokerfox.mailbox.attachments')}</span>
+                  </div>
+                  <div style={{ color: '#0f172a', fontWeight: 600 }}>{item.subject}</div>
+                  <div style={{ color: '#64748b', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {(item.body ?? '').replace(/\\s+/g, ' ').slice(0, 120)}
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right', display: 'grid', gap: '0.25rem', alignContent: 'start' }}>
+                  <span style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{new Date(item.receivedAt).toLocaleString()}</span>
+                  <span style={{ fontSize: '0.7rem', padding: '0.1rem 0.45rem', borderRadius: 999, background: '#eef2f7', color: '#0f172a', border: '1px solid #d6d9e0' }}>
+                    {t(`brokerfox.mailbox.status.${item.status}`)}
+                  </span>
+                </div>
               </button>
             ))}
           </Card>
@@ -209,17 +223,19 @@ export default function BrokerfoxMailboxPage() {
           <Card variant="glass" title={t('brokerfox.mailbox.detailTitle')}>
             {selected ? (
               <div style={{ display: 'grid', gap: '0.75rem' }}>
-                <div>
-                  <strong>{selected.subject}</strong>
-                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{selected.sender}</div>
+                <div style={{ display: 'grid', gap: '0.25rem' }}>
+                  <strong style={{ fontSize: '1rem' }}>{selected.subject}</strong>
+                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.from')}: {selected.sender}</div>
+                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.to')}: {t('brokerfox.mailbox.toValue')}</div>
+                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.date')}: {new Date(selected.receivedAt).toLocaleString()}</div>
                 </div>
-                <p style={{ margin: 0 }}>{selected.body ?? t('brokerfox.mailbox.previewPlaceholder')}</p>
+                <div style={{ whiteSpace: 'pre-line' }}>{selected.body ?? t('brokerfox.mailbox.previewPlaceholder')}</div>
                 <div>
                   <strong>{t('brokerfox.mailbox.attachments')}</strong>
                   {selected.attachments.map((doc) => (
                     <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.3rem 0' }}>
                       <span>{doc.name}</span>
-                      <Button onClick={() => handleDownloadAttachment(doc.name)}>{t('brokerfox.documents.download')}</Button>
+                      <Button size="sm" onClick={() => handleDownloadAttachment(doc.name)}>{t('brokerfox.documents.download')}</Button>
                     </div>
                   ))}
                 </div>
@@ -246,7 +262,7 @@ export default function BrokerfoxMailboxPage() {
                         />
                         {t('brokerfox.extraction.approval')}
                       </label>
-                      <Button onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
+                      <Button size="sm" onClick={() => handleApplyExtraction(doc.id)} disabled={!approvedExtraction[doc.id]}>
                         {t('brokerfox.extraction.apply')}
                       </Button>
                     </div>
@@ -266,9 +282,9 @@ export default function BrokerfoxMailboxPage() {
                       <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
                     ))}
                   </select>
-                  <Button onClick={handleAssign}>{t('brokerfox.mailbox.assignAction')}</Button>
-                  <Button onClick={handleCreateTask}>{t('brokerfox.mailbox.convertTask')}</Button>
-                  <Button onClick={handleMarkDone}>{t('brokerfox.mailbox.markDone')}</Button>
+                  <Button size="sm" onClick={handleAssign}>{t('brokerfox.mailbox.assignAction')}</Button>
+                  <Button size="sm" onClick={handleCreateTask}>{t('brokerfox.mailbox.convertTask')}</Button>
+                  <Button size="sm" onClick={handleMarkDone}>{t('brokerfox.mailbox.markDone')}</Button>
                 </div>
               </div>
             ) : (

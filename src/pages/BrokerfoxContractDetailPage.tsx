@@ -91,9 +91,9 @@ export default function BrokerfoxContractDetailPage() {
       <BrokerfoxLayout
         title={t('brokerfox.contracts.detailTitle')}
         subtitle={contract.policyNumber}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
-        <Button onClick={() => navigate('/brokerfox/contracts')}>{t('brokerfox.contracts.back')}</Button>
+        <Button size="sm" onClick={() => navigate('/brokerfox/contracts')}>{t('brokerfox.contracts.back')}</Button>
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
           <Card variant="glass" title={t('brokerfox.contracts.summaryTitle')}>
@@ -141,7 +141,7 @@ export default function BrokerfoxContractDetailPage() {
                 <strong>{item.period}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.commissions.outstanding')}: € {item.outstandingEUR.toLocaleString()}</div>
               </div>
-              <Button onClick={() => handleCommissionReminder(item.id)}>{t('brokerfox.commissions.sendReminder')}</Button>
+              <Button size="sm" onClick={() => handleCommissionReminder(item.id)}>{t('brokerfox.commissions.sendReminder')}</Button>
             </div>
           ))}
         </Card>

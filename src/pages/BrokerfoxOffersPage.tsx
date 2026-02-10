@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
 import BrokerfoxLayout from '@/brokerfox/components/BrokerfoxLayout'
 import Button from '@/components/ui/Button'
-import CalendarWidget from '@/brokerfox/components/CalendarWidget'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import TimelineComposer from '@/brokerfox/components/TimelineComposer'
 import TimelineThread from '@/brokerfox/components/TimelineThread'
@@ -11,16 +10,14 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import {
   addTimelineEvent,
-  addCalendarEvent,
   aiCompareOffers,
   aiGenerateClientSummary,
-  listCalendarEvents,
   listClients,
   listOffers,
   listTimelineEvents,
   listTenders
 } from '@/brokerfox/api/brokerfoxApi'
-import type { Offer } from '@/brokerfox/types'
+import type { Offer, TimelineEvent } from '@/brokerfox/types'
 import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
 
 export default function BrokerfoxOffersPage() {
@@ -36,26 +33,23 @@ export default function BrokerfoxOffersPage() {
   const [comparison, setComparison] = useState<any | null>(null)
   const [summary, setSummary] = useState('')
   const [approved, setApproved] = useState(false)
-  const [events, setEvents] = useState([])
+  const [events, setEvents] = useState<TimelineEvent[]>([])
   const [draftMessage, setDraftMessage] = useState('')
   const [draftApproved, setDraftApproved] = useState(false)
-  const [calendarEvents, setCalendarEvents] = useState([])
 
   useEffect(() => {
     let mounted = true
     async function load() {
       try {
-        const [offerData, tenderData, clientData, calendarData] = await Promise.all([
+        const [offerData, tenderData, clientData] = await Promise.all([
           listOffers(ctx),
           listTenders(ctx),
-          listClients(ctx),
-          listCalendarEvents(ctx)
+          listClients(ctx)
         ])
         if (!mounted) return
         setOffers(offerData)
         setTenders(tenderData)
         setClients(clientData)
-        setCalendarEvents(calendarData)
         setSelectedTenderId(tenderData[0]?.id ?? '')
         setLoading(false)
       } catch {
@@ -67,27 +61,6 @@ export default function BrokerfoxOffersPage() {
     load()
     return () => { mounted = false }
   }, [ctx, t])
-
-  async function handleAddCalendar(input: { title: string; date: string }) {
-    const event = await addCalendarEvent(ctx, {
-      title: input.title,
-      date: new Date(input.date).toISOString()
-    })
-    setCalendarEvents((prev) => [event, ...prev])
-  }
-
-  function handleSelectCalendar(event: any) {
-    if (!event.entityType || !event.entityId) return
-    if (event.entityType === 'tender') {
-      window.location.assign(`/brokerfox/tenders/${event.entityId}`)
-    } else if (event.entityType === 'client') {
-      window.location.assign(`/brokerfox/clients/${event.entityId}`)
-    } else if (event.entityType === 'contract') {
-      window.location.assign(`/brokerfox/contracts/${event.entityId}`)
-    } else if (event.entityType === 'renewal') {
-      window.location.assign('/brokerfox/renewals')
-    }
-  }
 
   const tenderOffers = useMemo(() => offers.filter((offer) => offer.tenderId === selectedTenderId), [offers, selectedTenderId])
   const selectedTender = useMemo(() => tenders.find((tender) => tender.id === selectedTenderId), [tenders, selectedTenderId])
@@ -211,10 +184,9 @@ export default function BrokerfoxOffersPage() {
       <BrokerfoxLayout
         title={t('brokerfox.offers.title')}
         subtitle={t('brokerfox.offers.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => window.location.reload()} />}
       >
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '1.5rem', alignItems: 'start' }}>
-          <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
+        <Card variant="glass" title={t('brokerfox.offers.listTitle')} subtitle={t('brokerfox.offers.listSubtitle')}>
           {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
           {error ? <p>{error}</p> : null}
           {offers.length === 0 ? <p>{t('brokerfox.empty.noOffers')}</p> : null}
@@ -228,7 +200,7 @@ export default function BrokerfoxOffersPage() {
                 <option key={tender.id} value={tender.id}>{tender.title}</option>
               ))}
             </select>
-            <Button onClick={handleCompare}>{t('brokerfox.offers.compareAction')}</Button>
+            <Button size="sm" onClick={handleCompare}>{t('brokerfox.offers.compareAction')}</Button>
           </div>
           {tenderOffers.map((offer) => (
             <div key={offer.id} style={{ padding: '0.5rem 0', borderBottom: '1px solid #e2e8f0' }}>
@@ -237,8 +209,6 @@ export default function BrokerfoxOffersPage() {
             </div>
           ))}
         </Card>
-          <CalendarWidget events={calendarEvents} onAddEvent={handleAddCalendar} onSelectEvent={handleSelectCalendar} density="compact" />
-        </div>
 
         <Card variant="glass" title={t('brokerfox.offers.compareTitle')} subtitle={t('brokerfox.offers.compareSubtitle')}>
           {comparison ? (
@@ -267,7 +237,7 @@ export default function BrokerfoxOffersPage() {
                 </ul>
               </Card>
               <div style={{ display: 'grid', gap: '0.5rem' }}>
-                <Button onClick={handleGenerateSummary}>{t('brokerfox.actions.generateSummary')}</Button>
+                <Button size="sm" onClick={handleGenerateSummary}>{t('brokerfox.actions.generateSummary')}</Button>
                 {summary ? (
                   <textarea value={summary} readOnly rows={5} style={{ padding: '0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }} />
                 ) : null}
@@ -275,7 +245,7 @@ export default function BrokerfoxOffersPage() {
                   <input type="checkbox" checked={approved} onChange={(event) => setApproved(event.target.checked)} />
                   {t('brokerfox.offers.approvalLabel')}
                 </label>
-                <Button onClick={handleSend} disabled={!approved}>{t('brokerfox.actions.approveAndSend')}</Button>
+                <Button size="sm" onClick={handleSend} disabled={!approved}>{t('brokerfox.actions.approveAndSend')}</Button>
               </div>
             </div>
           ) : (
@@ -326,7 +296,7 @@ export default function BrokerfoxOffersPage() {
               <input type="checkbox" checked={draftApproved} onChange={(event) => setDraftApproved(event.target.checked)} />
               {t('brokerfox.ai.approvalLabel')}
             </label>
-            <Button onClick={handleSendDraft} disabled={!draftApproved}>{t('brokerfox.ai.sendDraft')}</Button>
+            <Button size="sm" onClick={handleSendDraft} disabled={!draftApproved}>{t('brokerfox.ai.sendDraft')}</Button>
           </Card>
         ) : null}
       </BrokerfoxLayout>

@@ -100,7 +100,7 @@ export default function BrokerfoxDashboardPage() {
       <BrokerfoxLayout
         title={t('brokerfox.dashboard.title')}
         subtitle={t('brokerfox.dashboard.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         {loading ? <p>{t('brokerfox.state.loading')}</p> : null}
         {error ? <p>{error}</p> : null}
@@ -146,7 +146,7 @@ export default function BrokerfoxDashboardPage() {
                 placeholder={t('brokerfox.clients.newPlaceholder')}
                 style={{ padding: '0.6rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
               />
-              <Button onClick={handleCreateClient}>{t('brokerfox.actions.save')}</Button>
+              <Button size="sm" onClick={handleCreateClient}>{t('brokerfox.actions.save')}</Button>
             </div>
             <div style={{ display: 'grid', gap: '0.6rem' }}>
               <strong>{t('brokerfox.actions.newTender')}</strong>
@@ -156,15 +156,15 @@ export default function BrokerfoxDashboardPage() {
                 placeholder={t('brokerfox.tenders.newPlaceholder')}
                 style={{ padding: '0.6rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
               />
-              <Button onClick={handleCreateTender}>{t('brokerfox.actions.save')}</Button>
+              <Button size="sm" onClick={handleCreateTender}>{t('brokerfox.actions.save')}</Button>
             </div>
             <div style={{ display: 'grid', gap: '0.6rem' }}>
               <strong>{t('brokerfox.actions.newMessage')}</strong>
-              <Button onClick={() => navigate(hero ? `/brokerfox/clients/${hero.clientId}` : '/brokerfox/clients')}>{t('brokerfox.dashboard.goToClients')}</Button>
+              <Button size="sm" onClick={() => navigate(hero ? `/brokerfox/clients/${hero.clientId}` : '/brokerfox/clients')}>{t('brokerfox.dashboard.goToClients')}</Button>
             </div>
             <div style={{ display: 'grid', gap: '0.6rem' }}>
               <strong>{t('brokerfox.actions.uploadDocument')}</strong>
-              <Button onClick={() => navigate('/brokerfox/documents')}>{t('brokerfox.dashboard.goToDocuments')}</Button>
+              <Button size="sm" onClick={() => navigate('/brokerfox/documents')}>{t('brokerfox.dashboard.goToDocuments')}</Button>
             </div>
           </div>
         </Card>

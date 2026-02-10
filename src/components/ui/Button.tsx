@@ -2,6 +2,7 @@ import React from 'react'
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: 'primary' | 'secondary'
+  size?: 'sm' | 'md'
   disableHover?: boolean
 }
 
@@ -22,6 +23,7 @@ export default function Button({
   className,
   style,
   variant = 'primary',
+  size = 'md',
   type,
   disableHover = false,
   ...props
@@ -31,13 +33,14 @@ export default function Button({
   const baseStyle: React.CSSProperties = {
     border: 'none',
     borderRadius: '999px',
-    padding: '0.85rem 1.75rem',
-    fontWeight: 700,
+    padding: size === 'sm' ? '0 14px' : '0.85rem 1.75rem',
+    height: size === 'sm' ? 36 : undefined,
+    fontWeight: size === 'sm' ? 600 : 700,
     display: 'inline-flex',
     justifyContent: 'center',
     alignItems: 'center',
     gap: '0.5rem',
-    boxShadow: variant === 'secondary' ? 'none' : '0 12px 24px rgba(212, 56, 13, 0.25)',
+    boxShadow: variant === 'secondary' ? 'none' : size === 'sm' ? '0 6px 12px rgba(212, 56, 13, 0.18)' : '0 12px 24px rgba(212, 56, 13, 0.25)',
     transition: 'transform 0.15s ease, opacity 0.15s ease, background-color 0.15s ease',
     opacity: isDisabled ? 0.6 : 1,
     cursor: isDisabled ? 'not-allowed' : 'pointer'

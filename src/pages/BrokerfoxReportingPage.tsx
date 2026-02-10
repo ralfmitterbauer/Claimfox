@@ -165,7 +165,7 @@ export default function BrokerfoxReportingPage() {
       <BrokerfoxLayout
         title={t('brokerfox.reporting.title')}
         subtitle={t('brokerfox.reporting.subtitle')}
-        topRight={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
+        topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
 
         <Card variant="glass" title={t('brokerfox.reporting.filtersTitle')}>
