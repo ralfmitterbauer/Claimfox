@@ -184,7 +184,7 @@ export default function BrokerfoxMailboxPage() {
       >
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'minmax(260px, 1fr) minmax(320px, 1fr)' }}>
-          <Card variant="glass" title={t('brokerfox.mailbox.inboxTitle')}>
+          <Card variant="glass" title={<span style={{ color: '#0f172a' }}>{t('brokerfox.mailbox.inboxTitle')}</span>}>
             {items.map((item) => (
               <button
                 key={item.id}
@@ -197,7 +197,8 @@ export default function BrokerfoxMailboxPage() {
                   textAlign: 'left',
                   padding: '0.6rem 0',
                   border: 'none',
-                  background: 'transparent'
+                  background: 'transparent',
+                  color: '#0f172a'
                 }}
               >
                 <div style={{ minWidth: 0 }}>
@@ -220,16 +221,16 @@ export default function BrokerfoxMailboxPage() {
             ))}
           </Card>
 
-          <Card variant="glass" title={t('brokerfox.mailbox.detailTitle')}>
+          <Card variant="glass" title={<span style={{ color: '#0f172a' }}>{t('brokerfox.mailbox.detailTitle')}</span>}>
             {selected ? (
               <div style={{ display: 'grid', gap: '0.75rem' }}>
                 <div style={{ display: 'grid', gap: '0.25rem' }}>
-                  <strong style={{ fontSize: '1rem' }}>{selected.subject}</strong>
+                  <strong style={{ fontSize: '1rem', color: '#0f172a' }}>{selected.subject}</strong>
                   <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.from')}: {selected.sender}</div>
                   <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.to')}: {t('brokerfox.mailbox.toValue')}</div>
                   <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.mailbox.date')}: {new Date(selected.receivedAt).toLocaleString()}</div>
                 </div>
-                <div style={{ whiteSpace: 'pre-line' }}>{selected.body ?? t('brokerfox.mailbox.previewPlaceholder')}</div>
+                <div style={{ whiteSpace: 'pre-line', color: '#0f172a' }}>{selected.body ?? t('brokerfox.mailbox.previewPlaceholder')}</div>
                 <div>
                   <strong>{t('brokerfox.mailbox.attachments')}</strong>
                   {selected.attachments.map((doc) => (
