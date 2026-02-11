@@ -109,13 +109,13 @@ export default function CalendarWidget({ events, density = 'regular', height }: 
                 key={day.toISOString()}
                 type="button"
                 style={{
-                  border: '1px solid #e2e8f0',
+                  border: 'none',
                   borderRadius: 8,
-                  padding: density === 'compact' ? '0.08rem' : '0.2rem',
+                  padding: density === 'compact' ? '0.06rem' : '0.16rem',
                   background: '#fff',
                   color: '#0f172a',
                   position: 'relative',
-                  fontSize: density === 'compact' ? '0.7rem' : '0.8rem'
+                  fontSize: density === 'compact' ? '0.64rem' : '0.74rem'
                 }}
               >
                 {day.getDate()}
