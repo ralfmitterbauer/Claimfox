@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
 import type { CalendarEvent } from '@/brokerfox/types'
@@ -29,9 +29,10 @@ type CalendarWidgetProps = {
 
 export default function CalendarWidget({ events, density = 'regular', height }: CalendarWidgetProps) {
   const { lang, t } = useI18n()
-  const activeMonth = useMemo(() => new Date(), [])
+  const [activeMonth, setActiveMonth] = useState(() => new Date())
 
   const days = useMemo(() => getMonthDays(activeMonth), [activeMonth])
+  const monthLabel = useMemo(() => new Intl.DateTimeFormat(lang, { month: 'long', year: 'numeric' }).format(activeMonth), [lang, activeMonth])
   const upcomingEvents = useMemo(() => {
     return [...events]
       .filter((event) => !Number.isNaN(new Date(event.date).getTime()))
@@ -50,8 +51,33 @@ export default function CalendarWidget({ events, density = 'regular', height }: 
       style={{ minWidth: density === 'compact' ? 260 : 300, height, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: density === 'compact' ? '0.45rem' : '0.6rem', flex: 1, minHeight: 0 }}>
-        <div style={{ color: '#d4380d', fontWeight: 700, fontSize: density === 'compact' ? '1.14rem' : '1.2rem', lineHeight: 1.1, whiteSpace: 'nowrap', textAlign: 'left', marginBottom: density === 'compact' ? '0.25rem' : '0.3rem' }}>
-          {t('brokerfox.calendar.title')}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: density === 'compact' ? '0.1rem' : '0.15rem' }}>
+          <div style={{ display: 'grid', gap: '0.1rem' }}>
+            <div style={{ color: '#d4380d', fontWeight: 700, fontSize: density === 'compact' ? '1.14rem' : '1.2rem', lineHeight: 1.1, whiteSpace: 'nowrap', textAlign: 'left' }}>
+              {t('brokerfox.calendar.title')}
+            </div>
+            <div style={{ fontSize: '0.72rem', color: '#64748b', lineHeight: 1.1, whiteSpace: 'nowrap', textAlign: 'left' }}>
+              {monthLabel}
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '0.25rem' }}>
+            <button
+              type="button"
+              onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() - 1, 1))}
+              style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.15rem 0.4rem', background: '#fff', color: '#0f172a', lineHeight: 1 }}
+              aria-label={t('brokerfox.actions.previous')}
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveMonth(new Date(activeMonth.getFullYear(), activeMonth.getMonth() + 1, 1))}
+              style={{ border: '1px solid #e2e8f0', borderRadius: 6, padding: '0.15rem 0.4rem', background: '#fff', color: '#0f172a', lineHeight: 1 }}
+              aria-label={t('brokerfox.actions.next')}
+            >
+              ›
+            </button>
+          </div>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: density === 'compact' ? '0.2rem' : '0.28rem', rowGap: density === 'compact' ? '0.28rem' : '0.34rem' }}>
           {weekdayLabels.map((label) => (
