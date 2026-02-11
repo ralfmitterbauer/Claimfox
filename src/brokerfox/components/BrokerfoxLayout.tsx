@@ -6,6 +6,7 @@ import CalendarWidget from '@/brokerfox/components/CalendarWidget'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listCalendarEvents } from '@/brokerfox/api/brokerfoxApi'
 import type { CalendarEvent } from '@/brokerfox/types'
+import HomeHeroBackground from '@/assets/images/Home1.png'
 type BrokerfoxLayoutProps = {
   title: string
   subtitle?: string
@@ -68,7 +69,11 @@ export default function BrokerfoxLayout({ title, subtitle, topLeft, children }: 
               padding: '1rem 1.1rem',
               display: 'grid',
               gap: '0.75rem',
-              background: '#fff',
+              backgroundColor: '#fff',
+              backgroundImage: `url(${HomeHeroBackground})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
               height: TOP_ROW_HEIGHT
             }}
           >
