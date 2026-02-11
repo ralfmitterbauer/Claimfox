@@ -3,6 +3,8 @@ import Header from '@/components/ui/Header'
 import Card from '@/components/ui/Card'
 import UnderwriterfoxNav from '@/underwriterfox/components/UnderwriterfoxNav'
 import { useI18n } from '@/i18n/I18nContext'
+import HomeHeroBackground from '@/assets/images/Home1.png'
+import InsurfoxLogoLight from '@/assets/logos/insurfox-logo-light.png'
 
 type UnderwriterfoxLayoutProps = {
   title: string
@@ -75,11 +77,28 @@ export default function UnderwriterfoxLayout({ title, subtitle, topLeft, rightRa
               display: 'grid',
               gap: '0.75rem',
               backgroundColor: '#fff',
-              height: TOP_ROW_HEIGHT
+              backgroundImage: `url(${HomeHeroBackground})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              height: TOP_ROW_HEIGHT,
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
-            <Header title={title} subtitle={subtitle} titleColor="#0f172a" subtitleColor="#475569" />
+            <Header title={title} subtitle={subtitle} titleColor="#d4380d" subtitleColor="#ffffff" />
             {topLeft}
+            <img
+              src={InsurfoxLogoLight}
+              alt="Insurfox"
+              style={{
+                position: 'absolute',
+                right: 14,
+                bottom: 12,
+                width: 156,
+                opacity: 0.9
+              }}
+            />
           </div>
           <div style={{ height: TOP_ROW_HEIGHT, alignSelf: 'stretch', minHeight: 0 }}>
             {railContent}
