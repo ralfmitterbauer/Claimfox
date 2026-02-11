@@ -161,6 +161,15 @@ import BrokerfoxIntegrationsPage from '@/pages/BrokerfoxIntegrationsPage'
 import BrokerfoxTasksPage from '@/pages/BrokerfoxTasksPage'
 import BrokerfoxMailboxPage from '@/pages/BrokerfoxMailboxPage'
 import BrokerfoxReportingPage from '@/pages/BrokerfoxReportingPage'
+import UnderwriterfoxDashboardPage from '@/pages/UnderwriterfoxDashboardPage'
+import UnderwriterfoxCasesPage from '@/pages/UnderwriterfoxCasesPage'
+import UnderwriterfoxCaseDetailPage from '@/pages/UnderwriterfoxCaseDetailPage'
+import UnderwriterfoxDocumentsPage from '@/pages/UnderwriterfoxDocumentsPage'
+import UnderwriterfoxRulesPage from '@/pages/UnderwriterfoxRulesPage'
+import UnderwriterfoxRatingPage from '@/pages/UnderwriterfoxRatingPage'
+import UnderwriterfoxAiPage from '@/pages/UnderwriterfoxAiPage'
+import UnderwriterfoxReportingPage from '@/pages/UnderwriterfoxReportingPage'
+import UnderwriterfoxGovernancePage from '@/pages/UnderwriterfoxGovernancePage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -270,6 +279,15 @@ export default function AppRouter() {
         <Route path="/brokerfox/reporting" element={<BrokerfoxReportingPage />} />
         <Route path="/brokerfox/integrations" element={<BrokerfoxIntegrationsPage />} />
         <Route path="/brokerfox/tasks" element={<BrokerfoxTasksPage />} />
+        <Route path="/underwriterfox" element={<UnderwriterfoxDashboardPage />} />
+        <Route path="/underwriterfox/cases" element={<UnderwriterfoxCasesPage />} />
+        <Route path="/underwriterfox/cases/:caseId" element={<UnderwriterfoxCaseDetailPage />} />
+        <Route path="/underwriterfox/documents" element={<UnderwriterfoxDocumentsPage />} />
+        <Route path="/underwriterfox/rules" element={<UnderwriterfoxRulesPage />} />
+        <Route path="/underwriterfox/rating" element={<UnderwriterfoxRatingPage />} />
+        <Route path="/underwriterfox/ai" element={<UnderwriterfoxAiPage />} />
+        <Route path="/underwriterfox/reporting" element={<UnderwriterfoxReportingPage />} />
+        <Route path="/underwriterfox/governance" element={<UnderwriterfoxGovernancePage />} />
         <Route path="/fleet-reporting" element={<FleetReportingPage />} />
         <Route path="/fleet-management" element={<FleetManagementPage />} />
         <Route path="/claim-manager" element={<ClaimManagerMarketingPage />} />

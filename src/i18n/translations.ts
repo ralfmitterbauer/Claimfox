@@ -16,10 +16,236 @@ type TranslationTree = {
     nav: {
       insurance: string
       broker: string
-      logistics: string
-      fleet: string
+      claimsfox: string
+      aiFox: string
       partner: string
       demo: string
+    }
+  }
+  underwriterfox: {
+    nav: {
+      title: string
+      dashboard: string
+      cases: string
+      documents: string
+      rules: string
+      rating: string
+      ai: string
+      reporting: string
+      governance: string
+    }
+    status: {
+      intake: string
+      screening: string
+      manualReview: string
+      offer: string
+      bound: string
+      declined: string
+    }
+    deadlines: {
+      title: string
+      subtitle: string
+      modalTitle: string
+      modalClose: string
+      items: {
+        review: string
+        pricing: string
+        cyber: string
+        brokerCall: string
+        qa: string
+      }
+      caseItems: {
+        committee: {
+          title: string
+          detail: string
+        }
+        broker: {
+          title: string
+          detail: string
+        }
+        pricing: {
+          title: string
+          detail: string
+        }
+        qa: {
+          title: string
+          detail: string
+        }
+        decision: {
+          title: string
+          detail: string
+        }
+      }
+    }
+    timeline: {
+      title: string
+      subtitle: string
+      empty: string
+      type: {
+        statusUpdate: string
+        internalNote: string
+        externalMessage: string
+        system: string
+      }
+    }
+    documents: {
+      title: string
+      subtitle: string
+      empty: string
+      statusLabel: string
+      status: {
+        extracted: string
+        needsReview: string
+        approved: string
+      }
+      view: string
+    }
+    ai: {
+      title: string
+      subtitle: string
+      recommendation: string
+      confidence: string
+      empty: string
+      generate: string
+      decision: {
+        approve: string
+        decline: string
+        refer: string
+      }
+    }
+    common: {
+      all: string
+    }
+    labels: {
+      broker: string
+      segment: string
+      premium: string
+      status: string
+      inception: string
+      riskScore: string
+    }
+    actions: {
+      setOffer: string
+      bind: string
+      decline: string
+    }
+    messages: {
+      offerPrepared: string
+      boundAfterReview: string
+      declinedInCommittee: string
+    }
+    state: {
+      notFound: string
+    }
+    rating: {
+      title: string
+      subtitle: string
+      revenue: string
+      lossRatio: string
+      fleetSize: string
+      recalculate: string
+      version: string
+      techPremium: string
+      indicatedRate: string
+    }
+    rules: {
+      title: string
+      subtitle: string
+      outcome: {
+        pass: string
+        warn: string
+        fail: string
+      }
+      severity: {
+        low: string
+        medium: string
+        high: string
+      }
+      saveVersion: string
+    }
+    dashboard: {
+      title: string
+      subtitle: string
+      needsReview: string
+      needsReviewEmpty: string
+    }
+    cases: {
+      title: string
+      subtitle: string
+      filterStatus: string
+      filterProduct: string
+      filterAllStatus: string
+      filterAllProduct: string
+      searchPlaceholder: string
+      empty: string
+      table: {
+        caseNumber: string
+        insured: string
+        productLine: string
+        status: string
+        premium: string
+      }
+    }
+    caseDetail: {
+      title: string
+      subtitle: string
+      overview: string
+      tabs: {
+        overview: string
+        documents: string
+        timeline: string
+        decision: string
+      }
+      decision: {
+        label: string
+        none: string
+      }
+    }
+    documentsPage: {
+      title: string
+      subtitle: string
+      filterStatus: string
+      filterCase: string
+      searchPlaceholder: string
+      empty: string
+      modalTitle: string
+      modalClose: string
+    }
+    rulesPage: {
+      title: string
+      subtitle: string
+      editorTitle: string
+      editorSubtitle: string
+    }
+    ratingPage: {
+      title: string
+      subtitle: string
+    }
+    aiPage: {
+      title: string
+      subtitle: string
+    }
+    reporting: {
+      title: string
+      subtitle: string
+      riskDistribution: string
+      cycleTime: string
+      decisions: string
+      cycleBuckets: {
+        lt7: string
+        d7_14: string
+        d15_30: string
+        d30plus: string
+      }
+    }
+    governance: {
+      title: string
+      subtitle: string
+      export: string
+      decisionTrace: string
+      selectCase: string
+      exportedTitle: string
+      exportedMessage: string
     }
   }
   brokerfox: {
@@ -4041,7 +4267,233 @@ export const translations: Record<Lang, TranslationTree> = {
         audit: 'Audit-Termin mit Atlas Maklerwerk vereinbaren',
         training: 'Digitales Training für neues Partner-Team planen'
       }
-    }
+    },
+    underwriterfox: {
+      nav: {
+        title: 'Underwriterfox',
+        dashboard: 'Dashboard',
+        cases: 'Fälle',
+        documents: 'Dokumente',
+        rules: 'Regeln',
+        rating: 'Rating',
+        ai: 'KI',
+        reporting: 'Reporting',
+        governance: 'Governance'
+      },
+      status: {
+        intake: 'Intake',
+        screening: 'Screening',
+        manualReview: 'Manuelle Prüfung',
+        offer: 'Angebot',
+        bound: 'Gebunden',
+        declined: 'Abgelehnt'
+      },
+      deadlines: {
+        title: 'Fristen',
+        subtitle: 'Nächste Meilensteine',
+        modalTitle: 'Fristdetails',
+        modalClose: 'Schließen',
+        items: {
+          review: 'Portfolio-Review vorbereiten',
+          pricing: 'Pricing-Freigabe',
+          cyber: 'Cyber-Checkliste',
+          brokerCall: 'Broker-Rückfrage',
+          qa: 'Offer-Qualitätssicherung'
+        },
+        caseItems: {
+          committee: {
+            title: 'Portfolio-Committee Vorbereitung',
+            detail: 'Risiko- und Loss-Run-Übersicht bereitstellen.'
+          },
+          broker: {
+            title: 'Broker-Rückfrage',
+            detail: 'Exposure-Aufteilung und Loss Controls bestätigen.'
+          },
+          pricing: {
+            title: 'Pricing-Abgleich',
+            detail: 'Technische Prämie vs. Zielpreis prüfen.'
+          },
+          qa: {
+            title: 'Offer-Qualitätssicherung',
+            detail: 'Wording und Endorsements validieren.'
+          },
+          decision: {
+            title: 'Entscheidungsfrist',
+            detail: 'Finale Entscheidung treffen und Angebot versenden.'
+          }
+        }
+      },
+      timeline: {
+        title: 'Aktivitäten',
+        subtitle: 'Audit- und Workflow-Historie',
+        empty: 'Keine Timeline-Einträge.',
+        type: {
+          statusUpdate: 'Status',
+          internalNote: 'Interne Notiz',
+          externalMessage: 'Externe Nachricht',
+          system: 'System'
+        }
+      },
+      documents: {
+        title: 'Dokumente',
+        subtitle: 'Extrahierte Unterlagen',
+        empty: 'Keine Dokumente verfügbar.',
+        statusLabel: 'Status',
+        status: {
+          extracted: 'Extrahiert',
+          needsReview: 'Prüfen',
+          approved: 'Freigegeben'
+        },
+        view: 'Öffnen'
+      },
+      ai: {
+        title: 'AI-Empfehlung',
+        subtitle: 'Assistierende Empfehlung',
+        recommendation: 'Empfehlung',
+        confidence: 'Sicherheit',
+        empty: 'Noch keine Empfehlung.',
+        generate: 'Empfehlung erzeugen',
+        decision: {
+          approve: 'Freigeben',
+          decline: 'Ablehnen',
+          refer: 'Prüfen'
+        }
+      },
+      common: {
+        all: 'Alle'
+      },
+      labels: {
+        broker: 'Broker',
+        segment: 'Segment',
+        premium: 'Prämie',
+        status: 'Status',
+        inception: 'Beginn',
+        riskScore: 'Risiko-Score'
+      },
+      actions: {
+        setOffer: 'Angebot setzen',
+        bind: 'Binden',
+        decline: 'Ablehnen'
+      },
+      messages: {
+        offerPrepared: 'Angebot vorbereitet',
+        boundAfterReview: 'Nach Prüfung gebunden',
+        declinedInCommittee: 'Im Committee abgelehnt'
+      },
+      state: {
+        notFound: 'Fall nicht gefunden.'
+      },
+      rating: {
+        title: 'Rating',
+        subtitle: 'Pricing-Inputs',
+        revenue: 'Umsatz',
+        lossRatio: 'Schadenquote',
+        fleetSize: 'Flottengröße',
+        recalculate: 'Neu berechnen',
+        version: 'Version',
+        techPremium: 'Technische Prämie',
+        indicatedRate: 'Indizierter Satz'
+      },
+      rules: {
+        title: 'Regelprüfung',
+        subtitle: 'Regelwerk-Ergebnisse',
+        outcome: {
+          pass: 'Bestanden',
+          warn: 'Warnung',
+          fail: 'Fehlgeschlagen'
+        },
+        severity: {
+          low: 'Niedrig',
+          medium: 'Mittel',
+          high: 'Hoch'
+        },
+        saveVersion: 'Version speichern'
+      },
+      dashboard: {
+        title: 'Underwriterfox Workbench',
+        subtitle: 'Underwriting-Workflows, Risikoanalyse und Entscheidungen.',
+        needsReview: 'Fälle mit Prüfbedarf',
+        needsReviewEmpty: 'Keine Fälle in Prüfung.'
+      },
+      cases: {
+        title: 'Fälle',
+        subtitle: 'Portfolio & Statusübersicht',
+        filterStatus: 'Status',
+        filterProduct: 'Produktlinie',
+        filterAllStatus: 'Alle Status',
+        filterAllProduct: 'Alle Produktlinien',
+        searchPlaceholder: 'Suche nach Fall, Broker oder Versicherungsnehmer',
+        empty: 'Keine Fälle gefunden.',
+        table: {
+          caseNumber: 'Fall',
+          insured: 'Versicherungsnehmer',
+          productLine: 'Produktlinie',
+          status: 'Status',
+          premium: 'Prämie'
+        }
+      },
+      caseDetail: {
+        title: 'Fall',
+        subtitle: 'Detailansicht',
+        overview: 'Übersicht',
+        tabs: {
+          overview: 'Übersicht',
+          documents: 'Dokumente',
+          timeline: 'Timeline',
+          decision: 'Entscheidung'
+        },
+        decision: {
+          label: 'Entscheidung',
+          none: 'Keine Entscheidung gesetzt.'
+        }
+      },
+      documentsPage: {
+        title: 'Dokumente',
+        subtitle: 'Alle Dokumente im Portfolio',
+        filterStatus: 'Status',
+        filterCase: 'Fall',
+        searchPlaceholder: 'Suche Dokumente',
+        empty: 'Keine Dokumente gefunden.',
+        modalTitle: 'Dokumentdetails',
+        modalClose: 'Schließen'
+      },
+      rulesPage: {
+        title: 'Regeln',
+        subtitle: 'Regelsätze & Versionierung',
+        editorTitle: 'Regel-Editor (Read-only)',
+        editorSubtitle: 'Änderungen werden als neue Version gespeichert.'
+      },
+      ratingPage: {
+        title: 'Rating',
+        subtitle: 'Kalkulation & Szenarien'
+      },
+      aiPage: {
+        title: 'AI',
+        subtitle: 'Empfehlungen & Zusammenfassungen'
+      },
+      reporting: {
+        title: 'Reporting',
+        subtitle: 'Portfolio-Analysen',
+        riskDistribution: 'Risiko-Verteilung',
+        cycleTime: 'Durchlaufzeit',
+        decisions: 'Entscheidungen',
+        cycleBuckets: {
+          lt7: '<7T',
+          d7_14: '7-14T',
+          d15_30: '15-30T',
+          d30plus: '30T+'
+        }
+      },
+      governance: {
+        title: 'Governance',
+        subtitle: 'Audit & Nachvollziehbarkeit',
+        export: 'Audit-Export',
+        decisionTrace: 'Decision Trace',
+        selectCase: 'Fall auswählen',
+        exportedTitle: 'Audit-Export erzeugt',
+        exportedMessage: 'Governance-Export für die Prüfung erstellt.'
+      }
+    },
   },
   en: {
     login: {
@@ -6619,6 +7071,232 @@ export const translations: Record<Lang, TranslationTree> = {
         audit: 'Schedule audit with Atlas Brokerage',
         training: 'Plan digital training for new partner team'
       }
+    }
+  },
+  underwriterfox: {
+    nav: {
+      title: 'Underwriterfox',
+      dashboard: 'Dashboard',
+      cases: 'Cases',
+      documents: 'Documents',
+      rules: 'Rules',
+      rating: 'Rating',
+      ai: 'AI',
+      reporting: 'Reporting',
+      governance: 'Governance'
+    },
+    status: {
+      intake: 'Intake',
+      screening: 'Screening',
+      manualReview: 'Manual review',
+      offer: 'Offer',
+      bound: 'Bound',
+      declined: 'Declined'
+    },
+    deadlines: {
+      title: 'Deadlines',
+      subtitle: 'Upcoming milestones',
+      modalTitle: 'Deadline details',
+      modalClose: 'Close',
+      items: {
+        review: 'Portfolio review prep',
+        pricing: 'Pricing sign-off',
+        cyber: 'Cyber checklist',
+        brokerCall: 'Broker clarification call',
+        qa: 'Offer QA'
+      },
+      caseItems: {
+        committee: {
+          title: 'Portfolio committee prep',
+          detail: 'Compile risk summary and loss runs.'
+        },
+        broker: {
+          title: 'Broker clarification call',
+          detail: 'Confirm exposure split and loss controls.'
+        },
+        pricing: {
+          title: 'Pricing alignment',
+          detail: 'Review technical premium vs. target.'
+        },
+        qa: {
+          title: 'Offer doc QA',
+          detail: 'Validate endorsements and wording.'
+        },
+        decision: {
+          title: 'Decision deadline',
+          detail: 'Final decision and send offer.'
+        }
+      }
+    },
+    timeline: {
+      title: 'Activity',
+      subtitle: 'Audit-ready workflow history',
+      empty: 'No timeline entries yet.',
+      type: {
+        statusUpdate: 'Status',
+        internalNote: 'Internal note',
+        externalMessage: 'External message',
+        system: 'System'
+      }
+    },
+    documents: {
+      title: 'Documents',
+      subtitle: 'Extracted submission files',
+      empty: 'No documents available.',
+      statusLabel: 'Status',
+      status: {
+        extracted: 'Extracted',
+        needsReview: 'Needs review',
+        approved: 'Approved'
+      },
+      view: 'View'
+    },
+    ai: {
+      title: 'AI recommendation',
+      subtitle: 'Assistive recommendation',
+      recommendation: 'Recommendation',
+      confidence: 'Confidence',
+      empty: 'No recommendation yet.',
+      generate: 'Generate recommendation',
+      decision: {
+        approve: 'Approve',
+        decline: 'Decline',
+        refer: 'Refer'
+      }
+    },
+    common: {
+      all: 'All'
+    },
+    labels: {
+      broker: 'Broker',
+      segment: 'Segment',
+      premium: 'Premium',
+      status: 'Status',
+      inception: 'Inception',
+      riskScore: 'Risk score'
+    },
+    actions: {
+      setOffer: 'Set offer',
+      bind: 'Bind',
+      decline: 'Decline'
+    },
+    messages: {
+      offerPrepared: 'Offer prepared',
+      boundAfterReview: 'Bound after review',
+      declinedInCommittee: 'Declined in committee'
+    },
+    state: {
+      notFound: 'Case not found.'
+    },
+    rating: {
+      title: 'Rating',
+      subtitle: 'Pricing inputs',
+      revenue: 'Revenue',
+      lossRatio: 'Loss ratio',
+      fleetSize: 'Fleet size',
+      recalculate: 'Recalculate',
+      version: 'Version',
+      techPremium: 'Technical premium',
+      indicatedRate: 'Indicated rate'
+    },
+    rules: {
+      title: 'Rule checks',
+      subtitle: 'Ruleset findings',
+      outcome: {
+        pass: 'Pass',
+        warn: 'Warning',
+        fail: 'Fail'
+      },
+      severity: {
+        low: 'Low',
+        medium: 'Medium',
+        high: 'High'
+      },
+      saveVersion: 'Save version'
+    },
+    dashboard: {
+      title: 'Underwriterfox Workbench',
+      subtitle: 'Underwriting workflows, risk analysis, and decisions.',
+      needsReview: 'Cases needing review',
+      needsReviewEmpty: 'No cases in review.'
+    },
+    cases: {
+      title: 'Cases',
+      subtitle: 'Portfolio & status overview',
+      filterStatus: 'Status',
+      filterProduct: 'Product line',
+      filterAllStatus: 'All statuses',
+      filterAllProduct: 'All product lines',
+      searchPlaceholder: 'Search case, broker, or insured',
+      empty: 'No cases found.',
+      table: {
+        caseNumber: 'Case',
+        insured: 'Insured',
+        productLine: 'Product line',
+        status: 'Status',
+        premium: 'Premium'
+      }
+    },
+    caseDetail: {
+      title: 'Case',
+      subtitle: 'Detail view',
+      overview: 'Overview',
+      tabs: {
+        overview: 'Overview',
+        documents: 'Documents',
+        timeline: 'Timeline',
+        decision: 'Decision'
+      },
+      decision: {
+        label: 'Decision',
+        none: 'No decision set.'
+      }
+    },
+    documentsPage: {
+      title: 'Documents',
+      subtitle: 'All documents in the portfolio',
+      filterStatus: 'Status',
+      filterCase: 'Case',
+      searchPlaceholder: 'Search documents',
+      empty: 'No documents found.',
+      modalTitle: 'Document details',
+      modalClose: 'Close'
+    },
+    rulesPage: {
+      title: 'Rules',
+      subtitle: 'Rulesets & versioning',
+      editorTitle: 'Rules editor (read-only)',
+      editorSubtitle: 'Changes are saved as a new version.'
+    },
+    ratingPage: {
+      title: 'Rating',
+      subtitle: 'Calculation & scenarios'
+    },
+    aiPage: {
+      title: 'AI',
+      subtitle: 'Recommendations & summaries'
+    },
+    reporting: {
+      title: 'Reporting',
+      subtitle: 'Portfolio analytics',
+      riskDistribution: 'Risk distribution',
+      cycleTime: 'Cycle time',
+      decisions: 'Decisions',
+      cycleBuckets: {
+        lt7: '<7d',
+        d7_14: '7-14d',
+        d15_30: '15-30d',
+        d30plus: '30d+'
+      }
+    },
+    governance: {
+      title: 'Governance',
+      subtitle: 'Audit & traceability',
+      export: 'Export audit',
+      decisionTrace: 'Decision trace',
+      selectCase: 'Select case',
+      exportedTitle: 'Audit export generated',
+      exportedMessage: 'Governance export generated for audit review.'
     }
   }
 }
