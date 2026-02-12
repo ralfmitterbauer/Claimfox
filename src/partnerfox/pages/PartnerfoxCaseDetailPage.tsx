@@ -23,16 +23,29 @@ function getPartnerName(list: Partner[], partnerId?: string) {
   return list.find((item) => item.id === partnerId)?.name ?? '-'
 }
 
-function downloadCaseDoc(item: PartnerCase) {
+function downloadCaseDoc(
+  item: PartnerCase,
+  labels: {
+    caseLabel: string
+    vehicleLabel: string
+    damageSummaryLabel: string
+    estimatedCostLabel: string
+    repairDurationLabel: string
+    aiApprovedLabel: string
+    yesLabel: string
+    noLabel: string
+    footer: string
+  }
+) {
   const content = [
-    `Case: ${item.claimNumber}`,
-    `Vehicle: ${item.vehiclePlate}`,
-    `Damage summary: ${item.damageSummary}`,
-    `Estimated cost: EUR ${item.estimatedCost.toLocaleString()}`,
-    `Repair duration: ${item.repairDurationDays} days`,
-    `AI approved: ${item.aiApproved ? 'yes' : 'no'}`,
+    `${labels.caseLabel}: ${item.claimNumber}`,
+    `${labels.vehicleLabel}: ${item.vehiclePlate}`,
+    `${labels.damageSummaryLabel}: ${item.damageSummary}`,
+    `${labels.estimatedCostLabel}: EUR ${item.estimatedCost.toLocaleString()}`,
+    `${labels.repairDurationLabel}: ${item.repairDurationDays} days`,
+    `${labels.aiApprovedLabel}: ${item.aiApproved ? labels.yesLabel : labels.noLabel}`,
     '',
-    'This is a generated demo document from Partnerfox.'
+    labels.footer
   ].join('\n')
   const blob = new Blob([content], { type: 'text/plain' })
   const url = URL.createObjectURL(blob)
@@ -52,6 +65,17 @@ export default function PartnerfoxCaseDetailPage() {
   const [item, setItem] = useState<PartnerCase | null>(null)
   const [partners, setPartners] = useState<Partner[]>([])
   const [timeline, setTimeline] = useState<TimelineEvent[]>([])
+  const downloadLabels = {
+    caseLabel: t('partnerfox.caseDetail.doc.caseLabel'),
+    vehicleLabel: t('partnerfox.caseDetail.doc.vehicleLabel'),
+    damageSummaryLabel: t('partnerfox.caseDetail.doc.damageSummaryLabel'),
+    estimatedCostLabel: t('partnerfox.caseDetail.doc.estimatedCostLabel'),
+    repairDurationLabel: t('partnerfox.caseDetail.doc.repairDurationLabel'),
+    aiApprovedLabel: t('partnerfox.caseDetail.doc.aiApprovedLabel'),
+    yesLabel: t('partnerfox.caseDetail.doc.yes'),
+    noLabel: t('partnerfox.caseDetail.doc.no'),
+    footer: t('partnerfox.caseDetail.doc.footer')
+  }
 
   useEffect(() => {
     let mounted = true
@@ -107,8 +131,8 @@ export default function PartnerfoxCaseDetailPage() {
       entityType: 'case',
       entityId: caseId,
       type: 'note',
-      title: 'FNOL routing note',
-      message: 'FNOL package reviewed and routed to workshop with rental fallback.',
+      title: t('partnerfox.caseDetail.timelineNoteTitle'),
+      message: t('partnerfox.caseDetail.timelineNoteMessage'),
       meta: { actor: ctx.userId }
     })
     await refresh()
@@ -145,7 +169,7 @@ export default function PartnerfoxCaseDetailPage() {
         <AIRepairCheckCard item={item} onApprove={onEnableDirectBilling} />
 
         <Card title={t('partnerfox.caseDetail.documentsTitle')}>
-          <Button size="sm" onClick={() => downloadCaseDoc(item)}>Download Demo Case File</Button>
+          <Button size="sm" onClick={() => downloadCaseDoc(item, downloadLabels)}>{t('partnerfox.caseDetail.downloadDocument')}</Button>
         </Card>
 
         <Card title={t('partnerfox.caseDetail.timelineTitle')}>

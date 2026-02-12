@@ -797,6 +797,20 @@ type TranslationTree = {
       trackingLink: string
       documentsTitle: string
       timelineTitle: string
+      downloadDocument: string
+      timelineNoteTitle: string
+      timelineNoteMessage: string
+      doc: {
+        caseLabel: string
+        vehicleLabel: string
+        damageSummaryLabel: string
+        estimatedCostLabel: string
+        repairDurationLabel: string
+        aiApprovedLabel: string
+        yes: string
+        no: string
+        footer: string
+      }
     }
     rental: {
       title: string
@@ -5443,7 +5457,21 @@ export const translations: Record<Lang, TranslationTree> = {
         repairDuration: 'Reparaturdauer (Tage)',
         trackingLink: 'Kunden-Tracking',
         documentsTitle: 'Demo-Dokumente',
-        timelineTitle: 'Fall-Timeline'
+        timelineTitle: 'Fall-Timeline',
+        downloadDocument: 'Demo-Falldatei herunterladen',
+        timelineNoteTitle: 'FNOL Routing-Notiz',
+        timelineNoteMessage: 'FNOL-Paket geprüft und mit Mietwagen-Fallback an Werkstatt übergeben.',
+        doc: {
+          caseLabel: 'Fall',
+          vehicleLabel: 'Fahrzeug',
+          damageSummaryLabel: 'Schadenbeschreibung',
+          estimatedCostLabel: 'Kostenschätzung',
+          repairDurationLabel: 'Reparaturdauer',
+          aiApprovedLabel: 'AI freigegeben',
+          yes: 'ja',
+          no: 'nein',
+          footer: 'Dies ist ein generiertes Partnerfox-Demodokument.'
+        }
       },
       rental: {
         title: 'Mietkoordination',
@@ -8151,7 +8179,21 @@ export const translations: Record<Lang, TranslationTree> = {
         repairDuration: 'Repair duration (days)',
         trackingLink: 'Customer tracking link',
         documentsTitle: 'Demo documents',
-        timelineTitle: 'Case timeline'
+        timelineTitle: 'Case timeline',
+        downloadDocument: 'Download demo case file',
+        timelineNoteTitle: 'FNOL routing note',
+        timelineNoteMessage: 'FNOL package reviewed and routed to workshop with rental fallback.',
+        doc: {
+          caseLabel: 'Case',
+          vehicleLabel: 'Vehicle',
+          damageSummaryLabel: 'Damage summary',
+          estimatedCostLabel: 'Estimated cost',
+          repairDurationLabel: 'Repair duration',
+          aiApprovedLabel: 'AI approved',
+          yes: 'yes',
+          no: 'no',
+          footer: 'This is a generated demo document from Partnerfox.'
+        }
       },
       rental: {
         title: 'Rental Coordination',
