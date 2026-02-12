@@ -9336,9 +9336,8 @@ export const translations: Record<Lang, TranslationTree> = {
         audit: 'Schedule audit with Atlas Brokerage',
         training: 'Plan digital training for new partner team'
       }
-    }
-  },
-  underwriterfox: {
+    },
+    underwriterfox: {
     nav: {
       title: 'Underwriterfox',
       dashboard: 'Dashboard',
@@ -9563,5 +9562,6 @@ export const translations: Record<Lang, TranslationTree> = {
       exportedTitle: 'Audit export generated',
       exportedMessage: 'Governance export generated for audit review.'
     }
+  }
   }
 }
