@@ -3933,7 +3933,15 @@ button[style*="background:#ffffff"],
 button[style*="background-color: #fff"],
 button[style*="background-color:#fff"],
 button[style*="background-color: #ffffff"],
-button[style*="background-color:#ffffff"] {
+button[style*="background-color:#ffffff"],
+button[style*="background: rgb(255, 255, 255)"],
+button[style*="background:rgb(255, 255, 255)"],
+button[style*="background: rgb(255,255,255)"],
+button[style*="background:rgb(255,255,255)"],
+button[style*="background-color: rgb(255, 255, 255)"],
+button[style*="background-color:rgb(255, 255, 255)"],
+button[style*="background-color: rgb(255,255,255)"],
+button[style*="background-color:rgb(255,255,255)"] {
   color: #0f172a !important;
 }
 
