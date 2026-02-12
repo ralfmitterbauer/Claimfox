@@ -5636,7 +5636,11 @@ export const translations: Record<Lang, TranslationTree> = {
         explainability: 'Modell erkannte Stoßfänger-Deformation mit 87% Konfidenz basierend auf visuellen Feature-Clustern.',
         approve: 'Freigeben',
         override: 'Übersteuern',
-        decisionSaved: 'Entscheidung gespeichert:'
+        decisionSaved: 'Entscheidung gespeichert:',
+        events: {
+          decisionTitle: 'Vision-AI-Entscheidung',
+          decisionMessage: '{{action}} für {{claimNumber}} wurde protokolliert.'
+        }
       },
       fraud: {
         title: 'Fraud Detection',
@@ -8371,7 +8375,11 @@ export const translations: Record<Lang, TranslationTree> = {
         explainability: 'Model detected bumper deformation with 87% confidence based on visual feature cluster.',
         approve: 'Approve',
         override: 'Override',
-        decisionSaved: 'Decision saved:'
+        decisionSaved: 'Decision saved:',
+        events: {
+          decisionTitle: 'Vision AI decision',
+          decisionMessage: '{{action}} recorded for {{claimNumber}}.'
+        }
       },
       fraud: {
         title: 'Fraud Detection',

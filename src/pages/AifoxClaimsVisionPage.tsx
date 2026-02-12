@@ -41,8 +41,8 @@ export default function AifoxClaimsVisionPage() {
       entityType: 'claim',
       entityId: selected.id,
       type: 'statusUpdate',
-      title: 'Vision AI decision',
-      message: `${actionLabel} decision recorded for ${selected.claimNumber}.`,
+      title: t('aifox.claimsVision.events.decisionTitle'),
+      message: t('aifox.claimsVision.events.decisionMessage', { action: actionLabel, claimNumber: selected.claimNumber }),
       actor: ctx.userId
     })
   }
