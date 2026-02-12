@@ -354,6 +354,12 @@ type TranslationTree = {
         deny: string
         addNote: string
       }
+      events: {
+        noteTitle: string
+        noteMessage: string
+        partnerAssignedTitle: string
+        partnerAssignedMessage: string
+      }
     }
     documents: {
       title: string
@@ -5020,6 +5026,12 @@ export const translations: Record<Lang, TranslationTree> = {
           investigation: 'In Prüfung',
           deny: 'Ablehnen',
           addNote: 'Notiz hinzufügen'
+        },
+        events: {
+          noteTitle: 'Entscheidungsnotiz',
+          noteMessage: 'Regulierungsoptionen geprüft und nächste Schritte abgestimmt.',
+          partnerAssignedTitle: 'Partnerzuweisung',
+          partnerAssignedMessage: 'Partner {{partner}} für diesen Schaden angefragt.'
         }
       },
       documents: {
@@ -7748,6 +7760,12 @@ export const translations: Record<Lang, TranslationTree> = {
           investigation: 'Move to investigation',
           deny: 'Deny claim',
           addNote: 'Add note'
+        },
+        events: {
+          noteTitle: 'Decision note',
+          noteMessage: 'Reviewed settlement options and aligned on next steps.',
+          partnerAssignedTitle: 'Partner assignment',
+          partnerAssignedMessage: 'Partner {{partner}} requested for this claim.'
         }
       },
       documents: {

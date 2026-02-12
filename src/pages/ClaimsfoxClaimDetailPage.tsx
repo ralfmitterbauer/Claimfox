@@ -78,8 +78,8 @@ export default function ClaimsfoxClaimDetailPage() {
       entityType: 'claim',
       entityId: claimId,
       type: 'internalNote',
-      title: 'Decision note',
-      message: 'Reviewed settlement options and aligned on next steps.',
+      title: t('claimsfox.claimDetail.events.noteTitle'),
+      message: t('claimsfox.claimDetail.events.noteMessage'),
       actor: ctx.userId
     })
     const events = await listTimelineEvents(ctx, 'claim', claimId)
@@ -88,13 +88,14 @@ export default function ClaimsfoxClaimDetailPage() {
 
   async function assignPartner() {
     if (!claimId || !selectedPartner) return
+    const partnerName = partners.find((partner) => partner.id === selectedPartner)?.name ?? selectedPartner
     await requestPartner(ctx, claimId, selectedPartner, 'Assigned from claim detail view.')
     await addTimelineEvent(ctx, {
       entityType: 'claim',
       entityId: claimId,
       type: 'internalNote',
-      title: 'Partner assignment',
-      message: `Partner ${selectedPartner} requested for this claim.`,
+      title: t('claimsfox.claimDetail.events.partnerAssignedTitle'),
+      message: t('claimsfox.claimDetail.events.partnerAssignedMessage', { partner: partnerName }),
       actor: ctx.userId
     })
   }
