@@ -9,7 +9,7 @@ import type { AifoxClaim } from '@/aifox/types'
 import ClaimDamageImage from '@/assets/images/claim_damage_1.png'
 
 export default function AifoxClaimsVisionPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [claims, setClaims] = useState<AifoxClaim[]>([])
   const [selected, setSelected] = useState<AifoxClaim | null>(null)
@@ -28,18 +28,21 @@ export default function AifoxClaimsVisionPage() {
   }, [ctx])
 
   const parts = useMemo(() => (
-    ['Front bumper', 'Left headlight', 'Hood panel', 'Radiator grille']
-  ), [])
+    lang === 'de'
+      ? ['Frontstoßfänger', 'Scheinwerfer links', 'Motorhaube', 'Kühlergrill']
+      : ['Front bumper', 'Left headlight', 'Hood panel', 'Radiator grille']
+  ), [lang])
 
-  async function submitDecision(action: string) {
+  async function submitDecision(action: 'approve' | 'override') {
     if (!selected) return
-    setDecision(action)
+    const actionLabel = action === 'approve' ? t('aifox.claimsVision.approve') : t('aifox.claimsVision.override')
+    setDecision(actionLabel)
     await addTimelineEvent(ctx, {
       entityType: 'claim',
       entityId: selected.id,
       type: 'statusUpdate',
       title: 'Vision AI decision',
-      message: `${action} decision recorded for ${selected.claimNumber}.`,
+      message: `${actionLabel} decision recorded for ${selected.claimNumber}.`,
       actor: ctx.userId
     })
   }
@@ -89,15 +92,15 @@ export default function AifoxClaimsVisionPage() {
             </label>
             <div style={{ display: 'grid', gap: '0.35rem', fontSize: '0.9rem' }}>
               <div><strong>{t('aifox.claimsVision.estimate')}:</strong> € 4,850</div>
-              <div><strong>{t('aifox.claimsVision.severity')}:</strong> Medium</div>
+              <div><strong>{t('aifox.claimsVision.severity')}:</strong> {lang === 'de' ? 'Mittel' : 'Medium'}</div>
               <div><strong>{t('aifox.claimsVision.confidence')}:</strong> 0.87</div>
             </div>
             <div style={{ background: '#f8fafc', borderRadius: 10, padding: '0.75rem', color: '#475569' }}>
               {t('aifox.claimsVision.explainability')}
             </div>
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <Button size="sm" onClick={() => submitDecision('Approve')}>{t('aifox.claimsVision.approve')}</Button>
-              <Button size="sm" variant="secondary" onClick={() => submitDecision('Override')}>{t('aifox.claimsVision.override')}</Button>
+              <Button size="sm" onClick={() => submitDecision('approve')}>{t('aifox.claimsVision.approve')}</Button>
+              <Button size="sm" variant="secondary" onClick={() => submitDecision('override')}>{t('aifox.claimsVision.override')}</Button>
             </div>
             {decision ? (
               <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('aifox.claimsVision.decisionSaved')} {decision}</div>
