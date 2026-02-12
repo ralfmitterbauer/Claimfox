@@ -30,7 +30,7 @@ export default function AifoxChatbotPage() {
   }, [ctx])
 
   useEffect(() => {
-    setChatMessages(selected?.messages ?? [])
+    setChatMessages([])
     setDraft('')
     setIsTyping(false)
   }, [selected])

@@ -28,7 +28,6 @@ export default function UnderwriterfoxCaseDetailPage() {
   const [documents, setDocuments] = useState<CaseDocument[]>([])
   const [events, setEvents] = useState<TimelineEvent[]>([])
   const [activeTab, setActiveTab] = useState<'overview' | 'documents' | 'timeline' | 'decision'>('overview')
-  const [selectedDeadline, setSelectedDeadline] = useState<typeof deadlineItems[number] | null>(null)
   const dateLocale = lang === 'de' ? 'de-DE' : 'en-US'
   const formatDue = (isoDate: string) => new Date(isoDate).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short' })
 
@@ -83,16 +82,11 @@ export default function UnderwriterfoxCaseDetailPage() {
           <Card variant="glass" title={t('underwriterfox.deadlines.title')} subtitle={t('underwriterfox.deadlines.subtitle')} style={{ height: 280 }}>
             <div style={{ display: 'grid', gap: '0.45rem' }}>
             {deadlineItems.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => setSelectedDeadline(item)}
-                style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.5rem', border: 'none', background: 'transparent', textAlign: 'left', color: '#0f172a', minWidth: 0 }}
-              >
+              <div key={item.id} style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '0.5rem', fontSize: '0.82rem', minWidth: 0 }}>
                 <span
                   style={{
+                    color: '#0f172a',
                     fontWeight: 600,
-                    fontSize: '0.82rem',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
                     whiteSpace: 'nowrap',
@@ -104,7 +98,7 @@ export default function UnderwriterfoxCaseDetailPage() {
                   {t(`underwriterfox.deadlines.caseItems.${item.key}.title`)}
                 </span>
                 <span style={{ color: '#64748b', whiteSpace: 'nowrap', flexShrink: 0, fontSize: '0.82rem' }}>{formatDue(item.dueAt)}</span>
-              </button>
+              </div>
             ))}
             </div>
           </Card>
@@ -155,33 +149,6 @@ export default function UnderwriterfoxCaseDetailPage() {
           </div>
         </Card>
       </UnderwriterfoxLayout>
-
-      {selectedDeadline ? (
-        <div
-          role="dialog"
-          aria-modal="true"
-          style={{ position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.35)', display: 'grid', placeItems: 'center', zIndex: 60 }}
-          onClick={() => setSelectedDeadline(null)}
-        >
-          <div
-            style={{ background: '#fff', borderRadius: 16, padding: '1.25rem', width: 'min(420px, 90vw)', boxShadow: '0 18px 50px rgba(15,23,42,0.2)' }}
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', marginBottom: '0.75rem' }}>
-              <strong>{t('underwriterfox.deadlines.modalTitle')}</strong>
-              <button type="button" onClick={() => setSelectedDeadline(null)} style={{ border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', padding: '0.2rem 0.5rem' }}>✕</button>
-            </div>
-            <div style={{ display: 'grid', gap: '0.5rem' }}>
-              <div style={{ fontWeight: 600 }}>{t(`underwriterfox.deadlines.caseItems.${selectedDeadline.key}.title`)}</div>
-              <div style={{ color: '#64748b' }}>{t(`underwriterfox.deadlines.caseItems.${selectedDeadline.key}.detail`)}</div>
-              <div style={{ color: '#0f172a' }}>{formatDue(selectedDeadline.dueAt)}</div>
-            </div>
-            <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <Button size="sm" variant="secondary" onClick={() => setSelectedDeadline(null)}>{t('underwriterfox.deadlines.modalClose')}</Button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </section>
   )
 }
