@@ -107,6 +107,7 @@ export default function BrokerfoxTendersPage() {
                 style={{
                   border: '1px solid #e2e8f0',
                   background: '#ffffff',
+                  color: '#0f172a',
                   borderRadius: 12,
                   padding: '0.75rem 1rem',
                   display: 'flex',
@@ -116,10 +117,10 @@ export default function BrokerfoxTendersPage() {
                 }}
               >
                 <div>
-                  <strong>{tender.title}</strong>
-                  <div style={{ color: '#64748b', fontSize: '0.9rem' }}>{clientLookup[tender.clientId]?.name ?? t('brokerfox.tenders.clientMissing')}</div>
+                  <strong style={{ color: '#0f172a' }}>{tender.title}</strong>
+                  <div style={{ color: '#475569', fontSize: '0.9rem' }}>{clientLookup[tender.clientId]?.name ?? t('brokerfox.tenders.clientMissing')}</div>
                 </div>
-                <span style={{ color: '#94a3b8' }}>{t(`brokerfox.status.${tender.status}`)}</span>
+                <span style={{ color: '#64748b' }}>{t(`brokerfox.status.${tender.status}`)}</span>
               </button>
             ))}
           </div>
