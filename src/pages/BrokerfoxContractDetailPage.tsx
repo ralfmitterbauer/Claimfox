@@ -19,9 +19,10 @@ import {
   sendCommissionReminder
 } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta, TaskItem } from '@/brokerfox/types'
+import { localizeLob } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxContractDetailPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const { contractId } = useParams()
@@ -98,7 +99,7 @@ export default function BrokerfoxContractDetailPage() {
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))' }}>
           <Card variant="glass" title={t('brokerfox.contracts.summaryTitle')}>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.clientLabel')}: {client?.name ?? '-'}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.contracts.lobLabel')}: {contract.lob}</p>
+            <p style={{ margin: 0 }}>{t('brokerfox.contracts.lobLabel')}: {localizeLob(contract.lob, lang) ?? contract.lob}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.carrierLabel')}: {contract.carrierName}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.premiumLabel')}: € {contract.premiumEUR.toLocaleString()}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.statusLabel')}: {t(`brokerfox.contracts.status.${contract.status}`)}</p>

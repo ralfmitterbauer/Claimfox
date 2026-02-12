@@ -7,9 +7,10 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClients, listContracts } from '@/brokerfox/api/brokerfoxApi'
 import type { Contract } from '@/brokerfox/types'
+import { localizeLob } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxContractsPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [contracts, setContracts] = useState<Contract[]>([])
@@ -56,7 +57,7 @@ export default function BrokerfoxContractsPage() {
             <select value={filters.lob} onChange={(event) => setFilters((prev) => ({ ...prev, lob: event.target.value }))} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               <option value="all">{t('brokerfox.contracts.filterAllLob')}</option>
               {Array.from(new Set(contracts.map((contract) => contract.lob))).map((lob) => (
-                <option key={lob} value={lob}>{lob}</option>
+                <option key={lob} value={lob}>{localizeLob(lob, lang) ?? lob}</option>
               ))}
             </select>
             <select value={filters.carrier} onChange={(event) => setFilters((prev) => ({ ...prev, carrier: event.target.value }))} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
@@ -90,7 +91,7 @@ export default function BrokerfoxContractsPage() {
               <div>
                 <strong>{contract.policyNumber}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>
-                  {clients.find((client) => client.id === contract.clientId)?.name ?? t('brokerfox.clients.clientUnknown')} · {contract.lob} · {contract.carrierName}
+                  {clients.find((client) => client.id === contract.clientId)?.name ?? t('brokerfox.clients.clientUnknown')} · {localizeLob(contract.lob, lang) ?? contract.lob} · {contract.carrierName}
                 </div>
                 {contract.isHero ? <span style={{ fontSize: '0.75rem', color: '#f59e0b' }}>{t('brokerfox.contracts.heroBadge')}</span> : null}
               </div>

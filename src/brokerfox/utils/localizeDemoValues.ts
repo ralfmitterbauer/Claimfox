@@ -28,6 +28,19 @@ const CONTACT_ROLE_MAP: Record<string, { de: string; en: string }> = {
   Procurement: { de: 'Einkauf', en: 'Procurement' }
 }
 
+const LOB_MAP: Record<string, { de: string; en: string }> = {
+  'Fleet Liability': { de: 'Flottenhaftpflicht', en: 'Fleet Liability' },
+  'Property All Risk': { de: 'Sachversicherung All Risk', en: 'Property All Risk' },
+  'Cyber Shield': { de: 'Cyber Schutz', en: 'Cyber Shield' },
+  'Cargo Protect': { de: 'Transportversicherung', en: 'Cargo Protect' },
+  'General Liability': { de: 'Betriebshaftpflicht', en: 'General Liability' },
+  Property: { de: 'Sachversicherung', en: 'Property' },
+  Liability: { de: 'Haftpflicht', en: 'Liability' },
+  Cyber: { de: 'Cyber', en: 'Cyber' },
+  Fleet: { de: 'Flotte', en: 'Fleet' },
+  Cargo: { de: 'Transport', en: 'Cargo' }
+}
+
 function pickLocalized(
   value: string | undefined,
   lang: Lang,
@@ -48,4 +61,8 @@ export function localizeClientIndustry(value: string | undefined, lang: Lang) {
 
 export function localizeClientContactRole(value: string | undefined, lang: Lang) {
   return pickLocalized(value, lang, CONTACT_ROLE_MAP)
+}
+
+export function localizeLob(value: string | undefined, lang: Lang) {
+  return pickLocalized(value, lang, LOB_MAP)
 }
