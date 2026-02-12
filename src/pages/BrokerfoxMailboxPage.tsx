@@ -21,6 +21,7 @@ import {
   uploadDocument
 } from '@/brokerfox/api/brokerfoxApi'
 import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
+import { localizeLob, localizePolicyName, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 import type { MailboxItem } from '@/brokerfox/types'
 
 export default function BrokerfoxMailboxPage() {
@@ -72,6 +73,10 @@ export default function BrokerfoxMailboxPage() {
     'Loss history clarification needed': {
       de: 'Klärung zur Schadenhistorie erforderlich',
       en: 'Loss history clarification needed'
+    },
+    'Carrier portal update: new offer': {
+      de: 'Carrier-Portal-Update: neues Angebot',
+      en: 'Carrier portal update: new offer'
     }
   }
 
@@ -103,6 +108,10 @@ export default function BrokerfoxMailboxPage() {
     'Hi,\n\nWe noticed a discrepancy in the reported losses for Q4. Can you confirm whether the reserve has been released?\n\nBest,\nRisk Team': {
       de: 'Hallo,\n\nuns ist eine Abweichung in den gemeldeten Schäden für Q4 aufgefallen. Können Sie bestätigen, ob die Reserve bereits aufgelöst wurde?\n\nBeste Grüße,\nRisk Team',
       en: 'Hi,\n\nWe noticed a discrepancy in the reported losses for Q4. Can you confirm whether the reserve has been released?\n\nBest,\nRisk Team'
+    },
+    'New offer uploaded via carrier portal.': {
+      de: 'Neues Angebot wurde über das Carrier-Portal hochgeladen.',
+      en: 'New offer uploaded via carrier portal.'
     }
   }
 
@@ -118,6 +127,40 @@ export default function BrokerfoxMailboxPage() {
   function localizeBody(body?: string) {
     if (!body) return body
     return bodyMap[body]?.[lang] ?? body
+  }
+
+  function localizeExtractionFieldLabel(key: string) {
+    if (lang === 'de') {
+      if (key === 'policyNumber') return 'Policennummer'
+      if (key === 'expiry') return 'Ablaufdatum'
+      if (key === 'lossRatio') return 'Schadenquote'
+      if (key === 'brokerComment') return 'Broker-Kommentar'
+      if (key === 'lineOfBusiness') return 'Sparte'
+      if (key === 'attachmentType') return 'Anhangstyp'
+      if (key === 'sender') return 'Absender'
+    }
+    if (key === 'policyNumber') return 'Policy number'
+    if (key === 'expiry') return 'Expiry date'
+    if (key === 'lossRatio') return 'Loss ratio'
+    if (key === 'brokerComment') return 'Broker comment'
+    if (key === 'lineOfBusiness') return 'Line of business'
+    if (key === 'attachmentType') return 'Attachment type'
+    if (key === 'sender') return 'Sender'
+    return key
+  }
+
+  function localizeExtractionFieldValue(key: string, value: string) {
+    if (key === 'lineOfBusiness') return localizeLob(value, lang) ?? value
+    if (key === 'policyNumber') return localizePolicyName(value, lang) ?? value
+    return value
+  }
+
+  function getEntityLabel(item: any) {
+    if (item.name) return item.name
+    if (item.title) return localizeTenderTitle(item.title, lang) ?? item.title
+    if (item.policyName) return localizePolicyName(item.policyName, lang) ?? item.policyName
+    if (item.policyNumber) return localizePolicyName(item.policyNumber, lang) ?? item.policyNumber
+    return item.carrier?.name ?? item.id
   }
 
   useEffect(() => {
@@ -330,10 +373,12 @@ export default function BrokerfoxMailboxPage() {
                       <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.suggestionNotice')}</div>
                       <div style={{ marginTop: '0.4rem', display: 'grid', gap: '0.25rem' }}>
                         <div>{t('brokerfox.extraction.suggestedClient')}: {clients.find((client) => client.id === extraction.suggestedClientId)?.name ?? '-'}</div>
-                        <div>{t('brokerfox.extraction.suggestedContract')}: {contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber ?? '-'}</div>
+                        <div>{t('brokerfox.extraction.suggestedContract')}: {localizePolicyName(contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber, lang) ?? '-'}</div>
                         <div>{t('brokerfox.extraction.confidence')}: {Math.round(extraction.confidence * 100)}%</div>
                         {Object.entries(extraction.extractedFields).map(([key, value]) => (
-                          <div key={key} style={{ fontSize: '0.85rem' }}>{key}: {value}</div>
+                          <div key={key} style={{ fontSize: '0.85rem' }}>
+                            {localizeExtractionFieldLabel(key)}: {localizeExtractionFieldValue(key, String(value))}
+                          </div>
                         ))}
                       </div>
                       <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
@@ -361,7 +406,7 @@ export default function BrokerfoxMailboxPage() {
                   </select>
                   <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
                     {entityOptions.map((item: any) => (
-                      <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
+                      <option key={item.id} value={item.id}>{getEntityLabel(item)}</option>
                     ))}
                   </select>
                   <Button size="sm" onClick={handleAssign}>{t('brokerfox.mailbox.assignAction')}</Button>
