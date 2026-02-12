@@ -57,6 +57,7 @@ export default function ClaimsfoxMailboxPage() {
                   borderRadius: 12,
                   padding: '0.75rem 1rem',
                   background: selected?.id === mail.id ? '#f8fafc' : '#fff',
+                  color: '#0f172a',
                   textAlign: 'left',
                   cursor: 'pointer'
                 }}
