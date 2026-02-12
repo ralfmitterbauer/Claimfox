@@ -6,6 +6,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, listClaims } from '@/aifox/api/aifoxApi'
 import type { AifoxClaim } from '@/aifox/types'
+import ClaimDamageImage from '@/assets/images/claim_damage_1.png'
 
 export default function AifoxClaimsVisionPage() {
   const { t } = useI18n()
@@ -48,8 +49,17 @@ export default function AifoxClaimsVisionPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: '1.5rem' }}>
         <Card title={t('aifox.claimsVision.uploadTitle')} subtitle={t('aifox.claimsVision.uploadSubtitle')}>
           <div style={{ display: 'grid', gap: '1rem' }}>
-            <div style={{ border: '1px dashed #cbd5f5', borderRadius: 14, padding: '1rem', textAlign: 'center', color: '#64748b' }}>
-              {t('aifox.claimsVision.uploadHint')}
+            <div style={{ display: 'grid', gap: '0.65rem' }}>
+              <div style={{ border: '1px dashed #cbd5f5', borderRadius: 14, padding: '0.55rem 0.8rem', textAlign: 'center', color: '#64748b' }}>
+                {t('aifox.claimsVision.uploadHint')}
+              </div>
+              <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid #e2e8f0', height: 180, background: '#e2e8f0' }}>
+                <img
+                  src={ClaimDamageImage}
+                  alt="Demo Unfallbild"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
             </div>
             <div style={{ position: 'relative', height: 220, background: '#0f172a', borderRadius: 14, overflow: 'hidden' }}>
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(30,64,175,0.45), rgba(15,23,42,0.8))' }} />
