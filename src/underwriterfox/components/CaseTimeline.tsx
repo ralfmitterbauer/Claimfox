@@ -1,6 +1,7 @@
 import Card from '@/components/ui/Card'
 import { useI18n } from '@/i18n/I18nContext'
 import type { TimelineEvent } from '@/underwriterfox/types'
+import { translateTimelineTitle } from '@/underwriterfox/utils/timelineText'
 
 type CaseTimelineProps = {
   events: TimelineEvent[]
@@ -16,7 +17,7 @@ export default function CaseTimeline({ events }: CaseTimelineProps) {
         {events.map((event) => (
           <div key={event.id} style={{ display: 'grid', gap: '0.15rem', paddingBottom: '0.5rem', borderBottom: '1px solid #e2e8f0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem', fontSize: '0.85rem' }}>
-              <strong style={{ color: '#0f172a' }}>{event.title}</strong>
+              <strong style={{ color: '#0f172a' }}>{translateTimelineTitle(event, t)}</strong>
               <span style={{ color: '#94a3b8' }}>{new Date(event.createdAt).toLocaleString()}</span>
             </div>
             <div style={{ color: '#475569', fontSize: '0.9rem' }}>{event.message}</div>

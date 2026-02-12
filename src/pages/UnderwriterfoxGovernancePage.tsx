@@ -6,6 +6,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, listCases, listTimeline } from '@/underwriterfox/api/underwriterfoxApi'
 import type { TimelineEvent, UnderwritingCase } from '@/underwriterfox/types'
+import { translateTimelineTitle } from '@/underwriterfox/utils/timelineText'
 
 export default function UnderwriterfoxGovernancePage() {
   const { t } = useI18n()
@@ -62,7 +63,7 @@ export default function UnderwriterfoxGovernancePage() {
             <div style={{ display: 'grid', gap: '0.5rem', marginTop: '0.5rem' }}>
               {filtered.map((event) => (
                 <div key={event.id} style={{ paddingBottom: '0.5rem', borderBottom: '1px solid #e2e8f0' }}>
-                  <strong style={{ color: '#0f172a' }}>{event.title}</strong>
+                  <strong style={{ color: '#0f172a' }}>{translateTimelineTitle(event, t)}</strong>
                   <div style={{ color: '#475569', fontSize: '0.9rem' }}>{event.message}</div>
                   <div style={{ color: '#94a3b8', fontSize: '0.75rem' }}>{new Date(event.createdAt).toLocaleString()} · {event.actor}</div>
                 </div>

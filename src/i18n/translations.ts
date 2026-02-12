@@ -81,6 +81,17 @@ type TranslationTree = {
       title: string
       subtitle: string
       empty: string
+      systemTitles: {
+        caseCreated: string
+        documentUploaded: string
+        rulesEvaluated: string
+        ratingRecalculated: string
+        aiGenerated: string
+        statusUpdated: string
+        rulesSaved: string
+        ratingSaved: string
+        auditExported: string
+      }
       type: {
         statusUpdate: string
         internalNote: string
@@ -5813,6 +5824,17 @@ export const translations: Record<Lang, TranslationTree> = {
         title: 'Aktivitäten',
         subtitle: 'Audit- und Workflow-Historie',
         empty: 'Keine Timeline-Einträge.',
+        systemTitles: {
+          caseCreated: 'Fall erstellt',
+          documentUploaded: 'Dokument hochgeladen',
+          rulesEvaluated: 'Regeln bewertet',
+          ratingRecalculated: 'Rating neu berechnet',
+          aiGenerated: 'KI-Empfehlung erzeugt',
+          statusUpdated: 'Fallstatus aktualisiert',
+          rulesSaved: 'Regelbewertung gespeichert',
+          ratingSaved: 'Rating-Snapshot gespeichert',
+          auditExported: 'Audit-Export erzeugt'
+        },
         type: {
           statusUpdate: 'Status',
           internalNote: 'Interne Notiz',
@@ -9449,6 +9471,17 @@ export const translations: Record<Lang, TranslationTree> = {
       title: 'Activity',
       subtitle: 'Audit-ready workflow history',
       empty: 'No timeline entries yet.',
+      systemTitles: {
+        caseCreated: 'Case created',
+        documentUploaded: 'Document uploaded',
+        rulesEvaluated: 'Rules evaluated',
+        ratingRecalculated: 'Rating recalculated',
+        aiGenerated: 'AI recommendation generated',
+        statusUpdated: 'Case status updated',
+        rulesSaved: 'Rules evaluation saved',
+        ratingSaved: 'Rating snapshot saved',
+        auditExported: 'Audit export generated'
+      },
       type: {
         statusUpdate: 'Status',
         internalNote: 'Internal note',
