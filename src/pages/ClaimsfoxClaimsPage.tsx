@@ -91,6 +91,7 @@ export default function ClaimsfoxClaimsPage() {
                 borderRadius: 12,
                 padding: '0.75rem 1rem',
                 background: '#fff',
+                color: '#0f172a',
                 textAlign: 'left',
                 cursor: 'pointer'
               }}
