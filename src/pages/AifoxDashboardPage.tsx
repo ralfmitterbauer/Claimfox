@@ -6,6 +6,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClaims, listDecisions, listFraudAlerts } from '@/aifox/api/aifoxApi'
 import type { AifoxClaim, AifoxDecision, AifoxFraudAlert } from '@/aifox/types'
+import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 
 const moduleCards = [
   { key: 'claimsVision', route: '/aifox/claims-vision' },
@@ -20,7 +21,7 @@ const moduleCards = [
 ]
 
 export default function AifoxDashboardPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [claims, setClaims] = useState<AifoxClaim[]>([])
@@ -57,6 +58,21 @@ export default function AifoxDashboardPage() {
     { label: t('aifox.dashboard.kpi.aiActRisk'), value: t('aifox.dashboard.kpi.aiActValue') }
   ]
 
+  const performanceSeries = useMemo(() => ([
+    { month: 'Oct', score: 78 },
+    { month: 'Nov', score: 81 },
+    { month: 'Dec', score: 83 },
+    { month: 'Jan', score: 85 },
+    { month: 'Feb', score: 87 }
+  ]), [])
+
+  const fraudHeatSeries = useMemo(() => ([
+    { name: lang === 'de' ? 'Nord' : 'North', value: 28 },
+    { name: lang === 'de' ? 'West' : 'West', value: 24 },
+    { name: lang === 'de' ? 'Süd' : 'South', value: 31 },
+    { name: lang === 'de' ? 'Ost' : 'East', value: 17 }
+  ]), [lang])
+
   return (
     <AifoxLayout title={t('aifox.dashboard.title')} subtitle={t('aifox.dashboard.subtitle')}>
       <div style={{ display: 'grid', gap: '1.5rem' }}>
@@ -92,13 +108,33 @@ export default function AifoxDashboardPage() {
         </Card>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
           <Card title={t('aifox.dashboard.performanceTitle')} subtitle={t('aifox.dashboard.performanceSubtitle')}>
-            <div style={{ height: 160, background: 'linear-gradient(135deg, #f1f5f9, #fff)', borderRadius: 12, display: 'grid', placeItems: 'center', color: '#64748b' }}>
-              {t('aifox.dashboard.performanceChart')}
+            <div style={{ height: 180 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={performanceSeries}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="month" />
+                  <YAxis domain={[70, 95]} />
+                  <Tooltip />
+                  <Bar dataKey="score" fill="#d4380d" radius={[6, 6, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </Card>
           <Card title={t('aifox.dashboard.heatmapTitle')} subtitle={t('aifox.dashboard.heatmapSubtitle')}>
-            <div style={{ height: 160, background: 'linear-gradient(135deg, #fff7ed, #fff)', borderRadius: 12, display: 'grid', placeItems: 'center', color: '#64748b' }}>
-              {t('aifox.dashboard.heatmapChart')}
+            <div style={{ height: 180 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={fraudHeatSeries} dataKey="value" nameKey="name" innerRadius={34} outerRadius={62}>
+                    {fraudHeatSeries.map((entry) => (
+                      <Cell
+                        key={entry.name}
+                        fill={entry.value > 29 ? '#d4380d' : entry.value > 22 ? '#f97316' : '#94a3b8'}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </Card>
           <Card title={t('aifox.dashboard.riskTitle')} subtitle={t('aifox.dashboard.riskSubtitle')}>

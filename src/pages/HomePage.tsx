@@ -16,6 +16,7 @@ export default function HomePage() {
   const { isAuthenticated, logout, user } = useAuth()
   const [isHeroPreviewOpen, setIsHeroPreviewOpen] = React.useState(false)
   const [isMobileNavOpen, setIsMobileNavOpen] = React.useState(false)
+  const showLegacyHomeHeader = false
 
   const go = (route: string) => {
     navigate(route)
@@ -167,88 +168,90 @@ export default function HomePage() {
 
   return (
     <main className="home-marketing">
-      <header className="home-marketing-header">
-        <div className="home-marketing-header-inner">
-          <button type="button" onClick={() => go('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
-            <img src={InsurfoxLogo} alt="Insurfox" className="home-marketing-logo" />
-          </button>
-          <nav className="home-marketing-nav">
-            <button type="button" onClick={() => go('/insurance')}>{copy.nav.insurance}</button>
-            {user?.mode !== 'insurance-only' && (
-              <>
-                <button type="button" onClick={() => go('/broker-portal')}>{copy.nav.broker}</button>
-                <button type="button" onClick={() => go('/logistics')}>{copy.nav.logistics}</button>
-                <button type="button" onClick={() => go('/fleet')}>{copy.nav.fleet}</button>
-                <button type="button" onClick={() => go('/partner')}>{copy.nav.partner}</button>
-                <button type="button" onClick={() => go('/demo')}>{copy.nav.demo}</button>
-              </>
-            )}
-            <Button
-              onClick={() => {
-                if (isAuthenticated) {
-                  logout()
-                  go('/login')
-                  return
-                }
-                go('/login')
-              }}
-              className="home-marketing-login"
-              style={{ padding: '0.5rem 1.1rem' }}
-              disableHover
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="8" r="4" />
-                <path d="M4 20c1.8-3.5 5-6 8-6s6.2 2.5 8 6" />
-              </svg>
-              <span className="home-marketing-login-text">{isAuthenticated ? copy.nav.logout : copy.nav.login}</span>
-            </Button>
-            <div className="home-marketing-lang-switch" role="group" aria-label="Language switch">
-              <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
-                DE
-              </button>
-              <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>
-                EN
-              </button>
-            </div>
-            <button
-              type="button"
-              className="home-marketing-menu home-marketing-menu-trigger"
-              aria-label="Menü öffnen"
-              onClick={() => setIsMobileNavOpen((prev) => !prev)}
-            >
-              <span />
-              <span />
-              <span />
+      {showLegacyHomeHeader ? (
+        <header className="home-marketing-header">
+          <div className="home-marketing-header-inner">
+            <button type="button" onClick={() => go('/home')} className="home-marketing-logo-button" aria-label="Insurfox Home">
+              <img src={InsurfoxLogo} alt="Insurfox" className="home-marketing-logo" />
             </button>
-          </nav>
-          {isMobileNavOpen && (
-            <div className="home-marketing-mobile-panel" role="dialog" aria-label="Navigation">
-              <button type="button" onClick={() => { go('/insurance'); setIsMobileNavOpen(false) }}>
-                {copy.nav.insurance}
-              </button>
+            <nav className="home-marketing-nav">
+              <button type="button" onClick={() => go('/insurance')}>{copy.nav.insurance}</button>
               {user?.mode !== 'insurance-only' && (
                 <>
-                  <button type="button" onClick={() => { go('/broker-portal'); setIsMobileNavOpen(false) }}>
-                    {copy.nav.broker}
-                  </button>
-                  <button type="button" onClick={() => { go('/logistics'); setIsMobileNavOpen(false) }}>
-                    {copy.nav.logistics}
-                  </button>
-                  <button type="button" onClick={() => { go('/fleet'); setIsMobileNavOpen(false) }}>
-                    {copy.nav.fleet}
-                  </button>
-                  <button type="button" onClick={() => { go('/partner'); setIsMobileNavOpen(false) }}>
-                    {copy.nav.partner}
-                  </button>
-                  <button type="button" onClick={() => { go('/demo'); setIsMobileNavOpen(false) }}>
-                    {copy.nav.demo}
-                  </button>
+                  <button type="button" onClick={() => go('/broker-portal')}>{copy.nav.broker}</button>
+                  <button type="button" onClick={() => go('/logistics')}>{copy.nav.logistics}</button>
+                  <button type="button" onClick={() => go('/fleet')}>{copy.nav.fleet}</button>
+                  <button type="button" onClick={() => go('/partner')}>{copy.nav.partner}</button>
+                  <button type="button" onClick={() => go('/demo')}>{copy.nav.demo}</button>
                 </>
               )}
-            </div>
-          )}
-        </div>
-      </header>
+              <Button
+                onClick={() => {
+                  if (isAuthenticated) {
+                    logout()
+                    go('/login')
+                    return
+                  }
+                  go('/login')
+                }}
+                className="home-marketing-login"
+                style={{ padding: '0.5rem 1.1rem' }}
+                disableHover
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M4 20c1.8-3.5 5-6 8-6s6.2 2.5 8 6" />
+                </svg>
+                <span className="home-marketing-login-text">{isAuthenticated ? copy.nav.logout : copy.nav.login}</span>
+              </Button>
+              <div className="home-marketing-lang-switch" role="group" aria-label="Language switch">
+                <button type="button" className={lang === 'de' ? 'is-active' : ''} onClick={() => setLang('de')}>
+                  DE
+                </button>
+                <button type="button" className={lang === 'en' ? 'is-active' : ''} onClick={() => setLang('en')}>
+                  EN
+                </button>
+              </div>
+              <button
+                type="button"
+                className="home-marketing-menu home-marketing-menu-trigger"
+                aria-label="Menü öffnen"
+                onClick={() => setIsMobileNavOpen((prev) => !prev)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </nav>
+            {isMobileNavOpen && (
+              <div className="home-marketing-mobile-panel" role="dialog" aria-label="Navigation">
+                <button type="button" onClick={() => { go('/insurance'); setIsMobileNavOpen(false) }}>
+                  {copy.nav.insurance}
+                </button>
+                {user?.mode !== 'insurance-only' && (
+                  <>
+                    <button type="button" onClick={() => { go('/broker-portal'); setIsMobileNavOpen(false) }}>
+                      {copy.nav.broker}
+                    </button>
+                    <button type="button" onClick={() => { go('/logistics'); setIsMobileNavOpen(false) }}>
+                      {copy.nav.logistics}
+                    </button>
+                    <button type="button" onClick={() => { go('/fleet'); setIsMobileNavOpen(false) }}>
+                      {copy.nav.fleet}
+                    </button>
+                    <button type="button" onClick={() => { go('/partner'); setIsMobileNavOpen(false) }}>
+                      {copy.nav.partner}
+                    </button>
+                    <button type="button" onClick={() => { go('/demo'); setIsMobileNavOpen(false) }}>
+                      {copy.nav.demo}
+                    </button>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        </header>
+      ) : null}
 
       <section className="home-hero" style={{ backgroundImage: `url(${HomeHeroBackground})` }}>
         <div className="home-hero-inner">

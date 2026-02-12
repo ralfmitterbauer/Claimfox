@@ -285,7 +285,7 @@ export default function AppRouter() {
         <Route path="/demo-partners/parts" element={<DemoPartnerPartsPage />} />
         <Route path="/demo-partners/parts/step/:stepId" element={<DemoPartnerPartsStepPage />} />
       </Route>
-      <Route element={<ProtectedRoute><FullscreenBgLayout showHeader={false} /></ProtectedRoute>}>
+      <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
         <Route path="/home" element={<HomePage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
