@@ -3925,6 +3925,18 @@ input[type="reset"]:disabled,
   transform: none;
 }
 
+/* Keep text readable on explicitly white surface buttons used in demo cards/lists. */
+button[style*="background: #fff"],
+button[style*="background:#fff"],
+button[style*="background: #ffffff"],
+button[style*="background:#ffffff"],
+button[style*="background-color: #fff"],
+button[style*="background-color:#fff"],
+button[style*="background-color: #ffffff"],
+button[style*="background-color:#ffffff"] {
+  color: #0f172a !important;
+}
+
 .ix-leads-page {
   background: var(--ix-bg);
   color: var(--ix-text);
