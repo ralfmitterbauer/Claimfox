@@ -5684,7 +5684,14 @@ export const translations: Record<Lang, TranslationTree> = {
         score: 'Fraud Score',
         riskLevel: 'Risikostufe',
         escalate: 'Eskalieren',
-        clear: 'Verdacht löschen'
+        clear: 'Verdacht löschen',
+        signals: {
+          repeatedPhone: 'Wiederholte Telefonnummern-Nutzung',
+          shortlyAfterStart: 'Schaden kurz nach Policenstart',
+          similarIp: 'Ähnliche IP-Adress-Cluster',
+          multiRegion: 'Mehrere Schäden über Regionen hinweg',
+          unusualEstimate: 'Ungewöhnliches Muster bei Reparaturkosten'
+        }
       },
       risk: {
         title: 'Risk & Underwriting Engine',
@@ -8455,7 +8462,14 @@ export const translations: Record<Lang, TranslationTree> = {
         score: 'Fraud score',
         riskLevel: 'Risk level',
         escalate: 'Escalate',
-        clear: 'Clear suspicion'
+        clear: 'Clear suspicion',
+        signals: {
+          repeatedPhone: 'Repeated phone number usage',
+          shortlyAfterStart: 'Claim shortly after policy start',
+          similarIp: 'Similar IP address cluster',
+          multiRegion: 'Multiple claims across regions',
+          unusualEstimate: 'Unusual repair estimate pattern'
+        }
       },
       risk: {
         title: 'Risk & Underwriting Engine',

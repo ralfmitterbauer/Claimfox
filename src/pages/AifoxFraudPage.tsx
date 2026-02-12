@@ -35,6 +35,15 @@ export default function AifoxFraudPage() {
     await logFraudAction(ctx, selected.id, action)
   }
 
+  function mapSignal(signal: string) {
+    if (signal === 'Repeated phone number usage') return t('aifox.fraud.signals.repeatedPhone')
+    if (signal === 'Claim shortly after policy start') return t('aifox.fraud.signals.shortlyAfterStart')
+    if (signal === 'Similar IP address cluster') return t('aifox.fraud.signals.similarIp')
+    if (signal === 'Multiple claims across regions') return t('aifox.fraud.signals.multiRegion')
+    if (signal === 'Unusual repair estimate pattern') return t('aifox.fraud.signals.unusualEstimate')
+    return signal
+  }
+
   return (
     <AifoxLayout title={t('aifox.fraud.title')} subtitle={t('aifox.fraud.subtitle')}>
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)', gap: '1.5rem' }}>
@@ -69,7 +78,7 @@ export default function AifoxFraudPage() {
               <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{t('aifox.fraud.riskLevel')}: {selected.riskLevel.toUpperCase()}</div>
               <div style={{ display: 'grid', gap: '0.35rem' }}>
                 {selected.signals.map((signal) => (
-                  <div key={signal} style={{ fontSize: '0.9rem', color: '#475569' }}>• {signal}</div>
+                  <div key={signal} style={{ fontSize: '0.9rem', color: '#475569' }}>• {mapSignal(signal)}</div>
                 ))}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
