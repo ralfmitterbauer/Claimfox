@@ -20,6 +20,28 @@ const moduleCards = [
   { key: 'audit', route: '/aifox/audit' }
 ]
 
+function localizeLineOfBusiness(value: string, lang: 'de' | 'en') {
+  if (lang === 'en') return value
+  if (value === 'Motor Fleet') return 'Kfz-Flotte'
+  if (value === 'Cargo & Logistics') return 'Transport & Logistik'
+  if (value === 'Property All Risk') return 'Allgefahren Sach'
+  if (value === 'General Liability') return 'Betriebshaftpflicht'
+  if (value === 'Cyber') return 'Cyber'
+  return value
+}
+
+function localizeSeverity(value: string, lang: 'de' | 'en') {
+  if (lang === 'de') {
+    if (value === 'low') return 'Niedrig'
+    if (value === 'medium') return 'Mittel'
+    if (value === 'high') return 'Hoch'
+  }
+  if (value === 'low') return 'Low'
+  if (value === 'medium') return 'Medium'
+  if (value === 'high') return 'High'
+  return value
+}
+
 export default function AifoxDashboardPage() {
   const { t, lang } = useI18n()
   const ctx = useTenantContext()
@@ -58,13 +80,16 @@ export default function AifoxDashboardPage() {
     { label: t('aifox.dashboard.kpi.aiActRisk'), value: t('aifox.dashboard.kpi.aiActValue') }
   ]
 
-  const performanceSeries = useMemo(() => ([
-    { month: 'Oct', score: 78 },
-    { month: 'Nov', score: 81 },
-    { month: 'Dec', score: 83 },
-    { month: 'Jan', score: 85 },
-    { month: 'Feb', score: 87 }
-  ]), [])
+  const performanceSeries = useMemo(() => {
+    const months = lang === 'de' ? ['Okt', 'Nov', 'Dez', 'Jan', 'Feb'] : ['Oct', 'Nov', 'Dec', 'Jan', 'Feb']
+    return [
+      { month: months[0], score: 78 },
+      { month: months[1], score: 81 },
+      { month: months[2], score: 83 },
+      { month: months[3], score: 85 },
+      { month: months[4], score: 87 }
+    ]
+  }, [lang])
 
   const fraudHeatSeries = useMemo(() => ([
     { name: lang === 'de' ? 'Nord' : 'North', value: 28 },
@@ -141,8 +166,8 @@ export default function AifoxDashboardPage() {
             <div style={{ display: 'grid', gap: '0.5rem' }}>
               {claims.slice(0, 3).map((claim) => (
                 <div key={claim.id} style={{ display: 'flex', justifyContent: 'space-between', gap: '0.5rem' }}>
-                  <span style={{ fontWeight: 600 }}>{claim.lineOfBusiness}</span>
-                  <span style={{ color: '#64748b' }}>{claim.severity}</span>
+                  <span style={{ fontWeight: 600 }}>{localizeLineOfBusiness(claim.lineOfBusiness, lang)}</span>
+                  <span style={{ color: '#64748b' }}>{localizeSeverity(claim.severity, lang)}</span>
                 </div>
               ))}
             </div>
