@@ -7,6 +7,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createTask, delegateTask, listClients, listContracts, listTasks, listTenders, listRenewals, updateTaskStatus } from '@/brokerfox/api/brokerfoxApi'
 import type { TaskItem, TaskStatus } from '@/brokerfox/types'
+import { localizePolicyName, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 
 const columns: Array<{ key: TaskStatus; labelKey: string }> = [
   { key: 'todo', labelKey: 'brokerfox.tasks.todo' },
@@ -15,7 +16,7 @@ const columns: Array<{ key: TaskStatus; labelKey: string }> = [
 ]
 
 export default function BrokerfoxTasksPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -109,6 +110,13 @@ export default function BrokerfoxTasksPage() {
     setDelegateDraft((prev) => ({ ...prev, [taskId]: '' }))
   }
 
+  function getEntityLabel(item: any) {
+    if (typeof item.name === 'string') return item.name
+    if (typeof item.title === 'string') return localizeTenderTitle(item.title, lang) ?? item.title
+    if (typeof item.policyName === 'string') return localizePolicyName(item.policyName, lang) ?? item.policyName
+    return item.id
+  }
+
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
@@ -151,7 +159,7 @@ export default function BrokerfoxTasksPage() {
             </select>
             <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               {entityOptions.map((item: any) => (
-                <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName}</option>
+                <option key={item.id} value={item.id}>{getEntityLabel(item)}</option>
               ))}
             </select>
             <Button size="sm" onClick={handleCreate}>{t('brokerfox.actions.save')}</Button>
