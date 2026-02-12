@@ -3,15 +3,21 @@ import Button from '@/components/ui/Button'
 import AifoxLayout from '@/aifox/components/AifoxLayout'
 import { useI18n } from '@/i18n/I18nContext'
 
-const checklist = [
-  'Transparency notice shown',
-  'Human override available',
-  'Model documentation up to date',
-  'Logging enabled'
-]
-
 export default function AifoxGovernancePage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
+  const checklist = lang === 'de'
+    ? [
+        'Transparenzhinweis eingeblendet',
+        'Menschliche Übersteuerung verfügbar',
+        'Modelldokumentation aktuell',
+        'Logging aktiviert'
+      ]
+    : [
+        'Transparency notice shown',
+        'Human override available',
+        'Model documentation up to date',
+        'Logging enabled'
+      ]
 
   return (
     <AifoxLayout title={t('aifox.governance.title')} subtitle={t('aifox.governance.subtitle')}>
