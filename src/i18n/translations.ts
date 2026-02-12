@@ -359,6 +359,7 @@ type TranslationTree = {
         noteMessage: string
         partnerAssignedTitle: string
         partnerAssignedMessage: string
+        partnerRequestReason: string
       }
     }
     documents: {
@@ -5031,7 +5032,8 @@ export const translations: Record<Lang, TranslationTree> = {
           noteTitle: 'Entscheidungsnotiz',
           noteMessage: 'Regulierungsoptionen geprüft und nächste Schritte abgestimmt.',
           partnerAssignedTitle: 'Partnerzuweisung',
-          partnerAssignedMessage: 'Partner {{partner}} für diesen Schaden angefragt.'
+          partnerAssignedMessage: 'Partner {{partner}} für diesen Schaden angefragt.',
+          partnerRequestReason: 'Aus der Schadendetailansicht zugewiesen.'
         }
       },
       documents: {
@@ -7765,7 +7767,8 @@ export const translations: Record<Lang, TranslationTree> = {
           noteTitle: 'Decision note',
           noteMessage: 'Reviewed settlement options and aligned on next steps.',
           partnerAssignedTitle: 'Partner assignment',
-          partnerAssignedMessage: 'Partner {{partner}} requested for this claim.'
+          partnerAssignedMessage: 'Partner {{partner}} requested for this claim.',
+          partnerRequestReason: 'Assigned from claim detail view.'
         }
       },
       documents: {

@@ -89,7 +89,7 @@ export default function ClaimsfoxClaimDetailPage() {
   async function assignPartner() {
     if (!claimId || !selectedPartner) return
     const partnerName = partners.find((partner) => partner.id === selectedPartner)?.name ?? selectedPartner
-    await requestPartner(ctx, claimId, selectedPartner, 'Assigned from claim detail view.')
+    await requestPartner(ctx, claimId, selectedPartner, t('claimsfox.claimDetail.events.partnerRequestReason'))
     await addTimelineEvent(ctx, {
       entityType: 'claim',
       entityId: claimId,
@@ -238,6 +238,7 @@ export default function ClaimsfoxClaimDetailPage() {
                   gap: '0.5rem',
                   border: 'none',
                   background: 'transparent',
+                  color: '#0f172a',
                   padding: 0,
                   textAlign: 'left',
                   cursor: 'pointer'
