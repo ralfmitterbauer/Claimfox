@@ -704,6 +704,169 @@ type TranslationTree = {
       empty: string
     }
   }
+  partnerfox: {
+    nav: {
+      title: string
+      dashboard: string
+      network: string
+      cases: string
+      rental: string
+      towing: string
+      subrogation: string
+      assistance: string
+      reporting: string
+      audit: string
+    }
+    calendar: {
+      title: string
+      empty: string
+      date: string
+      location: string
+      linked: string
+      close: string
+      goTo: string
+    }
+    common: {
+      all: string
+      loading: string
+    }
+    dashboard: {
+      title: string
+      subtitle: string
+      networkTitle: string
+      casesTitle: string
+      kpi: {
+        partners: string
+        casesOpen: string
+        directBilling: string
+        subrogation: string
+        recoveryRate: string
+      }
+    }
+    network: {
+      title: string
+      subtitle: string
+      search: string
+      empty: string
+      type: {
+        workshop: string
+        rental: string
+        towing: string
+        glass: string
+        assistance: string
+      }
+    }
+    partnerDetail: {
+      title: string
+      subtitle: string
+      contact: string
+      rating: string
+      avgRepairDays: string
+      directBillingEnabled: string
+      performance: string
+      casesHandled: string
+      timeline: string
+      relatedCases: string
+    }
+    cases: {
+      title: string
+      subtitle: string
+      search: string
+      empty: string
+      directBilling: string
+      status: {
+        FNOL: string
+        InRepair: string
+        WaitingParts: string
+        RentalActive: string
+        Closed: string
+      }
+    }
+    caseDetail: {
+      title: string
+      subtitle: string
+      damageSummary: string
+      assignedWorkshop: string
+      rentalPartner: string
+      towingPartner: string
+      estimatedCost: string
+      repairDuration: string
+      trackingLink: string
+      documentsTitle: string
+      timelineTitle: string
+    }
+    rental: {
+      title: string
+      subtitle: string
+      activeRentals: string
+      days: string
+      cost: string
+      slaWarning: string
+    }
+    towing: {
+      title: string
+      subtitle: string
+      responseTime: string
+      active: string
+    }
+    subrogation: {
+      title: string
+      subtitle: string
+      probability: string
+      estimate: string
+      status: {
+        Open: string
+        Negotiation: string
+        Recovered: string
+        Lost: string
+      }
+    }
+    assistance: {
+      title: string
+      subtitle: string
+      hotline: string
+      responseTime: string
+      slaBreach: string
+    }
+    reporting: {
+      title: string
+      subtitle: string
+      casesByStatus: string
+      repairDistribution: string
+      recoveryTrend: string
+      kpi: {
+        avgRepair: string
+        directBilling: string
+        rentalDays: string
+        recoveryRate: string
+        networkIndex: string
+        costPerClaim: string
+      }
+    }
+    audit: {
+      title: string
+      subtitle: string
+      search: string
+      empty: string
+    }
+    actions: {
+      enableDirectBilling: string
+      assignRental: string
+      markCandidate: string
+      saveNote: string
+    }
+    aiRepair: {
+      title: string
+      subtitle: string
+      plausibility: string
+      confidence: string
+      recommendation: string
+      anomalies: string
+      evidence: string
+      approve: string
+      manualReview: string
+    }
+  }
   aifox: {
   brokerfox: {
     nav: {
@@ -5185,6 +5348,169 @@ export const translations: Record<Lang, TranslationTree> = {
         empty: 'Keine Audit-Einträge gefunden.'
       }
     },
+    partnerfox: {
+      nav: {
+        title: 'Partnerfox',
+        dashboard: 'Dashboard',
+        network: 'Netzwerk',
+        cases: 'Fälle',
+        rental: 'Miete',
+        towing: 'Abschleppung',
+        subrogation: 'Regress',
+        assistance: 'Assistance',
+        reporting: 'Reporting',
+        audit: 'Audit'
+      },
+      calendar: {
+        title: 'Kalender',
+        empty: 'Keine Termine im gewählten Monat.',
+        date: 'Datum',
+        location: 'Ort',
+        linked: 'Verknüpft',
+        close: 'Schließen',
+        goTo: 'Öffnen'
+      },
+      common: {
+        all: 'Alle',
+        loading: 'Lade Daten ...'
+      },
+      dashboard: {
+        title: 'Partnerfox Workspace',
+        subtitle: 'BPO Partnerorchestrierung für Werkstatt, Miete, Abschleppung und Regress.',
+        networkTitle: 'Partnernetzwerk',
+        casesTitle: 'Offene Partnerfälle',
+        kpi: {
+          partners: 'Partner',
+          casesOpen: 'Fälle offen',
+          directBilling: 'Direktabrechnung',
+          subrogation: 'Regressfälle',
+          recoveryRate: 'Recovery Rate'
+        }
+      },
+      network: {
+        title: 'Partnernetzwerk',
+        subtitle: 'Werkstätten, Mietpartner, Abschleppung, Glas und Assistance.',
+        search: 'Suche nach Partnername oder Region',
+        empty: 'Keine Partner gefunden.',
+        type: {
+          workshop: 'Werkstatt',
+          rental: 'Mietwagen',
+          towing: 'Abschleppdienst',
+          glass: 'Glas',
+          assistance: 'Assistance'
+        }
+      },
+      partnerDetail: {
+        title: 'Partner',
+        subtitle: 'Partnerprofil',
+        contact: 'Kontakt',
+        rating: 'Bewertung',
+        avgRepairDays: 'Ø Reparaturtage',
+        directBillingEnabled: 'Direktabrechnung aktiv',
+        performance: 'Performance Score',
+        casesHandled: 'Bearbeitete Fälle',
+        timeline: 'Partner-Timeline',
+        relatedCases: 'Verknüpfte Fälle'
+      },
+      cases: {
+        title: 'Partnerfälle',
+        subtitle: 'FNOL bis Abschluss mit AI-Plausibilitätscheck.',
+        search: 'Suche nach Schaden- oder Kennzeichenreferenz',
+        empty: 'Keine Fälle gefunden.',
+        directBilling: 'Direktabrechnung',
+        status: {
+          FNOL: 'FNOL',
+          InRepair: 'In Reparatur',
+          WaitingParts: 'Wartet auf Teile',
+          RentalActive: 'Mietwagen aktiv',
+          Closed: 'Abgeschlossen'
+        }
+      },
+      caseDetail: {
+        title: 'Fall',
+        subtitle: 'Falldetail',
+        damageSummary: 'Schadenbeschreibung',
+        assignedWorkshop: 'Zugeordnete Werkstatt',
+        rentalPartner: 'Mietpartner',
+        towingPartner: 'Abschlepppartner',
+        estimatedCost: 'Kostenschätzung',
+        repairDuration: 'Reparaturdauer (Tage)',
+        trackingLink: 'Kunden-Tracking',
+        documentsTitle: 'Demo-Dokumente',
+        timelineTitle: 'Fall-Timeline'
+      },
+      rental: {
+        title: 'Mietkoordination',
+        subtitle: 'Aktive Mietfälle, Dauer und SLA-Überwachung.',
+        activeRentals: 'Aktiver Mietpartner',
+        days: 'Miettage',
+        cost: 'Kosten',
+        slaWarning: 'SLA-Warnung: Mietdauer kritisch'
+      },
+      towing: {
+        title: 'Abschleppnetzwerk',
+        subtitle: 'Dispatch und Reaktionszeiten im Überblick.',
+        responseTime: 'Reaktionszeit',
+        active: 'Status'
+      },
+      subrogation: {
+        title: 'Regressmanagement',
+        subtitle: 'Regresskandidaten, Wahrscheinlichkeit und Recovery-Prognose.',
+        probability: 'Recovery-Wahrscheinlichkeit',
+        estimate: 'Geschätzte Recovery Summe',
+        status: {
+          Open: 'Offen',
+          Negotiation: 'Verhandlung',
+          Recovered: 'Recovered',
+          Lost: 'Verloren'
+        }
+      },
+      assistance: {
+        title: 'Assistance',
+        subtitle: '24/7 Hotline, Dispatch und SLA-Überwachung.',
+        hotline: 'Hotline Partner',
+        responseTime: 'Antwortzeit',
+        slaBreach: 'SLA-Verstoß'
+      },
+      reporting: {
+        title: 'Partner Reporting',
+        subtitle: 'BPO KPI für Kosten, Dauer und Recovery.',
+        casesByStatus: 'Fälle nach Status',
+        repairDistribution: 'Reparaturdauer-Verteilung',
+        recoveryTrend: 'Recovery Trend',
+        kpi: {
+          avgRepair: 'Ø Reparaturdauer',
+          directBilling: 'Direktabrechnung Quote',
+          rentalDays: 'Miettage gesamt',
+          recoveryRate: 'Recovery Rate',
+          networkIndex: 'Netzwerkindex',
+          costPerClaim: 'Kosten pro Fall'
+        }
+      },
+      audit: {
+        title: 'Partner Audit',
+        subtitle: 'Direktabrechnung, AI-Overrides und Regress-Events.',
+        search: 'Suche',
+        empty: 'Keine Audit-Einträge gefunden.'
+      },
+      actions: {
+        enableDirectBilling: 'Direktabrechnung aktivieren',
+        assignRental: 'Mietpartner zuweisen',
+        markCandidate: 'Regresskandidat markieren',
+        saveNote: 'Notiz speichern'
+      },
+      aiRepair: {
+        title: 'AI Plausibilitätscheck',
+        subtitle: 'Kostenprüfung mit Evidenzen und Empfehlung.',
+        plausibility: 'Plausibilitäts-Score',
+        confidence: 'Konfidenz',
+        recommendation: 'Empfehlung',
+        anomalies: 'Anomalien',
+        evidence: 'Evidenz',
+        approve: 'Freigeben',
+        manualReview: 'Manuelle Prüfung'
+      }
+    },
     aifox: {
       nav: {
         title: 'AI.FOX',
@@ -7725,6 +8051,169 @@ export const translations: Record<Lang, TranslationTree> = {
         searchTitle: 'Audit log',
         search: 'Search event, message or entity',
         empty: 'No audit entries found.'
+      }
+    },
+    partnerfox: {
+      nav: {
+        title: 'Partnerfox',
+        dashboard: 'Dashboard',
+        network: 'Network',
+        cases: 'Cases',
+        rental: 'Rental',
+        towing: 'Towing',
+        subrogation: 'Subrogation',
+        assistance: 'Assistance',
+        reporting: 'Reporting',
+        audit: 'Audit'
+      },
+      calendar: {
+        title: 'Calendar',
+        empty: 'No events in selected month.',
+        date: 'Date',
+        location: 'Location',
+        linked: 'Linked',
+        close: 'Close',
+        goTo: 'Open'
+      },
+      common: {
+        all: 'All',
+        loading: 'Loading data ...'
+      },
+      dashboard: {
+        title: 'Partnerfox Workspace',
+        subtitle: 'BPO partner orchestration for workshop, rental, towing and subrogation.',
+        networkTitle: 'Partner network',
+        casesTitle: 'Open partner cases',
+        kpi: {
+          partners: 'Partners',
+          casesOpen: 'Open cases',
+          directBilling: 'Direct billing',
+          subrogation: 'Subrogation cases',
+          recoveryRate: 'Recovery rate'
+        }
+      },
+      network: {
+        title: 'Partner network',
+        subtitle: 'Workshops, rental, towing, glass and assistance providers.',
+        search: 'Search by partner name or region',
+        empty: 'No partners found.',
+        type: {
+          workshop: 'Workshop',
+          rental: 'Rental',
+          towing: 'Towing',
+          glass: 'Glass',
+          assistance: 'Assistance'
+        }
+      },
+      partnerDetail: {
+        title: 'Partner',
+        subtitle: 'Partner profile',
+        contact: 'Contact',
+        rating: 'Rating',
+        avgRepairDays: 'Avg repair days',
+        directBillingEnabled: 'Direct billing enabled',
+        performance: 'Performance score',
+        casesHandled: 'Cases handled',
+        timeline: 'Partner timeline',
+        relatedCases: 'Related cases'
+      },
+      cases: {
+        title: 'Partner Cases',
+        subtitle: 'FNOL to closure with AI plausibility checks.',
+        search: 'Search by claim number or plate',
+        empty: 'No cases found.',
+        directBilling: 'Direct billing',
+        status: {
+          FNOL: 'FNOL',
+          InRepair: 'In repair',
+          WaitingParts: 'Waiting parts',
+          RentalActive: 'Rental active',
+          Closed: 'Closed'
+        }
+      },
+      caseDetail: {
+        title: 'Case',
+        subtitle: 'Case detail',
+        damageSummary: 'Damage summary',
+        assignedWorkshop: 'Assigned workshop',
+        rentalPartner: 'Rental partner',
+        towingPartner: 'Towing partner',
+        estimatedCost: 'Estimated cost',
+        repairDuration: 'Repair duration (days)',
+        trackingLink: 'Customer tracking link',
+        documentsTitle: 'Demo documents',
+        timelineTitle: 'Case timeline'
+      },
+      rental: {
+        title: 'Rental Coordination',
+        subtitle: 'Active rentals, duration and SLA monitoring.',
+        activeRentals: 'Active rental partner',
+        days: 'Rental days',
+        cost: 'Cost',
+        slaWarning: 'SLA warning: rental duration critical'
+      },
+      towing: {
+        title: 'Towing Network',
+        subtitle: 'Dispatch and response times overview.',
+        responseTime: 'Response time',
+        active: 'Status'
+      },
+      subrogation: {
+        title: 'Subrogation',
+        subtitle: 'Candidates, probability and recovery projection.',
+        probability: 'Recovery probability',
+        estimate: 'Estimated recovery amount',
+        status: {
+          Open: 'Open',
+          Negotiation: 'Negotiation',
+          Recovered: 'Recovered',
+          Lost: 'Lost'
+        }
+      },
+      assistance: {
+        title: 'Assistance',
+        subtitle: '24/7 hotline, dispatch logs and SLA monitoring.',
+        hotline: 'Hotline provider',
+        responseTime: 'Response time',
+        slaBreach: 'SLA breach'
+      },
+      reporting: {
+        title: 'Partner Reporting',
+        subtitle: 'BPO KPIs for cost, duration and recovery.',
+        casesByStatus: 'Cases by status',
+        repairDistribution: 'Repair duration distribution',
+        recoveryTrend: 'Recovery trend',
+        kpi: {
+          avgRepair: 'Avg repair duration',
+          directBilling: 'Direct billing ratio',
+          rentalDays: 'Total rental days',
+          recoveryRate: 'Recovery rate',
+          networkIndex: 'Network performance index',
+          costPerClaim: 'Cost per claim'
+        }
+      },
+      audit: {
+        title: 'Partner Audit',
+        subtitle: 'Direct billing, AI overrides and subrogation events.',
+        search: 'Search',
+        empty: 'No audit entries found.'
+      },
+      actions: {
+        enableDirectBilling: 'Enable direct billing',
+        assignRental: 'Assign rental',
+        markCandidate: 'Mark subrogation candidate',
+        saveNote: 'Save note'
+      },
+      aiRepair: {
+        title: 'AI Plausibility Check',
+        subtitle: 'Estimate quality check with evidence and recommendation.',
+        plausibility: 'Plausibility score',
+        confidence: 'Confidence',
+        recommendation: 'Recommendation',
+        anomalies: 'Anomalies',
+        evidence: 'Evidence',
+        approve: 'Approve',
+        manualReview: 'Manual review'
       }
     },
     aifox: {

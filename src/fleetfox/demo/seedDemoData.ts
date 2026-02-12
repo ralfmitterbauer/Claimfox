@@ -25,6 +25,7 @@ import {
 import { buildInsuranceAssessment, calculateMaintenanceRisk } from '@/fleetfox/ai/fleetRiskEngine'
 
 const KEY_PREFIX = 'fleetfox'
+const SCHEMA_VERSION = '2'
 
 function key(tenantId: string, entity: string) {
   return `${KEY_PREFIX}:${tenantId}:${entity}`
@@ -385,7 +386,8 @@ export function seedAllTenants() {
 export function ensureSeeded(tenantId: string) {
   if (!isBrowser()) return
   const markerKey = key(tenantId, 'seeded')
-  if (window.localStorage.getItem(markerKey)) return
+  const current = window.localStorage.getItem(markerKey)
+  if (current === SCHEMA_VERSION) return
   seedTenantData(tenantId)
-  window.localStorage.setItem(markerKey, 'true')
+  window.localStorage.setItem(markerKey, SCHEMA_VERSION)
 }

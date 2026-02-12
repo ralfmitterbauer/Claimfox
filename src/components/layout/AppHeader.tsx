@@ -35,7 +35,7 @@ export default function AppHeader() {
     { label: t('brokerfox.nav.title'), route: '/brokerfox' },
     { label: t('header.nav.claimsfox'), route: '/claimsfox' },
     { label: t('header.nav.aiFox'), route: '/aifox' },
-    { label: t('header.nav.partnerfox'), route: '/partner' },
+    { label: t('header.nav.partnerfox'), route: '/partnerfox' },
     { label: t('header.nav.fleetfox'), route: '/fleetfox' }
   ].filter((item) => (user?.mode === 'insurance-only' ? item.route === '/insurance' : true))
 

@@ -203,6 +203,17 @@ import FleetfoxInsurancePage from '@/pages/FleetfoxInsurancePage'
 import FleetfoxAssistantPage from '@/pages/FleetfoxAssistantPage'
 import FleetfoxReportingPage from '@/pages/FleetfoxReportingPage'
 import FleetfoxAuditPage from '@/pages/FleetfoxAuditPage'
+import PartnerfoxDashboardPage from '@/partnerfox/pages/PartnerfoxDashboardPage'
+import PartnerfoxNetworkPage from '@/partnerfox/pages/PartnerfoxNetworkPage'
+import PartnerfoxPartnerDetailPage from '@/partnerfox/pages/PartnerfoxPartnerDetailPage'
+import PartnerfoxCasesPage from '@/partnerfox/pages/PartnerfoxCasesPage'
+import PartnerfoxCaseDetailPage from '@/partnerfox/pages/PartnerfoxCaseDetailPage'
+import PartnerfoxRentalPage from '@/partnerfox/pages/PartnerfoxRentalPage'
+import PartnerfoxTowingPage from '@/partnerfox/pages/PartnerfoxTowingPage'
+import PartnerfoxSubrogationPage from '@/partnerfox/pages/PartnerfoxSubrogationPage'
+import PartnerfoxAssistancePage from '@/partnerfox/pages/PartnerfoxAssistancePage'
+import PartnerfoxReportingPage from '@/partnerfox/pages/PartnerfoxReportingPage'
+import PartnerfoxAuditPage from '@/partnerfox/pages/PartnerfoxAuditPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -354,6 +365,17 @@ export default function AppRouter() {
         <Route path="/fleetfox/assistant" element={<FleetfoxAssistantPage />} />
         <Route path="/fleetfox/reporting" element={<FleetfoxReportingPage />} />
         <Route path="/fleetfox/audit" element={<FleetfoxAuditPage />} />
+        <Route path="/partnerfox" element={<PartnerfoxDashboardPage />} />
+        <Route path="/partnerfox/network" element={<PartnerfoxNetworkPage />} />
+        <Route path="/partnerfox/network/:partnerId" element={<PartnerfoxPartnerDetailPage />} />
+        <Route path="/partnerfox/cases" element={<PartnerfoxCasesPage />} />
+        <Route path="/partnerfox/cases/:caseId" element={<PartnerfoxCaseDetailPage />} />
+        <Route path="/partnerfox/rental" element={<PartnerfoxRentalPage />} />
+        <Route path="/partnerfox/towing" element={<PartnerfoxTowingPage />} />
+        <Route path="/partnerfox/subrogation" element={<PartnerfoxSubrogationPage />} />
+        <Route path="/partnerfox/assistance" element={<PartnerfoxAssistancePage />} />
+        <Route path="/partnerfox/reporting" element={<PartnerfoxReportingPage />} />
+        <Route path="/partnerfox/audit" element={<PartnerfoxAuditPage />} />
         <Route path="/fleet-reporting" element={<FleetReportingPage />} />
         <Route path="/fleet-management" element={<FleetManagementPage />} />
         <Route path="/claim-manager" element={<ClaimManagerMarketingPage />} />
