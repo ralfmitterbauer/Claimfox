@@ -13,6 +13,7 @@ type VisionZone = {
   label: string
   confidence: number
   objectPosition: string
+  box: { top: string; left: string; width: string; height: string; color: string }
 }
 
 function buildDetectedZones(event: VisionEvent | undefined): VisionZone[] {
@@ -20,34 +21,83 @@ function buildDetectedZones(event: VisionEvent | undefined): VisionZone[] {
 
   const seed = event.id.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0)
   const bump = (offset: number) => Math.max(0.6, Math.min(0.95, ((seed + offset) % 28) / 100 + 0.67))
-  const baseByType: Record<string, Array<{ label: string; objectPosition: string }>> = {
+  const baseByType: Record<string, Array<{ label: string; objectPosition: string; box: VisionZone['box'] }>> = {
     'Near miss': [
-      { label: 'Heckstoßfänger', objectPosition: '24% 52%' },
-      { label: 'Rücklicht links', objectPosition: '13% 45%' },
-      { label: 'Ladebereich', objectPosition: '52% 40%' }
+      {
+        label: 'Heckstoßfänger',
+        objectPosition: '24% 52%',
+        box: { top: '24%', left: '15%', width: '20%', height: '29%', color: '#f97316' }
+      },
+      {
+        label: 'Rücklicht links',
+        objectPosition: '13% 45%',
+        box: { top: '20%', left: '6%', width: '12%', height: '22%', color: '#38bdf8' }
+      },
+      {
+        label: 'Ladebereich',
+        objectPosition: '52% 40%',
+        box: { top: '16%', left: '47%', width: '26%', height: '32%', color: '#22c55e' }
+      }
     ],
     'Lane departure': [
-      { label: 'Seitenschweller', objectPosition: '28% 62%' },
-      { label: 'Radlauf hinten', objectPosition: '20% 58%' },
-      { label: 'Leitplankenkontakt', objectPosition: '64% 46%' }
+      {
+        label: 'Seitenschweller',
+        objectPosition: '28% 62%',
+        box: { top: '48%', left: '22%', width: '24%', height: '24%', color: '#f97316' }
+      },
+      {
+        label: 'Radlauf hinten',
+        objectPosition: '20% 58%',
+        box: { top: '44%', left: '11%', width: '12%', height: '24%', color: '#38bdf8' }
+      },
+      {
+        label: 'Leitplankenkontakt',
+        objectPosition: '64% 46%',
+        box: { top: '36%', left: '58%', width: '21%', height: '28%', color: '#22c55e' }
+      }
     ],
     Tailgating: [
-      { label: 'Frontbereich', objectPosition: '46% 40%' },
-      { label: 'Kennzeichenfeld', objectPosition: '50% 54%' },
-      { label: 'Scheinwerferzone', objectPosition: '66% 38%' }
+      {
+        label: 'Frontbereich',
+        objectPosition: '46% 40%',
+        box: { top: '28%', left: '40%', width: '26%', height: '30%', color: '#f97316' }
+      },
+      {
+        label: 'Kennzeichenfeld',
+        objectPosition: '50% 54%',
+        box: { top: '52%', left: '47%', width: '14%', height: '15%', color: '#38bdf8' }
+      },
+      {
+        label: 'Scheinwerferzone',
+        objectPosition: '66% 38%',
+        box: { top: '34%', left: '62%', width: '15%', height: '18%', color: '#22c55e' }
+      }
     ]
   }
   const base = baseByType[event.type] ?? [
-    { label: 'Schadenzone A', objectPosition: '25% 50%' },
-    { label: 'Schadenzone B', objectPosition: '60% 44%' },
-    { label: 'Schadenzone C', objectPosition: '43% 60%' }
+    {
+      label: 'Schadenzone A',
+      objectPosition: '25% 50%',
+      box: { top: '28%', left: '17%', width: '22%', height: '30%', color: '#f97316' }
+    },
+    {
+      label: 'Schadenzone B',
+      objectPosition: '60% 44%',
+      box: { top: '32%', left: '54%', width: '20%', height: '26%', color: '#38bdf8' }
+    },
+    {
+      label: 'Schadenzone C',
+      objectPosition: '43% 60%',
+      box: { top: '52%', left: '36%', width: '21%', height: '20%', color: '#22c55e' }
+    }
   ]
 
   return base.map((zone, idx) => ({
     id: `${event.id}-${idx + 1}`,
     label: zone.label,
     objectPosition: zone.objectPosition,
-    confidence: Number(bump(idx * 7).toFixed(2))
+    confidence: Number(bump(idx * 7).toFixed(2)),
+    box: zone.box
   }))
 }
 
@@ -98,27 +148,93 @@ export default function FleetfoxVisionPage() {
             <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid #e2e8f0', height: 190, background: '#e2e8f0' }}>
               <img src={ClaimDamageImage} alt="Vision demo" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
-            <div style={{ position: 'relative', height: 180, borderRadius: 14, background: '#0f172a', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 24, left: 40, width: 120, height: 70, border: '2px solid #f97316', borderRadius: 8 }} />
-              <div style={{ position: 'absolute', top: 72, right: 38, width: 100, height: 60, border: '2px solid #38bdf8', borderRadius: 8 }} />
-              <div style={{ position: 'absolute', bottom: 14, left: 16, color: '#fff', fontSize: '0.82rem' }}>{t('fleetfox.vision.overlay')}</div>
+            <div style={{ position: 'relative', height: 210, borderRadius: 14, background: '#0f172a', overflow: 'hidden' }}>
+              <img
+                src={ClaimDamageImage}
+                alt="Bounding box base"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.55, filter: 'contrast(1.12) saturate(1.05)' }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'linear-gradient(130deg, rgba(15,23,42,0.75) 0%, rgba(15,23,42,0.35) 45%, rgba(15,23,42,0.7) 100%)'
+                }}
+              />
+              {detectedZones.map((zone, index) => (
+                <div key={zone.id}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: zone.box.top,
+                      left: zone.box.left,
+                      width: zone.box.width,
+                      height: zone.box.height,
+                      border: `2px solid ${zone.box.color}`,
+                      borderRadius: 8,
+                      boxShadow: `0 0 0 1px rgba(15,23,42,0.45), 0 0 14px ${zone.box.color}66`
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: `calc(${zone.box.top} - 18px)`,
+                      left: zone.box.left,
+                      fontSize: '0.68rem',
+                      color: '#e2e8f0',
+                      background: 'rgba(15,23,42,0.85)',
+                      border: `1px solid ${zone.box.color}66`,
+                      borderRadius: 999,
+                      padding: '0.1rem 0.35rem'
+                    }}
+                  >
+                    {index + 1}. {zone.label}
+                  </div>
+                </div>
+              ))}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: 12,
+                  right: 12,
+                  bottom: 10,
+                  color: '#fff',
+                  fontSize: '0.8rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span>{t('fleetfox.vision.overlay')}</span>
+                <span style={{ fontSize: '0.72rem', color: '#cbd5e1' }}>{t('fleetfox.vision.liveMap')}</span>
+              </div>
             </div>
             <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-              Bounding Boxes markieren erkannte Schadenzonen im Gesamtbild. Die Ausschnitte darunter zeigen die jeweiligen Detektionsbereiche mit Konfidenz.
+              {t('fleetfox.vision.overlayHelp')}
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '0.6rem' }}>
               {detectedZones.map((zone) => (
                 <div key={zone.id} style={{ border: '1px solid #e2e8f0', borderRadius: 10, overflow: 'hidden', background: '#fff' }}>
                   <div style={{ height: 74, background: '#e2e8f0' }}>
-                    <img
-                      src={ClaimDamageImage}
-                      alt={zone.label}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: zone.objectPosition, display: 'block', transform: 'scale(1.5)' }}
-                    />
+                    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                      <img
+                        src={ClaimDamageImage}
+                        alt={zone.label}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: zone.objectPosition, display: 'block', transform: `scale(${1.4 + (Number(zone.id.split('-').pop() ?? 1) % 2) * 0.25})` }}
+                      />
+                      <div
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          background: 'linear-gradient(135deg, rgba(15,23,42,0.05), rgba(15,23,42,0.28))',
+                          borderTop: `2px solid ${zone.box.color}`
+                        }}
+                      />
+                    </div>
                   </div>
                   <div style={{ padding: '0.35rem 0.45rem', display: 'grid', gap: '0.1rem' }}>
                     <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#0f172a' }}>{zone.label}</div>
-                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>Confidence {Math.round(zone.confidence * 100)}%</div>
+                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{t('fleetfox.vision.confidence')}: {Math.round(zone.confidence * 100)}%</div>
                   </div>
                 </div>
               ))}

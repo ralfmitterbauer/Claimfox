@@ -606,6 +606,9 @@ type TranslationTree = {
       uploadSubtitle: string
       uploadHint: string
       overlay: string
+      liveMap: string
+      overlayHelp: string
+      confidence: string
       eventsTitle: string
       eventsSubtitle: string
       vehicle: string
@@ -5250,6 +5253,9 @@ export const translations: Record<Lang, TranslationTree> = {
         uploadSubtitle: 'Vision-Simulation',
         uploadHint: 'Unfallbild hier ablegen (Demo)',
         overlay: 'Bounding Box Overlay',
+        liveMap: 'Live-Detektionskarte',
+        overlayHelp: 'Bounding Boxes markieren erkannte Schadenzonen im Gesamtbild. Die Ausschnitte darunter zeigen die jeweiligen Detektionsbereiche mit Konfidenz.',
+        confidence: 'Konfidenz',
         eventsTitle: 'Vision Events',
         eventsSubtitle: 'Ereignisse mit Severity und Evidenz',
         vehicle: 'Fahrzeug',
@@ -7955,6 +7961,9 @@ export const translations: Record<Lang, TranslationTree> = {
         uploadSubtitle: 'Vision simulation',
         uploadHint: 'Drop accident image here (demo)',
         overlay: 'Bounding box overlay',
+        liveMap: 'Live detection map',
+        overlayHelp: 'Bounding boxes mark detected damage zones in the full image. The crops below show the corresponding detection areas with confidence.',
+        confidence: 'Confidence',
         eventsTitle: 'Vision events',
         eventsSubtitle: 'Severity, clip placeholder and evidence',
         vehicle: 'Vehicle',
