@@ -191,6 +191,18 @@ import AifoxGovernancePage from '@/pages/AifoxGovernancePage'
 import AifoxMonitoringPage from '@/pages/AifoxMonitoringPage'
 import AifoxIntegrationsPage from '@/pages/AifoxIntegrationsPage'
 import AifoxAuditPage from '@/pages/AifoxAuditPage'
+import FleetfoxDashboardPage from '@/pages/FleetfoxDashboardPage'
+import FleetfoxVehiclesPage from '@/pages/FleetfoxVehiclesPage'
+import FleetfoxVehicleDetailPage from '@/pages/FleetfoxVehicleDetailPage'
+import FleetfoxDriversPage from '@/pages/FleetfoxDriversPage'
+import FleetfoxDriverDetailPage from '@/pages/FleetfoxDriverDetailPage'
+import FleetfoxRoutesPage from '@/pages/FleetfoxRoutesPage'
+import FleetfoxVisionPage from '@/pages/FleetfoxVisionPage'
+import FleetfoxMaintenancePage from '@/pages/FleetfoxMaintenancePage'
+import FleetfoxInsurancePage from '@/pages/FleetfoxInsurancePage'
+import FleetfoxAssistantPage from '@/pages/FleetfoxAssistantPage'
+import FleetfoxReportingPage from '@/pages/FleetfoxReportingPage'
+import FleetfoxAuditPage from '@/pages/FleetfoxAuditPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -330,6 +342,18 @@ export default function AppRouter() {
         <Route path="/aifox/monitoring" element={<AifoxMonitoringPage />} />
         <Route path="/aifox/integrations" element={<AifoxIntegrationsPage />} />
         <Route path="/aifox/audit" element={<AifoxAuditPage />} />
+        <Route path="/fleetfox" element={<FleetfoxDashboardPage />} />
+        <Route path="/fleetfox/vehicles" element={<FleetfoxVehiclesPage />} />
+        <Route path="/fleetfox/vehicles/:vehicleId" element={<FleetfoxVehicleDetailPage />} />
+        <Route path="/fleetfox/drivers" element={<FleetfoxDriversPage />} />
+        <Route path="/fleetfox/drivers/:driverId" element={<FleetfoxDriverDetailPage />} />
+        <Route path="/fleetfox/routes" element={<FleetfoxRoutesPage />} />
+        <Route path="/fleetfox/vision" element={<FleetfoxVisionPage />} />
+        <Route path="/fleetfox/maintenance" element={<FleetfoxMaintenancePage />} />
+        <Route path="/fleetfox/insurance" element={<FleetfoxInsurancePage />} />
+        <Route path="/fleetfox/assistant" element={<FleetfoxAssistantPage />} />
+        <Route path="/fleetfox/reporting" element={<FleetfoxReportingPage />} />
+        <Route path="/fleetfox/audit" element={<FleetfoxAuditPage />} />
         <Route path="/fleet-reporting" element={<FleetReportingPage />} />
         <Route path="/fleet-management" element={<FleetManagementPage />} />
         <Route path="/claim-manager" element={<ClaimManagerMarketingPage />} />

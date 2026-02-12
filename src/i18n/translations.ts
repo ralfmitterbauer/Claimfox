@@ -475,6 +475,188 @@ type TranslationTree = {
       loading: string
     }
   }
+  fleetfox: {
+    nav: {
+      title: string
+      dashboard: string
+      vehicles: string
+      drivers: string
+      routes: string
+      vision: string
+      maintenance: string
+      insurance: string
+      assistant: string
+      reporting: string
+      audit: string
+    }
+    calendar: {
+      title: string
+      empty: string
+      date: string
+      location: string
+      linked: string
+      close: string
+      goTo: string
+    }
+    common: {
+      all: string
+      loading: string
+    }
+    dashboard: {
+      title: string
+      subtitle: string
+      heroHint: string
+      queueTitle: string
+      queueSubtitle: string
+      alertTitle: string
+      alertSubtitle: string
+      kpi: {
+        safety: string
+        risk: string
+        maintenance: string
+        claimsProbability: string
+        alerts: string
+        vehicles: string
+      }
+    }
+    vehicles: {
+      title: string
+      subtitle: string
+      search: string
+      empty: string
+      status: {
+        active: string
+        idle: string
+        maintenance: string
+      }
+    }
+    vehicleDetail: {
+      title: string
+      heroHint: string
+      safety: string
+      risk: string
+      odometer: string
+      nextService: string
+      overviewTitle: string
+      assignedDrivers: string
+      powertrain: string
+      tags: string
+      activate: string
+      toMaintenance: string
+      addNote: string
+      documentsTitle: string
+      documentsSubtitle: string
+      downloadTelematics: string
+      downloadRisk: string
+      openStaticDoc: string
+      timelineTitle: string
+      timelineEmpty: string
+      aiTitle: string
+      aiSubtitle: string
+    }
+    drivers: {
+      title: string
+      subtitle: string
+      search: string
+      empty: string
+    }
+    driverDetail: {
+      title: string
+      heroHint: string
+      safety: string
+      risk: string
+      distraction: string
+      speeding: string
+      assignedTitle: string
+      documentsTitle: string
+      downloadProfile: string
+      addNote: string
+      timelineTitle: string
+      timelineEmpty: string
+    }
+    routes: {
+      title: string
+      subtitle: string
+      search: string
+      risk: string
+      eta: string
+      accept: string
+    }
+    vision: {
+      title: string
+      subtitle: string
+      uploadTitle: string
+      uploadSubtitle: string
+      uploadHint: string
+      overlay: string
+      eventsTitle: string
+      eventsSubtitle: string
+      vehicle: string
+      severity: string
+      approve: string
+      override: string
+    }
+    maintenance: {
+      title: string
+      subtitle: string
+      cost: string
+      due: string
+      schedule: string
+    }
+    insurance: {
+      title: string
+      subtitle: string
+      listTitle: string
+      detailTitle: string
+      premium: string
+      basePremium: string
+      multiplier: string
+      claimsProbability: string
+      downloadReport: string
+      addNote: string
+      aiTitle: string
+      aiSubtitle: string
+    }
+    assistant: {
+      title: string
+      subtitle: string
+      actionsTitle: string
+      findCritical: string
+      reducePremium: string
+      routeSummary: string
+      resultTitle: string
+      resultSubtitle: string
+      empty: string
+    }
+    reporting: {
+      title: string
+      subtitle: string
+      riskChartTitle: string
+      statusChartTitle: string
+      tableTitle: string
+      table: {
+        vehicle: string
+        region: string
+        risk: string
+        safety: string
+      }
+      kpi: {
+        safety: string
+        risk: string
+        maintenance: string
+        claims: string
+        co2: string
+        fuel: string
+      }
+    }
+    audit: {
+      title: string
+      subtitle: string
+      searchTitle: string
+      search: string
+      empty: string
+    }
+  }
   aifox: {
   brokerfox: {
     nav: {
@@ -4727,6 +4909,188 @@ export const translations: Record<Lang, TranslationTree> = {
         loading: 'Lade Daten ...'
       }
     },
+    fleetfox: {
+      nav: {
+        title: 'Fleetfox',
+        dashboard: 'Dashboard',
+        vehicles: 'Fahrzeuge',
+        drivers: 'Fahrer',
+        routes: 'Routen',
+        vision: 'Vision',
+        maintenance: 'Wartung',
+        insurance: 'Versicherung',
+        assistant: 'Assistant',
+        reporting: 'Reporting',
+        audit: 'Audit'
+      },
+      calendar: {
+        title: 'Kalender',
+        empty: 'Keine Termine im gewählten Monat.',
+        date: 'Datum',
+        location: 'Ort',
+        linked: 'Verknüpft',
+        close: 'Schließen',
+        goTo: 'Öffnen'
+      },
+      common: {
+        all: 'Alle',
+        loading: 'Lade Daten ...'
+      },
+      dashboard: {
+        title: 'Fleetfox Workspace',
+        subtitle: 'AI Fleet Management mit Risikosteuerung und Insurance-Workflows.',
+        heroHint: '50 Fahrzeuge, 120 Fahrer und erklärbare AI-Scores im Live-Demo-Modell.',
+        queueTitle: 'Kritische Fahrzeuge',
+        queueSubtitle: 'Top-Risiko-Einheiten mit Handlungsbedarf',
+        alertTitle: 'Safety Alerts',
+        alertSubtitle: 'Aktuelle Warnungen aus Telematik und Vision',
+        kpi: {
+          safety: 'Safety Score Ø',
+          risk: 'Risk Score Ø',
+          maintenance: 'Wartungsrisiken',
+          claimsProbability: 'Schadenwahrscheinlichkeit',
+          alerts: 'Safety Alerts',
+          vehicles: 'Fahrzeuge'
+        }
+      },
+      vehicles: {
+        title: 'Fahrzeugbestand',
+        subtitle: 'Flotteneinheiten mit Risiko-, Sicherheits- und Servicekennzahlen.',
+        search: 'Suche nach Kennzeichen, VIN oder Region',
+        empty: 'Keine Fahrzeuge gefunden.',
+        status: {
+          active: 'Aktiv',
+          idle: 'Inaktiv',
+          maintenance: 'Wartung'
+        }
+      },
+      vehicleDetail: {
+        title: 'Fahrzeug',
+        heroHint: 'Detailansicht mit AI-Erklärung, Timeline und Demo-Dokumenten.',
+        safety: 'Safety Score',
+        risk: 'Risk Score',
+        odometer: 'Kilometerstand',
+        nextService: 'Nächster Service',
+        overviewTitle: 'Übersicht',
+        assignedDrivers: 'Zugeordnete Fahrer',
+        powertrain: 'Antrieb',
+        tags: 'Tags',
+        activate: 'Aktiv setzen',
+        toMaintenance: 'In Wartung',
+        addNote: 'Notiz',
+        documentsTitle: 'Demo-Dokumente',
+        documentsSubtitle: 'Telematik- und Risikoberichte als Download.',
+        downloadTelematics: 'Telematikbericht',
+        downloadRisk: 'Risikobericht',
+        openStaticDoc: 'Statisches Doku-Beispiel',
+        timelineTitle: 'Timeline',
+        timelineEmpty: 'Keine Timeline-Einträge vorhanden.',
+        aiTitle: 'AI-Erklärung',
+        aiSubtitle: 'Risikotreiber, Evidenzen und Konfidenz'
+      },
+      drivers: {
+        title: 'Fahrerübersicht',
+        subtitle: 'Fahrerprofile, Safety-Scores und Trainingsstatus.',
+        search: 'Suche nach Name oder Standort',
+        empty: 'Keine Fahrer gefunden.'
+      },
+      driverDetail: {
+        title: 'Fahrer',
+        heroHint: 'Leistungsprofil mit Fahrzeugzuordnung und Compliance-Hinweisen.',
+        safety: 'Safety Score',
+        risk: 'Risk Score',
+        distraction: 'Ablenkungsereignisse',
+        speeding: 'Geschwindigkeitsereignisse',
+        assignedTitle: 'Zugeordnete Fahrzeuge',
+        documentsTitle: 'Demo-Dokumente',
+        downloadProfile: 'Fahrerprofil herunterladen',
+        addNote: 'Coaching notieren',
+        timelineTitle: 'Timeline',
+        timelineEmpty: 'Keine Driver-Timeline vorhanden.'
+      },
+      routes: {
+        title: 'Routenoptimierung',
+        subtitle: 'AI-gestützte Vorschläge zu Risiko, ETA, CO2 und Kraftstoff.',
+        search: 'Route suchen',
+        risk: 'Risiko',
+        eta: 'ETA',
+        accept: 'Vorschlag übernehmen'
+      },
+      vision: {
+        title: 'Fleet Vision',
+        subtitle: 'Dashcam- und VisionAI-Ereignisse mit Explainability.',
+        uploadTitle: 'Unfallbild',
+        uploadSubtitle: 'Vision-Simulation',
+        uploadHint: 'Unfallbild hier ablegen (Demo)',
+        overlay: 'Bounding Box Overlay',
+        eventsTitle: 'Vision Events',
+        eventsSubtitle: 'Ereignisse mit Severity und Evidenz',
+        vehicle: 'Fahrzeug',
+        severity: 'Severity',
+        approve: 'Freigeben',
+        override: 'Übersteuern'
+      },
+      maintenance: {
+        title: 'Prädiktive Wartung',
+        subtitle: 'Ausfallprognosen, Kosten und empfohlene Maßnahmen.',
+        cost: 'Kosten',
+        due: 'Fällig in',
+        schedule: 'Slot planen'
+      },
+      insurance: {
+        title: 'Insurance Risk',
+        subtitle: 'Prämien- und Schadenwahrscheinlichkeits-Simulation.',
+        listTitle: 'Assessments',
+        detailTitle: 'Assessment-Details',
+        premium: 'Prämie',
+        basePremium: 'Basisprämie',
+        multiplier: 'Multiplikator',
+        claimsProbability: 'Schadenwahrscheinlichkeit',
+        downloadReport: 'Risk Report herunterladen',
+        addNote: 'Notiz speichern',
+        aiTitle: 'AI-Erklärung',
+        aiSubtitle: 'Evidenzbasierte Risikobegründung'
+      },
+      assistant: {
+        title: 'AI Assistant',
+        subtitle: 'Deterministische AI-Simulation für operative Entscheidungen.',
+        actionsTitle: 'Aktionen',
+        findCritical: 'Kritische Fahrzeuge finden',
+        reducePremium: 'Prämie durch Training senken',
+        routeSummary: 'Routen-Risikozusammenfassung',
+        resultTitle: 'Ergebnis',
+        resultSubtitle: 'Konfidenz, Gründe und Evidenzen',
+        empty: 'Bitte eine Aktion starten.'
+      },
+      reporting: {
+        title: 'Fleet Reporting',
+        subtitle: 'KPI, Risikocharts und operative Prioritäten.',
+        riskChartTitle: 'Risiko nach Fahrzeugtyp',
+        statusChartTitle: 'Statusverteilung',
+        tableTitle: 'Top-Risiko-Fahrzeuge',
+        table: {
+          vehicle: 'Fahrzeug',
+          region: 'Region',
+          risk: 'Risiko',
+          safety: 'Safety'
+        },
+        kpi: {
+          safety: 'Safety Score Ø',
+          risk: 'Risk Score Ø',
+          maintenance: 'Wartungsrisiko',
+          claims: 'Schadenwahrscheinlichkeit',
+          co2: 'CO2 Schätzung',
+          fuel: 'Fuel Trend'
+        }
+      },
+      audit: {
+        title: 'Fleet Audit',
+        subtitle: 'Vollständige AI- und Workflow-Events mit Filter.',
+        searchTitle: 'Audit-Log',
+        search: 'Suche nach Event, Nachricht oder Entity',
+        empty: 'Keine Audit-Einträge gefunden.'
+      }
+    },
     aifox: {
       nav: {
         title: 'AI.FOX',
@@ -7038,6 +7402,188 @@ export const translations: Record<Lang, TranslationTree> = {
       },
       common: {
         loading: 'Loading data …'
+      }
+    },
+    fleetfox: {
+      nav: {
+        title: 'Fleetfox',
+        dashboard: 'Dashboard',
+        vehicles: 'Vehicles',
+        drivers: 'Drivers',
+        routes: 'Routes',
+        vision: 'Vision',
+        maintenance: 'Maintenance',
+        insurance: 'Insurance',
+        assistant: 'Assistant',
+        reporting: 'Reporting',
+        audit: 'Audit'
+      },
+      calendar: {
+        title: 'Calendar',
+        empty: 'No events in the selected month.',
+        date: 'Date',
+        location: 'Location',
+        linked: 'Linked entity',
+        close: 'Close',
+        goTo: 'Go to'
+      },
+      common: {
+        all: 'All',
+        loading: 'Loading data …'
+      },
+      dashboard: {
+        title: 'Fleetfox Workspace',
+        subtitle: 'AI fleet management with insurance risk workflows.',
+        heroHint: '50 vehicles, 120 drivers and explainable AI scores in one demo workspace.',
+        queueTitle: 'Critical vehicles',
+        queueSubtitle: 'Highest-risk units requiring action',
+        alertTitle: 'Safety alerts',
+        alertSubtitle: 'Current telematics and vision warnings',
+        kpi: {
+          safety: 'Avg Safety Score',
+          risk: 'Avg Risk Score',
+          maintenance: 'Maintenance risks',
+          claimsProbability: 'Claims probability',
+          alerts: 'Safety alerts',
+          vehicles: 'Vehicles'
+        }
+      },
+      vehicles: {
+        title: 'Vehicle Fleet',
+        subtitle: 'Fleet units with risk, safety and service metrics.',
+        search: 'Search plate, VIN or region',
+        empty: 'No vehicles found.',
+        status: {
+          active: 'Active',
+          idle: 'Idle',
+          maintenance: 'Maintenance'
+        }
+      },
+      vehicleDetail: {
+        title: 'Vehicle',
+        heroHint: 'Detail view with AI explanation, timeline and demo downloads.',
+        safety: 'Safety score',
+        risk: 'Risk score',
+        odometer: 'Odometer',
+        nextService: 'Next service',
+        overviewTitle: 'Overview',
+        assignedDrivers: 'Assigned drivers',
+        powertrain: 'Powertrain',
+        tags: 'Tags',
+        activate: 'Set active',
+        toMaintenance: 'Set maintenance',
+        addNote: 'Add note',
+        documentsTitle: 'Demo documents',
+        documentsSubtitle: 'Download telematics and risk reports.',
+        downloadTelematics: 'Download telematics',
+        downloadRisk: 'Download risk report',
+        openStaticDoc: 'Open static sample doc',
+        timelineTitle: 'Timeline',
+        timelineEmpty: 'No timeline entries available.',
+        aiTitle: 'AI explanation',
+        aiSubtitle: 'Risk drivers, confidence and evidence references'
+      },
+      drivers: {
+        title: 'Driver Directory',
+        subtitle: 'Driver profiles, safety signals and training state.',
+        search: 'Search by name or location',
+        empty: 'No drivers found.'
+      },
+      driverDetail: {
+        title: 'Driver',
+        heroHint: 'Performance profile with assigned vehicles and coaching actions.',
+        safety: 'Safety score',
+        risk: 'Risk score',
+        distraction: 'Distraction events',
+        speeding: 'Speeding events',
+        assignedTitle: 'Assigned vehicles',
+        documentsTitle: 'Demo documents',
+        downloadProfile: 'Download driver profile',
+        addNote: 'Log coaching note',
+        timelineTitle: 'Timeline',
+        timelineEmpty: 'No driver timeline entries.'
+      },
+      routes: {
+        title: 'Route Optimization',
+        subtitle: 'AI suggestions for risk, ETA, fuel and emissions.',
+        search: 'Search route',
+        risk: 'Risk',
+        eta: 'ETA',
+        accept: 'Accept suggestion'
+      },
+      vision: {
+        title: 'Fleet Vision',
+        subtitle: 'Dashcam and VisionAI event review with explanations.',
+        uploadTitle: 'Accident image',
+        uploadSubtitle: 'Vision simulation',
+        uploadHint: 'Drop accident image here (demo)',
+        overlay: 'Bounding box overlay',
+        eventsTitle: 'Vision events',
+        eventsSubtitle: 'Severity, clip placeholder and evidence',
+        vehicle: 'Vehicle',
+        severity: 'Severity',
+        approve: 'Approve',
+        override: 'Override'
+      },
+      maintenance: {
+        title: 'Predictive Maintenance',
+        subtitle: 'Failure forecasts, expected costs and actions.',
+        cost: 'Cost',
+        due: 'Due in',
+        schedule: 'Schedule slot'
+      },
+      insurance: {
+        title: 'Insurance Risk',
+        subtitle: 'Premium and claims probability simulation.',
+        listTitle: 'Assessments',
+        detailTitle: 'Assessment details',
+        premium: 'Premium',
+        basePremium: 'Base premium',
+        multiplier: 'Multiplier',
+        claimsProbability: 'Claims probability',
+        downloadReport: 'Download risk report',
+        addNote: 'Add note',
+        aiTitle: 'AI explanation',
+        aiSubtitle: 'Evidence-based risk rationale'
+      },
+      assistant: {
+        title: 'AI Assistant',
+        subtitle: 'Deterministic AI simulation for operational decisions.',
+        actionsTitle: 'Actions',
+        findCritical: 'Find critical vehicles',
+        reducePremium: 'Reduce premium by training',
+        routeSummary: 'Route risk summary',
+        resultTitle: 'Result',
+        resultSubtitle: 'Confidence, reasons and evidence',
+        empty: 'Run an action to generate an insight.'
+      },
+      reporting: {
+        title: 'Fleet Reporting',
+        subtitle: 'KPIs, risk charts and operational priorities.',
+        riskChartTitle: 'Risk by vehicle type',
+        statusChartTitle: 'Status distribution',
+        tableTitle: 'Top-risk vehicles',
+        table: {
+          vehicle: 'Vehicle',
+          region: 'Region',
+          risk: 'Risk',
+          safety: 'Safety'
+        },
+        kpi: {
+          safety: 'Avg Safety Score',
+          risk: 'Avg Risk Score',
+          maintenance: 'Maintenance risk',
+          claims: 'Claims probability',
+          co2: 'CO2 estimate',
+          fuel: 'Fuel trend'
+        }
+      },
+      audit: {
+        title: 'Fleet Audit',
+        subtitle: 'Complete AI and workflow events with filtering.',
+        searchTitle: 'Audit log',
+        search: 'Search event, message or entity',
+        empty: 'No audit entries found.'
       }
     },
     aifox: {

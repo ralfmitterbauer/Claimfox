@@ -1,0 +1,5 @@
+Driver Training Checklist (Demo)
+
+1. Distraction awareness module completed
+2. Harsh braking simulation completed
+3. Night-route safety confirmation signed
