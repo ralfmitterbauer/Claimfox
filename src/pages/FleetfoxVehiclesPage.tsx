@@ -30,8 +30,8 @@ export default function FleetfoxVehiclesPage() {
     vehicles.filter((vehicle) => {
       const matchesStatus = status === 'all' || vehicle.status === status
       const query = search.trim().toLowerCase()
-      const matchesSearch = !query || `${vehicle.plate} ${vehicle.vin} ${vehicle.region}`.toLowerCase().includes(query)
-      return matchesStatus && matchesSearch
+      const haystack = `${vehicle.licensePlate} ${vehicle.vin} ${vehicle.manufacturer} ${vehicle.model} ${vehicle.region}`.toLowerCase()
+      return matchesStatus && (!query || haystack.includes(query))
     })
   ), [search, status, vehicles])
 
@@ -62,22 +62,13 @@ export default function FleetfoxVehiclesPage() {
                 key={vehicle.id}
                 type="button"
                 onClick={() => navigate(`/fleetfox/vehicles/${vehicle.id}`)}
-                style={{
-                  border: '1px solid #e2e8f0',
-                  borderRadius: 12,
-                  background: '#fff',
-                  padding: '0.7rem 0.8rem',
-                  display: 'grid',
-                  gap: '0.2rem',
-                  cursor: 'pointer',
-                  textAlign: 'left'
-                }}
+                style={{ border: '1px solid #e2e8f0', borderRadius: 12, background: '#fff', padding: '0.7rem 0.8rem', display: 'grid', gap: '0.2rem', cursor: 'pointer', textAlign: 'left' }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.6rem' }}>
-                  <strong>{vehicle.plate}</strong>
+                  <strong>{vehicle.licensePlate}</strong>
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>{t(`fleetfox.vehicles.status.${vehicle.status}`)}</span>
                 </div>
-                <span style={{ fontSize: '0.84rem', color: '#64748b' }}>{vehicle.region} · {vehicle.type.toUpperCase()} · {vehicle.odometerKm.toLocaleString()} km</span>
+                <span style={{ fontSize: '0.84rem', color: '#64748b' }}>{vehicle.manufacturer} {vehicle.model} · {vehicle.mileageKm.toLocaleString()} km · {vehicle.maintenanceRisk}</span>
               </button>
             ))}
           </div>

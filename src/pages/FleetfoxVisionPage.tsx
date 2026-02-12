@@ -70,7 +70,7 @@ export default function FleetfoxVisionPage() {
               ))}
             </select>
             <div style={{ fontWeight: 600 }}>{selected?.summary}</div>
-            <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.vehicle')}: {selectedVehicle?.plate ?? '-'}</div>
+            <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.vehicle')}: {selectedVehicle?.licensePlate ?? '-'}</div>
             <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.severity')}: {selected?.severity}</div>
             <ul style={{ margin: 0, paddingLeft: '1rem', color: '#475569' }}>
               {selected?.evidence.map((item) => <li key={item}>{item}</li>)}

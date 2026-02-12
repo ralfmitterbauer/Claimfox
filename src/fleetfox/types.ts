@@ -1,43 +1,109 @@
 export type FleetEntityType = 'vehicle' | 'driver' | 'route' | 'maintenance' | 'insurance' | 'vision' | 'calendar' | 'system'
 
-export type VehicleType = 'truck' | 'van' | 'ev'
-export type VehicleStatus = 'active' | 'idle' | 'maintenance'
-
-export type Vehicle = {
-  id: string
-  tenantId: string
-  plate: string
-  vin: string
-  type: VehicleType
-  powertrain: 'diesel' | 'hybrid' | 'electric'
-  region: string
-  status: VehicleStatus
-  odometerKm: number
-  lastServiceDate: string
-  nextServiceDueKm: number
-  safetyScore: number
-  riskScore: number
-  co2KgPer100Km: number
-  fuelLPer100Km: number
-  evBatteryHealth?: number
-  assignedDriverIds: string[]
-  tags: string[]
-}
+export type MaintenanceRisk = 'Low' | 'Medium' | 'High'
 
 export type Driver = {
   id: string
   tenantId: string
-  name: string
-  licenseClass: string
-  baseLocation: string
-  experienceYears: number
-  safetyScore: number
+  firstName: string
+  lastName: string
+  birthDate: string
+  address: {
+    street: string
+    zip: string
+    city: string
+    country: string
+  }
+  phone: string
+  email: string
+  licenseNumber: string
+  licenseValidUntil: string
+  licenseClass: 'B' | 'C' | 'CE'
+  hireDate: string
   riskScore: number
-  distractionEvents: number
-  harshBrakingEvents: number
-  speedingEvents: number
-  trainingStatus: 'upToDate' | 'due' | 'overdue'
-  assignedVehicleIds: string[]
+  safetyScore: number
+  ecoScore: number
+  incidentsCount: number
+  activeVehicleId?: string
+}
+
+export type Vehicle = {
+  id: string
+  tenantId: string
+  vin: string
+  licensePlate: string
+  manufacturer: string
+  model: string
+  year: number
+  color: string
+  fuelType: 'Diesel' | 'Electric' | 'Hybrid'
+  enginePowerHP: number
+  totalWeightKg: number
+  payloadKg: number
+  axleCount: number
+  purchaseDate: string
+  mileageKm: number
+  lastServiceDate: string
+  nextServiceDueKm: number
+  maintenanceRisk: MaintenanceRisk
+  telematicsDeviceId: string
+  assignedDriverId?: string
+  region: string
+  status: 'active' | 'idle' | 'maintenance'
+  riskScore: number
+  safetyScore: number
+  ecoScore: number
+  tags: string[]
+}
+
+export type TelematicsSnapshot = {
+  id: string
+  tenantId: string
+  vehicleId: string
+  timestamp: string
+  speed: number
+  harshBraking: boolean
+  harshAcceleration: boolean
+  idleMinutes: number
+  fuelConsumption: number
+  batteryHealthPercent?: number
+  location: {
+    lat: number
+    lng: number
+    city: string
+  }
+}
+
+export type Route = {
+  id: string
+  tenantId: string
+  vehicleId: string
+  startAddress: string
+  endAddress: string
+  distanceKm: number
+  plannedDurationMin: number
+  actualDurationMin: number
+  deviationPercent: number
+  delayReason: string
+  riskScore: number
+}
+
+export type MaintenanceEvent = {
+  id: string
+  tenantId: string
+  vehicleId: string
+  type: 'Inspection' | 'Brake' | 'Engine' | 'Tire' | 'Battery'
+  cost: number
+  downtimeDays: number
+  aiPredicted: boolean
+}
+
+export type FleetCostSummary = {
+  fuelCost: number
+  maintenanceCost: number
+  insuranceCost: number
+  totalCost: number
+  costPerKm: number
 }
 
 export type SafetyAlert = {
@@ -62,31 +128,6 @@ export type VisionEvent = {
   summary: string
   clipLabel: string
   evidence: string[]
-}
-
-export type RoutePlan = {
-  id: string
-  tenantId: string
-  day: string
-  routeName: string
-  stops: number
-  etaMinutes: number
-  riskScore: number
-  co2EstimateKg: number
-  fuelEstimateL: number
-  optimizationSuggestion: string
-  evidence: string[]
-}
-
-export type MaintenancePrediction = {
-  id: string
-  tenantId: string
-  vehicleId: string
-  predictedIssue: string
-  probability: number
-  costEstimateEur: number
-  dueInDays: number
-  recommendedAction: string
 }
 
 export type InsuranceAssessment = {
@@ -136,3 +177,6 @@ export type FleetAssistantInsight = {
   bullets: string[]
   evidenceRefs: string[]
 }
+
+export type RoutePlan = Route
+export type MaintenancePrediction = MaintenanceEvent

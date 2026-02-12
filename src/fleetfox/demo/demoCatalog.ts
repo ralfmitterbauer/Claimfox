@@ -4,60 +4,52 @@ export const fleetfoxTenants = [
   { id: 'tenant-charlie', name: 'Atlas Mobility Networks' }
 ]
 
-export const regions = ['Hamburg', 'Berlin', 'Munich', 'Rhine-Ruhr', 'Leipzig', 'Cologne']
-export const highRiskCorridors = ['A7 Hamburg-Kiel', 'A3 Cologne-Frankfurt', 'A9 Leipzig-Munich']
+export const cities = ['Hamburg', 'Berlin', 'Munich', 'Cologne', 'Leipzig', 'Chicago', 'Rotterdam', 'Vienna']
 
-export const vehicleTags = ['temperature', 'theft', 'major loss', 'litigation risk', 'night shift', 'urban delivery']
-
-export const maintenanceIssues = [
-  'Brake pads wear above threshold',
-  'Tire pressure instability',
-  'Battery degradation trend',
-  'Cooling system anomaly',
-  'Suspension vibration profile'
+export const euAddresses = [
+  { street: 'Hafenstraße 22', zip: '20457', city: 'Hamburg', country: 'Germany' },
+  { street: 'Seestraße 91', zip: '13353', city: 'Berlin', country: 'Germany' },
+  { street: 'Landsberger Straße 88', zip: '80339', city: 'Munich', country: 'Germany' },
+  { street: 'Aachener Straße 144', zip: '50674', city: 'Cologne', country: 'Germany' },
+  { street: 'Wexstraße 11', zip: '1200', city: 'Vienna', country: 'Austria' },
+  { street: 'Nieuwe Maaslaan 17', zip: '3011', city: 'Rotterdam', country: 'Netherlands' }
 ]
 
-export const routeHints = [
-  'Shift departure by 35 minutes to avoid congestion peak.',
-  'Use alternate corridor to reduce high-risk weather exposure.',
-  'Bundle stop sequence to reduce idle time by 12%.',
-  'Switch to EV-priority segment for lower CO2 emissions.'
+export const usAddresses = [
+  { street: '1234 W Oak St', zip: '60607', city: 'Chicago', country: 'USA' },
+  { street: '480 Lake Shore Dr', zip: '60611', city: 'Chicago', country: 'USA' }
 ]
 
-export const insuranceActions = [
-  'Mandatory coaching for drivers with repeated harsh braking.',
-  'Increase telematics sampling on high-risk corridor vehicles.',
-  'Move maintenance cadence from 30 to 21 days for heavy units.',
-  'Apply theft-prevention checklist for urban night routes.'
-]
+export const manufacturers = ['Mercedes-Benz', 'MAN', 'Volvo', 'Scania', 'Ford']
+export const models = ['Actros 1845', 'eTGX', 'FH 500', 'R 450', 'Transit Custom']
+export const colors = ['White', 'Silver', 'Blue', 'Graphite', 'Red']
 
-export const driverFirstNames = ['Max', 'Lea', 'Jonas', 'Sofia', 'Mila', 'Paul', 'Lena', 'Noah', 'Emma', 'Lukas']
-export const driverLastNames = ['Krause', 'Winter', 'Becker', 'Yilmaz', 'Schmidt', 'Hofmann', 'Klein', 'Heller', 'Aydin', 'Berg']
+export const maintenanceTypes = ['Inspection', 'Brake', 'Engine', 'Tire', 'Battery'] as const
 
 export const calendarTemplates = [
   {
-    title: 'Safety review: TRK-245 - Vision event',
-    location: 'Hamburg Ops Center',
-    description: 'Review near-miss sequence and corrective actions with fleet safety lead.'
+    title: 'Vehicle inspection due',
+    location: 'Hamburg Workshop',
+    description: 'Annual inspection window for heavy fleet unit.'
   },
   {
-    title: 'Maintenance slot: VAN-118 - Brake pads',
-    location: 'Berlin Workshop',
-    description: 'Preventive replacement and post-service telematics calibration.'
+    title: 'Driver license expiry warning',
+    location: 'Fleet HR Desk',
+    description: 'Validate upcoming license expiry and renewal documents.'
   },
   {
-    title: 'Underwriting call: Fleet premium renewal',
-    location: 'Video Conference',
-    description: 'Discuss pricing assumptions and risk controls for next policy term.'
+    title: 'Insurance renewal',
+    location: 'Underwriting Call',
+    description: 'Review premium assumptions and fleet risk controls.'
   },
   {
-    title: 'Driver coaching: Max K. - distraction',
-    location: 'Munich Training Hub',
-    description: 'Focused coaching session following repeated distraction alerts.'
+    title: 'Major service scheduled',
+    location: 'Berlin Main Workshop',
+    description: 'Major service slot for high-mileage vehicle.'
   },
   {
-    title: 'Route optimization workshop - Hamburg region',
-    location: 'Fleet Planning Room',
-    description: 'Optimize routes with weather and traffic risk overlays.'
+    title: 'Route compliance audit',
+    location: 'Operations Governance',
+    description: 'Audit deviations and compliance controls for key routes.'
   }
 ]

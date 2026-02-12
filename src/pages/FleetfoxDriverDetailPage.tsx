@@ -21,6 +21,14 @@ function downloadText(filename: string, content: string, mime: string) {
   URL.revokeObjectURL(url)
 }
 
+function ScoreBar({ value }: { value: number }) {
+  return (
+    <div style={{ height: 8, background: '#e2e8f0', borderRadius: 999, overflow: 'hidden' }}>
+      <div style={{ width: `${value}%`, height: '100%', background: '#d4380d' }} />
+    </div>
+  )
+}
+
 export default function FleetfoxDriverDetailPage() {
   const { driverId } = useParams()
   const { t } = useI18n()
@@ -47,10 +55,7 @@ export default function FleetfoxDriverDetailPage() {
     return () => { mounted = false }
   }, [ctx, driverId])
 
-  const assignedVehicles = useMemo(() => {
-    if (!driver) return []
-    return vehicles.filter((vehicle) => driver.assignedVehicleIds.includes(vehicle.id))
-  }, [driver, vehicles])
+  const currentVehicle = useMemo(() => vehicles.find((vehicle) => vehicle.id === driver?.activeVehicleId), [driver, vehicles])
 
   async function addCoachingNote() {
     if (!driverId) return
@@ -77,23 +82,25 @@ export default function FleetfoxDriverDetailPage() {
 
   return (
     <FleetfoxLayout
-      title={`${t('fleetfox.driverDetail.title')} ${driver.name}`}
-      subtitle={`${driver.baseLocation} · ${driver.licenseClass}`}
+      title={`${t('fleetfox.driverDetail.title')} ${driver.firstName} ${driver.lastName}`}
+      subtitle={`${driver.address.city} · ${driver.licenseClass}`}
       topLeft={<div style={{ color: '#fff', fontSize: '0.84rem' }}>{t('fleetfox.driverDetail.heroHint')}</div>}
     >
       <div style={{ display: 'grid', gap: '1.5rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '1rem' }}>
-          <Card style={{ padding: '1rem' }}><strong>{t('fleetfox.driverDetail.safety')}</strong><div>{driver.safetyScore}</div></Card>
-          <Card style={{ padding: '1rem' }}><strong>{t('fleetfox.driverDetail.risk')}</strong><div>{driver.riskScore}</div></Card>
-          <Card style={{ padding: '1rem' }}><strong>{t('fleetfox.driverDetail.distraction')}</strong><div>{driver.distractionEvents}</div></Card>
-          <Card style={{ padding: '1rem' }}><strong>{t('fleetfox.driverDetail.speeding')}</strong><div>{driver.speedingEvents}</div></Card>
-        </div>
+        <Card title={t('fleetfox.driverDetail.profileTitle')}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
+            <div>{t('fleetfox.driverDetail.address')}: {driver.address.street}, {driver.address.zip} {driver.address.city}, {driver.address.country}</div>
+            <div>{t('fleetfox.driverDetail.licenseValidUntil')}: {new Date(driver.licenseValidUntil).toLocaleDateString()}</div>
+            <div>{t('fleetfox.driverDetail.incidents')}: {driver.incidentsCount}</div>
+            <div>{t('fleetfox.driverDetail.currentVehicle')}: {currentVehicle?.licensePlate ?? '-'}</div>
+          </div>
+        </Card>
 
-        <Card title={t('fleetfox.driverDetail.assignedTitle')}>
-          <div style={{ display: 'grid', gap: '0.45rem' }}>
-            {assignedVehicles.map((vehicle) => (
-              <div key={vehicle.id} style={{ color: '#475569' }}>{vehicle.plate} · {vehicle.region}</div>
-            ))}
+        <Card title={t('fleetfox.driverDetail.scoresTitle')}>
+          <div style={{ display: 'grid', gap: '0.65rem' }}>
+            <div>{t('fleetfox.driverDetail.risk')} {driver.riskScore}<ScoreBar value={driver.riskScore} /></div>
+            <div>{t('fleetfox.driverDetail.safety')} {driver.safetyScore}<ScoreBar value={driver.safetyScore} /></div>
+            <div>{t('fleetfox.driverDetail.eco')} {driver.ecoScore}<ScoreBar value={driver.ecoScore} /></div>
           </div>
         </Card>
 

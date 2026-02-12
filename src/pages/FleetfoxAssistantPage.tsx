@@ -5,56 +5,55 @@ import FleetfoxLayout from '@/fleetfox/components/FleetfoxLayout'
 import FleetAIExplanationCard from '@/fleetfox/components/FleetAIExplanationCard'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { addTimelineEvent, listMaintenance, listRoutes, listVehicles, listVisionEvents } from '@/fleetfox/api/fleetfoxApi'
-import {
-  findCriticalVehicles,
-  routeRiskSummary,
-  simulateTrainingPremiumReduction
-} from '@/fleetfox/components/FleetRiskEngine'
-import type { FleetAssistantInsight, MaintenancePrediction, RoutePlan, Vehicle, VisionEvent } from '@/fleetfox/types'
+import { addTimelineEvent, listDrivers, listRoutes, listTelematicsSnapshots, listVehicles } from '@/fleetfox/api/fleetfoxApi'
+import { findCriticalVehicles, routeRiskSummary, simulateTrainingPremiumReduction } from '@/fleetfox/ai/fleetRiskEngine'
+import type { Driver, FleetAssistantInsight, Route, TelematicsSnapshot, Vehicle } from '@/fleetfox/types'
 
 export default function FleetfoxAssistantPage() {
   const { t } = useI18n()
   const ctx = useTenantContext()
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
-  const [maintenance, setMaintenance] = useState<MaintenancePrediction[]>([])
-  const [visionEvents, setVisionEvents] = useState<VisionEvent[]>([])
-  const [routes, setRoutes] = useState<RoutePlan[]>([])
+  const [drivers, setDrivers] = useState<Driver[]>([])
+  const [telematics, setTelematics] = useState<TelematicsSnapshot[]>([])
+  const [routes, setRoutes] = useState<Route[]>([])
   const [insight, setInsight] = useState<FleetAssistantInsight | null>(null)
 
   useEffect(() => {
     let mounted = true
     async function load() {
-      const [vehicleData, maintenanceData, visionData, routeData] = await Promise.all([
+      const [vehicleData, driverData, telematicsData, routeData] = await Promise.all([
         listVehicles(ctx),
-        listMaintenance(ctx),
-        listVisionEvents(ctx),
+        listDrivers(ctx),
+        listTelematicsSnapshots(ctx),
         listRoutes(ctx)
       ])
       if (!mounted) return
       setVehicles(vehicleData)
-      setMaintenance(maintenanceData)
-      setVisionEvents(visionData)
+      setDrivers(driverData)
+      setTelematics(telematicsData)
       setRoutes(routeData)
     }
     load()
     return () => { mounted = false }
   }, [ctx])
 
-  const maintenanceByVehicle = useMemo(
-    () => new Map(maintenance.map((item) => [item.vehicleId, item])),
-    [maintenance]
-  )
-
-  const visionByVehicle = useMemo(() => {
-    const map = new Map<string, VisionEvent[]>()
-    visionEvents.forEach((event) => {
-      const list = map.get(event.vehicleId) ?? []
-      list.push(event)
-      map.set(event.vehicleId, list)
+  const driversByVehicleId = useMemo(() => {
+    const map = new Map<string, Driver | undefined>()
+    vehicles.forEach((vehicle) => {
+      map.set(vehicle.id, drivers.find((driver) => driver.id === vehicle.assignedDriverId))
     })
     return map
-  }, [visionEvents])
+  }, [drivers, vehicles])
+
+  const telematicsByVehicleId = useMemo(() => {
+    const map = new Map<string, TelematicsSnapshot[]>()
+    telematics.forEach((row) => {
+      const list = map.get(row.vehicleId) ?? []
+      list.push(row)
+      map.set(row.vehicleId, list)
+    })
+    return map
+  }, [telematics])
 
   async function applyInsight(next: FleetAssistantInsight, title: string) {
     setInsight(next)
@@ -73,7 +72,7 @@ export default function FleetfoxAssistantPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 0.9fr) minmax(0, 1.1fr)', gap: '1.5rem' }}>
         <Card title={t('fleetfox.assistant.actionsTitle')}>
           <div style={{ display: 'grid', gap: '0.55rem' }}>
-            <Button size="sm" onClick={() => applyInsight(findCriticalVehicles(vehicles, maintenanceByVehicle, visionByVehicle), t('fleetfox.assistant.findCritical'))}>
+            <Button size="sm" onClick={() => applyInsight(findCriticalVehicles(vehicles, driversByVehicleId, telematicsByVehicleId), t('fleetfox.assistant.findCritical'))}>
               {t('fleetfox.assistant.findCritical')}
             </Button>
             <Button size="sm" variant="secondary" onClick={() => applyInsight(simulateTrainingPremiumReduction(vehicles), t('fleetfox.assistant.reducePremium'))}>
@@ -84,8 +83,8 @@ export default function FleetfoxAssistantPage() {
               variant="secondary"
               onClick={() => {
                 const avgRouteRisk = routes.reduce((acc, route) => acc + route.riskScore, 0) / Math.max(routes.length, 1)
-                const weatherRisk = routes.reduce((acc, route) => acc + Number(route.evidence[1]?.replace(/[^0-9]/g, '') || '0'), 0) / Math.max(routes.length, 1)
-                const trafficRisk = routes.reduce((acc, route) => acc + Number(route.evidence[0]?.replace(/[^0-9]/g, '') || '0'), 0) / Math.max(routes.length, 1)
+                const weatherRisk = Math.max(10, avgRouteRisk * 0.42)
+                const trafficRisk = Math.max(15, avgRouteRisk * 0.55)
                 applyInsight(routeRiskSummary(avgRouteRisk, weatherRisk, trafficRisk), t('fleetfox.assistant.routeSummary'))
               }}
             >

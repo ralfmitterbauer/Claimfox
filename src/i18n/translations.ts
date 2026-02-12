@@ -533,6 +533,16 @@ type TranslationTree = {
     vehicleDetail: {
       title: string
       heroHint: string
+      vin: string
+      licensePlate: string
+      weight: string
+      mileage: string
+      manufacturer: string
+      model: string
+      serviceStatus: string
+      assignedDriver: string
+      maintenanceRisk: string
+      predictedServiceDate: string
       safety: string
       risk: string
       odometer: string
@@ -563,8 +573,15 @@ type TranslationTree = {
     driverDetail: {
       title: string
       heroHint: string
+      profileTitle: string
+      address: string
+      licenseValidUntil: string
+      incidents: string
+      currentVehicle: string
+      scoresTitle: string
       safety: string
       risk: string
+      eco: string
       distraction: string
       speeding: string
       assignedTitle: string
@@ -599,9 +616,38 @@ type TranslationTree = {
     maintenance: {
       title: string
       subtitle: string
+      warningTitle: string
+      warningBody: string
       cost: string
       due: string
       schedule: string
+    }
+    telematics: {
+      title: string
+      subtitle: string
+      speed: string
+      idle: string
+      fuel: string
+      harshBraking: string
+      harshAcceleration: string
+    }
+    risk: {
+      title: string
+      subtitle: string
+      score: string
+      category: string
+      recommendation: string
+      premiumImpact: string
+    }
+    costs: {
+      title: string
+      subtitle: string
+      total: string
+      perVehicle: string
+      perKm: string
+      fuel: string
+      maintenance: string
+      insurance: string
     }
     insurance: {
       title: string
@@ -633,6 +679,7 @@ type TranslationTree = {
       subtitle: string
       riskChartTitle: string
       statusChartTitle: string
+      maintenanceTrend: string
       tableTitle: string
       table: {
         vehicle: string
@@ -4967,6 +5014,16 @@ export const translations: Record<Lang, TranslationTree> = {
       vehicleDetail: {
         title: 'Fahrzeug',
         heroHint: 'Detailansicht mit AI-Erklärung, Timeline und Demo-Dokumenten.',
+        vin: 'VIN',
+        licensePlate: 'Kennzeichen',
+        weight: 'Gewicht',
+        mileage: 'Kilometer',
+        manufacturer: 'Hersteller',
+        model: 'Modell',
+        serviceStatus: 'Service-Status',
+        assignedDriver: 'Zugeordneter Fahrer',
+        maintenanceRisk: 'Wartungsrisiko',
+        predictedServiceDate: 'Serviceprognose',
         safety: 'Safety Score',
         risk: 'Risk Score',
         odometer: 'Kilometerstand',
@@ -4997,8 +5054,15 @@ export const translations: Record<Lang, TranslationTree> = {
       driverDetail: {
         title: 'Fahrer',
         heroHint: 'Leistungsprofil mit Fahrzeugzuordnung und Compliance-Hinweisen.',
+        profileTitle: 'Fahrerprofil',
+        address: 'Adresse',
+        licenseValidUntil: 'Führerschein gültig bis',
+        incidents: 'Vorfälle',
+        currentVehicle: 'Aktuelles Fahrzeug',
+        scoresTitle: 'Score-Übersicht',
         safety: 'Safety Score',
         risk: 'Risk Score',
+        eco: 'Eco Score',
         distraction: 'Ablenkungsereignisse',
         speeding: 'Geschwindigkeitsereignisse',
         assignedTitle: 'Zugeordnete Fahrzeuge',
@@ -5033,9 +5097,38 @@ export const translations: Record<Lang, TranslationTree> = {
       maintenance: {
         title: 'Prädiktive Wartung',
         subtitle: 'Ausfallprognosen, Kosten und empfohlene Maßnahmen.',
+        warningTitle: 'AI-Warnung: Wartung überfällig',
+        warningBody: 'Die aktuelle Laufleistung liegt über dem Service-Schwellenwert. Bitte sofort Wartung einplanen.',
         cost: 'Kosten',
         due: 'Fällig in',
         schedule: 'Slot planen'
+      },
+      telematics: {
+        title: 'Telematik-Timeline',
+        subtitle: 'Ereignisse zu Bremsen, Leerlauf, Verbrauch und Standort.',
+        speed: 'Geschwindigkeit',
+        idle: 'Leerlauf',
+        fuel: 'Verbrauch',
+        harshBraking: 'Starkes Bremsen',
+        harshAcceleration: 'Starkes Beschleunigen'
+      },
+      risk: {
+        title: 'AI Risiko-Panel',
+        subtitle: 'Deterministischer Score aus Telematik, Vorfällen und Service-Status.',
+        score: 'Risiko-Score',
+        category: 'Risikokategorie',
+        recommendation: 'Empfehlung',
+        premiumImpact: 'Prämien-Impact'
+      },
+      costs: {
+        title: 'Kostenübersicht',
+        subtitle: 'Fuel-, Wartungs- und Versicherungskosten mit KPI pro km.',
+        total: 'Gesamtkosten',
+        perVehicle: 'Kosten pro Fahrzeug',
+        perKm: 'Kosten pro km',
+        fuel: 'Fuel-Kosten',
+        maintenance: 'Wartungskosten',
+        insurance: 'Versicherungskosten'
       },
       insurance: {
         title: 'Insurance Risk',
@@ -5067,6 +5160,7 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'KPI, Risikocharts und operative Prioritäten.',
         riskChartTitle: 'Risiko nach Fahrzeugtyp',
         statusChartTitle: 'Statusverteilung',
+        maintenanceTrend: 'Wartungskosten-Trend',
         tableTitle: 'Top-Risiko-Fahrzeuge',
         table: {
           vehicle: 'Fahrzeug',
@@ -7462,6 +7556,16 @@ export const translations: Record<Lang, TranslationTree> = {
       vehicleDetail: {
         title: 'Vehicle',
         heroHint: 'Detail view with AI explanation, timeline and demo downloads.',
+        vin: 'VIN',
+        licensePlate: 'License plate',
+        weight: 'Weight',
+        mileage: 'Mileage',
+        manufacturer: 'Manufacturer',
+        model: 'Model',
+        serviceStatus: 'Service status',
+        assignedDriver: 'Assigned driver',
+        maintenanceRisk: 'Maintenance risk',
+        predictedServiceDate: 'Predicted service date',
         safety: 'Safety score',
         risk: 'Risk score',
         odometer: 'Odometer',
@@ -7492,8 +7596,15 @@ export const translations: Record<Lang, TranslationTree> = {
       driverDetail: {
         title: 'Driver',
         heroHint: 'Performance profile with assigned vehicles and coaching actions.',
+        profileTitle: 'Driver profile',
+        address: 'Address',
+        licenseValidUntil: 'License valid until',
+        incidents: 'Incidents',
+        currentVehicle: 'Current vehicle',
+        scoresTitle: 'Score overview',
         safety: 'Safety score',
         risk: 'Risk score',
+        eco: 'Eco score',
         distraction: 'Distraction events',
         speeding: 'Speeding events',
         assignedTitle: 'Assigned vehicles',
@@ -7528,9 +7639,38 @@ export const translations: Record<Lang, TranslationTree> = {
       maintenance: {
         title: 'Predictive Maintenance',
         subtitle: 'Failure forecasts, expected costs and actions.',
+        warningTitle: 'AI warning: service overdue',
+        warningBody: 'Current mileage is above service threshold. Schedule maintenance immediately.',
         cost: 'Cost',
         due: 'Due in',
         schedule: 'Schedule slot'
+      },
+      telematics: {
+        title: 'Telematics timeline',
+        subtitle: 'Events for braking, idle time, consumption and location.',
+        speed: 'Speed',
+        idle: 'Idle',
+        fuel: 'Fuel',
+        harshBraking: 'Harsh braking',
+        harshAcceleration: 'Harsh acceleration'
+      },
+      risk: {
+        title: 'AI risk panel',
+        subtitle: 'Deterministic score based on telematics, incidents and service status.',
+        score: 'Risk score',
+        category: 'Risk category',
+        recommendation: 'Recommendation',
+        premiumImpact: 'Premium impact'
+      },
+      costs: {
+        title: 'Cost overview',
+        subtitle: 'Fuel, maintenance and insurance costs with per-km KPI.',
+        total: 'Total cost',
+        perVehicle: 'Cost per vehicle',
+        perKm: 'Cost per km',
+        fuel: 'Fuel cost',
+        maintenance: 'Maintenance cost',
+        insurance: 'Insurance cost'
       },
       insurance: {
         title: 'Insurance Risk',
@@ -7562,6 +7702,7 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'KPIs, risk charts and operational priorities.',
         riskChartTitle: 'Risk by vehicle type',
         statusChartTitle: 'Status distribution',
+        maintenanceTrend: 'Maintenance cost trend',
         tableTitle: 'Top-risk vehicles',
         table: {
           vehicle: 'Vehicle',

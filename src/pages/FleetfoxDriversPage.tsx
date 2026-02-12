@@ -28,7 +28,7 @@ export default function FleetfoxDriversPage() {
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim()
     if (!q) return drivers
-    return drivers.filter((driver) => `${driver.name} ${driver.baseLocation}`.toLowerCase().includes(q))
+    return drivers.filter((driver) => `${driver.firstName} ${driver.lastName} ${driver.address.city}`.toLowerCase().includes(q))
   }, [drivers, query])
 
   return (
@@ -53,10 +53,10 @@ export default function FleetfoxDriversPage() {
                 style={{ border: '1px solid #e2e8f0', borderRadius: 12, background: '#fff', padding: '0.7rem 0.8rem', textAlign: 'left', cursor: 'pointer' }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <strong>{driver.name}</strong>
+                  <strong>{driver.firstName} {driver.lastName}</strong>
                   <span style={{ fontSize: '0.84rem', color: '#64748b' }}>{driver.licenseClass}</span>
                 </div>
-                <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{driver.baseLocation} · Safety {driver.safetyScore}</div>
+                <div style={{ fontSize: '0.84rem', color: '#64748b' }}>{driver.address.city} · Safety {driver.safetyScore} · Eco {driver.ecoScore}</div>
               </button>
             ))}
           </div>
