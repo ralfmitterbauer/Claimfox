@@ -831,11 +831,17 @@ type TranslationTree = {
       subtitle: string
       probability: string
       estimate: string
+      projected: string
       status: {
         Open: string
         Negotiation: string
         Recovered: string
         Lost: string
+      }
+      stageRecommendation: {
+        fastTrack: string
+        standard: string
+        manualReview: string
       }
     }
     assistance: {
@@ -5492,11 +5498,17 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'Regresskandidaten, Wahrscheinlichkeit und Recovery-Prognose.',
         probability: 'Recovery-Wahrscheinlichkeit',
         estimate: 'Geschätzte Recovery Summe',
+        projected: 'Prognose',
         status: {
           Open: 'Offen',
           Negotiation: 'Verhandlung',
           Recovered: 'Recovered',
           Lost: 'Verloren'
+        },
+        stageRecommendation: {
+          fastTrack: 'Fast-Track Verhandlung',
+          standard: 'Standardverhandlung',
+          manualReview: 'Manuelle juristische Prüfung'
         }
       },
       assistance: {
@@ -8214,11 +8226,17 @@ export const translations: Record<Lang, TranslationTree> = {
         subtitle: 'Candidates, probability and recovery projection.',
         probability: 'Recovery probability',
         estimate: 'Estimated recovery amount',
+        projected: 'Projected',
         status: {
           Open: 'Open',
           Negotiation: 'Negotiation',
           Recovered: 'Recovered',
           Lost: 'Lost'
+        },
+        stageRecommendation: {
+          fastTrack: 'Fast-track negotiation',
+          standard: 'Standard negotiation',
+          manualReview: 'Manual legal review'
         }
       },
       assistance: {

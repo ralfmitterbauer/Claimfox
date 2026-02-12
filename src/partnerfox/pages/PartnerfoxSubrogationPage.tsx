@@ -53,7 +53,9 @@ export default function PartnerfoxSubrogationPage() {
                   <span style={{ fontSize: '0.82rem', color: '#64748b' }}>
                     {t('partnerfox.subrogation.probability')}: {Math.round(item.recoveryProbability * 100)}% · {t(`partnerfox.subrogation.status.${item.status}`)}
                   </span>
-                  <span style={{ fontSize: '0.82rem', color: '#64748b' }}>Projected: EUR {recommendation.projectedRecovery.toLocaleString()} · {recommendation.stage}</span>
+                  <span style={{ fontSize: '0.82rem', color: '#64748b' }}>
+                    {t('partnerfox.subrogation.projected')}: EUR {recommendation.projectedRecovery.toLocaleString()} · {t(`partnerfox.subrogation.stageRecommendation.${recommendation.stageKey}`)}
+                  </span>
                 </button>
               )
             })}

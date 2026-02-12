@@ -33,6 +33,6 @@ export function buildSubrogationRecommendation(item: Subrogation) {
   const projected = Math.round(item.claimAmount * item.recoveryProbability)
   return {
     projectedRecovery: projected,
-    stage: item.recoveryProbability > 0.7 ? 'Fast-track negotiation' : item.recoveryProbability > 0.5 ? 'Standard negotiation' : 'Manual legal review'
+    stageKey: item.recoveryProbability > 0.7 ? 'fastTrack' : item.recoveryProbability > 0.5 ? 'standard' : 'manualReview'
   }
 }
