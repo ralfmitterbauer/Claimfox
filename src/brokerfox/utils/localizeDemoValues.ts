@@ -1,0 +1,51 @@
+import type { Lang } from '@/i18n/translations'
+
+const SEGMENT_MAP: Record<string, { de: string; en: string }> = {
+  Enterprise: { de: 'Enterprise', en: 'Enterprise' },
+  'Mid-Market': { de: 'Mittelstand', en: 'Mid-Market' },
+  SME: { de: 'KMU', en: 'SME' },
+  Fleet: { de: 'Flotte', en: 'Fleet' },
+  Industrial: { de: 'Industrie', en: 'Industrial' }
+}
+
+const INDUSTRY_MAP: Record<string, { de: string; en: string }> = {
+  Manufacturing: { de: 'Fertigung', en: 'Manufacturing' },
+  Logistics: { de: 'Logistik', en: 'Logistics' },
+  Retail: { de: 'Einzelhandel', en: 'Retail' },
+  Construction: { de: 'Bauwesen', en: 'Construction' },
+  Healthcare: { de: 'Gesundheitswesen', en: 'Healthcare' },
+  Technology: { de: 'Technologie', en: 'Technology' },
+  'Food & Beverage': { de: 'Lebensmittel & Getraenke', en: 'Food & Beverage' },
+  Automotive: { de: 'Automobil', en: 'Automotive' },
+  Energy: { de: 'Energie', en: 'Energy' },
+  'Public Sector': { de: 'Oeffentlicher Sektor', en: 'Public Sector' }
+}
+
+const CONTACT_ROLE_MAP: Record<string, { de: string; en: string }> = {
+  'Risk Manager': { de: 'Risikomanager', en: 'Risk Manager' },
+  CFO: { de: 'CFO', en: 'CFO' },
+  'Operations Lead': { de: 'Leitung Betrieb', en: 'Operations Lead' },
+  Procurement: { de: 'Einkauf', en: 'Procurement' }
+}
+
+function pickLocalized(
+  value: string | undefined,
+  lang: Lang,
+  map: Record<string, { de: string; en: string }>
+) {
+  if (!value) return value
+  const entry = map[value]
+  return entry ? entry[lang] : value
+}
+
+export function localizeClientSegment(value: string | undefined, lang: Lang) {
+  return pickLocalized(value, lang, SEGMENT_MAP)
+}
+
+export function localizeClientIndustry(value: string | undefined, lang: Lang) {
+  return pickLocalized(value, lang, INDUSTRY_MAP)
+}
+
+export function localizeClientContactRole(value: string | undefined, lang: Lang) {
+  return pickLocalized(value, lang, CONTACT_ROLE_MAP)
+}

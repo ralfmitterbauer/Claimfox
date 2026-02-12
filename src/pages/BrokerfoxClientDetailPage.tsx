@@ -23,9 +23,10 @@ import {
 } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta } from '@/brokerfox/types'
 import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
+import { localizeClientContactRole, localizeClientIndustry, localizeClientSegment } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxClientDetailPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const { clientId } = useParams()
@@ -204,15 +205,19 @@ export default function BrokerfoxClientDetailPage() {
 
         <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
           <Card variant="glass" title={t('brokerfox.clients.detailSummary')}>
-            <p style={{ margin: 0 }}>{t('brokerfox.clients.segmentLabel')}: {client.segment ?? t('brokerfox.clients.segmentMissing')}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.clients.industryLabel')}: {client.industry ?? t('brokerfox.clients.industryMissing')}</p>
+            <p style={{ margin: 0 }}>
+              {t('brokerfox.clients.segmentLabel')}: {localizeClientSegment(client.segment, lang) ?? t('brokerfox.clients.segmentMissing')}
+            </p>
+            <p style={{ margin: 0 }}>
+              {t('brokerfox.clients.industryLabel')}: {localizeClientIndustry(client.industry, lang) ?? t('brokerfox.clients.industryMissing')}
+            </p>
           </Card>
           <Card variant="glass" title={t('brokerfox.clients.contactsTitle')}>
             {contacts.length === 0 ? <p>{t('brokerfox.clients.noContacts')}</p> : null}
             {contacts.map((contact: any) => (
               <div key={contact.id} style={{ marginBottom: '0.5rem' }}>
                 <strong>{contact.name}</strong>
-                <div style={{ color: '#64748b' }}>{contact.role ?? t('brokerfox.clients.contactRoleMissing')}</div>
+                <div style={{ color: '#64748b' }}>{localizeClientContactRole(contact.role, lang) ?? t('brokerfox.clients.contactRoleMissing')}</div>
                 <div style={{ color: '#64748b' }}>{contact.email}</div>
               </div>
             ))}

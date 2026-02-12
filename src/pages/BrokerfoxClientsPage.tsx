@@ -7,9 +7,10 @@ import { useI18n } from '@/i18n/I18nContext'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createClient, listClients } from '@/brokerfox/api/brokerfoxApi'
+import { localizeClientIndustry, localizeClientSegment } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxClientsPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -118,7 +119,9 @@ export default function BrokerfoxClientsPage() {
               >
                 <div>
                   <strong style={{ color: '#0f172a' }}>{client.name}</strong>
-                  <div style={{ color: '#475569', fontSize: '0.9rem' }}>{client.segment ?? t('brokerfox.clients.segmentMissing')} · {client.industry ?? t('brokerfox.clients.industryMissing')}</div>
+                  <div style={{ color: '#475569', fontSize: '0.9rem' }}>
+                    {localizeClientSegment(client.segment, lang) ?? t('brokerfox.clients.segmentMissing')} · {localizeClientIndustry(client.industry, lang) ?? t('brokerfox.clients.industryMissing')}
+                  </div>
                 </div>
                 <span style={{ color: '#64748b' }}>{t('brokerfox.clients.viewDetails')}</span>
               </button>
