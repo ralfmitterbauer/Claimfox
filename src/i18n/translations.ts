@@ -18,6 +18,7 @@ type TranslationTree = {
       broker: string
       claimsfox: string
       aiFox: string
+      partnerfox: string
       fleetfox: string
     }
   }
@@ -1937,6 +1938,7 @@ export const translations: Record<Lang, TranslationTree> = {
         broker: 'Makler',
         claimsfox: 'Claimsfox',
         aiFox: 'AI Fox',
+        partnerfox: 'Partnerfox',
         fleetfox: 'Fleetfox'
       }
     },
@@ -5137,6 +5139,7 @@ export const translations: Record<Lang, TranslationTree> = {
         broker: 'Broker',
         claimsfox: 'Claimsfox',
         aiFox: 'AI Fox',
+        partnerfox: 'Partnerfox',
         fleetfox: 'Fleetfox'
       }
     },
