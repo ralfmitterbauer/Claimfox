@@ -8,9 +8,10 @@ import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createTender, listClients, listTenders } from '@/brokerfox/api/brokerfoxApi'
 import type { Client } from '@/brokerfox/types'
+import { localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxTendersPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -117,7 +118,7 @@ export default function BrokerfoxTendersPage() {
                 }}
               >
                 <div>
-                  <strong style={{ color: '#0f172a' }}>{tender.title}</strong>
+                  <strong style={{ color: '#0f172a' }}>{localizeTenderTitle(tender.title, lang) ?? tender.title}</strong>
                   <div style={{ color: '#475569', fontSize: '0.9rem' }}>{clientLookup[tender.clientId]?.name ?? t('brokerfox.tenders.clientMissing')}</div>
                 </div>
                 <span style={{ color: '#64748b' }}>{t(`brokerfox.status.${tender.status}`)}</span>

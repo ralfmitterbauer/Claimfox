@@ -20,13 +20,14 @@ import {
 } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta, TenderStatus } from '@/brokerfox/types'
 import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
+import { localizeCoverageLabel, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 
 const wizardSteps = ['requirements', 'risk', 'timeline'] as const
 
 type WizardStep = typeof wizardSteps[number]
 
 export default function BrokerfoxTenderDetailPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const { tenderId } = useParams()
@@ -139,7 +140,7 @@ export default function BrokerfoxTenderDetailPage() {
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
-        title={tender.title}
+        title={localizeTenderTitle(tender.title, lang) ?? tender.title}
         subtitle={t('brokerfox.tenders.detailSubtitle')}
         topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
@@ -165,7 +166,7 @@ export default function BrokerfoxTenderDetailPage() {
             {coverageRequests.length === 0 ? <p>{t('brokerfox.tenders.requirementsEmpty')}</p> : null}
             {coverageRequests.map((req: any) => (
               <div key={req.id} style={{ marginBottom: '0.5rem' }}>
-                <strong>{req.label}</strong>
+                <strong>{localizeCoverageLabel(req.label, lang) ?? req.label}</strong>
                 <div style={{ color: '#64748b' }}>{t('brokerfox.tenders.limitLabel')}: {req.limit}</div>
                 <div style={{ color: '#64748b' }}>{t('brokerfox.tenders.deductibleLabel')}: {req.deductible ?? t('brokerfox.tenders.none')}</div>
               </div>

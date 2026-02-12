@@ -41,6 +41,13 @@ const LOB_MAP: Record<string, { de: string; en: string }> = {
   Cargo: { de: 'Transport', en: 'Cargo' }
 }
 
+const COVERAGE_LABEL_MAP: Record<string, { de: string; en: string }> = {
+  'General Liability': { de: 'Betriebshaftpflicht', en: 'General Liability' },
+  Property: { de: 'Sachversicherung', en: 'Property' },
+  Cargo: { de: 'Transport', en: 'Cargo' },
+  Cyber: { de: 'Cyber', en: 'Cyber' }
+}
+
 function pickLocalized(
   value: string | undefined,
   lang: Lang,
@@ -65,4 +72,16 @@ export function localizeClientContactRole(value: string | undefined, lang: Lang)
 
 export function localizeLob(value: string | undefined, lang: Lang) {
   return pickLocalized(value, lang, LOB_MAP)
+}
+
+export function localizeCoverageLabel(value: string | undefined, lang: Lang) {
+  return pickLocalized(value, lang, COVERAGE_LABEL_MAP)
+}
+
+export function localizeTenderTitle(value: string | undefined, lang: Lang) {
+  if (!value) return value
+  if (lang === 'de') {
+    return value.replace(/\bProgram\b/g, 'Programm')
+  }
+  return value.replace(/\bProgramm\b/g, 'Program')
 }
