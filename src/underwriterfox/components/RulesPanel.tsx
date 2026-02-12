@@ -20,7 +20,9 @@ export default function RulesPanel({ hits, onSaveVersion }: RulesPanelProps) {
               <strong style={{ color: '#0f172a' }}>{hit.ruleId} · {hit.name}</strong>
               <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t(`underwriterfox.rules.outcome.${hit.outcome}`)} · {t(`underwriterfox.rules.severity.${hit.severity}`)}</div>
             </div>
-            <span style={{ fontSize: '0.75rem', color: hit.outcome === 'fail' ? '#dc2626' : hit.outcome === 'warn' ? '#f59e0b' : '#16a34a' }}>{hit.outcome.toUpperCase()}</span>
+            <span style={{ fontSize: '0.75rem', color: hit.outcome === 'fail' ? '#dc2626' : hit.outcome === 'warn' ? '#f59e0b' : '#16a34a' }}>
+              {t(`underwriterfox.rules.outcome.${hit.outcome}`)}
+            </span>
           </div>
         ))}
       </div>
