@@ -7,9 +7,10 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listRenewals } from '@/brokerfox/api/brokerfoxApi'
 import type { RenewalItem } from '@/brokerfox/types'
+import { localizePolicyName } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxRenewalsPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -69,7 +70,7 @@ export default function BrokerfoxRenewalsPage() {
                   onClick={() => navigate(`/brokerfox/renewals/${item.id}`)}
                   style={{ display: 'block', width: '100%', textAlign: 'left', padding: '0.5rem 0', border: 'none', background: 'transparent', color: '#0f172a' }}
                 >
-                  <strong>{item.policyName}</strong>
+                  <strong>{localizePolicyName(item.policyName, lang) ?? item.policyName}</strong>
                   <div style={{ color: '#475569' }}>{new Date(item.renewalDate).toLocaleDateString()}</div>
                 </button>
               ))}

@@ -10,9 +10,10 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, listClients, listContracts, listDocuments, listRenewals, listTimelineEvents } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta, RenewalItem } from '@/brokerfox/types'
+import { localizePolicyName } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxRenewalDetailPage() {
-  const { t } = useI18n()
+  const { lang, t } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const { renewalId } = useParams()
@@ -81,11 +82,11 @@ export default function BrokerfoxRenewalDetailPage() {
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
         title={t('brokerfox.renewals.detailTitle')}
-        subtitle={renewal.policyName}
+        subtitle={localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}
         topLeft={(
           <div style={{ display: 'grid', gap: '0.65rem' }}>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem 1rem', color: '#ffffff', fontSize: '0.9rem' }}>
-              <span><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</span>
+              <span><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}</span>
               <span><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</span>
               <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</span>
               <span><strong>{t('brokerfox.renewals.statusLabel')}:</strong> {t(`brokerfox.renewals.status.${renewal.status}`)}</span>
@@ -120,7 +121,7 @@ export default function BrokerfoxRenewalDetailPage() {
 
         <Card variant="glass" title={t('brokerfox.renewals.detailSubtitle')}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
-            <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {renewal.policyName}</div>
+            <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}</div>
             <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
             <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
             <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</div>

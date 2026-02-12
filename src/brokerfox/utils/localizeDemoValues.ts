@@ -112,3 +112,13 @@ export function buildOfferClientSummary(lang: Lang, clientName: string, tenderTi
   }
   return `Suggested summary for ${clientName}: We received multiple offers for ${tenderTitle}. The key differences are limits and exclusions; review the highlighted risks before selecting. This is an AI-generated suggestion and requires human approval.`
 }
+
+export function localizePolicyName(value: string | undefined, lang: Lang) {
+  if (!value) return value
+  let next = value
+  next = next.replace(/\bFleet Liability\b/g, lang === 'de' ? 'Flottenhaftpflicht' : 'Fleet Liability')
+  next = next.replace(/\bProperty All Risk\b/g, lang === 'de' ? 'Sachversicherung All Risk' : 'Property All Risk')
+  next = next.replace(/\bCyber Shield\b/g, lang === 'de' ? 'Cyber Schutz' : 'Cyber Shield')
+  next = next.replace(/\bCargo Protect\b/g, lang === 'de' ? 'Transportschutz' : 'Cargo Protect')
+  return next
+}
