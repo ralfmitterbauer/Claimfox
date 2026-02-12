@@ -74,7 +74,7 @@ export default function ClaimsfoxDashboardPage() {
                   key={task.id}
                   type="button"
                   onClick={() => navigate('/claimsfox/tasks')}
-                  style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', border: 'none', background: 'transparent', padding: 0, textAlign: 'left', cursor: 'pointer' }}
+                  style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', border: 'none', background: 'transparent', color: '#0f172a', padding: 0, textAlign: 'left', cursor: 'pointer' }}
                 >
                   <div>
                     <div style={{ fontWeight: 600 }}>{task.title}</div>
@@ -111,6 +111,7 @@ export default function ClaimsfoxDashboardPage() {
                   borderRadius: 12,
                   padding: '0.75rem 1rem',
                   background: '#fff',
+                  color: '#0f172a',
                   cursor: 'pointer'
                 }}
               >
