@@ -44,6 +44,13 @@ export default function AifoxFraudPage() {
     return signal
   }
 
+  function mapRiskLevel(level: string) {
+    if (level === 'high') return lang === 'de' ? 'Hoch' : 'High'
+    if (level === 'medium') return lang === 'de' ? 'Mittel' : 'Medium'
+    if (level === 'low') return lang === 'de' ? 'Niedrig' : 'Low'
+    return level
+  }
+
   return (
     <AifoxLayout title={t('aifox.fraud.title')} subtitle={t('aifox.fraud.subtitle')}>
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)', gap: '1.5rem' }}>
@@ -75,7 +82,7 @@ export default function AifoxFraudPage() {
         <Card title={t('aifox.fraud.detailTitle')} subtitle={selected ? t('aifox.fraud.detailSubtitle') : t('aifox.common.selectItem')}>
           {selected ? (
             <div style={{ display: 'grid', gap: '0.75rem' }}>
-              <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{t('aifox.fraud.riskLevel')}: {selected.riskLevel.toUpperCase()}</div>
+              <div style={{ fontSize: '0.95rem', fontWeight: 600 }}>{t('aifox.fraud.riskLevel')}: {mapRiskLevel(selected.riskLevel)}</div>
               <div style={{ display: 'grid', gap: '0.35rem' }}>
                 {selected.signals.map((signal) => (
                   <div key={signal} style={{ fontSize: '0.9rem', color: '#475569' }}>• {mapSignal(signal)}</div>
