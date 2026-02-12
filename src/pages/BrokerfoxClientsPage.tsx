@@ -107,6 +107,7 @@ export default function BrokerfoxClientsPage() {
                 style={{
                   border: '1px solid #e2e8f0',
                   background: '#ffffff',
+                  color: '#0f172a',
                   borderRadius: 12,
                   padding: '0.75rem 1rem',
                   display: 'flex',
@@ -116,10 +117,10 @@ export default function BrokerfoxClientsPage() {
                 }}
               >
                 <div>
-                  <strong>{client.name}</strong>
-                  <div style={{ color: '#64748b', fontSize: '0.9rem' }}>{client.segment ?? t('brokerfox.clients.segmentMissing')} · {client.industry ?? t('brokerfox.clients.industryMissing')}</div>
+                  <strong style={{ color: '#0f172a' }}>{client.name}</strong>
+                  <div style={{ color: '#475569', fontSize: '0.9rem' }}>{client.segment ?? t('brokerfox.clients.segmentMissing')} · {client.industry ?? t('brokerfox.clients.industryMissing')}</div>
                 </div>
-                <span style={{ color: '#94a3b8' }}>{t('brokerfox.clients.viewDetails')}</span>
+                <span style={{ color: '#64748b' }}>{t('brokerfox.clients.viewDetails')}</span>
               </button>
             ))}
           </div>
