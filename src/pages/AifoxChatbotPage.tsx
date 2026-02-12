@@ -8,7 +8,7 @@ import { addTimelineEvent, listConversations } from '@/aifox/api/aifoxApi'
 import type { AifoxConversation } from '@/aifox/types'
 
 export default function AifoxChatbotPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [conversations, setConversations] = useState<AifoxConversation[]>([])
   const [selected, setSelected] = useState<AifoxConversation | null>(null)
@@ -31,8 +31,8 @@ export default function AifoxChatbotPage() {
       entityType: 'chat',
       entityId: selected.id,
       type: 'statusUpdate',
-      title: 'Escalated to human',
-      message: `Conversation with ${selected.customer} escalated.`,
+      title: lang === 'de' ? 'An Mitarbeitende eskaliert' : 'Escalated to human',
+      message: lang === 'de' ? `Konversation mit ${selected.customer} eskaliert.` : `Conversation with ${selected.customer} escalated.`,
       actor: ctx.userId
     })
   }
