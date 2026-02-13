@@ -7,6 +7,7 @@ import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClients, listCommissions, listContracts, listMailboxItems, listOffers, listRenewals, listTasks, listTenders, sendCommissionReminder } from '@/brokerfox/api/brokerfoxApi'
+import { localizeClientIndustry, localizeCoverageLabel } from '@/brokerfox/utils/localizeDemoValues'
 
 const rangeOptions = [
   { value: '30', labelKey: 'brokerfox.reporting.range30' },
@@ -15,12 +16,13 @@ const rangeOptions = [
 ]
 
 export default function BrokerfoxReportingPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [range, setRange] = useState('90')
   const [industry, setIndustry] = useState('all')
   const [data, setData] = useState<any>({})
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -84,7 +86,7 @@ export default function BrokerfoxReportingPage() {
     const months = Array.from({ length: 12 }).map((_, idx) => {
       const date = new Date()
       date.setMonth(date.getMonth() - (11 - idx))
-      return { key: date.toISOString().slice(0, 7), label: date.toLocaleString(undefined, { month: 'short' }) }
+      return { key: date.toISOString().slice(0, 7), label: date.toLocaleString(locale, { month: 'short' }) }
     })
     return months.map((month) => {
       const tenders = (data.tenders ?? []).filter((t: any) => t.createdAt.startsWith(month.key)).length
@@ -92,7 +94,7 @@ export default function BrokerfoxReportingPage() {
       const renewals = (data.renewals ?? []).filter((r: any) => r.renewalDate.startsWith(month.key)).length
       return { label: month.label, tenders, offers, renewals }
     })
-  }, [data.tenders, data.offers, data.renewals])
+  }, [data.tenders, data.offers, data.renewals, locale])
 
   const premiumByLine = useMemo(() => {
     const buckets: Record<string, number> = {}
@@ -103,14 +105,14 @@ export default function BrokerfoxReportingPage() {
         buckets[key] = (buckets[key] ?? 0) + value
       })
     })
-    return Object.entries(buckets).map(([name, value]) => ({ name, value }))
-  }, [data.offers])
+    return Object.entries(buckets).map(([name, value]) => ({ name: localizeCoverageLabel(name, lang) ?? name, value }))
+  }, [data.offers, lang])
 
   const commissionSeries = useMemo(() => {
     const months = Array.from({ length: 12 }).map((_, idx) => {
       const date = new Date()
       date.setMonth(date.getMonth() - (11 - idx))
-      return { key: date.toISOString().slice(0, 7), label: date.toLocaleString(undefined, { month: 'short' }) }
+      return { key: date.toISOString().slice(0, 7), label: date.toLocaleString(locale, { month: 'short' }) }
     })
     return months.map((month) => {
       const list = (data.commissions ?? []).filter((c: any) => c.period === month.key)
@@ -119,25 +121,25 @@ export default function BrokerfoxReportingPage() {
       const outstanding = list.reduce((sum: number, item: any) => sum + item.outstandingEUR, 0)
       return { label: month.label, expected, paid, outstanding }
     })
-  }, [data.commissions])
+  }, [data.commissions, locale])
 
   const outstandingByCarrier = useMemo(() => {
     const contractsMap = new Map((data.contracts ?? []).map((contract: any) => [contract.id, contract]))
     const buckets: Record<string, number> = {}
     ;(data.commissions ?? []).forEach((item: any) => {
       if (!item.outstandingEUR) return
-      const carrier = contractsMap.get(item.contractId)?.carrierName ?? 'Unknown'
+      const carrier = contractsMap.get(item.contractId)?.carrierName ?? (lang === 'de' ? 'Unbekannt' : 'Unknown')
       buckets[carrier] = (buckets[carrier] ?? 0) + item.outstandingEUR
     })
     return Object.entries(buckets).map(([name, value]) => ({ name, value }))
-  }, [data.contracts, data.commissions])
+  }, [data.contracts, data.commissions, lang])
 
   const outstandingTable = useMemo(() => {
     const contractsMap = new Map((data.contracts ?? []).map((contract: any) => [contract.id, contract]))
     return (data.commissions ?? [])
       .filter((item: any) => item.outstandingEUR > 0)
-      .map((item: any) => ({ ...item, carrier: contractsMap.get(item.contractId)?.carrierName ?? 'Unknown' }))
-  }, [data.contracts, data.commissions])
+      .map((item: any) => ({ ...item, carrier: contractsMap.get(item.contractId)?.carrierName ?? (lang === 'de' ? 'Unbekannt' : 'Unknown') }))
+  }, [data.contracts, data.commissions, lang])
 
   const mailboxBacklog = useMemo(() => {
     return (data.mailbox ?? []).filter((item: any) => item.status !== 'done').length
@@ -178,7 +180,7 @@ export default function BrokerfoxReportingPage() {
             <select value={industry} onChange={(event) => setIndustry(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               <option value="all">{t('brokerfox.reporting.allIndustries')}</option>
               {industries.map((value) => (
-                <option key={value} value={value}>{value}</option>
+                <option key={value} value={value}>{localizeClientIndustry(value, lang) ?? value}</option>
               ))}
             </select>
           </div>
@@ -193,8 +195,8 @@ export default function BrokerfoxReportingPage() {
           ))}
           <Card variant="glass">
             <p style={{ margin: 0 }}>{t('brokerfox.reporting.kpi.avgOffer')}</p>
-            <strong style={{ fontSize: '1.6rem' }}>{avgTenderToOffers} {t('brokerfox.reporting.days')}</strong>
-          </Card>
+              <strong style={{ fontSize: '1.6rem' }}>{avgTenderToOffers.toLocaleString(locale)} {t('brokerfox.reporting.days')}</strong>
+            </Card>
           <Card variant="glass">
             <p style={{ margin: 0 }}>{t('brokerfox.reporting.kpi.mailboxBacklog')}</p>
             <strong style={{ fontSize: '1.6rem' }}>{mailboxBacklog}</strong>
@@ -285,7 +287,7 @@ export default function BrokerfoxReportingPage() {
                 <strong>{item.period}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{item.carrier}</div>
               </div>
-              <span style={{ color: '#ef4444' }}>€ {item.outstandingEUR.toLocaleString()}</span>
+              <span style={{ color: '#ef4444' }}>€ {item.outstandingEUR.toLocaleString(locale)}</span>
               <button
                 type="button"
                 onClick={() => handleReminder(item.contractId, item.id)}
