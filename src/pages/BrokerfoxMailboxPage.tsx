@@ -22,7 +22,7 @@ import {
 } from '@/brokerfox/api/brokerfoxApi'
 import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
 import { localizeLob, localizePolicyName, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
-import type { MailboxItem } from '@/brokerfox/types'
+import type { Client, Contract, Extraction, MailboxItem, Offer, RenewalItem, Tender } from '@/brokerfox/types'
 
 export default function BrokerfoxMailboxPage() {
   const { t, lang } = useI18n()
@@ -30,12 +30,12 @@ export default function BrokerfoxMailboxPage() {
   const navigate = useNavigate()
   const [items, setItems] = useState<MailboxItem[]>([])
   const [selected, setSelected] = useState<MailboxItem | null>(null)
-  const [clients, setClients] = useState<any[]>([])
-  const [tenders, setTenders] = useState<any[]>([])
-  const [offers, setOffers] = useState<any[]>([])
-  const [renewals, setRenewals] = useState<any[]>([])
-  const [contracts, setContracts] = useState<any[]>([])
-  const [extractions, setExtractions] = useState<any[]>([])
+  const [clients, setClients] = useState<Client[]>([])
+  const [tenders, setTenders] = useState<Tender[]>([])
+  const [offers, setOffers] = useState<Offer[]>([])
+  const [renewals, setRenewals] = useState<RenewalItem[]>([])
+  const [contracts, setContracts] = useState<Contract[]>([])
+  const [extractions, setExtractions] = useState<Extraction[]>([])
   const [entityType, setEntityType] = useState<'client' | 'tender' | 'offer' | 'renewal' | 'contract'>('client')
   const [entityId, setEntityId] = useState('')
   const [approvedExtraction, setApprovedExtraction] = useState<Record<string, boolean>>({})
@@ -155,7 +155,7 @@ export default function BrokerfoxMailboxPage() {
     return value
   }
 
-  function getEntityLabel(item: any) {
+  function getEntityLabel(item: Client | Tender | Offer | RenewalItem | Contract) {
     if (item.name) return item.name
     if (item.title) return localizeTenderTitle(item.title, lang) ?? item.title
     if (item.policyName) return localizePolicyName(item.policyName, lang) ?? item.policyName
@@ -190,7 +190,7 @@ export default function BrokerfoxMailboxPage() {
     return () => { mounted = false }
   }, [ctx])
 
-  const entityOptions = useMemo(() => {
+  const entityOptions = useMemo<Array<Client | Tender | Offer | RenewalItem | Contract>>(() => {
     return entityType === 'client'
       ? clients
       : entityType === 'tender'
@@ -405,7 +405,7 @@ export default function BrokerfoxMailboxPage() {
                     <option value="contract">{t('brokerfox.documents.entityContract')}</option>
                   </select>
                   <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
-                    {entityOptions.map((item: any) => (
+                    {entityOptions.map((item) => (
                       <option key={item.id} value={item.id}>{getEntityLabel(item)}</option>
                     ))}
                   </select>
