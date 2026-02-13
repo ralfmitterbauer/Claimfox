@@ -6,7 +6,7 @@ import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createTask, delegateTask, listClients, listContracts, listTasks, listTenders, listRenewals, updateTaskStatus } from '@/brokerfox/api/brokerfoxApi'
-import type { TaskItem, TaskStatus } from '@/brokerfox/types'
+import type { Client, Contract, RenewalItem, TaskItem, TaskStatus, Tender } from '@/brokerfox/types'
 import { localizePolicyName, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 
 const columns: Array<{ key: TaskStatus; labelKey: string }> = [
@@ -23,7 +23,8 @@ export default function BrokerfoxTasksPage() {
   const [tasks, setTasks] = useState<TaskItem[]>([])
   const [entityType, setEntityType] = useState<'client' | 'tender' | 'renewal' | 'contract'>('client')
   const [entityId, setEntityId] = useState('')
-  const [entityOptions, setEntityOptions] = useState<any[]>([])
+  type EntityOption = Client | Tender | RenewalItem | Contract
+  const [entityOptions, setEntityOptions] = useState<EntityOption[]>([])
   const [form, setForm] = useState({ title: '', description: '', ownerName: '', dueDate: '' })
   const [delegateDraft, setDelegateDraft] = useState<Record<string, string>>({})
   const locale = lang === 'de' ? 'de-DE' : 'en-US'
@@ -111,7 +112,7 @@ export default function BrokerfoxTasksPage() {
     setDelegateDraft((prev) => ({ ...prev, [taskId]: '' }))
   }
 
-  function getEntityLabel(item: any) {
+  function getEntityLabel(item: EntityOption) {
     if (typeof item.name === 'string') return item.name
     if (typeof item.title === 'string') return localizeTenderTitle(item.title, lang) ?? item.title
     if (typeof item.policyName === 'string') return localizePolicyName(item.policyName, lang) ?? item.policyName
@@ -173,14 +174,14 @@ export default function BrokerfoxTasksPage() {
               placeholder={t('brokerfox.tasks.dueDate')}
               style={{ padding: '0.6rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}
             />
-            <select value={entityType} onChange={(event) => setEntityType(event.target.value as any)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
+            <select value={entityType} onChange={(event) => setEntityType(event.target.value as 'client' | 'tender' | 'renewal' | 'contract')} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               <option value="client">{t('brokerfox.tasks.linkClient')}</option>
               <option value="tender">{t('brokerfox.tasks.linkTender')}</option>
               <option value="renewal">{t('brokerfox.tasks.linkRenewal')}</option>
               <option value="contract">{t('brokerfox.tasks.linkContract')}</option>
             </select>
             <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
-              {entityOptions.map((item: any) => (
+              {entityOptions.map((item) => (
                 <option key={item.id} value={item.id}>{getEntityLabel(item)}</option>
               ))}
             </select>
