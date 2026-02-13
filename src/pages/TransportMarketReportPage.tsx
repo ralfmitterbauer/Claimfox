@@ -77,28 +77,169 @@ const financialRows: FinancialRow[] = [
   }
 ]
 
-const transportLeads: Lead[] = [
+const transportLeadsInput: Lead[] = [
   {
     name: 'Stefanie Thier',
-    role: 'Head of Motor Claims Germany',
+    role: 'Head of Motor Claims Germany at Allianz Versicherungs AG',
     company: 'Allianz',
     city: 'Munich',
-    linkedin: 'https://www.linkedin.com/in/stefanie-thier-980'
+    linkedin: 'https://www.linkedin.com/in/stefanie-thier-98011418a/'
   },
   {
     name: 'Christian Hempel',
-    role: 'Head of Motor Claims',
+    role: 'Head of Motor Claims | Abteilungsleiter Schadenmanagement Kraft',
     company: 'Allianz',
     city: 'Leipzig/Berlin',
-    linkedin: 'https://www.linkedin.com/in/christian-hempel-a'
+    linkedin: 'https://www.linkedin.com/in/christian-hempel-allianz/'
   },
   {
-    name: 'Rico Foerster',
-    role: 'Head of Fleet, Mobility and Cyber',
+    name: 'Rico Förster',
+    role: 'Head of Fleet, Mobility and Cyber Motor & Retail - Global P&C bei Allianz Group',
     company: 'Allianz',
     city: 'Munich',
-    linkedin: 'https://www.linkedin.com/in/rico-f%C3%B6rster-',
+    linkedin: 'https://www.linkedin.com/in/rico-f%C3%B6rster-7b77b241/',
     comment: 'Left Allianz 3 months ago'
+  },
+  {
+    name: 'Lennart Krämer',
+    role: 'Chief Underwriter of Commercial Motor Fleet @ Allianz Versicherungs AG',
+    company: 'Allianz',
+    city: 'Siegen, North Rhine-Westphalia, Germany',
+    linkedin: 'https://www.linkedin.com/in/lennart-kr%C3%A4mer-073368243/'
+  },
+  {
+    name: 'Florian Weiss',
+    role: 'Head of motor commercial bei Allianz Versicherungs AG',
+    company: 'Allianz',
+    city: 'Dachau, Bavaria, Germany',
+    linkedin: 'https://www.linkedin.com/in/florian-weiss-5121192b9/'
+  },
+  {
+    name: 'Thies Dibbern',
+    role: 'Head of Motor Insurance bei VHV Versicherungen',
+    company: 'VHV Versicherungen',
+    city: 'Hannover',
+    linkedin: 'https://www.linkedin.com/in/thies-dibbern-63295b152/'
+  },
+  {
+    name: 'Björn Pahnreck',
+    role: 'Abteilungsleiter Schaden KFZ',
+    company: 'VHV Gruppe',
+    city: 'Barsinghausen, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/bj%C3%B6rn-pahnreck-947a82216/'
+  },
+  {
+    name: 'Dr. Sebastian Reddemann',
+    role: 'Chief Executive Officer',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/dr-sebastian-reddemann-33a20049/'
+  },
+  {
+    name: 'Can Ari',
+    role: 'Underwriter & Claim Specialist',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Niedersachsen, Germany',
+    linkedin: 'https://www.linkedin.com/in/alican-ari/',
+    comment: 'Worked at Allianz, AXA and now in VHV'
+  },
+  {
+    name: 'Christian E. Wittwer',
+    role: 'Head of Process and Project Management',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Munich',
+    linkedin: 'https://www.linkedin.com/in/c-wittwer/'
+  },
+  {
+    name: 'Ulf Bretz',
+    role: 'Chief Operating Officer',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Niedersachsen, Germany',
+    linkedin: 'https://www.linkedin.com/in/ulf-bretz-a3529586/'
+  },
+  {
+    name: 'Frederick Olivier',
+    role: 'MGA Business Coordinator',
+    company: 'VHV Versicherungen',
+    city: 'Brunswick, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/frederick-olivier-3b7696173/?locale=en_US'
+  },
+  {
+    name: 'Arndt Bickhoff',
+    role: 'Mitglied des Vorstands',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Niedersachsen, Germany',
+    linkedin: 'https://www.linkedin.com/in/arndt-bickhoff/'
+  },
+  {
+    name: 'Sina Rintelmann',
+    role: 'Vorstandsmitglied',
+    company: 'VHV Versicherungen',
+    city: 'Germany',
+    linkedin: 'https://www.linkedin.com/in/sina-rintelmann-17305b265/'
+  },
+  {
+    name: 'Dr. Angelo O. Rohlfs',
+    role: 'Mitglied des Vorstands',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/dr-angelo-o-rohlfs-654162125/'
+  },
+  {
+    name: 'Sebastian Steininger',
+    role: 'CEO VHV International',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/sebastian-steininger-8b28bb13/'
+  },
+  {
+    name: 'Daniel Prochnow',
+    role: 'Schadensgutachter',
+    company: 'VHV Versicherungen',
+    city: 'Hamburg',
+    linkedin: 'https://www.linkedin.com/in/daniel-prochnow-5b6677b6/'
+  },
+  {
+    name: 'Stefano Pozzi',
+    role: 'Head of Claims',
+    company: 'VHV Assicurazioni',
+    city: 'Belluno, Veneto, Italy',
+    linkedin: 'https://www.linkedin.com/in/stefano-pozzi-a7771b51/'
+  },
+  {
+    name: 'Dr. Steffen Benker',
+    role: 'Vorstandsassisstent Finanzen und Risikomanagement',
+    company: 'VHV Versicherungen',
+    city: 'Hamburg',
+    linkedin: 'https://www.linkedin.com/in/dr-steffen-benker-12b22130b/'
+  },
+  {
+    name: 'Simon Orthey',
+    role: 'Senior Schadenregulierer',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Lower Saxony, Germany',
+    linkedin: 'https://www.linkedin.com/in/simon-orthey-25a941265/'
+  },
+  {
+    name: 'Nina Henjes',
+    role: 'Leiterin Gruppe Fraud Investigation',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Niedersachsen, Germany',
+    linkedin: 'https://www.linkedin.com/in/nina-henjes-b02662321/'
+  },
+  {
+    name: 'Christian Schattenhofer',
+    role: 'Vertriebsdirektor',
+    company: 'VHV Versicherungen',
+    city: 'Germany',
+    linkedin: 'https://www.linkedin.com/in/christian-schattenhofer-4511532bb/'
+  },
+  {
+    name: 'Nils Dräger',
+    role: 'Schadenregulierer',
+    company: 'VHV Versicherungen',
+    city: 'Hannover, Niedersachsen, Germany',
+    linkedin: 'https://www.linkedin.com/in/nils-dr%C3%A4ger-403b57122/'
   },
   {
     name: 'Anna Weber',
@@ -116,6 +257,20 @@ const transportLeads: Lead[] = [
   }
 ]
 
+function normalizeLinkedin(url: string) {
+  return url.trim().toLowerCase().replace(/\/+$/, '').replace(/\?.*$/, '')
+}
+
+const transportLeads: Lead[] = Array.from(
+  transportLeadsInput.reduce((map, lead) => {
+    const key = normalizeLinkedin(lead.linkedin)
+    if (!map.has(key)) {
+      map.set(key, lead)
+    }
+    return map
+  }, new Map<string, Lead>()).values()
+)
+
 const gwpMidpoints = [
   { company: 'Allianz', gwp: 4200 },
   { company: 'Allianz ESA', gwp: 950 },
@@ -127,7 +282,14 @@ const highlightedRoleChecks = [
   'Head of Fleet',
   'Mobility',
   'Underwriting Transport',
-  'Distribution Leadership'
+  'Distribution Leadership',
+  'Chief Underwriter',
+  'Head of Motor Insurance',
+  'Abteilungsleiter',
+  'COO',
+  'CEO',
+  'Vorstand',
+  'Vertriebsdirektor'
 ]
 
 export default function TransportMarketReportPage() {
@@ -206,6 +368,17 @@ export default function TransportMarketReportPage() {
 
   return (
     <section className="page" style={{ gap: '1.25rem', background: '#ffffff', paddingTop: '1rem' }}>
+      <style>{`
+        @media print {
+          @page {
+            size: A4 landscape;
+            margin: 10mm;
+          }
+          .transport-report-print-hide {
+            display: none !important;
+          }
+        }
+      `}</style>
       <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'grid', gap: '1.25rem' }}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
@@ -217,7 +390,7 @@ export default function TransportMarketReportPage() {
                 {copy.subtitle}
               </p>
             </div>
-            <Button size="sm" onClick={() => window.print()}>
+            <Button className="transport-report-print-hide" size="sm" onClick={() => window.print()}>
               {copy.export}
             </Button>
           </div>
