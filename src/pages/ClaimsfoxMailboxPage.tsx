@@ -8,12 +8,38 @@ import { linkMailToClaim, listClaims, listMailbox } from '@/claimsfox/api/claims
 import type { Claim, MailMessage } from '@/claimsfox/types'
 
 export default function ClaimsfoxMailboxPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [mailbox, setMailbox] = useState<MailMessage[]>([])
   const [claims, setClaims] = useState<Claim[]>([])
   const [selected, setSelected] = useState<MailMessage | null>(null)
   const [linkId, setLinkId] = useState('')
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+
+  const subjectMap: Record<string, { de: string; en: string }> = {
+    'Urgent: FNOL submission for Fleetwise Mobility': { de: 'Dringend: FNOL-Meldung für Fleetwise Mobility', en: 'Urgent: FNOL submission for Fleetwise Mobility' },
+    'Updated loss documentation attached': { de: 'Aktualisierte Schadenunterlagen beigefügt', en: 'Updated loss documentation attached' },
+    'Survey report - cargo damage incident': { de: 'Gutachtenbericht - Transportschaden', en: 'Survey report - cargo damage incident' },
+    'Payment request and invoice summary': { de: 'Zahlungsanfrage und Rechnungsübersicht', en: 'Payment request and invoice summary' },
+    'Litigation notice received': { de: 'Mitteilung zu Rechtsstreit eingegangen', en: 'Litigation notice received' },
+    'Repair estimate and parts list': { de: 'Reparaturkalkulation und Teileliste', en: 'Repair estimate and parts list' },
+    'Triage follow-up questions': { de: 'Rückfragen aus der Triage', en: 'Triage follow-up questions' },
+    'Third-party liability statement': { de: 'Haftungserklärung Dritter', en: 'Third-party liability statement' }
+  }
+
+  function localizeSubject(value: string) {
+    return subjectMap[value]?.[lang] ?? value
+  }
+
+  function localizeBody(value: string) {
+    if (lang !== 'de') return value
+    return value
+      .replace('Hello Claims Team,', 'Hallo Claims-Team,')
+      .replace('We are following up on', 'wir melden uns bzgl.')
+      .replace('Please find the attached documents and provide an updated status on the reserve and next steps.', 'im Anhang finden Sie die Unterlagen. Bitte geben Sie uns ein Update zur Reserve und zu den nächsten Schritten.')
+      .replace('Best regards,', 'Viele Grüße,')
+      .replace('Carrier Service Desk', 'Carrier Service Desk')
+  }
 
   useEffect(() => {
     let mounted = true
@@ -62,20 +88,20 @@ export default function ClaimsfoxMailboxPage() {
                   cursor: 'pointer'
                 }}
               >
-                <div style={{ fontWeight: 600 }}>{mail.subject}</div>
+                <div style={{ fontWeight: 600 }}>{localizeSubject(mail.subject)}</div>
                 <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{mail.from}</div>
               </button>
             ))}
           </div>
         </Card>
-        <Card title={t('claimsfox.mailbox.detail')} subtitle={selected?.subject ?? t('claimsfox.mailbox.noSelection')}>
+        <Card title={t('claimsfox.mailbox.detail')} subtitle={selected ? localizeSubject(selected.subject) : t('claimsfox.mailbox.noSelection')}>
           {selected ? (
             <div style={{ display: 'grid', gap: '0.75rem' }}>
               <div style={{ display: 'grid', gap: '0.2rem' }}>
                 <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimsfox.mailbox.from')}: {selected.from}</div>
-                <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimsfox.mailbox.date')}: {new Date(selected.receivedAt).toLocaleString()}</div>
+                <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t('claimsfox.mailbox.date')}: {new Date(selected.receivedAt).toLocaleString(locale)}</div>
               </div>
-              <div style={{ whiteSpace: 'pre-line', color: '#0f172a' }}>{selected.body}</div>
+              <div style={{ whiteSpace: 'pre-line', color: '#0f172a' }}>{localizeBody(selected.body)}</div>
               <div>
                 <strong>{t('claimsfox.mailbox.attachments')}:</strong> {selected.attachments.map((att) => att.name).join(', ')}
               </div>
