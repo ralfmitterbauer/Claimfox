@@ -7,7 +7,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { listClients, listContracts } from '@/brokerfox/api/brokerfoxApi'
 import type { Contract } from '@/brokerfox/types'
-import { localizeLob } from '@/brokerfox/utils/localizeDemoValues'
+import { localizeLob, localizePolicyName } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxContractsPage() {
   const { lang, t } = useI18n()
@@ -16,6 +16,7 @@ export default function BrokerfoxContractsPage() {
   const [contracts, setContracts] = useState<Contract[]>([])
   const [clients, setClients] = useState<any[]>([])
   const [filters, setFilters] = useState({ lob: 'all', carrier: 'all', status: 'all' })
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -89,13 +90,13 @@ export default function BrokerfoxContractsPage() {
               style={{ display: 'grid', gridTemplateColumns: '1fr auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.5rem 0', borderBottom: '1px solid #e2e8f0', cursor: 'pointer' }}
             >
               <div>
-                <strong>{contract.policyNumber}</strong>
+                <strong>{localizePolicyName(contract.policyNumber, lang) ?? contract.policyNumber}</strong>
                 <div style={{ color: '#64748b', fontSize: '0.85rem' }}>
                   {clients.find((client) => client.id === contract.clientId)?.name ?? t('brokerfox.clients.clientUnknown')} · {localizeLob(contract.lob, lang) ?? contract.lob} · {contract.carrierName}
                 </div>
                 {contract.isHero ? <span style={{ fontSize: '0.75rem', color: '#f59e0b' }}>{t('brokerfox.contracts.heroBadge')}</span> : null}
               </div>
-              <span style={{ color: '#94a3b8' }}>€ {contract.premiumEUR.toLocaleString()}</span>
+              <span style={{ color: '#94a3b8' }}>€ {contract.premiumEUR.toLocaleString(locale)}</span>
               <span style={{ color: '#64748b' }}>{t(`brokerfox.contracts.status.${contract.status}`)}</span>
             </div>
           ))}

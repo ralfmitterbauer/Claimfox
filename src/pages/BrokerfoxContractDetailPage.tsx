@@ -19,7 +19,7 @@ import {
   sendCommissionReminder
 } from '@/brokerfox/api/brokerfoxApi'
 import type { DocumentMeta, TaskItem } from '@/brokerfox/types'
-import { localizeLob } from '@/brokerfox/utils/localizeDemoValues'
+import { localizeLob, localizePolicyName } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxContractDetailPage() {
   const { lang, t } = useI18n()
@@ -32,6 +32,7 @@ export default function BrokerfoxContractDetailPage() {
   const [tasks, setTasks] = useState<TaskItem[]>([])
   const [commissions, setCommissions] = useState<any[]>([])
   const [events, setEvents] = useState<any[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -91,7 +92,7 @@ export default function BrokerfoxContractDetailPage() {
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
         title={t('brokerfox.contracts.detailTitle')}
-        subtitle={contract.policyNumber}
+        subtitle={localizePolicyName(contract.policyNumber, lang) ?? contract.policyNumber}
         topLeft={<DemoUtilitiesPanel tenantId={ctx.tenantId} onTenantChange={() => navigate(0)} />}
       >
         <Button size="sm" onClick={() => navigate('/brokerfox/contracts')}>{t('brokerfox.contracts.back')}</Button>
@@ -101,14 +102,14 @@ export default function BrokerfoxContractDetailPage() {
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.clientLabel')}: {client?.name ?? '-'}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.lobLabel')}: {localizeLob(contract.lob, lang) ?? contract.lob}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.carrierLabel')}: {contract.carrierName}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.contracts.premiumLabel')}: € {contract.premiumEUR.toLocaleString()}</p>
+            <p style={{ margin: 0 }}>{t('brokerfox.contracts.premiumLabel')}: € {contract.premiumEUR.toLocaleString(locale)}</p>
             <p style={{ margin: 0 }}>{t('brokerfox.contracts.statusLabel')}: {t(`brokerfox.contracts.status.${contract.status}`)}</p>
           </Card>
           <Card variant="glass" title={t('brokerfox.commissions.title')}>
             {commissions.slice(0, 6).map((item) => (
               <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.3rem 0' }}>
                 <span>{item.period}</span>
-                <span>€ {item.outstandingEUR.toLocaleString()}</span>
+                <span>€ {item.outstandingEUR.toLocaleString(locale)}</span>
               </div>
             ))}
             {outstanding.length === 0 ? <p style={{ color: '#94a3b8' }}>{t('brokerfox.commissions.noneOutstanding')}</p> : null}
@@ -140,7 +141,7 @@ export default function BrokerfoxContractDetailPage() {
             <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
               <div>
                 <strong>{item.period}</strong>
-                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.commissions.outstanding')}: € {item.outstandingEUR.toLocaleString()}</div>
+                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.commissions.outstanding')}: € {item.outstandingEUR.toLocaleString(locale)}</div>
               </div>
               <Button size="sm" onClick={() => handleCommissionReminder(item.id)}>{t('brokerfox.commissions.sendReminder')}</Button>
             </div>
