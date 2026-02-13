@@ -8,12 +8,49 @@ import { listClaims, listTasks, listMailbox } from '@/claimsfox/api/claimsfoxApi
 import type { Claim, Task, MailMessage } from '@/claimsfox/types'
 
 export default function ClaimsfoxDashboardPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [claims, setClaims] = useState<Claim[]>([])
   const [tasks, setTasks] = useState<Task[]>([])
   const [mailbox, setMailbox] = useState<MailMessage[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+
+  function localizeTaskTitle(value: string) {
+    if (lang === 'de') return value.replace(/^Follow-up\b/, 'Nachverfolgung')
+    return value.replace(/^Nachverfolgung\b/, 'Follow-up')
+  }
+
+  function localizeLob(value: string) {
+    if (lang === 'de') {
+      if (value === 'Liability') return 'Haftpflicht'
+      if (value === 'Property') return 'Sach'
+      if (value === 'Cargo') return 'Transport'
+      if (value === 'Fleet') return 'Flotte'
+      if (value === 'Cyber') return 'Cyber'
+    } else {
+      if (value === 'Haftpflicht') return 'Liability'
+      if (value === 'Sach') return 'Property'
+      if (value === 'Transport') return 'Cargo'
+      if (value === 'Flotte') return 'Fleet'
+    }
+    return value
+  }
+
+  const subjectMap: Record<string, { de: string; en: string }> = {
+    'Urgent: FNOL submission for Fleetwise Mobility': { de: 'Dringend: FNOL-Meldung für Fleetwise Mobility', en: 'Urgent: FNOL submission for Fleetwise Mobility' },
+    'Updated loss documentation attached': { de: 'Aktualisierte Schadenunterlagen beigefügt', en: 'Updated loss documentation attached' },
+    'Survey report - cargo damage incident': { de: 'Gutachtenbericht - Transportschaden', en: 'Survey report - cargo damage incident' },
+    'Payment request and invoice summary': { de: 'Zahlungsanfrage und Rechnungsübersicht', en: 'Payment request and invoice summary' },
+    'Litigation notice received': { de: 'Mitteilung zu Rechtsstreit eingegangen', en: 'Litigation notice received' },
+    'Repair estimate and parts list': { de: 'Reparaturkalkulation und Teileliste', en: 'Repair estimate and parts list' },
+    'Triage follow-up questions': { de: 'Rückfragen aus der Triage', en: 'Triage follow-up questions' },
+    'Third-party liability statement': { de: 'Haftungserklärung Dritter', en: 'Third-party liability statement' }
+  }
+
+  function localizeSubject(value: string) {
+    return subjectMap[value]?.[lang] ?? value
+  }
 
   useEffect(() => {
     let mounted = true
@@ -77,10 +114,10 @@ export default function ClaimsfoxDashboardPage() {
                   style={{ display: 'flex', justifyContent: 'space-between', gap: '0.75rem', border: 'none', background: 'transparent', color: '#0f172a', padding: 0, textAlign: 'left', cursor: 'pointer' }}
                 >
                   <div>
-                    <div style={{ fontWeight: 600 }}>{task.title}</div>
+                    <div style={{ fontWeight: 600 }}>{localizeTaskTitle(task.title)}</div>
                     <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{task.owner}</div>
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: '#475569' }}>{new Date(task.dueAt).toLocaleDateString()}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#475569' }}>{new Date(task.dueAt).toLocaleDateString(locale)}</div>
                 </button>
               ))}
             </div>
@@ -89,7 +126,7 @@ export default function ClaimsfoxDashboardPage() {
             <div style={{ display: 'grid', gap: '0.75rem' }}>
               {mailbox.slice(0, 4).map((mail) => (
                 <div key={mail.id} style={{ display: 'grid', gap: '0.2rem' }}>
-                  <span style={{ fontWeight: 600 }}>{mail.subject}</span>
+                  <span style={{ fontWeight: 600 }}>{localizeSubject(mail.subject)}</span>
                   <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{mail.from}</span>
                 </div>
               ))}
@@ -117,7 +154,7 @@ export default function ClaimsfoxDashboardPage() {
               >
                 <div style={{ display: 'grid', gap: '0.2rem', textAlign: 'left' }}>
                   <span style={{ fontWeight: 600 }}>{claim.claimNumber}</span>
-                  <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{claim.insured} · {claim.lineOfBusiness}</span>
+                  <span style={{ fontSize: '0.85rem', color: '#64748b' }}>{claim.insured} · {localizeLob(claim.lineOfBusiness)}</span>
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#475569' }}>{t(`claimsfox.status.${claim.status}`)}</div>
               </button>
