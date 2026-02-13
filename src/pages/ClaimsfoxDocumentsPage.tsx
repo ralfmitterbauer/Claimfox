@@ -9,12 +9,14 @@ import { approveExtraction, listClaims, listDocuments, uploadDocument } from '@/
 import type { Claim, Document } from '@/claimsfox/types'
 
 export default function ClaimsfoxDocumentsPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [documents, setDocuments] = useState<Document[]>([])
   const [claims, setClaims] = useState<Claim[]>([])
   const [selectedClaim, setSelectedClaim] = useState('')
   const [preview, setPreview] = useState<Document | null>(null)
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const numberFormatter = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
 
   useEffect(() => {
     let mounted = true
@@ -37,13 +39,13 @@ export default function ClaimsfoxDocumentsPage() {
 
   async function handleUpload() {
     const doc = await uploadDocument(ctx, {
-      fileName: 'Additional_Photo_Report.txt',
+      fileName: lang === 'de' ? 'Zusatz_Fotobericht.txt' : 'Additional_Photo_Report.txt',
       mime: 'text/plain',
       size: 12000,
       urlOrBlobKey: '/demo-docs/claimsfox/Workshop_Log.txt',
       linkedEntityType: 'claim',
       linkedEntityId: selectedClaim || documents[0]?.linkedEntityId || 'demo',
-      extractedFields: { type: 'photo_report', notes: 'Damage overview attached.' },
+      extractedFields: { type: 'photo_report', notes: lang === 'de' ? 'Schadenübersicht angehängt.' : 'Damage overview attached.' },
       approvalStatus: 'pending'
     })
     setDocuments([doc, ...documents])
@@ -73,7 +75,7 @@ export default function ClaimsfoxDocumentsPage() {
                 <div style={{ fontWeight: 600 }}>{doc.fileName}</div>
                 <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{doc.linkedEntityId}</div>
               </div>
-              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(doc.createdAt).toLocaleDateString()}</div>
+              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(doc.createdAt).toLocaleDateString(locale)}</div>
               <div style={{ fontSize: '0.85rem' }}>{t(`claimsfox.documents.statusLabels.${doc.approvalStatus}`)}</div>
               <Button size="sm" variant="secondary" onClick={() => setPreview(doc)}>{t('claimsfox.documents.view')}</Button>
               {doc.approvalStatus !== 'approved' && (
@@ -87,7 +89,7 @@ export default function ClaimsfoxDocumentsPage() {
         {preview && (
           <div style={{ display: 'grid', gap: '0.5rem' }}>
             <h3 style={{ margin: 0 }}>{preview.fileName}</h3>
-            <div style={{ color: '#64748b' }}>{preview.mime} · {(preview.size / 1000).toFixed(1)} KB</div>
+            <div style={{ color: '#64748b' }}>{preview.mime} · {numberFormatter.format(preview.size / 1000)} KB</div>
             <div style={{ color: '#475569' }}>{t('claimsfox.documents.previewText')}</div>
             <a href={preview.urlOrBlobKey} target="_blank" rel="noreferrer" style={{ color: '#d4380d', fontWeight: 600 }}>{t('claimsfox.documents.open')}</a>
           </div>
