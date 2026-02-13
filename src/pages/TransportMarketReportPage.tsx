@@ -2,6 +2,7 @@ import React from 'react'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useI18n } from '@/i18n/I18nContext'
 
 type SegmentRow = {
   company: string
@@ -130,58 +131,131 @@ const highlightedRoleChecks = [
 ]
 
 export default function TransportMarketReportPage() {
+  const { lang } = useI18n()
+  const isDe = lang === 'de'
+
+  const copy = {
+    title: isDe
+      ? 'Transport- und Flottenversicherungsmarktanalyse - Allianz, Allianz ESA & VHV'
+      : 'Transport & Fleet Insurance Market Analysis - Allianz, Allianz ESA & VHV',
+    subtitle: isDe ? 'Strategische Bewertung & Executive Mapping' : 'Strategic Assessment & Executive Mapping',
+    export: isDe ? 'Als PDF exportieren' : 'Export as PDF',
+    volumeDisclaimer: isDe
+      ? 'Schätzungen basieren auf öffentlichen P&C-Quoten und Benchmarks der Transportsegmente.'
+      : 'Estimates based on public P&C ratios and transport segment benchmarks.',
+    cards: {
+      allianzSub: isDe ? 'Geschätzter Anteil Transport / Flotte' : 'Estimated Transport / Fleet Share',
+      esaSub: isDe ? 'Geschätztes Volumen' : 'Estimated Volume',
+      vhvSub: isDe ? 'Geschätztes Volumen' : 'Estimated Volume',
+      gwp: isDe ? 'Gebuchte Bruttoprämie' : 'Gross Written Premium'
+    },
+    sections: {
+      breakdown: isDe ? 'Aufschlüsselung der Geschäftssegmente' : 'Business Segment Breakdown',
+      financial: isDe ? 'Finanzielle Schätzungen (letzte 3 Jahre, Bandbreiten)' : 'Financial Estimates (Last 3 Years, Estimated Ranges)',
+      contacts: isDe ? 'Executive Contact Mapping' : 'Executive Contact Mapping',
+      chart: isDe ? 'Geschätzter GWP-Mittelwert je Unternehmen' : 'Estimated GWP Midpoint by Company',
+      strategic: isDe ? 'Strategische Analyse' : 'Strategic Analysis',
+      summary: isDe ? 'Executive Summary (CEO Version)' : 'Executive Summary (CEO Version)'
+    },
+    table: {
+      company: isDe ? 'Unternehmen' : 'Company',
+      motorFleet: isDe ? 'Kfz-Flotte' : 'Motor Fleet',
+      marineCargo: isDe ? 'See- und Warentransport' : 'Marine Cargo',
+      logisticsLiability: isDe ? 'Logistikhaftpflicht' : 'Logistics Liability',
+      internationalPrograms: isDe ? 'Internationale Programme' : 'International Programs',
+      distributionModel: isDe ? 'Vertriebsmodell' : 'Distribution Model',
+      year: isDe ? 'Jahr' : 'Year',
+      name: isDe ? 'Name' : 'Name',
+      role: isDe ? 'Rolle' : 'Role',
+      city: isDe ? 'Stadt' : 'City',
+      linkedin: 'LinkedIn',
+      status: isDe ? 'Status' : 'Status',
+      profile: isDe ? 'Profil' : 'Profile',
+      active: isDe ? 'Aktiv' : 'Active'
+    },
+    strategicParagraphs: isDe
+      ? [
+          'Die Allianz Gruppe bleibt der Volumen-Benchmark mit starker Position in Flotte und internationalem Cargo-Geschäft. Allianz ESA zeigt zugleich hohe technische Tiefe in Specialty-Transport und grenzüberschreitenden Programmen.',
+          'VHV verfügt über eine belastbare Position im deutschen Flotten- und Logistikhaftpflichtmarkt. Für einen schnellen Markteintritt ist dieses Profil insbesondere im Mid-Market strategisch relevant.',
+          'Die höchste Reife bei internationalen Programmstrukturen liegt in den Allianz-Einheiten. Alle drei Zielunternehmen zeigen tragfähige Vertriebsmodelle, jedoch mit unterschiedlicher Balance zwischen zentraler Steuerung und regionaler Broker-Tiefe.',
+          'Die digitale Reife ist in Kernprozessen hoch, während AI-Readiness je Funktionsbereich variiert. Besonders in Claims- und Fleet-Analytics bestehen kurzfristig attraktive Partnerschaftsfenster für KI-gestützte Operating Models.'
+        ]
+      : [
+          'Allianz Group remains the volume benchmark with broad motor and global cargo reach, while Allianz ESA demonstrates technical depth in specialty transport placements and cross-border program structures.',
+          'VHV has a strong domestic fleet and logistics liability footprint with efficient broker access, making it structurally relevant for rapid mid-market entry and partnership-led growth.',
+          'Marine specialization and international program governance are strongest within Allianz entities. Distribution maturity is high across all three organizations, with differing emphasis on central steering versus regional broker intensity.',
+          'Digital transformation is advanced in core servicing and underwriting support, but AI-readiness varies by function. Claims and fleet analytics domains present the highest near-term partnership probability for structured AI-enabled operating models.'
+        ],
+    summaryBullets: isDe
+      ? [
+          'Das adressierbare Transport-/Flottenpotenzial der Zielunternehmen liegt bei rund EUR 4,7 Mrd. bis EUR 7,1 Mrd.',
+          'Das Eintrittspotenzial ist am stärksten über Specialty-Transport-Integration und broker-zentrierte Flottenangebote.',
+          'Die wichtigsten Hebel sind Claims Excellence, Underwriting Decision Support und skalierbare internationale Governance.',
+          'Relevante Entscheider sitzen vor allem in Motor Claims, Fleet/Mobility, Transport Underwriting und Distribution Leadership.',
+          'Nächster Schritt: zwei Executive Workshops und ein Pilot mit klaren KPI-, Umsetzungs- und Conversion-Zielen.'
+        ]
+      : [
+          'Total addressable transport/fleet opportunity across target entities is approximately EUR 4.7B to EUR 7.1B.',
+          'Entry potential is strongest via specialty transport integration and broker-centric fleet propositions.',
+          'Key leverage points are claims excellence, underwriting decision support, and scalable international program governance.',
+          'Primary decision makers are concentrated in motor claims leadership, fleet/mobility, transport underwriting, and distribution leadership.',
+          'Next strategic step: run two targeted executive workshops and launch one pilot with quantified KPI and conversion targets.'
+        ],
+    chartTooltipSeries: isDe ? 'Geschätzter GWP-Mittelwert' : 'Estimated GWP midpoint'
+  }
+
   return (
-    <section className="page" style={{ gap: '1.25rem', background: '#ffffff' }}>
+    <section className="page" style={{ gap: '1.25rem', background: '#ffffff', paddingTop: '1rem' }}>
       <div style={{ width: '100%', maxWidth: 1240, margin: '0 auto', display: 'grid', gap: '1.25rem' }}>
         <Card>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem', flexWrap: 'wrap' }}>
             <div style={{ display: 'grid', gap: '0.45rem' }}>
               <h1 style={{ margin: 0, fontSize: '1.95rem', lineHeight: 1.2, color: '#0f172a' }}>
-                Transport & Fleet Insurance Market Analysis - Allianz, Allianz ESA & VHV
+                {copy.title}
               </h1>
               <p style={{ margin: 0, fontSize: '1rem', color: '#475569' }}>
-                Strategic Assessment & Executive Mapping
+                {copy.subtitle}
               </p>
             </div>
             <Button size="sm" onClick={() => window.print()}>
-              Export as PDF
+              {copy.export}
             </Button>
           </div>
         </Card>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
           <Card title="Allianz Group (Global P&C)">
-            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Estimated Transport / Fleet Share</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{copy.cards.allianzSub}</div>
             <div style={{ fontSize: '1.45rem', fontWeight: 700, color: '#0f172a', marginTop: '0.35rem' }}>EUR 3.5B - EUR 5B</div>
-            <div style={{ fontSize: '0.86rem', color: '#475569', marginTop: '0.35rem' }}>Gross Written Premium</div>
+            <div style={{ fontSize: '0.86rem', color: '#475569', marginTop: '0.35rem' }}>{copy.cards.gwp}</div>
           </Card>
           <Card title="Allianz ESA (Specialty Transport)">
-            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Estimated Volume</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{copy.cards.esaSub}</div>
             <div style={{ fontSize: '1.45rem', fontWeight: 700, color: '#0f172a', marginTop: '0.35rem' }}>EUR 700M - EUR 1.2B</div>
           </Card>
           <Card title="VHV Gruppe (Transport / Marine / Fleet)">
-            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>Estimated Volume</div>
+            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{copy.cards.vhvSub}</div>
             <div style={{ fontSize: '1.45rem', fontWeight: 700, color: '#0f172a', marginTop: '0.35rem' }}>EUR 500M - EUR 900M</div>
           </Card>
         </div>
 
         <Card>
           <div style={{ fontSize: '0.86rem', color: '#64748b' }}>
-            Estimates based on public P&C ratios and transport segment benchmarks.
+            {copy.volumeDisclaimer}
           </div>
         </Card>
 
-        <Card title="Business Segment Breakdown">
+        <Card title={copy.sections.breakdown}>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
               <thead>
                 <tr style={{ background: '#f8fafc', color: '#0f172a' }}>
-                  <th style={thStyle}>Company</th>
-                  <th style={thStyle}>Motor Fleet</th>
-                  <th style={thStyle}>Marine Cargo</th>
-                  <th style={thStyle}>Logistics Liability</th>
-                  <th style={thStyle}>International Programs</th>
-                  <th style={thStyle}>Distribution Model</th>
+                  <th style={thStyle}>{copy.table.company}</th>
+                  <th style={thStyle}>{copy.table.motorFleet}</th>
+                  <th style={thStyle}>{copy.table.marineCargo}</th>
+                  <th style={thStyle}>{copy.table.logisticsLiability}</th>
+                  <th style={thStyle}>{copy.table.internationalPrograms}</th>
+                  <th style={thStyle}>{copy.table.distributionModel}</th>
                 </tr>
               </thead>
               <tbody>
@@ -200,12 +274,12 @@ export default function TransportMarketReportPage() {
           </div>
         </Card>
 
-        <Card title="Financial Estimates (Last 3 Years, Estimated Ranges)">
+        <Card title={copy.sections.financial}>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
               <thead>
                 <tr style={{ background: '#f8fafc', color: '#0f172a' }}>
-                  <th style={thStyle}>Year</th>
+                  <th style={thStyle}>{copy.table.year}</th>
                   <th style={thStyle}>Allianz Group</th>
                   <th style={thStyle}>Allianz ESA</th>
                   <th style={thStyle}>VHV Gruppe</th>
@@ -225,17 +299,17 @@ export default function TransportMarketReportPage() {
           </div>
         </Card>
 
-        <Card title="Executive Contact Mapping">
+        <Card title={copy.sections.contacts}>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
               <thead>
                 <tr style={{ background: '#f8fafc', color: '#0f172a' }}>
-                  <th style={thStyle}>Name</th>
-                  <th style={thStyle}>Role</th>
-                  <th style={thStyle}>Company</th>
-                  <th style={thStyle}>City</th>
-                  <th style={thStyle}>LinkedIn</th>
-                  <th style={thStyle}>Status</th>
+                  <th style={thStyle}>{copy.table.name}</th>
+                  <th style={thStyle}>{copy.table.role}</th>
+                  <th style={thStyle}>{copy.table.company}</th>
+                  <th style={thStyle}>{copy.table.city}</th>
+                  <th style={thStyle}>{copy.table.linkedin}</th>
+                  <th style={thStyle}>{copy.table.status}</th>
                 </tr>
               </thead>
               <tbody>
@@ -249,10 +323,10 @@ export default function TransportMarketReportPage() {
                       <td style={tdStyle}>{lead.city}</td>
                       <td style={tdStyle}>
                         <a href={lead.linkedin} target="_blank" rel="noreferrer" style={{ color: '#0f172a' }}>
-                          Profile
+                          {copy.table.profile}
                         </a>
                       </td>
-                      <td style={tdStyle}>{lead.comment ? lead.comment : 'Active'}</td>
+                      <td style={tdStyle}>{lead.comment ? lead.comment : copy.table.active}</td>
                     </tr>
                   )
                 })}
@@ -261,44 +335,35 @@ export default function TransportMarketReportPage() {
           </div>
         </Card>
 
-        <Card title="Estimated GWP Midpoint by Company">
+        <Card title={copy.sections.chart}>
           <div style={{ height: 320 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={gwpMidpoints} margin={{ top: 16, right: 16, left: 12, bottom: 8 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="company" stroke="#475569" />
                 <YAxis stroke="#475569" tickFormatter={(value) => `${value}M`} />
-                <Tooltip formatter={(value: number | string) => [`${value}M EUR`, 'Estimated GWP midpoint']} />
+                <Tooltip formatter={(value: number | string) => [`${value}M EUR`, copy.chartTooltipSeries]} />
                 <Bar dataKey="gwp" fill="#d4380d" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </Card>
 
-        <Card title="Strategic Analysis">
+        <Card title={copy.sections.strategic}>
           <div style={{ display: 'grid', gap: '0.7rem', color: '#334155', fontSize: '0.95rem', lineHeight: 1.6 }}>
-            <p style={{ margin: 0 }}>
-              Allianz Group remains the volume benchmark with broad motor and global cargo reach, while Allianz ESA demonstrates technical depth in specialty transport placements and cross-border program structures.
-            </p>
-            <p style={{ margin: 0 }}>
-              VHV has a strong domestic fleet and logistics liability footprint with efficient broker access, making it structurally relevant for rapid mid-market entry and partnership-led growth.
-            </p>
-            <p style={{ margin: 0 }}>
-              Marine specialization and international program governance are strongest within Allianz entities. Distribution maturity is high across all three organizations, with differing emphasis on central steering versus regional broker intensity.
-            </p>
-            <p style={{ margin: 0 }}>
-              Digital transformation is advanced in core servicing and underwriting support, but AI-readiness varies by function. Claims and fleet analytics domains present the highest near-term partnership probability for structured AI-enabled operating models.
-            </p>
+            {copy.strategicParagraphs.map((paragraph) => (
+              <p key={paragraph} style={{ margin: 0 }}>
+                {paragraph}
+              </p>
+            ))}
           </div>
         </Card>
 
-        <Card title="Executive Summary (CEO Version)">
+        <Card title={copy.sections.summary}>
           <ul style={{ margin: 0, paddingLeft: '1.1rem', display: 'grid', gap: '0.45rem', color: '#0f172a' }}>
-            <li>Total addressable transport/fleet opportunity across target entities is approximately EUR 4.7B to EUR 7.1B.</li>
-            <li>Entry potential is strongest via specialty transport integration and broker-centric fleet propositions.</li>
-            <li>Key leverage points are claims excellence, underwriting decision support, and scalable international program governance.</li>
-            <li>Primary decision makers are concentrated in motor claims leadership, fleet/mobility, transport underwriting, and distribution leadership.</li>
-            <li>Next strategic step: run two targeted executive workshops and launch one pilot with quantified KPI and conversion targets.</li>
+            {copy.summaryBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
           </ul>
         </Card>
       </div>
