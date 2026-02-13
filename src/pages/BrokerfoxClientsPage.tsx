@@ -7,6 +7,7 @@ import { useI18n } from '@/i18n/I18nContext'
 import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createClient, listClients } from '@/brokerfox/api/brokerfoxApi'
+import type { Client } from '@/brokerfox/types'
 import { localizeClientIndustry, localizeClientSegment } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxClientsPage() {
@@ -15,7 +16,7 @@ export default function BrokerfoxClientsPage() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [clients, setClients] = useState([])
+  const [clients, setClients] = useState<Client[]>([])
   const [query, setQuery] = useState('')
   const [form, setForm] = useState({ name: '', segment: '', industry: '' })
 
@@ -41,9 +42,9 @@ export default function BrokerfoxClientsPage() {
 
   const filtered = useMemo(() => {
     const list = query.trim()
-      ? clients.filter((client: any) => client.name.toLowerCase().includes(query.toLowerCase()))
+      ? clients.filter((client) => client.name.toLowerCase().includes(query.toLowerCase()))
       : clients
-    return [...list].sort((a: any, b: any) => Number(Boolean(b.isHero)) - Number(Boolean(a.isHero)))
+    return [...list].sort((a, b) => Number(Boolean(b.isHero)) - Number(Boolean(a.isHero)))
   }, [clients, query])
 
   async function handleCreate() {
@@ -100,7 +101,7 @@ export default function BrokerfoxClientsPage() {
           {error ? <p>{error}</p> : null}
           {filtered.length === 0 ? <p>{t('brokerfox.empty.noClients')}</p> : null}
           <div style={{ display: 'grid', gap: '0.75rem' }}>
-            {filtered.map((client: any) => (
+            {filtered.map((client) => (
               <button
                 key={client.id}
                 type="button"
