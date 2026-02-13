@@ -40,7 +40,7 @@ export default function UnderwriterfoxReportingPage() {
       else buckets[3].value += 1
     })
     return buckets
-  }, [cases, t])
+  }, [cases])
 
   const cycleBuckets = useMemo(() => {
     return [
@@ -63,7 +63,7 @@ export default function UnderwriterfoxReportingPage() {
       { name: t('underwriterfox.ai.decision.decline'), value: counts.declined },
       { name: t('underwriterfox.ai.decision.refer'), value: counts.referred }
     ]
-  }, [cases])
+  }, [cases, t])
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
