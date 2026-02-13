@@ -44,6 +44,27 @@ export default function BrokerfoxOffersPage() {
   const [draftMessage, setDraftMessage] = useState('')
   const [draftApproved, setDraftApproved] = useState(false)
 
+  function localizeCoverageValue(raw?: string) {
+    if (!raw) return raw ?? ''
+    if (lang === 'de') {
+      return raw.replace(/\bm\b/g, 'Mio').replace(/\bk\b/g, 'Tsd')
+    }
+    return raw.replace(/\bMio\b/g, 'm').replace(/\bTsd\b/g, 'k')
+  }
+
+  function localizeOfferExclusion(raw?: string) {
+    if (!raw) return raw ?? ''
+    if (lang === 'de') {
+      if (raw === 'US exposure') return 'US-Exponierung'
+      if (raw === 'Cyber extortion cap') return 'Sublimit Cyber-Erpressung'
+      if (raw === 'War risk') return 'Kriegsrisiko'
+    }
+    if (raw === 'US-Exponierung') return 'US exposure'
+    if (raw === 'Sublimit Cyber-Erpressung') return 'Cyber extortion cap'
+    if (raw === 'Kriegsrisiko') return 'War risk'
+    return raw
+  }
+
   useEffect(() => {
     let mounted = true
     async function load() {
@@ -102,7 +123,9 @@ export default function BrokerfoxOffersPage() {
     Array.from(coverageSet).forEach((coverage) => {
       const values = tenderOffers.map((offer) => {
         const line = offer.lines.find((l) => l.coverage === coverage)
-        return line ? `${line.limit} · ${line.exclusion} · ${line.premium}` : t('brokerfox.offers.noQuote')
+        return line
+          ? `${localizeCoverageValue(line.limit)} · ${localizeOfferExclusion(line.exclusion)} · ${localizeCoverageValue(line.premium)}`
+          : t('brokerfox.offers.noQuote')
       })
       const differ = new Set(values).size > 1
       rows.push({ coverage, values, differ })
