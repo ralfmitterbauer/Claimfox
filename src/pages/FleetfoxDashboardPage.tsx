@@ -9,13 +9,29 @@ import { claimsProbabilityFromRisk } from '@/fleetfox/ai/fleetRiskEngine'
 import type { FleetCostSummary, MaintenanceEvent, SafetyAlert, Vehicle } from '@/fleetfox/types'
 
 export default function FleetfoxDashboardPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [alerts, setAlerts] = useState<SafetyAlert[]>([])
   const [maintenance, setMaintenance] = useState<MaintenanceEvent[]>([])
   const [costs, setCosts] = useState<FleetCostSummary>({ fuelCost: 0, maintenanceCost: 0, insuranceCost: 0, totalCost: 0, costPerKm: 0 })
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const numberFormatter = new Intl.NumberFormat(locale)
+  const oneDecimalFormatter = new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+  const twoDecimalFormatter = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+
+  function localizeMaintenanceType(value: MaintenanceEvent['type']) {
+    if (lang === 'de') {
+      if (value === 'Inspection') return 'Inspektion'
+      if (value === 'Brake') return 'Bremsen'
+      if (value === 'Engine') return 'Motor'
+      if (value === 'Tire') return 'Reifen'
+      if (value === 'Battery') return 'Batterie'
+    }
+    return value
+  }
 
   useEffect(() => {
     let mounted = true
@@ -43,14 +59,14 @@ export default function FleetfoxDashboardPage() {
     const claimsProb = vehicles.reduce((acc, item) => acc + claimsProbabilityFromRisk(item.riskScore), 0) / Math.max(vehicles.length, 1)
 
     return [
-      { label: t('fleetfox.dashboard.kpi.safety'), value: safetyAvg.toFixed(1) },
-      { label: t('fleetfox.dashboard.kpi.risk'), value: riskAvg.toFixed(1) },
-      { label: t('fleetfox.dashboard.kpi.maintenance'), value: maintenanceRisk.toString() },
-      { label: t('fleetfox.dashboard.kpi.claimsProbability'), value: `${Math.round(claimsProb * 100)}%` },
-      { label: t('fleetfox.dashboard.kpi.alerts'), value: alerts.length.toString() },
-      { label: t('fleetfox.dashboard.kpi.vehicles'), value: vehicles.length.toString() }
+      { label: t('fleetfox.dashboard.kpi.safety'), value: oneDecimalFormatter.format(safetyAvg) },
+      { label: t('fleetfox.dashboard.kpi.risk'), value: oneDecimalFormatter.format(riskAvg) },
+      { label: t('fleetfox.dashboard.kpi.maintenance'), value: numberFormatter.format(maintenanceRisk) },
+      { label: t('fleetfox.dashboard.kpi.claimsProbability'), value: `${numberFormatter.format(Math.round(claimsProb * 100))}%` },
+      { label: t('fleetfox.dashboard.kpi.alerts'), value: numberFormatter.format(alerts.length) },
+      { label: t('fleetfox.dashboard.kpi.vehicles'), value: numberFormatter.format(vehicles.length) }
     ]
-  }, [alerts.length, t, vehicles])
+  }, [alerts.length, numberFormatter, oneDecimalFormatter, t, vehicles])
 
   const criticalVehicles = useMemo(() => [...vehicles].sort((a, b) => b.riskScore - a.riskScore).slice(0, 5), [vehicles])
 
@@ -72,10 +88,10 @@ export default function FleetfoxDashboardPage() {
 
         <Card title={t('fleetfox.costs.title')} subtitle={t('fleetfox.costs.subtitle')}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '0.8rem' }}>
-            <div><strong>{t('fleetfox.costs.total')}</strong><div>EUR {costs.totalCost.toLocaleString()}</div></div>
-            <div><strong>{t('fleetfox.costs.perVehicle')}</strong><div>EUR {Math.round(costs.totalCost / Math.max(vehicles.length, 1)).toLocaleString()}</div></div>
-            <div><strong>{t('fleetfox.costs.perKm')}</strong><div>EUR {costs.costPerKm.toFixed(2)}</div></div>
-            <div><strong>{t('fleetfox.costs.maintenance')}</strong><div>EUR {costs.maintenanceCost.toLocaleString()}</div></div>
+            <div><strong>{t('fleetfox.costs.total')}</strong><div>{currencyFormatter.format(costs.totalCost)}</div></div>
+            <div><strong>{t('fleetfox.costs.perVehicle')}</strong><div>{currencyFormatter.format(Math.round(costs.totalCost / Math.max(vehicles.length, 1)))}</div></div>
+            <div><strong>{t('fleetfox.costs.perKm')}</strong><div>{twoDecimalFormatter.format(costs.costPerKm)} EUR</div></div>
+            <div><strong>{t('fleetfox.costs.maintenance')}</strong><div>{currencyFormatter.format(costs.maintenanceCost)}</div></div>
           </div>
         </Card>
 
@@ -90,7 +106,7 @@ export default function FleetfoxDashboardPage() {
                   style={{ border: '1px solid #e2e8f0', background: '#fff', borderRadius: 10, padding: '0.65rem 0.8rem', textAlign: 'left', display: 'flex', justifyContent: 'space-between', cursor: 'pointer' }}
                 >
                   <span style={{ fontWeight: 600 }}>{vehicle.licensePlate}</span>
-                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>Risk {vehicle.riskScore}</span>
+                  <span style={{ color: '#64748b', fontSize: '0.85rem' }}>{lang === 'de' ? 'Risiko' : 'Risk'} {numberFormatter.format(vehicle.riskScore)}</span>
                 </button>
               ))}
             </div>
@@ -111,7 +127,7 @@ export default function FleetfoxDashboardPage() {
         <Card title={t('fleetfox.maintenance.title')} subtitle={t('fleetfox.maintenance.subtitle')}>
           <div style={{ display: 'grid', gap: '0.45rem' }}>
             {maintenance.slice(0, 5).map((item) => (
-              <div key={item.id} style={{ color: '#475569' }}>{item.type} · EUR {item.cost.toLocaleString()} · {item.aiPredicted ? 'AI' : 'Manual'}</div>
+              <div key={item.id} style={{ color: '#475569' }}>{localizeMaintenanceType(item.type)} · {currencyFormatter.format(item.cost)} · {item.aiPredicted ? 'AI' : lang === 'de' ? 'Manuell' : 'Manual'}</div>
             ))}
           </div>
         </Card>
