@@ -10,7 +10,7 @@ import { findCriticalVehicles, routeRiskSummary, simulateTrainingPremiumReductio
 import type { Driver, FleetAssistantInsight, Route, TelematicsSnapshot, Vehicle } from '@/fleetfox/types'
 
 export default function FleetfoxAssistantPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [drivers, setDrivers] = useState<Driver[]>([])
@@ -55,14 +55,47 @@ export default function FleetfoxAssistantPage() {
     return map
   }, [telematics])
 
+  function localizeInsight(next: FleetAssistantInsight): FleetAssistantInsight {
+    if (lang !== 'de') return next
+    return {
+      ...next,
+      title: next.title
+        .replace('Critical fleet units', 'Kritische Flotteneinheiten')
+        .replace('Premium reduction through training', 'Prämienreduktion durch Training')
+        .replace('Route risk summary', 'Routen-Risikozusammenfassung'),
+      bullets: next.bullets.map((bullet) => bullet
+        .replace('risk score', 'Risikoscore')
+        .replace('Baseline premium', 'Ausgangsprämie')
+        .replace('Projected premium after training', 'Prognostizierte Prämie nach Training')
+        .replace('Delta', 'Differenz')
+        .replace('Average route risk score', 'Durchschnittlicher Routen-Risikoscore')
+        .replace('Weather contribution', 'Wetterbeitrag')
+        .replace('Traffic contribution', 'Verkehrsbeitrag')
+        .replace('Recommendation: move critical departures to lower congestion windows.', 'Empfehlung: kritische Abfahrten in Zeitfenster mit geringerer Auslastung verschieben.')
+      ),
+      evidenceRefs: next.evidenceRefs.map((ref) => ref
+        .replace('Driver risk engine', 'Fahrer-Risiko-Engine')
+        .replace('Telematics harsh events', 'Telematik-Hartbrems-/Beschleunigungsereignisse')
+        .replace('Service due status', 'Wartungsfälligkeitsstatus')
+        .replace('Driver training benchmark', 'Fahrertraining-Benchmark')
+        .replace('Loss frequency trend', 'Schadenfrequenz-Trend')
+        .replace('Pricing simulation', 'Preissimulation')
+        .replace('Weather risk feed', 'Wetter-Risikofeed')
+        .replace('Traffic risk map', 'Verkehrsrisikokarte')
+        .replace('Route optimizer', 'Routenoptimierer')
+      )
+    }
+  }
+
   async function applyInsight(next: FleetAssistantInsight, title: string) {
-    setInsight(next)
+    const localized = localizeInsight(next)
+    setInsight(localized)
     await addTimelineEvent(ctx, {
       entityType: 'system',
       entityId: 'assistant',
       type: 'system',
       title,
-      message: next.bullets.join(' | '),
+      message: localized.bullets.join(' | '),
       meta: { actor: ctx.userId }
     })
   }
