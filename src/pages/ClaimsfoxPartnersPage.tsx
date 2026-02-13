@@ -8,11 +8,22 @@ import { listClaims, listPartners, requestPartner, updatePartnerStatus } from '@
 import type { Claim, Partner } from '@/claimsfox/types'
 
 export default function ClaimsfoxPartnersPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [partners, setPartners] = useState<Partner[]>([])
   const [claims, setClaims] = useState<Claim[]>([])
   const [selectedClaim, setSelectedClaim] = useState('')
+  const numberFormatter = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+
+  function localizeRole(value: string) {
+    if (lang === 'de') {
+      if (value === 'Repair Shop') return 'Werkstatt'
+      if (value === 'Surveyor') return 'Gutachter'
+      if (value === 'Towing') return 'Abschleppdienst'
+      if (value === 'Fraud Lab') return 'Betrugsanalyse'
+    }
+    return value
+  }
 
   useEffect(() => {
     let mounted = true
@@ -32,7 +43,7 @@ export default function ClaimsfoxPartnersPage() {
 
   async function assignPartner(partnerId: string) {
     if (!selectedClaim) return
-    await requestPartner(ctx, selectedClaim, partnerId, 'Assigned via partner roster.')
+    await requestPartner(ctx, selectedClaim, partnerId, lang === 'de' ? 'Zuweisung über Partnerverzeichnis.' : 'Assigned via partner roster.')
   }
 
   async function toggleStatus(partner: Partner) {
@@ -58,10 +69,10 @@ export default function ClaimsfoxPartnersPage() {
             <div key={partner.id} style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 0.6fr 0.6fr auto auto', gap: '0.75rem', alignItems: 'center', border: '1px solid #e2e8f0', borderRadius: 12, padding: '0.75rem 1rem' }}>
               <div>
                 <div style={{ fontWeight: 600 }}>{partner.name}</div>
-                <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{partner.role}</div>
+                <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{localizeRole(partner.role)}</div>
               </div>
               <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{partner.contactEmail}</div>
-              <div style={{ fontSize: '0.85rem', color: '#475569' }}>{partner.rating.toFixed(1)}</div>
+              <div style={{ fontSize: '0.85rem', color: '#475569' }}>{numberFormatter.format(partner.rating)}</div>
               <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{t(`claimsfox.partners.status.${partner.status}`)}</div>
               <Button size="sm" variant="secondary" onClick={() => toggleStatus(partner)}>{t('claimsfox.partners.updateStatus')}</Button>
               <Button size="sm" onClick={() => assignPartner(partner.id)}>{t('claimsfox.partners.request')}</Button>
