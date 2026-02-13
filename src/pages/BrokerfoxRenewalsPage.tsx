@@ -16,6 +16,7 @@ export default function BrokerfoxRenewalsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [renewals, setRenewals] = useState<RenewalItem[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -71,7 +72,7 @@ export default function BrokerfoxRenewalsPage() {
                   style={{ display: 'block', width: '100%', textAlign: 'left', padding: '0.5rem 0', border: 'none', background: 'transparent', color: '#0f172a' }}
                 >
                   <strong>{localizePolicyName(item.policyName, lang) ?? item.policyName}</strong>
-                  <div style={{ color: '#475569' }}>{new Date(item.renewalDate).toLocaleDateString()}</div>
+                  <div style={{ color: '#475569' }}>{new Date(item.renewalDate).toLocaleDateString(locale)}</div>
                 </button>
               ))}
             </Card>

@@ -22,6 +22,7 @@ export default function BrokerfoxRenewalDetailPage() {
   const [contractNumber, setContractNumber] = useState('')
   const [documents, setDocuments] = useState<DocumentMeta[]>([])
   const [events, setEvents] = useState<any[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -90,7 +91,7 @@ export default function BrokerfoxRenewalDetailPage() {
               <span><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</span>
               <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</span>
               <span><strong>{t('brokerfox.renewals.statusLabel')}:</strong> {t(`brokerfox.renewals.status.${renewal.status}`)}</span>
-              <span><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</span>
+              <span><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString(locale)}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
               <Button size="sm" variant="secondary" onClick={() => navigate('/brokerfox/renewals')}>{t('brokerfox.renewals.back')}</Button>
@@ -108,7 +109,7 @@ export default function BrokerfoxRenewalDetailPage() {
           </Card>
           <Card variant="glass" title={t('brokerfox.renewals.linksTitle')}>
             <p style={{ margin: 0 }}>{t('brokerfox.renewals.clientLabel')}: {clientName || t('brokerfox.clients.clientUnknown')}</p>
-            <p style={{ margin: 0 }}>{t('brokerfox.renewals.contractLabel')}: {contractNumber || t('brokerfox.renewals.contractMissing')}</p>
+            <p style={{ margin: 0 }}>{t('brokerfox.renewals.contractLabel')}: {localizePolicyName(contractNumber, lang) || t('brokerfox.renewals.contractMissing')}</p>
           </Card>
           <Card variant="glass" title={t('brokerfox.renewals.nextStepsTitle')}>
             <ul style={{ margin: 0, paddingLeft: '1rem' }}>
@@ -124,7 +125,7 @@ export default function BrokerfoxRenewalDetailPage() {
             <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}</div>
             <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
             <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
-            <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString()}</div>
+            <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString(locale)}</div>
           </div>
         </Card>
 
@@ -133,7 +134,7 @@ export default function BrokerfoxRenewalDetailPage() {
           {documents.map((doc) => (
             <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0' }}>
               <span>{doc.name}</span>
-              <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
+              <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000).toLocaleString(locale)} KB</span>
             </div>
           ))}
         </Card>
