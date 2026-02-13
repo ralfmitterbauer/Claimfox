@@ -102,11 +102,13 @@ function buildDetectedZones(event: VisionEvent | undefined): VisionZone[] {
 }
 
 export default function FleetfoxVisionPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [events, setEvents] = useState<VisionEvent[]>([])
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [selectedId, setSelectedId] = useState('')
+  const dateLocale = lang === 'de' ? 'de-DE' : 'en-US'
+  const numberFormatter = new Intl.NumberFormat(dateLocale)
 
   useEffect(() => {
     let mounted = true
@@ -124,6 +126,23 @@ export default function FleetfoxVisionPage() {
   const selected = events.find((event) => event.id === selectedId) ?? events[0]
   const selectedVehicle = vehicles.find((vehicle) => vehicle.id === selected?.vehicleId)
   const detectedZones = buildDetectedZones(selected)
+
+  function localizeZoneLabel(label: string) {
+    if (lang === 'de') return label
+    if (label === 'Heckstoßfänger') return 'Rear bumper'
+    if (label === 'Rücklicht links') return 'Left taillight'
+    if (label === 'Ladebereich') return 'Cargo area'
+    if (label === 'Seitenschweller') return 'Side skirt'
+    if (label === 'Radlauf hinten') return 'Rear wheel arch'
+    if (label === 'Leitplankenkontakt') return 'Guardrail contact'
+    if (label === 'Frontbereich') return 'Front section'
+    if (label === 'Kennzeichenfeld') return 'Plate area'
+    if (label === 'Scheinwerferzone') return 'Headlight area'
+    if (label === 'Schadenzone A') return 'Damage zone A'
+    if (label === 'Schadenzone B') return 'Damage zone B'
+    if (label === 'Schadenzone C') return 'Damage zone C'
+    return label
+  }
 
   async function saveDecision(decision: string) {
     if (!selected) return
@@ -188,7 +207,7 @@ export default function FleetfoxVisionPage() {
                       padding: '0.1rem 0.35rem'
                     }}
                   >
-                    {index + 1}. {zone.label}
+                    {index + 1}. {localizeZoneLabel(zone.label)}
                   </div>
                 </div>
               ))}
@@ -233,8 +252,8 @@ export default function FleetfoxVisionPage() {
                     </div>
                   </div>
                   <div style={{ padding: '0.35rem 0.45rem', display: 'grid', gap: '0.1rem' }}>
-                    <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#0f172a' }}>{zone.label}</div>
-                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{t('fleetfox.vision.confidence')}: {Math.round(zone.confidence * 100)}%</div>
+                    <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#0f172a' }}>{localizeZoneLabel(zone.label)}</div>
+                    <div style={{ fontSize: '0.72rem', color: '#64748b' }}>{t('fleetfox.vision.confidence')}: {numberFormatter.format(Math.round(zone.confidence * 100))}%</div>
                   </div>
                 </div>
               ))}
@@ -246,7 +265,7 @@ export default function FleetfoxVisionPage() {
           <div style={{ display: 'grid', gap: '0.6rem' }}>
             <select value={selectedId} onChange={(event) => setSelectedId(event.target.value)} style={{ padding: '0.45rem', borderRadius: 10, border: '1px solid #e2e8f0' }}>
               {events.map((event) => (
-                <option key={event.id} value={event.id}>{event.type} · {new Date(event.occurredAt).toLocaleDateString()}</option>
+                <option key={event.id} value={event.id}>{event.type} · {new Date(event.occurredAt).toLocaleDateString(dateLocale)}</option>
               ))}
             </select>
             <div style={{ fontWeight: 600 }}>{selected?.summary}</div>
