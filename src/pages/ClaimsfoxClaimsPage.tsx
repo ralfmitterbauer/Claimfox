@@ -8,13 +8,30 @@ import { listClaims } from '@/claimsfox/api/claimsfoxApi'
 import type { Claim } from '@/claimsfox/types'
 
 export default function ClaimsfoxClaimsPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [claims, setClaims] = useState<Claim[]>([])
   const [status, setStatus] = useState('all')
   const [lob, setLob] = useState('all')
   const [search, setSearch] = useState('')
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+
+  function localizeLob(value: string) {
+    if (lang === 'de') {
+      if (value === 'Liability') return 'Haftpflicht'
+      if (value === 'Property') return 'Sach'
+      if (value === 'Cargo') return 'Transport'
+      if (value === 'Fleet') return 'Flotte'
+      if (value === 'Cyber') return 'Cyber'
+    } else {
+      if (value === 'Haftpflicht') return 'Liability'
+      if (value === 'Sach') return 'Property'
+      if (value === 'Transport') return 'Cargo'
+      if (value === 'Flotte') return 'Fleet'
+    }
+    return value
+  }
 
   useEffect(() => {
     let mounted = true
@@ -62,7 +79,7 @@ export default function ClaimsfoxClaimsPage() {
             <select value={lob} onChange={(event) => setLob(event.target.value)} style={{ padding: '0.5rem', borderRadius: 10, border: '1px solid #e2e8f0' }}>
               <option value="all">{t('claimsfox.filters.all')}</option>
               {lobOptions.map((item) => (
-                <option key={item} value={item}>{item}</option>
+                <option key={item} value={item}>{localizeLob(item)}</option>
               ))}
             </select>
           </label>
@@ -100,10 +117,10 @@ export default function ClaimsfoxClaimsPage() {
                 <div style={{ fontWeight: 600 }}>{claim.claimNumber}</div>
                 <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{claim.insured}</div>
               </div>
-              <div style={{ fontSize: '0.9rem' }}>{claim.lineOfBusiness}</div>
+              <div style={{ fontSize: '0.9rem' }}>{localizeLob(claim.lineOfBusiness)}</div>
               <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{claim.policyRef}</div>
               <div style={{ fontSize: '0.85rem', color: '#0f172a', fontWeight: 600 }}>{t(`claimsfox.status.${claim.status}`)}</div>
-              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(claim.slaDueAt).toLocaleDateString()}</div>
+              <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(claim.slaDueAt).toLocaleDateString(locale)}</div>
             </button>
           ))}
         </div>
