@@ -5,8 +5,14 @@ import DemoUtilitiesPanel from '@/brokerfox/components/DemoUtilitiesPanel'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { applyGdvImport, listContracts, listIntegrations, runBiproSync, runPortalFetch, updateIntegrationStatus } from '@/brokerfox/api/brokerfoxApi'
-import type { IntegrationItem, IntegrationStatus } from '@/brokerfox/types'
+import type { Contract, IntegrationItem, IntegrationStatus } from '@/brokerfox/types'
 import { localizeIntegrationDescription, localizeIntegrationName } from '@/brokerfox/utils/localizeDemoValues'
+
+type GdvPreviewItem = {
+  id: string
+  premiumEUR: number
+  status: Contract['status']
+}
 
 export default function BrokerfoxIntegrationsPage() {
   const { lang, t } = useI18n()
@@ -14,9 +20,10 @@ export default function BrokerfoxIntegrationsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [items, setItems] = useState<IntegrationItem[]>([])
-  const [contracts, setContracts] = useState<any[]>([])
+  const [contracts, setContracts] = useState<Contract[]>([])
   const [gdvFile, setGdvFile] = useState<File | null>(null)
-  const [gdvPreview, setGdvPreview] = useState<any[]>([])
+  const [gdvPreview, setGdvPreview] = useState<GdvPreviewItem[]>([])
+  const currencyFormatter = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
   useEffect(() => {
     let mounted = true
@@ -51,11 +58,11 @@ export default function BrokerfoxIntegrationsPage() {
 
   function handleGdvPreview() {
     if (!gdvFile) return
-    const preview = contracts.slice(0, 3).map((contract: any, idx: number) => ({
+    const preview = contracts.slice(0, 3).map((contract, idx) => ({
       id: contract.id,
       premiumEUR: contract.premiumEUR + (idx + 1) * 300,
       status: contract.status === 'pending' ? 'active' : contract.status
-    }))
+    }) satisfies GdvPreviewItem)
     setGdvPreview(preview)
   }
 
@@ -107,7 +114,7 @@ export default function BrokerfoxIntegrationsPage() {
                 <div style={{ display: 'grid', gap: '0.35rem' }}>
                   {gdvPreview.map((item) => (
                     <div key={item.id} style={{ fontSize: '0.85rem', color: '#64748b' }}>
-                      {item.id}: € {item.premiumEUR}
+                      {item.id}: {currencyFormatter.format(item.premiumEUR)}
                     </div>
                   ))}
                 </div>
