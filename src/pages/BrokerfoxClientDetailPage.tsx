@@ -21,9 +21,9 @@ import {
   sendCommissionReminder,
   uploadDocument
 } from '@/brokerfox/api/brokerfoxApi'
-import type { DocumentMeta } from '@/brokerfox/types'
+import type { Client, Commission, Contact, Contract, DocumentMeta, TimelineEvent, TimelineEventType } from '@/brokerfox/types'
 import { buildRiskAnalysis } from '@/brokerfox/ai/riskEngine'
-import { localizeClientContactRole, localizeClientIndustry, localizeClientSegment } from '@/brokerfox/utils/localizeDemoValues'
+import { localizeClientContactRole, localizeClientIndustry, localizeClientSegment, localizeLob } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxClientDetailPage() {
   const { lang, t } = useI18n()
@@ -32,14 +32,16 @@ export default function BrokerfoxClientDetailPage() {
   const { clientId } = useParams()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [client, setClient] = useState<any>(null)
+  const [client, setClient] = useState<Client | null>(null)
   const [documents, setDocuments] = useState<DocumentMeta[]>([])
-  const [contracts, setContracts] = useState<any[]>([])
-  const [commissions, setCommissions] = useState<any[]>([])
-  const [events, setEvents] = useState([])
+  const [contracts, setContracts] = useState<Contract[]>([])
+  const [commissions, setCommissions] = useState<Commission[]>([])
+  const [events, setEvents] = useState<TimelineEvent[]>([])
   const [draftMessage, setDraftMessage] = useState('')
   const [approved, setApproved] = useState(false)
   const [contractFilters, setContractFilters] = useState({ lob: 'all', carrier: 'all', status: 'all' })
+  const currencyFormatter = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+  const numberFormatter = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US')
 
   useEffect(() => {
     let mounted = true
@@ -59,7 +61,7 @@ export default function BrokerfoxClientDetailPage() {
         setDocuments(docs.filter((doc) => doc.entityType === 'client' && doc.entityId === clientId))
         setEvents(timeline)
         setContracts(contractData)
-        const commissionData = await Promise.all(contractData.map((contract: any) => listCommissionsByContract(ctx, contract.id)))
+        const commissionData = await Promise.all(contractData.map((contract) => listCommissionsByContract(ctx, contract.id)))
         setCommissions(commissionData.flat())
         setLoading(false)
       } catch {
@@ -74,7 +76,7 @@ export default function BrokerfoxClientDetailPage() {
     }
   }, [clientId, ctx, t])
 
-  const contacts = useMemo(() => client?.contacts ?? [], [client])
+  const contacts = useMemo<Contact[]>(() => client?.contacts ?? [], [client])
   const analysis = useMemo(() => buildRiskAnalysis(client, null), [client])
   const filteredContracts = useMemo(() => {
     const next = contracts.filter((contract) => {
@@ -99,7 +101,7 @@ export default function BrokerfoxClientDetailPage() {
     return groups
   }, [documents])
 
-  async function handleComposer(payload: { type: any; message: string; attachments: DocumentMeta[] }) {
+  async function handleComposer(payload: { type: TimelineEventType; message: string; attachments: DocumentMeta[] }) {
     if (!clientId) {
       return
     }
@@ -214,7 +216,7 @@ export default function BrokerfoxClientDetailPage() {
           </Card>
           <Card variant="glass" title={t('brokerfox.clients.contactsTitle')}>
             {contacts.length === 0 ? <p>{t('brokerfox.clients.noContacts')}</p> : null}
-            {contacts.map((contact: any) => (
+            {contacts.map((contact) => (
               <div key={contact.id} style={{ marginBottom: '0.5rem' }}>
                 <strong>{contact.name}</strong>
                 <div style={{ color: '#64748b' }}>{localizeClientContactRole(contact.role, lang) ?? t('brokerfox.clients.contactRoleMissing')}</div>
@@ -232,7 +234,7 @@ export default function BrokerfoxClientDetailPage() {
             <select value={contractFilters.lob} onChange={(event) => setContractFilters((prev) => ({ ...prev, lob: event.target.value }))} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               <option value="all">{t('brokerfox.contracts.filterAllLob')}</option>
               {Array.from(new Set(contracts.map((contract) => contract.lob))).map((lob) => (
-                <option key={lob} value={lob}>{lob}</option>
+                <option key={lob} value={lob}>{localizeLob(lob, lang) ?? lob}</option>
               ))}
             </select>
             <select value={contractFilters.carrier} onChange={(event) => setContractFilters((prev) => ({ ...prev, carrier: event.target.value }))} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
@@ -249,13 +251,13 @@ export default function BrokerfoxClientDetailPage() {
             </select>
           </div>
           {filteredContracts.length === 0 ? <p>{t('brokerfox.contracts.empty')}</p> : null}
-          {filteredContracts.map((contract: any) => (
+          {filteredContracts.map((contract) => (
             <div key={contract.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto auto auto', gap: '0.75rem', alignItems: 'center', padding: '0.4rem 0', borderBottom: '1px solid #e2e8f0' }}>
               <div>
                 <strong>{contract.policyNumber}</strong>
-                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{contract.lob} · {contract.carrierName}</div>
+                <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{localizeLob(contract.lob, lang) ?? contract.lob} · {contract.carrierName}</div>
               </div>
-              <span style={{ color: '#94a3b8' }}>€ {contract.premiumEUR.toLocaleString()}</span>
+              <span style={{ color: '#94a3b8' }}>{currencyFormatter.format(contract.premiumEUR)}</span>
               <span style={{ color: '#64748b' }}>{t(`brokerfox.contracts.status.${contract.status}`)}</span>
               <Button size="sm" onClick={() => navigate(`/brokerfox/contracts/${contract.id}`)}>{t('brokerfox.contracts.viewDetail')}</Button>
             </div>
@@ -272,7 +274,7 @@ export default function BrokerfoxClientDetailPage() {
                 docs.map((doc) => (
                   <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.25rem 0' }}>
                     <span>{doc.name}</span>
-                    <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
+                    <span style={{ color: '#94a3b8' }}>{numberFormatter.format(Math.round(doc.size / 1000))} KB</span>
                   </div>
                 ))
               )}
