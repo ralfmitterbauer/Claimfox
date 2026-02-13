@@ -3,7 +3,7 @@ import Card from '@/components/ui/Card'
 import AifoxLayout from '@/aifox/components/AifoxLayout'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
-import { logIntegrationToggle } from '@/aifox/api/aifoxApi'
+import { addTimelineEvent } from '@/aifox/api/aifoxApi'
 
 const integrations = [
   'Azure AI',
@@ -32,7 +32,16 @@ export default function AifoxIntegrationsPage() {
   async function toggle(name: string) {
     const next = { ...enabled, [name]: !enabled[name] }
     setEnabled(next)
-    await logIntegrationToggle(ctx, name, next[name])
+    await addTimelineEvent(ctx, {
+      entityType: 'system',
+      entityId: name,
+      type: 'system',
+      title: lang === 'de' ? 'Integration umgeschaltet' : 'Integration toggled',
+      message: lang === 'de'
+        ? `${localizeIntegrationName(name)} ${next[name] ? 'aktiviert' : 'deaktiviert'}.`
+        : `${name} ${next[name] ? 'enabled' : 'disabled'}.`,
+      actor: ctx.userId
+    })
   }
 
   return (
