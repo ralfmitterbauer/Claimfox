@@ -15,9 +15,15 @@ const columns: Array<{ key: Task['status']; labelKey: string }> = [
 ]
 
 export default function ClaimsfoxTasksPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [tasks, setTasks] = useState<Task[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+
+  function localizeTaskTitle(value: string) {
+    if (lang === 'de') return value.replace(/^Follow-up\b/, 'Nachverfolgung')
+    return value.replace(/^Nachverfolgung\b/, 'Follow-up')
+  }
 
   useEffect(() => {
     let mounted = true
@@ -60,9 +66,9 @@ export default function ClaimsfoxTasksPage() {
             <div style={{ display: 'grid', gap: '0.75rem' }}>
               {(grouped[column.key] ?? []).map((task) => (
                 <div key={task.id} style={{ border: '1px solid #e2e8f0', borderRadius: 12, padding: '0.75rem', display: 'grid', gap: '0.35rem' }}>
-                  <div style={{ fontWeight: 600 }}>{task.title}</div>
+                  <div style={{ fontWeight: 600 }}>{localizeTaskTitle(task.title)}</div>
                   <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{task.owner}</div>
-                  <div style={{ fontSize: '0.85rem', color: '#475569' }}>{new Date(task.dueAt).toLocaleDateString()}</div>
+                  <div style={{ fontSize: '0.85rem', color: '#475569' }}>{new Date(task.dueAt).toLocaleDateString(locale)}</div>
                   {task.status !== 'done' && (
                     <Button size="sm" variant="secondary" onClick={() => advance(task)}>{t('claimsfox.tasks.advance')}</Button>
                   )}
