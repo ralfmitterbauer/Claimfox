@@ -9,7 +9,7 @@ import TimelineThread from '@/brokerfox/components/TimelineThread'
 import { useI18n } from '@/i18n/I18nContext'
 import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { addTimelineEvent, listClients, listContracts, listDocuments, listRenewals, listTimelineEvents } from '@/brokerfox/api/brokerfoxApi'
-import type { DocumentMeta, RenewalItem } from '@/brokerfox/types'
+import type { DocumentMeta, RenewalItem, TimelineEvent, TimelineEventType } from '@/brokerfox/types'
 import { localizePolicyName } from '@/brokerfox/utils/localizeDemoValues'
 
 export default function BrokerfoxRenewalDetailPage() {
@@ -21,8 +21,21 @@ export default function BrokerfoxRenewalDetailPage() {
   const [clientName, setClientName] = useState('')
   const [contractNumber, setContractNumber] = useState('')
   const [documents, setDocuments] = useState<DocumentMeta[]>([])
-  const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<TimelineEvent[]>([])
   const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const numberFormatter = new Intl.NumberFormat(locale)
+  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+
+  function localizePremium(value: string) {
+    const normalized = value.trim().replace(/\s+/g, '')
+    const match = normalized.match(/^€?(\d+(?:[.,]\d+)?)([kKmM])?$/)
+    if (!match) return value
+    const numeric = Number(match[1].replace(',', '.'))
+    if (Number.isNaN(numeric)) return value
+    const suffix = match[2]?.toLowerCase()
+    const amount = suffix === 'k' ? numeric * 1000 : suffix === 'm' ? numeric * 1000000 : numeric
+    return currencyFormatter.format(amount)
+  }
 
   useEffect(() => {
     let mounted = true
@@ -56,7 +69,7 @@ export default function BrokerfoxRenewalDetailPage() {
     ]
   ), [t])
 
-  async function handleComposer(payload: { type: any; message: string; attachments: DocumentMeta[] }) {
+  async function handleComposer(payload: { type: TimelineEventType; message: string; attachments: DocumentMeta[] }) {
     if (!renewal) return
     await addTimelineEvent(ctx, {
       entityType: 'renewal',
@@ -89,7 +102,7 @@ export default function BrokerfoxRenewalDetailPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem 1rem', color: '#ffffff', fontSize: '0.9rem' }}>
               <span><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}</span>
               <span><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</span>
-              <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</span>
+              <span><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {localizePremium(renewal.premium)}</span>
               <span><strong>{t('brokerfox.renewals.statusLabel')}:</strong> {t(`brokerfox.renewals.status.${renewal.status}`)}</span>
               <span><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString(locale)}</span>
             </div>
@@ -124,7 +137,7 @@ export default function BrokerfoxRenewalDetailPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
             <div><strong>{t('brokerfox.renewals.policyLabel')}:</strong> {localizePolicyName(renewal.policyName, lang) ?? renewal.policyName}</div>
             <div><strong>{t('brokerfox.renewals.carrierLabel')}:</strong> {renewal.carrier}</div>
-            <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {renewal.premium}</div>
+            <div><strong>{t('brokerfox.renewals.premiumLabel')}:</strong> {localizePremium(renewal.premium)}</div>
             <div><strong>{t('brokerfox.renewals.dueDateLabel')}:</strong> {new Date(renewal.renewalDate).toLocaleDateString(locale)}</div>
           </div>
         </Card>
@@ -134,7 +147,7 @@ export default function BrokerfoxRenewalDetailPage() {
           {documents.map((doc) => (
             <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.35rem 0' }}>
               <span>{doc.name}</span>
-              <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000).toLocaleString(locale)} KB</span>
+              <span style={{ color: '#94a3b8' }}>{numberFormatter.format(Math.round(doc.size / 1000))} KB</span>
             </div>
           ))}
         </Card>
