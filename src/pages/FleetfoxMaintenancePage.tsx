@@ -8,10 +8,12 @@ import { addTimelineEvent, listMaintenance, listVehicles } from '@/fleetfox/api/
 import type { MaintenanceEvent, Vehicle } from '@/fleetfox/types'
 
 export default function FleetfoxMaintenancePage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [items, setItems] = useState<MaintenanceEvent[]>([])
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
   useEffect(() => {
     let mounted = true
@@ -48,10 +50,10 @@ export default function FleetfoxMaintenancePage() {
               <div key={item.id} style={{ border: '1px solid #e2e8f0', borderRadius: 12, padding: '0.75rem 0.8rem', display: 'grid', gap: '0.25rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <strong>{vehicle?.licensePlate ?? item.vehicleId}</strong>
-                  <span style={{ color: '#64748b', fontSize: '0.84rem' }}>{item.aiPredicted ? 'AI' : 'Manual'}</span>
+                  <span style={{ color: '#64748b', fontSize: '0.84rem' }}>{item.aiPredicted ? 'AI' : lang === 'de' ? 'Manuell' : 'Manual'}</span>
                 </div>
                 <div style={{ color: '#475569' }}>{item.type}</div>
-                <div style={{ color: '#64748b', fontSize: '0.84rem' }}>{t('fleetfox.maintenance.cost')}: EUR {item.cost.toLocaleString()} · {t('fleetfox.maintenance.due')}: {item.downtimeDays}d</div>
+                <div style={{ color: '#64748b', fontSize: '0.84rem' }}>{t('fleetfox.maintenance.cost')}: {currencyFormatter.format(item.cost)} · {t('fleetfox.maintenance.due')}: {item.downtimeDays} {lang === 'de' ? 'Tage' : 'days'}</div>
                 <Button size="sm" variant="secondary" onClick={() => schedule(item)}>{t('fleetfox.maintenance.schedule')}</Button>
               </div>
             )
