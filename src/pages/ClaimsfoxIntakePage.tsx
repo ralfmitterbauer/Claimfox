@@ -8,7 +8,7 @@ import { useTenantContext } from '@/brokerfox/hooks/useTenantContext'
 import { createClaim } from '@/claimsfox/api/claimsfoxApi'
 
 export default function ClaimsfoxIntakePage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
@@ -22,10 +22,14 @@ export default function ClaimsfoxIntakePage() {
 
   async function submit() {
     const now = new Date()
+    const defaultPolicyRef = lang === 'de' ? 'POL-DEMO-1201' : 'POL-DEMO-1201'
+    const defaultInsured = lang === 'de' ? 'Demo-Versicherungsnehmer' : 'Demo Insured'
+    const defaultLocation = lang === 'de' ? 'Hamburg, DE' : 'Hamburg, DE'
+    const defaultSummary = lang === 'de' ? 'FNOL über das Maklerportal eingereicht.' : 'FNOL submitted via broker portal.'
     const claim = await createClaim(ctx, {
       claimNumber: `CL-${now.getFullYear()}-${Math.floor(Math.random() * 9000 + 1000)}`,
-      policyRef: form.policyRef || 'POL-DEMO-1201',
-      insured: form.claimantName || 'Demo Insured',
+      policyRef: form.policyRef || defaultPolicyRef,
+      insured: form.claimantName || defaultInsured,
       lossDate: form.lossDate || now.toISOString(),
       status: 'intake',
       severity: 'medium',
@@ -33,13 +37,13 @@ export default function ClaimsfoxIntakePage() {
       paid: 0,
       currency: 'EUR',
       lineOfBusiness: 'Motor Fleet',
-      location: form.lossLocation || 'Hamburg, DE',
+      location: form.lossLocation || defaultLocation,
       tags: ['fnol', 'new'],
       assignedTo: 'mira.klein@claimsfox',
       slaDueAt: new Date(now.getTime() + 10 * 86400000).toISOString(),
       fraudScore: 0.12,
       triageScore: 0.58,
-      timelineSummary: form.description || 'FNOL submitted via broker portal.'
+      timelineSummary: form.description || defaultSummary
     })
     navigate(`/claimsfox/claims/${claim.id}`)
   }
