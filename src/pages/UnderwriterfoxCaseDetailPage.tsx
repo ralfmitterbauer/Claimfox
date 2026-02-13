@@ -36,11 +36,21 @@ export default function UnderwriterfoxCaseDetailPage() {
 
   function localizeRiskFactor(value: string) {
     if (lang !== 'de') return value
+    if (value === 'Controls evidence quality') return 'Qualität der Kontrollnachweise'
+
+    if (value.endsWith(' exposure concentration')) {
+      const productLine = value.replace(' exposure concentration', '')
+      const localizedProduct = localizeUnderwriterProductLine(productLine, lang) ?? productLine
+      return `${localizedProduct} Exponierungskonzentration`
+    }
+
+    if (value.endsWith(' loss ratio trend')) {
+      const segment = value.replace(' loss ratio trend', '')
+      const localizedSegment = localizeUnderwriterSegment(segment, lang) ?? segment
+      return `${localizedSegment} Schadenquoten-Trend`
+    }
+
     return value
-      .replace(' exposure concentration', ' Exponierungskonzentration')
-      .replace(' loss ratio trend', ' Schadenquoten-Trend')
-      .replace('Controls evidence quality', 'Qualität der Kontrollnachweise')
-      .replace('Mid-Market', 'Mittelstand')
   }
 
   async function handleStatusChange(status: UnderwritingCase['status'], rationale: string) {
