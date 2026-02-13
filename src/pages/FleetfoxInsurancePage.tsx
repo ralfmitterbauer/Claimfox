@@ -21,10 +21,13 @@ function downloadText(filename: string, content: string, mime: string) {
 }
 
 export default function FleetfoxInsurancePage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [items, setItems] = useState<InsuranceAssessment[]>([])
   const [selectedId, setSelectedId] = useState('')
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
+  const numberFormatter = new Intl.NumberFormat(locale, { maximumFractionDigits: 2 })
 
   useEffect(() => {
     let mounted = true
@@ -48,7 +51,7 @@ export default function FleetfoxInsurancePage() {
 
   async function addNote() {
     if (!selected) return
-    await addInsuranceNote(ctx, selected.id, 'Premium simulation reviewed and action plan agreed.')
+    await addInsuranceNote(ctx, selected.id, lang === 'de' ? 'Prämiensimulation geprüft und Maßnahmenplan abgestimmt.' : 'Premium simulation reviewed and action plan agreed.')
   }
 
   return (
@@ -72,7 +75,7 @@ export default function FleetfoxInsurancePage() {
               >
                 <div style={{ fontWeight: 600 }}>{item.fleetSegment}</div>
                 <div style={{ color: '#64748b', fontSize: '0.84rem' }}>
-                  {t('fleetfox.insurance.premium')}: EUR {Math.round(item.basePremiumEur * item.multiplier).toLocaleString()}
+                  {t('fleetfox.insurance.premium')}: {currencyFormatter.format(Math.round(item.basePremiumEur * item.multiplier))}
                 </div>
               </button>
             ))}
@@ -83,9 +86,9 @@ export default function FleetfoxInsurancePage() {
           <div style={{ display: 'grid', gap: '1.5rem' }}>
             <Card title={t('fleetfox.insurance.detailTitle')}>
               <div style={{ display: 'grid', gap: '0.4rem' }}>
-                <div>{t('fleetfox.insurance.basePremium')}: EUR {selected.basePremiumEur.toLocaleString()}</div>
-                <div>{t('fleetfox.insurance.multiplier')}: {selected.multiplier}</div>
-                <div>{t('fleetfox.insurance.claimsProbability')}: {Math.round(selected.claimsProbability * 100)}%</div>
+                <div>{t('fleetfox.insurance.basePremium')}: {currencyFormatter.format(selected.basePremiumEur)}</div>
+                <div>{t('fleetfox.insurance.multiplier')}: {numberFormatter.format(selected.multiplier)}</div>
+                <div>{t('fleetfox.insurance.claimsProbability')}: {numberFormatter.format(Math.round(selected.claimsProbability * 100))}%</div>
                 <ul style={{ margin: 0, paddingLeft: '1rem', color: '#475569' }}>
                   {selected.recommendedActions.map((action) => <li key={action}>{action}</li>)}
                 </ul>
