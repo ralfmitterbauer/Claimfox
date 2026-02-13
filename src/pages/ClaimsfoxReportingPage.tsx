@@ -9,7 +9,7 @@ import { addTimelineEvent, listClaims, listTasks } from '@/claimsfox/api/claimsf
 import type { Claim, Task } from '@/claimsfox/types'
 
 export default function ClaimsfoxReportingPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [claims, setClaims] = useState<Claim[]>([])
   const [tasks, setTasks] = useState<Task[]>([])
@@ -62,8 +62,8 @@ export default function ClaimsfoxReportingPage() {
       entityType: 'claim',
       entityId: claims[0]?.id ?? 'audit',
       type: 'system',
-      title: 'Audit export requested',
-      message: 'Compliance export generated for current tenant.',
+      title: lang === 'de' ? 'Audit-Export angefordert' : 'Audit export requested',
+      message: lang === 'de' ? 'Compliance-Export für aktuellen Mandanten erzeugt.' : 'Compliance export generated for current tenant.',
       actor: ctx.userId
     })
   }
