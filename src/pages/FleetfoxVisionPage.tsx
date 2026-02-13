@@ -144,6 +144,48 @@ export default function FleetfoxVisionPage() {
     return label
   }
 
+  function localizeVisionType(value: string) {
+    if (lang === 'de') {
+      if (value === 'Near miss') return 'Beinaheunfall'
+      if (value === 'Lane departure') return 'Spurverlassen'
+      if (value === 'Tailgating') return 'Zu geringer Abstand'
+      if (value === 'Hard cornering') return 'Scharfe Kurvenfahrt'
+      if (value === 'Phone distraction') return 'Handy-Ablenkung'
+    }
+    return value
+  }
+
+  function localizeSeverity(value: string | undefined) {
+    if (!value) return '-'
+    if (lang === 'de') {
+      if (value === 'critical') return 'kritisch'
+      if (value === 'high') return 'hoch'
+      if (value === 'medium') return 'mittel'
+      if (value === 'low') return 'niedrig'
+    }
+    return value
+  }
+
+  function localizeSummary(value: string | undefined) {
+    if (!value || lang !== 'de') return value
+    return value
+      .replace('Near miss', 'Beinaheunfall')
+      .replace('Lane departure', 'Spurverlassen')
+      .replace('Tailgating', 'Zu geringer Abstand')
+      .replace('Hard cornering', 'Scharfe Kurvenfahrt')
+      .replace('Phone distraction', 'Handy-Ablenkung')
+      .replace('detected on', 'erkannt bei')
+      .replace('in', 'in')
+  }
+
+  function localizeEvidence(value: string) {
+    if (lang !== 'de') return value
+    if (value === 'Vision confidence 86%') return 'Vision-Konfidenz 86%'
+    if (value === 'Speed delta +18 km/h') return 'Geschwindigkeitsdelta +18 km/h'
+    if (value === 'High traffic density segment') return 'Streckenabschnitt mit hoher Verkehrsdichte'
+    return value
+  }
+
   async function saveDecision(decision: string) {
     if (!selected) return
     await addTimelineEvent(ctx, {
@@ -265,14 +307,14 @@ export default function FleetfoxVisionPage() {
           <div style={{ display: 'grid', gap: '0.6rem' }}>
             <select value={selectedId} onChange={(event) => setSelectedId(event.target.value)} style={{ padding: '0.45rem', borderRadius: 10, border: '1px solid #e2e8f0' }}>
               {events.map((event) => (
-                <option key={event.id} value={event.id}>{event.type} · {new Date(event.occurredAt).toLocaleDateString(dateLocale)}</option>
+                <option key={event.id} value={event.id}>{localizeVisionType(event.type)} · {new Date(event.occurredAt).toLocaleDateString(dateLocale)}</option>
               ))}
             </select>
-            <div style={{ fontWeight: 600 }}>{selected?.summary}</div>
+            <div style={{ fontWeight: 600 }}>{localizeSummary(selected?.summary)}</div>
             <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.vehicle')}: {selectedVehicle?.licensePlate ?? '-'}</div>
-            <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.severity')}: {selected?.severity}</div>
+            <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('fleetfox.vision.severity')}: {localizeSeverity(selected?.severity)}</div>
             <ul style={{ margin: 0, paddingLeft: '1rem', color: '#475569' }}>
-              {selected?.evidence.map((item) => <li key={item}>{item}</li>)}
+              {selected?.evidence.map((item) => <li key={item}>{localizeEvidence(item)}</li>)}
             </ul>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <Button size="sm" onClick={() => saveDecision('Approved')}>{t('fleetfox.vision.approve')}</Button>
