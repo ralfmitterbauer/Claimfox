@@ -20,6 +20,17 @@ const moduleCards = [
   { key: 'audit', route: '/aifox/audit' }
 ]
 
+function isAutoProcessedDecision(value: string) {
+  const normalized = value.trim().toLowerCase()
+  return (
+    normalized === 'auto-approve' ||
+    normalized === 'auto approve' ||
+    normalized === 'auto approved' ||
+    normalized === 'automatisch freigeben' ||
+    normalized === 'automatisch freigegeben'
+  )
+}
+
 function localizeLineOfBusiness(value: string, lang: 'de' | 'en') {
   if (lang === 'en') return value
   if (value === 'Motor Fleet') return 'Kfz-Flotte'
@@ -73,7 +84,7 @@ export default function AifoxDashboardPage() {
   }, [decisions])
 
   const kpis = [
-    { label: t('aifox.dashboard.kpi.autoProcessed'), value: decisions.filter((d) => d.decision === 'Auto-approve').length },
+    { label: t('aifox.dashboard.kpi.autoProcessed'), value: decisions.filter((d) => isAutoProcessedDecision(d.decision)).length },
     { label: t('aifox.dashboard.kpi.fraudAlerts'), value: fraud.length },
     { label: t('aifox.dashboard.kpi.avgConfidence'), value: `${avgConfidence}%` },
     { label: t('aifox.dashboard.kpi.modelDrift'), value: t('aifox.dashboard.kpi.modelDriftValue') },
