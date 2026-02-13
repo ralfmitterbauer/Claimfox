@@ -23,10 +23,11 @@ import {
   uploadDocument
 } from '@/brokerfox/api/brokerfoxApi'
 import { generateDocumentText } from '@/brokerfox/utils/documentGenerator'
+import { localizeLob, localizePolicyName, localizeTenderTitle } from '@/brokerfox/utils/localizeDemoValues'
 import type { Client, DocumentMeta } from '@/brokerfox/types'
 
 export default function BrokerfoxDocumentsPage() {
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -47,6 +48,7 @@ export default function BrokerfoxDocumentsPage() {
   const [progress, setProgress] = useState(0)
   const [approvedExtraction, setApprovedExtraction] = useState<Record<string, boolean>>({})
   const [signatureDraft, setSignatureDraft] = useState<{ docId: string; name: string; email: string }>({ docId: '', name: '', email: '' })
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -202,6 +204,42 @@ export default function BrokerfoxDocumentsPage() {
             ? contracts
             : renewals
 
+  function getEntityLabel(item: any) {
+    if (item.name) return item.name
+    if (item.title) return localizeTenderTitle(item.title, lang) ?? item.title
+    if (item.policyName) return localizePolicyName(item.policyName, lang) ?? item.policyName
+    if (item.policyNumber) return localizePolicyName(item.policyNumber, lang) ?? item.policyNumber
+    return item.carrier?.name ?? item.id
+  }
+
+  function localizeExtractionFieldLabel(key: string) {
+    if (lang === 'de') {
+      if (key === 'policyNumber') return 'Policennummer'
+      if (key === 'insurer') return 'Versicherer'
+      if (key === 'premium') return 'Praemie'
+      if (key === 'startDate') return 'Beginn'
+      if (key === 'endDate') return 'Ablauf'
+      if (key === 'lineOfBusiness') return 'Sparte'
+      if (key === 'attachmentType') return 'Anhangstyp'
+      if (key === 'sender') return 'Absender'
+    }
+    if (key === 'policyNumber') return 'Policy number'
+    if (key === 'insurer') return 'Insurer'
+    if (key === 'premium') return 'Premium'
+    if (key === 'startDate') return 'Start date'
+    if (key === 'endDate') return 'End date'
+    if (key === 'lineOfBusiness') return 'Line of business'
+    if (key === 'attachmentType') return 'Attachment type'
+    if (key === 'sender') return 'Sender'
+    return key
+  }
+
+  function localizeExtractionFieldValue(key: string, value: string) {
+    if (key === 'lineOfBusiness') return localizeLob(value, lang) ?? value
+    if (key === 'policyNumber') return localizePolicyName(value, lang) ?? value
+    return value
+  }
+
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
       <BrokerfoxLayout
@@ -241,7 +279,7 @@ export default function BrokerfoxDocumentsPage() {
             </select>
             <select value={entityId} onChange={(event) => setEntityId(event.target.value)} style={{ padding: '0.5rem 0.75rem', borderRadius: 10, border: '1px solid #d6d9e0' }}>
               {entityOptions.map((item: any) => (
-                <option key={item.id} value={item.id}>{item.name ?? item.title ?? item.policyName ?? item.policyNumber ?? item.carrier?.name}</option>
+                <option key={item.id} value={item.id}>{getEntityLabel(item)}</option>
               ))}
             </select>
             <Button size="sm" onClick={() => handleUpload()}>{t('brokerfox.actions.uploadDocument')}</Button>
@@ -271,7 +309,7 @@ export default function BrokerfoxDocumentsPage() {
                     <strong>{doc.name}</strong>
                     <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{doc.entityType ?? t('brokerfox.documents.unassigned')}</div>
                   </div>
-                  <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000)} KB</span>
+                  <span style={{ color: '#94a3b8' }}>{Math.round(doc.size / 1000).toLocaleString(locale)} KB</span>
                   <Button size="sm" onClick={() => handleDownload(doc)}>{t('brokerfox.documents.download')}</Button>
                   <Button size="sm" onClick={() => handleGeneratedDownload(doc)}>{t('brokerfox.documents.downloadGenerated')}</Button>
                   {!doc.entityId ? <Button size="sm" onClick={() => handleAssign(doc)}>{t('brokerfox.documents.assignAction')}</Button> : null}
@@ -283,11 +321,13 @@ export default function BrokerfoxDocumentsPage() {
                     <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.suggestionNotice')}</div>
                     <div style={{ marginTop: '0.4rem', display: 'grid', gap: '0.3rem' }}>
                       <div>{t('brokerfox.extraction.suggestedClient')}: {clients.find((client) => client.id === extraction.suggestedClientId)?.name ?? '-'}</div>
-                      <div>{t('brokerfox.extraction.suggestedContract')}: {contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber ?? '-'}</div>
+                      <div>{t('brokerfox.extraction.suggestedContract')}: {localizePolicyName(contracts.find((contract) => contract.id === extraction.suggestedContractId)?.policyNumber, lang) ?? '-'}</div>
                       <div>{t('brokerfox.extraction.confidence')}: {Math.round(extraction.confidence * 100)}%</div>
                       <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('brokerfox.extraction.fieldsTitle')}</div>
                       {Object.entries(extraction.extractedFields).map(([key, value]) => (
-                        <div key={key} style={{ fontSize: '0.85rem' }}>{key}: {value}</div>
+                        <div key={key} style={{ fontSize: '0.85rem' }}>
+                          {localizeExtractionFieldLabel(key)}: {localizeExtractionFieldValue(key, String(value))}
+                        </div>
                       ))}
                     </div>
                     <label style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
