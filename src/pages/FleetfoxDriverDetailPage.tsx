@@ -31,11 +31,12 @@ function ScoreBar({ value }: { value: number }) {
 
 export default function FleetfoxDriverDetailPage() {
   const { driverId } = useParams()
-  const { t } = useI18n()
+  const { t, lang } = useI18n()
   const ctx = useTenantContext()
   const [driver, setDriver] = useState<Driver | null>(null)
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
   const [timeline, setTimeline] = useState<TimelineEvent[]>([])
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   useEffect(() => {
     let mounted = true
@@ -63,8 +64,10 @@ export default function FleetfoxDriverDetailPage() {
       entityType: 'driver',
       entityId: driverId,
       type: 'note',
-      title: 'Coaching action',
-      message: 'Driver scheduled for distraction and braking coaching module.',
+      title: lang === 'de' ? 'Coaching-Maßnahme' : 'Coaching action',
+      message: lang === 'de'
+        ? 'Fahrer wurde für ein Coaching-Modul zu Ablenkung und Bremsverhalten eingeplant.'
+        : 'Driver scheduled for distraction and braking coaching module.',
       meta: { actor: ctx.userId }
     })
     setTimeline(await listTimelineEvents(ctx, 'driver', driverId))
@@ -90,7 +93,7 @@ export default function FleetfoxDriverDetailPage() {
         <Card title={t('fleetfox.driverDetail.profileTitle')}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
             <div>{t('fleetfox.driverDetail.address')}: {driver.address.street}, {driver.address.zip} {driver.address.city}, {driver.address.country}</div>
-            <div>{t('fleetfox.driverDetail.licenseValidUntil')}: {new Date(driver.licenseValidUntil).toLocaleDateString()}</div>
+            <div>{t('fleetfox.driverDetail.licenseValidUntil')}: {new Date(driver.licenseValidUntil).toLocaleDateString(locale)}</div>
             <div>{t('fleetfox.driverDetail.incidents')}: {driver.incidentsCount}</div>
             <div>{t('fleetfox.driverDetail.currentVehicle')}: {currentVehicle?.licensePlate ?? '-'}</div>
           </div>
