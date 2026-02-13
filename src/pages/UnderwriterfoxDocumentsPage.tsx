@@ -19,6 +19,13 @@ export default function UnderwriterfoxDocumentsPage() {
   const [query, setQuery] = useState('')
   const [selected, setSelected] = useState<CaseDocument | null>(null)
 
+  function localizeDocumentName(value: string) {
+    if (lang !== 'de') return value
+    return value
+      .replace('_Doc_', '_Unterlage_')
+      .replace(/^UW_/, 'UW_')
+  }
+
   useEffect(() => {
     let mounted = true
     async function load() {
@@ -35,10 +42,10 @@ export default function UnderwriterfoxDocumentsPage() {
     return documents.filter((doc) => {
       if (status !== 'all' && doc.status !== status) return false
       if (caseId !== 'all' && doc.caseId !== caseId) return false
-      if (query && !doc.name.toLowerCase().includes(query.toLowerCase())) return false
+      if (query && !localizeDocumentName(doc.name).toLowerCase().includes(query.toLowerCase())) return false
       return true
     })
-  }, [documents, status, caseId, query])
+  }, [documents, status, caseId, query, lang])
 
   return (
     <section className="page" style={{ gap: '1.5rem' }}>
@@ -76,7 +83,7 @@ export default function UnderwriterfoxDocumentsPage() {
             {filtered.map((doc) => (
               <div key={doc.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '0.75rem', alignItems: 'center', paddingBottom: '0.5rem', borderBottom: '1px solid #e2e8f0' }}>
                 <div>
-                  <strong>{doc.name}</strong>
+                  <strong>{localizeDocumentName(doc.name)}</strong>
                   <div style={{ color: '#64748b', fontSize: '0.85rem' }}>{t('underwriterfox.documents.statusLabel')}: {t(`underwriterfox.documents.status.${doc.status}`)}</div>
                 </div>
                 <Button size="sm" variant="secondary" onClick={() => setSelected(doc)}>{t('underwriterfox.documents.view')}</Button>
@@ -102,7 +109,7 @@ export default function UnderwriterfoxDocumentsPage() {
               <button type="button" onClick={() => setSelected(null)} style={{ border: '1px solid #e2e8f0', borderRadius: 8, background: '#fff', padding: '0.2rem 0.5rem' }}>✕</button>
             </div>
             <div style={{ display: 'grid', gap: '0.5rem', fontSize: '0.9rem' }}>
-              <div><strong>{selected.name}</strong></div>
+              <div><strong>{localizeDocumentName(selected.name)}</strong></div>
               <div>{localizeUnderwriterExtractedText(selected.extractedText, lang) ?? selected.extractedText}</div>
             </div>
             <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
