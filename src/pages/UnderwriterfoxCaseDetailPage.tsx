@@ -30,6 +30,7 @@ export default function UnderwriterfoxCaseDetailPage() {
   const [events, setEvents] = useState<TimelineEvent[]>([])
   const [activeTab, setActiveTab] = useState<'overview' | 'documents' | 'timeline' | 'decision'>('overview')
   const dateLocale = lang === 'de' ? 'de-DE' : 'en-US'
+  const currencyFormatter = new Intl.NumberFormat(dateLocale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
   const formatDue = (isoDate: string) => new Date(isoDate).toLocaleDateString(dateLocale, { day: 'numeric', month: 'short' })
 
   async function handleStatusChange(status: UnderwritingCase['status'], rationale: string) {
@@ -109,7 +110,7 @@ export default function UnderwriterfoxCaseDetailPage() {
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', color: '#475569', fontSize: '0.9rem' }}>
             <span><strong>{t('underwriterfox.labels.broker')}:</strong> {uwCase.broker}</span>
             <span><strong>{t('underwriterfox.labels.segment')}:</strong> {localizeUnderwriterSegment(uwCase.segment, lang) ?? uwCase.segment}</span>
-            <span><strong>{t('underwriterfox.labels.premium')}:</strong> €{uwCase.premium.total.toLocaleString()}</span>
+            <span><strong>{t('underwriterfox.labels.premium')}:</strong> {currencyFormatter.format(uwCase.premium.total)}</span>
             <span><strong>{t('underwriterfox.labels.status')}:</strong> {t(`underwriterfox.status.${uwCase.status}`)}</span>
             <span><strong>{t('underwriterfox.labels.inception')}:</strong> {new Date(uwCase.inceptionDate).toLocaleDateString(dateLocale)}</span>
           </div>
