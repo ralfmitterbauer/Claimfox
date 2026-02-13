@@ -30,6 +30,8 @@ export default function ClaimsfoxClaimDetailPage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [partners, setPartners] = useState<Partner[]>([])
   const [selectedPartner, setSelectedPartner] = useState('')
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const currencyFormatter = new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 })
 
   useEffect(() => {
     let mounted = true
@@ -140,12 +142,12 @@ export default function ClaimsfoxClaimDetailPage() {
                   <strong>{t('claimsfox.claimDetail.overviewTitle')}</strong>
                   <span style={{ color: '#475569' }}>{claim.timelineSummary}</span>
                 </div>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem', fontSize: '0.9rem' }}>
-                  <div><strong>{t('claimsfox.claimDetail.lossDate')}:</strong> {new Date(claim.lossDate).toLocaleDateString()}</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '0.75rem', fontSize: '0.9rem' }}>
+                  <div><strong>{t('claimsfox.claimDetail.lossDate')}:</strong> {new Date(claim.lossDate).toLocaleDateString(locale)}</div>
                   <div><strong>{t('claimsfox.claimDetail.severity')}:</strong> {t(`claimsfox.severity.${claim.severity}`)}</div>
-                  <div><strong>{t('claimsfox.claimDetail.reserve')}:</strong> € {claim.reserve.toLocaleString()}</div>
-                  <div><strong>{t('claimsfox.claimDetail.paid')}:</strong> € {claim.paid.toLocaleString()}</div>
-                  <div><strong>{t('claimsfox.claimDetail.slaDue')}:</strong> {new Date(claim.slaDueAt).toLocaleDateString()}</div>
+                  <div><strong>{t('claimsfox.claimDetail.reserve')}:</strong> {currencyFormatter.format(claim.reserve)}</div>
+                  <div><strong>{t('claimsfox.claimDetail.paid')}:</strong> {currencyFormatter.format(claim.paid)}</div>
+                  <div><strong>{t('claimsfox.claimDetail.slaDue')}:</strong> {new Date(claim.slaDueAt).toLocaleDateString(locale)}</div>
                   <div><strong>{t('claimsfox.claimDetail.assigned')}:</strong> {claim.assignedTo}</div>
                 </div>
               </div>
@@ -168,7 +170,7 @@ export default function ClaimsfoxClaimDetailPage() {
                 {timeline.map((event) => (
                   <div key={event.id} style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '0.6rem' }}>
                     <div style={{ fontWeight: 600 }}>{event.title}</div>
-                    <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(event.createdAt).toLocaleString()} · {event.actor}</div>
+                    <div style={{ fontSize: '0.85rem', color: '#64748b' }}>{new Date(event.createdAt).toLocaleString(locale)} · {event.actor}</div>
                     <div style={{ color: '#475569' }}>{event.message}</div>
                   </div>
                 ))}
