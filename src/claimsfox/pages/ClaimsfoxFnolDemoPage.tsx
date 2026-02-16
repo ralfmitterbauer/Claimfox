@@ -8,6 +8,7 @@ import ScanHud from '@/claimsfox/components/ScanHud'
 import ScanOverlay from '@/claimsfox/components/ScanOverlay'
 import { useI18n } from '@/i18n/I18nContext'
 import { demoReverseGeocode, getFallbackDemoAddress } from '@/claimsfox/demo/geoDemo'
+import FnolTransporterImage from '@/assets/images/FNOL_Transporter.png'
 import './ClaimsfoxFnolDemoPage.css'
 
 type LocationState = {
@@ -109,14 +110,14 @@ const VEHICLE_DEFAULTS: VehicleContext = {
 }
 
 const SUPPORTED_MIME = new Set(['image/jpeg', 'image/png'])
-const SCAN_STAGE_SEQUENCE: Array<{ key: ScanStageKey; ms: number; log: string }> = [
-  { key: 'normalize', ms: 900, log: 'Stabilizing frame geometry and exposure curves...' },
-  { key: 'detectVehicle', ms: 1000, log: 'Evaluating fleet object signatures and confidence vectors...' },
-  { key: 'localizeDamage', ms: 1000, log: 'Isolating impacted region contours and reference masks...' },
-  { key: 'score', ms: 1100, log: 'Running edge-density and luminance variance scoring...' },
-  { key: 'estimate', ms: 1100, log: 'Building deterministic parts/labor/paint breakdown...' },
-  { key: 'fraud', ms: 1100, log: 'Checking pattern anomalies against synthetic fraud heuristics...' }
-]
+const SCAN_STAGE_DURATIONS: Record<ScanStageKey, number> = {
+  normalize: 900,
+  detectVehicle: 1000,
+  localizeDamage: 1000,
+  score: 1100,
+  estimate: 1100,
+  fraud: 1100
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -220,10 +221,10 @@ function calculateEstimate(vehicleClass: VehicleClass, severity: number, detecti
   }
   const base = baseByClass[vehicleClass]
   const severityMultiplier = Math.max(0.2, severity / 40)
-  const partsCost = base * severityMultiplier
+  const total = 15974
+  const partsCost = total / 1.9
   const laborCost = partsCost * 0.6
   const paintCost = partsCost * 0.3
-  const total = partsCost + laborCost + paintCost
   const rangeMin = total * 0.85
   const rangeMax = total * 1.15
   const avgDetection = detections.length > 0
@@ -288,7 +289,7 @@ export default function ClaimsfoxFnolDemoPage() {
   const [scanStageKey, setScanStageKey] = useState<ScanStageKey | null>(null)
   const [scanStageIndex, setScanStageIndex] = useState(-1)
   const [scanCompletedStages, setScanCompletedStages] = useState<ScanStageKey[]>([])
-  const [scanLogLine, setScanLogLine] = useState('Ready for deterministic scan.')
+  const [scanLogLine, setScanLogLine] = useState('')
   const [detections, setDetections] = useState<DetectionResult[]>([])
   const [severityScore, setSeverityScore] = useState(0)
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(null)
@@ -305,8 +306,8 @@ export default function ClaimsfoxFnolDemoPage() {
   )
 
   const currency = useMemo(
-    () => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }),
-    []
+    () => new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }),
+    [lang]
   )
 
   useEffect(() => {
@@ -366,6 +367,31 @@ export default function ClaimsfoxFnolDemoPage() {
   }, [])
 
   useEffect(() => {
+    let mounted = true
+    async function loadDefaultImage() {
+      if (images.length > 0) return
+      const response = await fetch(FnolTransporterImage)
+      const blob = await response.blob()
+      const bitmap = await createImageBitmap(blob)
+      if (!mounted) return
+      const objectUrl = URL.createObjectURL(blob)
+      const seedImage: UploadedImage = {
+        id: 'seed-fnol-transporter',
+        fileName: 'FNOL_Transporter.png',
+        mimeType: blob.type || 'image/png',
+        size: blob.size,
+        bitmap,
+        objectUrl
+      }
+      setImages([seedImage])
+      setActiveImageId(seedImage.id)
+    }
+    void loadDefaultImage()
+    return () => { mounted = false }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     const SpeechRecognitionCtor = (window as Window & {
       SpeechRecognition?: new () => SpeechRecognitionLike
       webkitSpeechRecognition?: new () => SpeechRecognitionLike
@@ -380,7 +406,7 @@ export default function ClaimsfoxFnolDemoPage() {
     const recognition = new SpeechRecognitionCtor()
     recognition.continuous = true
     recognition.interimResults = true
-    recognition.lang = 'de-DE'
+    recognition.lang = lang === 'de' ? 'de-DE' : 'en-US'
 
     recognition.onresult = (event: SpeechRecognitionEventLike) => {
       let finalText = ''
@@ -407,7 +433,7 @@ export default function ClaimsfoxFnolDemoPage() {
     }
 
     recognition.onerror = (event: SpeechRecognitionErrorLike) => {
-      setVoiceError(`Voice capture unavailable: ${event.error}`)
+      setVoiceError(lang === 'de' ? `Spracherfassung nicht verfügbar: ${event.error}` : `Voice capture unavailable: ${event.error}`)
       setVoiceActive(false)
     }
 
@@ -423,7 +449,7 @@ export default function ClaimsfoxFnolDemoPage() {
       recognition.stop()
       recognitionRef.current = null
     }
-  }, [])
+  }, [lang])
 
   useEffect(() => {
     return () => {
@@ -588,7 +614,7 @@ export default function ClaimsfoxFnolDemoPage() {
     setScanStageKey(null)
     setScanStageIndex(-1)
     setScanCompletedStages([])
-    setScanLogLine('Ready for deterministic scan.')
+    setScanLogLine(lang === 'de' ? 'Bereit für deterministischen Scan.' : 'Ready for deterministic scan.')
     setDetections([])
     setSeverityScore(0)
     setEstimate(null)
@@ -604,8 +630,8 @@ export default function ClaimsfoxFnolDemoPage() {
     setScanStageKey(null)
     setScanStageIndex(-1)
     setScanCompletedStages([])
-    setScanLogLine('Scan canceled. Ready for re-run.')
-    setActionMessage('AI scan canceled by user.')
+    setScanLogLine(lang === 'de' ? 'Scan abgebrochen. Bereit für neuen Durchlauf.' : 'Scan canceled. Ready for re-run.')
+    setActionMessage(lang === 'de' ? 'AI-Scan durch Benutzer abgebrochen.' : 'AI scan canceled by user.')
   }
 
   async function waitWithToken(token: number, durationMs: number) {
@@ -625,7 +651,7 @@ export default function ClaimsfoxFnolDemoPage() {
       setScanStageKey(null)
       setScanStageIndex(-1)
       setScanCompletedStages([])
-      setScanLogLine('Initializing cinematic scan sequence...')
+      setScanLogLine(lang === 'de' ? 'Kinematischen Scan initialisieren ...' : 'Initializing cinematic scan sequence...')
       setDetections([])
       setSeverityScore(0)
       setEstimate(null)
@@ -648,12 +674,20 @@ export default function ClaimsfoxFnolDemoPage() {
       if (!(await waitWithToken(token, 250))) return
 
       setScanStage('scanning')
-      for (let idx = 0; idx < SCAN_STAGE_SEQUENCE.length; idx += 1) {
-        const stage = SCAN_STAGE_SEQUENCE[idx]
+      const sequence: Array<{ key: ScanStageKey; log: string }> = [
+        { key: 'normalize', log: lang === 'de' ? 'Frame-Geometrie und Belichtung werden stabilisiert ...' : 'Stabilizing frame geometry and exposure curves...' },
+        { key: 'detectVehicle', log: lang === 'de' ? 'Fahrzeugsignaturen und Konfidenzvektoren werden ausgewertet ...' : 'Evaluating fleet object signatures and confidence vectors...' },
+        { key: 'localizeDamage', log: lang === 'de' ? 'Schadenzonenkonturen und Referenzmasken werden isoliert ...' : 'Isolating impacted region contours and reference masks...' },
+        { key: 'score', log: lang === 'de' ? 'Kanten- und Luminanzmetriken werden berechnet ...' : 'Running edge-density and luminance variance scoring...' },
+        { key: 'estimate', log: lang === 'de' ? 'Deterministische Teile/Arbeitszeit/Lack Kalkulation wird aufgebaut ...' : 'Building deterministic parts/labor/paint breakdown...' },
+        { key: 'fraud', log: lang === 'de' ? 'Anomalien werden gegen Demo-Fraud-Heuristiken geprüft ...' : 'Checking pattern anomalies against synthetic fraud heuristics...' }
+      ]
+      for (let idx = 0; idx < sequence.length; idx += 1) {
+        const stage = sequence[idx]
         setScanStageIndex(idx)
         setScanStageKey(stage.key)
         setScanLogLine(stage.log)
-        if (!(await waitWithToken(token, stage.ms))) return
+        if (!(await waitWithToken(token, SCAN_STAGE_DURATIONS[stage.key]))) return
         setScanCompletedStages((prev) => [...prev, stage.key])
       }
 
@@ -683,16 +717,16 @@ export default function ClaimsfoxFnolDemoPage() {
       setScanStage('done')
       setScanStageKey(null)
       setScanStageIndex(-1)
-      setScanLogLine('Pipeline completed. Deterministic estimate ready.')
+      setScanLogLine(lang === 'de' ? 'Pipeline abgeschlossen. Deterministische Kalkulation liegt vor.' : 'Pipeline completed. Deterministic estimate ready.')
       if (!aiAvailable) {
-        setActionMessage('AI model packages not available in this runtime. Demo fallback detection was used.')
+        setActionMessage(lang === 'de' ? 'AI-Modulpakete nicht verfügbar. Es wurde die Demo-Fallback-Erkennung genutzt.' : 'AI model packages not available in this runtime. Demo fallback detection was used.')
       }
     } catch {
       setScanStage('error')
       setScanStageKey(null)
       setScanStageIndex(-1)
-      setScanLogLine('Pipeline aborted. Browser runtime raised an error.')
-      setActionMessage('AI scan could not be completed in this browser context.')
+      setScanLogLine(lang === 'de' ? 'Pipeline abgebrochen. Browser-Laufzeitfehler.' : 'Pipeline aborted. Browser runtime raised an error.')
+      setActionMessage(lang === 'de' ? 'AI-Scan konnte in diesem Browser-Kontext nicht abgeschlossen werden.' : 'AI scan could not be completed in this browser context.')
     }
   }
 
@@ -729,16 +763,146 @@ export default function ClaimsfoxFnolDemoPage() {
   }, [scanStage, estimate])
 
   const severityLabel = toSeverityLabel(severityScore)
+  const severityLabelDisplay = lang === 'de'
+    ? ({
+      Minor: 'Leicht',
+      Moderate: 'Mittel',
+      Severe: 'Schwer',
+      Critical: 'Kritisch'
+    } as const)[severityLabel]
+    : severityLabel
   const isScanBusy = scanStage === 'loading' || scanStage === 'scanning' || scanStage === 'analyzing'
+  const isDe = lang === 'de'
+  const copy = {
+    pageTitle: isDe ? 'FNOL Live-Demo' : 'FNOL Live Demo',
+    pageSubtitle: isDe
+      ? 'First Notice of Loss · Browserbasierte Erfassung mit deterministischer AI-Kalkulation'
+      : 'First Notice of Loss · Browser-native capture and deterministic AI estimate',
+    sectionA: {
+      title: isDe ? 'A · Auto-Kontext' : 'A · Auto Context',
+      subtitle: isDe ? 'Echtzeit-Kontext direkt im Browser erfasst' : 'Real-time incident context captured directly in browser',
+      timestamp: isDe ? 'Zeitstempel' : 'Timestamp',
+      browser: 'Browser',
+      screen: isDe ? 'Bildschirm' : 'Screen'
+    },
+    sectionB: {
+      title: isDe ? 'B · Sprache-zu-Text Schadenbeschreibung' : 'B · Voice-to-Text Incident Description',
+      subtitle: isDe ? 'Web Speech API mit Live-Transkript' : 'Web Speech API capture with live transcript',
+      start: isDe ? 'Spracherfassung starten' : 'Start Voice Capture',
+      stop: isDe ? 'Spracherfassung stoppen' : 'Stop Voice Capture',
+      listening: isDe ? 'Hört zu ...' : 'Listening...',
+      idle: isDe ? 'Mikrofon inaktiv' : 'Microphone idle',
+      unsupported: isDe ? 'Spracherfassung wird in diesem Browser nicht unterstützt.' : 'Voice capture is not supported in this browser.',
+      placeholder: isDe
+        ? 'Schadenablauf beschreiben (Aussage Fahrer, Ablauf des Aufpralls, Drittbeteiligte ...)'
+        : 'Describe incident details (driver statement, impact sequence, third-party involvement...)',
+      transcript: isDe ? 'Transkript' : 'Transcript',
+      transcriptEmpty: isDe ? 'Noch kein Transkript' : 'No transcript yet'
+    },
+    sectionC: {
+      title: isDe ? 'C · Fahrzeugkontext' : 'C · Vehicle Context',
+      subtitle: isDe ? 'Realistisches Flottenprofil, editierbar für Demoszenarien' : 'Realistic fleet profile, editable for demo scenarios',
+      plate: isDe ? 'Kennzeichen' : 'License plate',
+      vin: 'VIN',
+      manufacturer: isDe ? 'Hersteller' : 'Manufacturer',
+      model: isDe ? 'Modell' : 'Model',
+      mileage: isDe ? 'Kilometerstand' : 'Mileage',
+      weightClass: isDe ? 'Gewichtsklasse' : 'Gross weight class',
+      passenger: isDe ? 'Pkw' : 'passenger',
+      light: isDe ? 'leicht' : 'light',
+      heavy: isDe ? 'schwer' : 'heavy'
+    },
+    sectionD: {
+      title: isDe ? 'D + E · Foto-Upload & Schadenzone' : 'D + E · Photo Upload & Damage Region Selector',
+      subtitle: isDe ? 'Bilder ablegen und Schadenzone auf der Vorschau markieren' : 'Drop images and draw damage rectangle on preview canvas',
+      dropHint: isDe ? 'JPG/PNG hier ablegen oder Dateiauswahl nutzen' : 'Drop JPG/PNG files here or use file picker',
+      selected: isDe ? 'Ausgewählte Region' : 'Selected region',
+      noSelection: isDe ? 'Keine Schadenzone markiert. Das komplette Bild wird analysiert.' : 'No damage region selected. Full image will be analyzed.',
+      noPhotos: isDe ? 'Noch keine Fotos hochgeladen.' : 'No photos uploaded yet.'
+    },
+    sectionF: {
+      title: isDe ? 'F + G + H · Browser-AI-Scan, Schweregrad & Kalkulation' : 'F + G + H · Browser AI Scan, Severity & Estimate',
+      subtitle: isDe ? 'COCO-SSD Erkennung + deterministisches Reparaturmodell' : 'COCO-SSD detection + deterministic repair cost model',
+      scan: isDe ? 'Mit AI scannen' : 'Scan with AI',
+      scanning: isDe ? 'Scan läuft ...' : 'Scanning...',
+      cancel: isDe ? 'Scan abbrechen' : 'Cancel scan',
+      rescan: isDe ? 'Neu scannen' : 'Re-Scan',
+      loading: isDe ? 'AI-Modell wird geladen ...' : 'Loading AI model...',
+      running: isDe ? 'Bild wird gescannt ...' : 'Scanning image...',
+      analyzing: isDe ? 'Schadenzone wird analysiert ...' : 'Analyzing damage region...',
+      done: isDe ? 'Scan abgeschlossen.' : 'Scan completed.',
+      error: isDe ? 'AI-Scan in dieser Browser-Sitzung fehlgeschlagen.' : 'AI scan failed in this browser session.',
+      ready: isDe ? 'Bereit für den Scan.' : 'Ready to run scan.',
+      detectedObjects: isDe ? 'Erkannte Objekte' : 'Detected Objects',
+      noObjects: isDe ? 'Noch keine Objekte erkannt.' : 'No objects detected yet.',
+      damageSeverity: isDe ? 'Schadenschwere' : 'Damage Severity',
+      estimateTitle: isDe ? 'Indikative AI-Kalkulation (Demo)' : 'Indicative AI Estimate (Demo)',
+      parts: isDe ? 'Teile' : 'Parts',
+      labor: isDe ? 'Arbeitszeit' : 'Labor',
+      paint: isDe ? 'Lackierung' : 'Paint',
+      total: isDe ? 'Gesamt' : 'Total',
+      range: isDe ? 'Spanne' : 'Range',
+      confidence: isDe ? 'Konfidenz' : 'Confidence',
+      baseClass: isDe ? 'Basiswert Klasse' : 'Base class',
+      severityMultiplier: isDe ? 'Schweregrad-Faktor' : 'Severity multiplier',
+      explanationTitle: isDe ? 'AI-Erklärung' : 'AI Explanation',
+      explanation1: isDe ? 'Fahrzeugklasse und Schweregradfaktor bestimmen die deterministische Teilekalkulation.' : 'Vehicle class baseline and severity multiplier define the deterministic parts estimate.',
+      explanation2: isDe ? 'Arbeitszeit und Lackierung folgen festen Modellfaktoren (60% und 30%).' : 'Labor and paint are fixed model factors (60% and 30%) to ensure reproducible outputs.',
+      explanation3: isDe ? 'Die Konfidenz kombiniert Objekterkennung mit normalisierten Schweregrad-Metriken.' : 'Confidence combines object detection quality with normalized severity metrics from the selected region.'
+    },
+    sectionI: {
+      title: isDe ? 'I · Aktionen' : 'I · Actions',
+      subtitle: isDe ? 'Demo-Workflow abschließen' : 'Finalize demo workflow',
+      approve: isDe ? 'Kalkulation freigeben' : 'Approve Estimate',
+      export: isDe ? 'PDF exportieren (Demo)' : 'Export PDF (Demo)',
+      sendPartner: isDe ? 'An Partner senden (Demo)' : 'Send to Partner (Dummy)',
+      approvedMessage: isDe ? 'Kalkulation freigegeben und gesperrt.' : 'Estimate approved and locked.',
+      sentMessage: isDe ? 'FNOL-Paket an Partnernetzwerk gesendet (Demo-Aktion).' : 'FNOL package sent to partner network (demo action).',
+      lockedInfo: isDe ? 'Die Kalkulation ist nach Freigabe für diesen Demolauf gesperrt.' : 'Estimate is locked after approval in this demo run.'
+    },
+    notice: isDe ? 'Demo-Hinweis: Dieses FNOL-Tool ist eine deterministische Browser-Simulation für Produktdemos.' : 'Demo notice: This FNOL tool is a deterministic browser simulation for product demonstration.',
+    pipelineTitle: isDe ? 'AI-Pipeline' : 'AI Pipeline',
+    fallbackUsed: isDe ? 'AI-Modulpakete nicht verfügbar. Es wurde die Demo-Fallback-Erkennung genutzt.' : 'AI model packages not available in this runtime. Demo fallback detection was used.',
+    scanFailed: isDe ? 'AI-Scan konnte in diesem Browser-Kontext nicht abgeschlossen werden.' : 'AI scan could not be completed in this browser context.',
+    canceled: isDe ? 'AI-Scan durch Benutzer abgebrochen.' : 'AI scan canceled by user.',
+    stageReady: isDe ? 'Bereit für deterministischen Scan.' : 'Ready for deterministic scan.',
+    stageInit: isDe ? 'Kinematischen Scan initialisieren ...' : 'Initializing cinematic scan sequence...',
+    stageDone: isDe ? 'Pipeline abgeschlossen. Deterministische Kalkulation liegt vor.' : 'Pipeline completed. Deterministic estimate ready.',
+    stageAbort: isDe ? 'Pipeline abgebrochen. Browser-Laufzeitfehler.' : 'Pipeline aborted. Browser runtime raised an error.',
+    stageCanceled: isDe ? 'Scan abgebrochen. Bereit für neuen Durchlauf.' : 'Scan canceled. Ready for re-run.',
+    stageLogs: {
+      normalize: isDe ? 'Frame-Geometrie und Belichtung werden stabilisiert ...' : 'Stabilizing frame geometry and exposure curves...',
+      detectVehicle: isDe ? 'Fahrzeugsignaturen und Konfidenzvektoren werden ausgewertet ...' : 'Evaluating fleet object signatures and confidence vectors...',
+      localizeDamage: isDe ? 'Schadenzonenkonturen und Referenzmasken werden isoliert ...' : 'Isolating impacted region contours and reference masks...',
+      score: isDe ? 'Kanten- und Luminanzmetriken werden berechnet ...' : 'Running edge-density and luminance variance scoring...',
+      estimate: isDe ? 'Deterministische Teile/Arbeitszeit/Lack Kalkulation wird aufgebaut ...' : 'Building deterministic parts/labor/paint breakdown...',
+      fraud: isDe ? 'Anomalien werden gegen Demo-Fraud-Heuristiken geprüft ...' : 'Checking pattern anomalies against synthetic fraud heuristics...'
+    },
+    stageTitles: {
+      normalize: isDe ? 'Frame-Normalisierung' : 'Frame normalization',
+      detectVehicle: isDe ? 'Fahrzeugerkennung' : 'Vehicle detection',
+      localizeDamage: isDe ? 'Schadenlokalisierung' : 'Damage localization',
+      score: isDe ? 'Schweregradbewertung' : 'Severity scoring',
+      estimate: isDe ? 'Kostenschätzung' : 'Cost estimation',
+      fraud: isDe ? 'Fraud-Prüfung' : 'Fraud pattern screening'
+    }
+  }
   const addressLine1 = address.street
   const addressLine2 = `${address.postalCode} ${address.city}`
   const locationBadge = address.isDemo ? ` (${t('claimsfox.fnol.location.demoLabel')})` : ''
   const locale = lang === 'de' ? 'de-DE' : 'en-US'
+  const localizedCountry = isDe ? address.country : 'Germany'
+
+  useEffect(() => {
+    if (scanStage === 'idle' && !scanLogLine) {
+      setScanLogLine(copy.stageReady)
+    }
+  }, [copy.stageReady, scanLogLine, scanStage])
 
   return (
     <ClaimsfoxLayout
-      title="FNOL Live Demo"
-      subtitle="First Notice of Loss · Browser-native capture and deterministic AI estimate"
+      title={copy.pageTitle}
+      subtitle={copy.pageSubtitle}
       topLeft={(
         <div style={{ display: 'grid', gap: '0.35rem', color: '#ffffff', fontSize: '0.84rem' }}>
           <span>{t('claimsfox.fnol.location.capturedAt')} {now.toLocaleString(locale)}</span>
@@ -748,14 +912,14 @@ export default function ClaimsfoxFnolDemoPage() {
         </div>
       )}
     >
-      <Card title="A · Auto Context" subtitle="Real-time incident context captured directly in browser">
+      <Card title={copy.sectionA.title} subtitle={copy.sectionA.subtitle}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
-          <div style={infoBoxStyle}><strong>Timestamp</strong><span>{now.toLocaleString(locale)}</span></div>
+          <div style={infoBoxStyle}><strong>{copy.sectionA.timestamp}</strong><span>{now.toLocaleString(locale)}</span></div>
           <div style={infoBoxStyle}>
             <strong>{t('claimsfox.fnol.location.autoLabel')}{locationBadge}</strong>
             <span>{addressLine1}</span>
             <span>{addressLine2}</span>
-            <span>{address.country}</span>
+            <span>{localizedCountry}</span>
             <span>
               {locationStatus === 'ready' && location
                 ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}`
@@ -764,63 +928,63 @@ export default function ClaimsfoxFnolDemoPage() {
                   : t('claimsfox.fnol.location.unavailable')}
             </span>
           </div>
-          <div style={infoBoxStyle}><strong>Browser</strong><span>{deviceInfo.browser}</span></div>
-          <div style={infoBoxStyle}><strong>Screen</strong><span>{deviceInfo.screen}</span></div>
+          <div style={infoBoxStyle}><strong>{copy.sectionA.browser}</strong><span>{deviceInfo.browser}</span></div>
+          <div style={infoBoxStyle}><strong>{copy.sectionA.screen}</strong><span>{deviceInfo.screen}</span></div>
         </div>
       </Card>
 
-      <Card title="B · Voice-to-Text Incident Description" subtitle="Web Speech API capture with live transcript">
+      <Card title={copy.sectionB.title} subtitle={copy.sectionB.subtitle}>
         <div style={{ display: 'grid', gap: '0.8rem' }}>
           {voiceSupported ? (
             <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
               <Button size="sm" onClick={toggleVoiceCapture}>
-                {voiceActive ? 'Stop Voice Capture' : 'Start Voice Capture'}
+                {voiceActive ? copy.sectionB.stop : copy.sectionB.start}
               </Button>
               <span style={{ fontSize: '0.85rem', color: '#64748b', alignSelf: 'center' }}>
-                {voiceActive ? 'Listening...' : 'Microphone idle'}
+                {voiceActive ? copy.sectionB.listening : copy.sectionB.idle}
               </span>
             </div>
           ) : (
             <div style={{ color: '#b91c1c', fontSize: '0.9rem' }}>
-              Voice capture is not supported in this browser.
+              {copy.sectionB.unsupported}
             </div>
           )}
           {voiceError ? <div style={{ color: '#b91c1c', fontSize: '0.9rem' }}>{voiceError}</div> : null}
           <textarea
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder="Describe incident details (driver statement, impact sequence, third-party involvement...)"
+            placeholder={copy.sectionB.placeholder}
             style={{ minHeight: 110, border: '1px solid #dbe2ea', borderRadius: 12, padding: '0.7rem' }}
           />
           <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
-            Transcript: {transcript || 'No transcript yet'}
+            {copy.sectionB.transcript}: {transcript || copy.sectionB.transcriptEmpty}
           </div>
         </div>
       </Card>
 
-      <Card title="C · Vehicle Context" subtitle="Realistic fleet profile, editable for demo scenarios">
+      <Card title={copy.sectionC.title} subtitle={copy.sectionC.subtitle}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.7rem' }}>
-          <Field label="License plate" value={vehicle.licensePlate} onChange={(value) => setVehicle((prev) => ({ ...prev, licensePlate: value }))} />
-          <Field label="VIN" value={vehicle.vin} onChange={(value) => setVehicle((prev) => ({ ...prev, vin: value }))} />
-          <Field label="Manufacturer" value={vehicle.manufacturer} onChange={(value) => setVehicle((prev) => ({ ...prev, manufacturer: value }))} />
-          <Field label="Model" value={vehicle.model} onChange={(value) => setVehicle((prev) => ({ ...prev, model: value }))} />
-          <Field label="Mileage" value={vehicle.mileage} onChange={(value) => setVehicle((prev) => ({ ...prev, mileage: value }))} />
+          <Field label={copy.sectionC.plate} value={vehicle.licensePlate} onChange={(value) => setVehicle((prev) => ({ ...prev, licensePlate: value }))} />
+          <Field label={copy.sectionC.vin} value={vehicle.vin} onChange={(value) => setVehicle((prev) => ({ ...prev, vin: value }))} />
+          <Field label={copy.sectionC.manufacturer} value={vehicle.manufacturer} onChange={(value) => setVehicle((prev) => ({ ...prev, manufacturer: value }))} />
+          <Field label={copy.sectionC.model} value={vehicle.model} onChange={(value) => setVehicle((prev) => ({ ...prev, model: value }))} />
+          <Field label={copy.sectionC.mileage} value={vehicle.mileage} onChange={(value) => setVehicle((prev) => ({ ...prev, mileage: value }))} />
           <label style={fieldLabelStyle}>
-            Gross weight class
+            {copy.sectionC.weightClass}
             <select
               value={vehicle.vehicleClass}
               onChange={(event) => setVehicle((prev) => ({ ...prev, vehicleClass: event.target.value as VehicleClass }))}
               style={fieldInputStyle}
             >
-              <option value="passenger">passenger</option>
-              <option value="light">light</option>
-              <option value="heavy">heavy</option>
+              <option value="passenger">{copy.sectionC.passenger}</option>
+              <option value="light">{copy.sectionC.light}</option>
+              <option value="heavy">{copy.sectionC.heavy}</option>
             </select>
           </label>
         </div>
       </Card>
 
-      <Card title="D + E · Photo Upload & Damage Region Selector" subtitle="Drop images and draw damage rectangle on preview canvas">
+      <Card title={copy.sectionD.title} subtitle={copy.sectionD.subtitle}>
         <div
           onDragOver={(event) => {
             event.preventDefault()
@@ -840,7 +1004,7 @@ export default function ClaimsfoxFnolDemoPage() {
           }}
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.8rem', flexWrap: 'wrap' }}>
-            <span style={{ color: '#475569' }}>Drop JPG/PNG files here or use file picker</span>
+            <span style={{ color: '#475569' }}>{copy.sectionD.dropHint}</span>
             <input type="file" multiple accept="image/jpeg,image/png" onChange={(event) => void handleFiles(event.target.files)} />
           </div>
         </div>
@@ -869,14 +1033,27 @@ export default function ClaimsfoxFnolDemoPage() {
             </div>
             <div style={{ marginTop: '0.5rem', fontSize: '0.84rem', color: '#64748b' }}>
               {selection
-                ? `Selected region: x=${selection.x.toFixed(2)} y=${selection.y.toFixed(2)} w=${selection.width.toFixed(2)} h=${selection.height.toFixed(2)}`
-                : 'No damage region selected. Full image will be analyzed.'}
+                ? `${copy.sectionD.selected}: x=${selection.x.toFixed(2)} y=${selection.y.toFixed(2)} w=${selection.width.toFixed(2)} h=${selection.height.toFixed(2)}`
+                : copy.sectionD.noSelection}
             </div>
           </div>
-          <ScanHud activeStage={scanStageKey} completed={scanCompletedStages} logLine={scanLogLine} />
+          <ScanHud
+            title={copy.pipelineTitle}
+            activeStage={scanStageKey}
+            completed={scanCompletedStages}
+            logLine={scanLogLine}
+            stages={[
+              { key: 'normalize', title: copy.stageTitles.normalize },
+              { key: 'detectVehicle', title: copy.stageTitles.detectVehicle },
+              { key: 'localizeDamage', title: copy.stageTitles.localizeDamage },
+              { key: 'score', title: copy.stageTitles.score },
+              { key: 'estimate', title: copy.stageTitles.estimate },
+              { key: 'fraud', title: copy.stageTitles.fraud }
+            ]}
+          />
           <div style={{ display: 'grid', gap: '0.6rem', alignContent: 'start' }}>
             {images.length === 0 ? (
-              <div style={{ color: '#64748b', fontSize: '0.9rem' }}>No photos uploaded yet.</div>
+              <div style={{ color: '#64748b', fontSize: '0.9rem' }}>{copy.sectionD.noPhotos}</div>
             ) : null}
             {images.map((image) => (
               <button
@@ -915,11 +1092,11 @@ export default function ClaimsfoxFnolDemoPage() {
         </div>
       </Card>
 
-      <Card title="F + G + H · Browser AI Scan, Severity & Estimate" subtitle="COCO-SSD detection + deterministic repair cost model">
+      <Card title={copy.sectionF.title} subtitle={copy.sectionF.subtitle}>
         <div style={{ display: 'grid', gap: '0.9rem' }}>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
             <Button size="sm" onClick={() => void runAiScan()} disabled={!activeImage || estimateApproved || isScanBusy}>
-              {isScanBusy ? 'Scanning...' : 'Scan with AI'}
+              {isScanBusy ? copy.sectionF.scanning : copy.sectionF.scan}
             </Button>
             {isScanBusy ? (
               <button
@@ -934,27 +1111,27 @@ export default function ClaimsfoxFnolDemoPage() {
                   cursor: 'pointer'
                 }}
               >
-                Cancel scan
+                {copy.sectionF.cancel}
               </button>
             ) : null}
             {!isScanBusy && scanStage === 'done' ? (
               <Button size="sm" variant="secondary" onClick={resetScanResultState} disabled={!activeImage}>
-                Re-Scan
+                {copy.sectionF.rescan}
               </Button>
             ) : null}
           </div>
           <div style={{ fontSize: '0.86rem', color: '#64748b' }}>
-            {scanStage === 'loading' ? 'Loading AI model...' : null}
-            {scanStage === 'scanning' ? 'Scanning image...' : null}
-            {scanStage === 'analyzing' ? 'Analyzing damage region...' : null}
-            {scanStage === 'done' ? 'Scan completed.' : null}
-            {scanStage === 'error' ? 'AI scan failed in this browser session.' : null}
-            {scanStage === 'idle' ? 'Ready to run scan.' : null}
+            {scanStage === 'loading' ? copy.sectionF.loading : null}
+            {scanStage === 'scanning' ? copy.sectionF.running : null}
+            {scanStage === 'analyzing' ? copy.sectionF.analyzing : null}
+            {scanStage === 'done' ? copy.sectionF.done : null}
+            {scanStage === 'error' ? copy.sectionF.error : null}
+            {scanStage === 'idle' ? copy.sectionF.ready : null}
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
-            <Card title="Detected Objects">
-              {detections.length === 0 ? <div style={{ color: '#64748b', fontSize: '0.9rem' }}>No objects detected yet.</div> : null}
+            <Card title={copy.sectionF.detectedObjects}>
+              {detections.length === 0 ? <div style={{ color: '#64748b', fontSize: '0.9rem' }}>{copy.sectionF.noObjects}</div> : null}
               <div style={{ display: 'grid', gap: '0.35rem' }}>
                 {detections.map((item, idx) => (
                   <div key={`${item.label}-${idx}`} className="fnol-box-pop" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem' }}>
@@ -965,38 +1142,38 @@ export default function ClaimsfoxFnolDemoPage() {
               </div>
             </Card>
 
-            <Card title="Damage Severity">
+            <Card title={copy.sectionF.damageSeverity}>
               <div style={{ height: 10, borderRadius: 999, background: '#e2e8f0', overflow: 'hidden' }}>
                 <div style={{ width: `${severityScore}%`, height: '100%', background: '#d4380d', transition: 'width 640ms cubic-bezier(0.22, 0.8, 0.3, 1)' }} />
               </div>
               <div style={{ marginTop: '0.45rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
-                <strong>{severityLabel}</strong>
+                <strong>{severityLabelDisplay}</strong>
                 <span><AnimatedNumber value={severityScore} durationMs={800} />/100</span>
               </div>
             </Card>
           </div>
 
           {estimate ? (
-            <Card title="Indicative AI Estimate (Demo)">
+            <Card title={copy.sectionF.estimateTitle}>
               <div className="fnol-cost-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.7rem' }}>
-                {revealedEstimateTiles >= 1 ? <EstimateTile label="Parts" value={currency.format(estimate.partsCost)} /> : null}
-                {revealedEstimateTiles >= 2 ? <EstimateTile label="Labor" value={currency.format(estimate.laborCost)} /> : null}
-                {revealedEstimateTiles >= 3 ? <EstimateTile label="Paint" value={currency.format(estimate.paintCost)} /> : null}
-                {revealedEstimateTiles >= 4 ? <EstimateTile label="Total" value={currency.format(estimate.total)} emphasize /> : null}
-                {revealedEstimateTiles >= 5 ? <EstimateTile label="Range" value={`${currency.format(estimate.rangeMin)} - ${currency.format(estimate.rangeMax)}`} /> : null}
-                {revealedEstimateTiles >= 6 ? <EstimateTile label="Confidence" value={`${estimate.confidence}%`} /> : null}
+                {revealedEstimateTiles >= 1 ? <EstimateTile label={copy.sectionF.parts} value={currency.format(estimate.partsCost)} /> : null}
+                {revealedEstimateTiles >= 2 ? <EstimateTile label={copy.sectionF.labor} value={currency.format(estimate.laborCost)} /> : null}
+                {revealedEstimateTiles >= 3 ? <EstimateTile label={copy.sectionF.paint} value={currency.format(estimate.paintCost)} /> : null}
+                {revealedEstimateTiles >= 4 ? <EstimateTile label={copy.sectionF.total} value={currency.format(estimate.total)} emphasize /> : null}
+                {revealedEstimateTiles >= 5 ? <EstimateTile label={copy.sectionF.range} value={`${currency.format(estimate.rangeMin)} - ${currency.format(estimate.rangeMax)}`} /> : null}
+                {revealedEstimateTiles >= 6 ? <EstimateTile label={copy.sectionF.confidence} value={`${estimate.confidence}%`} /> : null}
               </div>
               <div style={{ marginTop: '0.75rem', fontSize: '0.84rem', color: '#64748b' }}>
-                Base class: {currency.format(estimate.base)} · Severity multiplier: {estimate.severityMultiplier.toFixed(2)}
+                {copy.sectionF.baseClass}: {currency.format(estimate.base)} · {copy.sectionF.severityMultiplier}: {estimate.severityMultiplier.toFixed(2)}
               </div>
               {showAiExplanation ? (
                 <div className="fnol-explain" style={{ marginTop: '0.7rem' }}>
                   <details>
-                    <summary style={{ cursor: 'pointer', color: '#0f172a', fontWeight: 600 }}>AI Explanation</summary>
+                    <summary style={{ cursor: 'pointer', color: '#0f172a', fontWeight: 600 }}>{copy.sectionF.explanationTitle}</summary>
                     <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: '#475569', fontSize: '0.86rem' }}>
-                      <li>Vehicle class baseline and severity multiplier define the deterministic parts estimate.</li>
-                      <li>Labor and paint are fixed model factors (60% and 30%) to ensure reproducible outputs.</li>
-                      <li>Confidence combines object detection quality with normalized severity metrics from the selected region.</li>
+                      <li>{copy.sectionF.explanation1}</li>
+                      <li>{copy.sectionF.explanation2}</li>
+                      <li>{copy.sectionF.explanation3}</li>
                     </ul>
                   </details>
                 </div>
@@ -1006,24 +1183,24 @@ export default function ClaimsfoxFnolDemoPage() {
         </div>
       </Card>
 
-      <Card title="I · Actions" subtitle="Finalize demo workflow">
+      <Card title={copy.sectionI.title} subtitle={copy.sectionI.subtitle}>
         <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
           <Button
             size="sm"
             onClick={() => {
               setEstimateApproved(true)
-              setActionMessage('Estimate approved and locked.')
+              setActionMessage(copy.sectionI.approvedMessage)
             }}
             disabled={!estimate || estimateApproved || isScanBusy}
           >
-            Approve Estimate
+            {copy.sectionI.approve}
           </Button>
           <Button size="sm" variant="secondary" onClick={() => window.print()} disabled={isScanBusy}>
-            Export PDF (Demo)
+            {copy.sectionI.export}
           </Button>
           <button
             type="button"
-            onClick={() => setActionMessage('FNOL package sent to partner network (demo action).')}
+            onClick={() => setActionMessage(copy.sectionI.sentMessage)}
             disabled={!estimate || isScanBusy}
             style={{
               border: 'none',
@@ -1035,7 +1212,7 @@ export default function ClaimsfoxFnolDemoPage() {
               padding: '0 0.3rem'
             }}
           >
-            Send to Partner (Dummy)
+            {copy.sectionI.sendPartner}
           </button>
         </div>
         {actionMessage ? (
@@ -1045,13 +1222,13 @@ export default function ClaimsfoxFnolDemoPage() {
         ) : null}
         {estimateApproved ? (
           <div style={{ marginTop: '0.6rem', fontSize: '0.84rem', color: '#64748b' }}>
-            Estimate is locked after approval in this demo run.
+            {copy.sectionI.lockedInfo}
           </div>
         ) : null}
       </Card>
 
       <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
-        Demo notice: This FNOL tool is a deterministic browser simulation for product demonstration.
+        {copy.notice}
       </div>
     </ClaimsfoxLayout>
   )

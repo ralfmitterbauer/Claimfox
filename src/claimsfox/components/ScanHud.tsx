@@ -1,31 +1,19 @@
 type ScanStageKey = 'normalize' | 'detectVehicle' | 'localizeDamage' | 'score' | 'estimate' | 'fraud'
 
 type ScanHudProps = {
+  title: string
   activeStage: ScanStageKey | null
   completed: ScanStageKey[]
   logLine: string
+  stages: Array<{ key: ScanStageKey; title: string }>
 }
 
-type StageRow = {
-  key: ScanStageKey
-  title: string
-}
-
-const STAGES: StageRow[] = [
-  { key: 'normalize', title: 'Frame normalization' },
-  { key: 'detectVehicle', title: 'Vehicle detection' },
-  { key: 'localizeDamage', title: 'Damage localization' },
-  { key: 'score', title: 'Severity scoring' },
-  { key: 'estimate', title: 'Cost estimation' },
-  { key: 'fraud', title: 'Fraud pattern screening' }
-]
-
-export default function ScanHud({ activeStage, completed, logLine }: ScanHudProps) {
+export default function ScanHud({ title, activeStage, completed, logLine, stages }: ScanHudProps) {
   return (
     <aside className="fnol-scan-hud">
-      <div className="fnol-scan-hud__title">AI Pipeline</div>
+      <div className="fnol-scan-hud__title">{title}</div>
       <div className="fnol-scan-hud__stages">
-        {STAGES.map((stage) => {
+        {stages.map((stage) => {
           const isDone = completed.includes(stage.key)
           const isActive = stage.key === activeStage
           return (
