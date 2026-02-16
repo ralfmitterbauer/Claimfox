@@ -3,6 +3,10 @@ import type { CSSProperties } from 'react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import ClaimsfoxLayout from '@/claimsfox/components/ClaimsfoxLayout'
+import AnimatedNumber from '@/claimsfox/components/AnimatedNumber'
+import ScanHud from '@/claimsfox/components/ScanHud'
+import ScanOverlay from '@/claimsfox/components/ScanOverlay'
+import './ClaimsfoxFnolDemoPage.css'
 
 type LocationState = {
   lat: number
@@ -43,6 +47,7 @@ type DetectionResult = {
 }
 
 type SeverityLabel = 'Minor' | 'Moderate' | 'Severe' | 'Critical'
+type ScanStageKey = 'normalize' | 'detectVehicle' | 'localizeDamage' | 'score' | 'estimate' | 'fraud'
 
 type EstimateBreakdown = {
   base: number
@@ -94,6 +99,14 @@ const VEHICLE_DEFAULTS: VehicleContext = {
 }
 
 const SUPPORTED_MIME = new Set(['image/jpeg', 'image/png'])
+const SCAN_STAGE_SEQUENCE: Array<{ key: ScanStageKey; ms: number; log: string }> = [
+  { key: 'normalize', ms: 900, log: 'Stabilizing frame geometry and exposure curves...' },
+  { key: 'detectVehicle', ms: 1000, log: 'Evaluating fleet object signatures and confidence vectors...' },
+  { key: 'localizeDamage', ms: 1000, log: 'Isolating impacted region contours and reference masks...' },
+  { key: 'score', ms: 1100, log: 'Running edge-density and luminance variance scoring...' },
+  { key: 'estimate', ms: 1100, log: 'Building deterministic parts/labor/paint breakdown...' },
+  { key: 'fraud', ms: 1100, log: 'Checking pattern anomalies against synthetic fraud heuristics...' }
+]
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -257,12 +270,19 @@ export default function ClaimsfoxFnolDemoPage() {
   const dragStartRef = useRef<{ x: number; y: number } | null>(null)
 
   const [scanStage, setScanStage] = useState<'idle' | 'loading' | 'scanning' | 'analyzing' | 'done' | 'error'>('idle')
+  const [scanStageKey, setScanStageKey] = useState<ScanStageKey | null>(null)
+  const [scanStageIndex, setScanStageIndex] = useState(-1)
+  const [scanCompletedStages, setScanCompletedStages] = useState<ScanStageKey[]>([])
+  const [scanLogLine, setScanLogLine] = useState('Ready for deterministic scan.')
   const [detections, setDetections] = useState<DetectionResult[]>([])
   const [severityScore, setSeverityScore] = useState(0)
   const [estimate, setEstimate] = useState<EstimateBreakdown | null>(null)
+  const [revealedEstimateTiles, setRevealedEstimateTiles] = useState(0)
+  const [showAiExplanation, setShowAiExplanation] = useState(false)
   const [estimateApproved, setEstimateApproved] = useState(false)
   const [actionMessage, setActionMessage] = useState<string | null>(null)
   const modelRef = useRef<CocoModel | null>(null)
+  const scanTokenRef = useRef(0)
 
   const activeImage = useMemo(
     () => images.find((item) => item.id === activeImageId) ?? null,
@@ -409,7 +429,19 @@ export default function ClaimsfoxFnolDemoPage() {
       ctx.fillStyle = 'rgba(249, 115, 22, 0.16)'
       ctx.fillRect(rx, ry, rw, rh)
     }
-  }, [activeImage, selection, drawRect])
+    if (scanStage === 'done' && detections.length > 0) {
+      detections.forEach((item) => {
+        const [bx, by, bw, bh] = item.bbox
+        const rx = drawX + (bx / activeImage.bitmap.width) * drawWidth
+        const ry = drawY + (by / activeImage.bitmap.height) * drawHeight
+        const rw = (bw / activeImage.bitmap.width) * drawWidth
+        const rh = (bh / activeImage.bitmap.height) * drawHeight
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.92)'
+        ctx.lineWidth = 2
+        ctx.strokeRect(rx, ry, rw, rh)
+      })
+    }
+  }, [activeImage, selection, drawRect, scanStage, detections])
 
   async function handleFiles(fileList: FileList | null) {
     if (!fileList || fileList.length === 0) return
@@ -480,11 +512,55 @@ export default function ClaimsfoxFnolDemoPage() {
     dragStartRef.current = null
   }
 
+  function resetScanResultState() {
+    setScanStage('idle')
+    setScanStageKey(null)
+    setScanStageIndex(-1)
+    setScanCompletedStages([])
+    setScanLogLine('Ready for deterministic scan.')
+    setDetections([])
+    setSeverityScore(0)
+    setEstimate(null)
+    setRevealedEstimateTiles(0)
+    setShowAiExplanation(false)
+    setEstimateApproved(false)
+    setActionMessage(null)
+  }
+
+  function cancelScan() {
+    scanTokenRef.current += 1
+    setScanStage('idle')
+    setScanStageKey(null)
+    setScanStageIndex(-1)
+    setScanCompletedStages([])
+    setScanLogLine('Scan canceled. Ready for re-run.')
+    setActionMessage('AI scan canceled by user.')
+  }
+
+  async function waitWithToken(token: number, durationMs: number) {
+    await new Promise<void>((resolve) => {
+      window.setTimeout(resolve, durationMs)
+    })
+    return token === scanTokenRef.current
+  }
+
   async function runAiScan() {
-    if (!activeImage || estimateApproved) return
+    if (!activeImage || estimateApproved || scanStage === 'loading' || scanStage === 'scanning' || scanStage === 'analyzing') return
+    const token = scanTokenRef.current + 1
+    scanTokenRef.current = token
     try {
       setActionMessage(null)
       setScanStage('loading')
+      setScanStageKey(null)
+      setScanStageIndex(-1)
+      setScanCompletedStages([])
+      setScanLogLine('Initializing cinematic scan sequence...')
+      setDetections([])
+      setSeverityScore(0)
+      setEstimate(null)
+      setRevealedEstimateTiles(0)
+      setShowAiExplanation(false)
+      setEstimateApproved(false)
       let aiAvailable = true
       const tfModulePath = '@tensorflow/tfjs'
       const cocoModulePath = '@tensorflow-models/coco-ssd'
@@ -498,8 +574,18 @@ export default function ClaimsfoxFnolDemoPage() {
       } catch {
         aiAvailable = false
       }
+      if (!(await waitWithToken(token, 250))) return
 
       setScanStage('scanning')
+      for (let idx = 0; idx < SCAN_STAGE_SEQUENCE.length; idx += 1) {
+        const stage = SCAN_STAGE_SEQUENCE[idx]
+        setScanStageIndex(idx)
+        setScanStageKey(stage.key)
+        setScanLogLine(stage.log)
+        if (!(await waitWithToken(token, stage.ms))) return
+        setScanCompletedStages((prev) => [...prev, stage.key])
+      }
+
       const fullCanvas = document.createElement('canvas')
       fullCanvas.width = activeImage.bitmap.width
       fullCanvas.height = activeImage.bitmap.height
@@ -514,19 +600,27 @@ export default function ClaimsfoxFnolDemoPage() {
             bbox: entry.bbox
           }))
         : fallbackDetections(vehicle.vehicleClass, activeImage.bitmap)
+      if (token !== scanTokenRef.current) return
 
       setDetections(filtered)
       setScanStage('analyzing')
+      if (!(await waitWithToken(token, 200))) return
       const region = buildRegionCanvas(activeImage.bitmap, selection)
       const severity = calculateSeverityFromImageData(region.imageData)
       setSeverityScore(severity)
       setEstimate(calculateEstimate(vehicle.vehicleClass, severity, filtered))
       setScanStage('done')
+      setScanStageKey(null)
+      setScanStageIndex(-1)
+      setScanLogLine('Pipeline completed. Deterministic estimate ready.')
       if (!aiAvailable) {
         setActionMessage('AI model packages not available in this runtime. Demo fallback detection was used.')
       }
     } catch {
       setScanStage('error')
+      setScanStageKey(null)
+      setScanStageIndex(-1)
+      setScanLogLine('Pipeline aborted. Browser runtime raised an error.')
       setActionMessage('AI scan could not be completed in this browser context.')
     }
   }
@@ -544,7 +638,27 @@ export default function ClaimsfoxFnolDemoPage() {
     recognition.start()
   }
 
+  useEffect(() => {
+    if (scanStage !== 'done' || !estimate) {
+      setRevealedEstimateTiles(0)
+      return
+    }
+    const timers: number[] = []
+    for (let idx = 0; idx < 6; idx += 1) {
+      const timer = window.setTimeout(() => {
+        setRevealedEstimateTiles(idx + 1)
+      }, 170 * (idx + 1))
+      timers.push(timer)
+    }
+    const explainTimer = window.setTimeout(() => setShowAiExplanation(true), 1200)
+    timers.push(explainTimer)
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer))
+    }
+  }, [scanStage, estimate])
+
   const severityLabel = toSeverityLabel(severityScore)
+  const isScanBusy = scanStage === 'loading' || scanStage === 'scanning' || scanStage === 'analyzing'
 
   return (
     <ClaimsfoxLayout
@@ -657,24 +771,35 @@ export default function ClaimsfoxFnolDemoPage() {
           </div>
         </div>
 
-        <div style={{ marginTop: '0.9rem', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 240px', gap: '1rem' }}>
+        <div className="fnol-scan-layout" style={{ marginTop: '0.9rem' }}>
           <div>
-            <canvas
-              ref={mainCanvasRef}
-              width={920}
-              height={420}
-              style={{ width: '100%', borderRadius: 12, border: '1px solid #dbe2ea', cursor: 'crosshair', background: '#0b1730' }}
-              onMouseDown={(event) => startDrawing(event.clientX, event.clientY)}
-              onMouseMove={(event) => moveDrawing(event.clientX, event.clientY)}
-              onMouseUp={endDrawing}
-              onMouseLeave={endDrawing}
-            />
+            <div className={`fnol-scan-canvas-wrap${isScanBusy ? ' is-scanning' : ''}`}>
+              <canvas
+                ref={mainCanvasRef}
+                width={920}
+                height={420}
+                style={{
+                  width: '100%',
+                  borderRadius: 12,
+                  border: '1px solid #dbe2ea',
+                  cursor: isScanBusy ? 'progress' : 'crosshair',
+                  background: '#0b1730',
+                  pointerEvents: isScanBusy ? 'none' : 'auto'
+                }}
+                onMouseDown={(event) => startDrawing(event.clientX, event.clientY)}
+                onMouseMove={(event) => moveDrawing(event.clientX, event.clientY)}
+                onMouseUp={endDrawing}
+                onMouseLeave={endDrawing}
+              />
+              <ScanOverlay isScanning={isScanBusy} phaseIndex={scanStageIndex} />
+            </div>
             <div style={{ marginTop: '0.5rem', fontSize: '0.84rem', color: '#64748b' }}>
               {selection
                 ? `Selected region: x=${selection.x.toFixed(2)} y=${selection.y.toFixed(2)} w=${selection.width.toFixed(2)} h=${selection.height.toFixed(2)}`
                 : 'No damage region selected. Full image will be analyzed.'}
             </div>
           </div>
+          <ScanHud activeStage={scanStageKey} completed={scanCompletedStages} logLine={scanLogLine} />
           <div style={{ display: 'grid', gap: '0.6rem', alignContent: 'start' }}>
             {images.length === 0 ? (
               <div style={{ color: '#64748b', fontSize: '0.9rem' }}>No photos uploaded yet.</div>
@@ -698,6 +823,7 @@ export default function ClaimsfoxFnolDemoPage() {
                   gap: '0.35rem',
                   color: '#0f172a'
                 }}
+                disabled={isScanBusy}
               >
                 <canvas
                   width={190}
@@ -718,24 +844,30 @@ export default function ClaimsfoxFnolDemoPage() {
       <Card title="F + G + H · Browser AI Scan, Severity & Estimate" subtitle="COCO-SSD detection + deterministic repair cost model">
         <div style={{ display: 'grid', gap: '0.9rem' }}>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <Button size="sm" onClick={() => void runAiScan()} disabled={!activeImage || estimateApproved}>
-              Run AI Scan
+            <Button size="sm" onClick={() => void runAiScan()} disabled={!activeImage || estimateApproved || isScanBusy}>
+              {isScanBusy ? 'Scanning...' : 'Scan with AI'}
             </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => {
-                setScanStage('idle')
-                setDetections([])
-                setSeverityScore(0)
-                setEstimate(null)
-                setEstimateApproved(false)
-                setActionMessage(null)
-              }}
-              disabled={!activeImage}
-            >
-              Re-Scan
-            </Button>
+            {isScanBusy ? (
+              <button
+                type="button"
+                onClick={cancelScan}
+                style={{
+                  border: 'none',
+                  background: 'transparent',
+                  color: '#0f172a',
+                  fontSize: '0.84rem',
+                  textDecoration: 'underline',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel scan
+              </button>
+            ) : null}
+            {!isScanBusy && scanStage === 'done' ? (
+              <Button size="sm" variant="secondary" onClick={resetScanResultState} disabled={!activeImage}>
+                Re-Scan
+              </Button>
+            ) : null}
           </div>
           <div style={{ fontSize: '0.86rem', color: '#64748b' }}>
             {scanStage === 'loading' ? 'Loading AI model...' : null}
@@ -751,9 +883,9 @@ export default function ClaimsfoxFnolDemoPage() {
               {detections.length === 0 ? <div style={{ color: '#64748b', fontSize: '0.9rem' }}>No objects detected yet.</div> : null}
               <div style={{ display: 'grid', gap: '0.35rem' }}>
                 {detections.map((item, idx) => (
-                  <div key={`${item.label}-${idx}`} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem' }}>
+                  <div key={`${item.label}-${idx}`} className="fnol-box-pop" style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.88rem' }}>
                     <span>{item.label}</span>
-                    <strong>{item.confidence}%</strong>
+                    <strong><AnimatedNumber value={item.confidence} durationMs={760} formatter={(value) => `${Math.round(value)}%`} /></strong>
                   </div>
                 ))}
               </div>
@@ -761,28 +893,40 @@ export default function ClaimsfoxFnolDemoPage() {
 
             <Card title="Damage Severity">
               <div style={{ height: 10, borderRadius: 999, background: '#e2e8f0', overflow: 'hidden' }}>
-                <div style={{ width: `${severityScore}%`, height: '100%', background: '#d4380d' }} />
+                <div style={{ width: `${severityScore}%`, height: '100%', background: '#d4380d', transition: 'width 640ms cubic-bezier(0.22, 0.8, 0.3, 1)' }} />
               </div>
               <div style={{ marginTop: '0.45rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.9rem' }}>
                 <strong>{severityLabel}</strong>
-                <span>{severityScore}/100</span>
+                <span><AnimatedNumber value={severityScore} durationMs={800} />/100</span>
               </div>
             </Card>
           </div>
 
           {estimate ? (
             <Card title="Indicative AI Estimate (Demo)">
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.7rem' }}>
-                <EstimateTile label="Parts" value={currency.format(estimate.partsCost)} />
-                <EstimateTile label="Labor" value={currency.format(estimate.laborCost)} />
-                <EstimateTile label="Paint" value={currency.format(estimate.paintCost)} />
-                <EstimateTile label="Total" value={currency.format(estimate.total)} emphasize />
-                <EstimateTile label="Range" value={`${currency.format(estimate.rangeMin)} - ${currency.format(estimate.rangeMax)}`} />
-                <EstimateTile label="Confidence" value={`${estimate.confidence}%`} />
+              <div className="fnol-cost-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '0.7rem' }}>
+                {revealedEstimateTiles >= 1 ? <EstimateTile label="Parts" value={currency.format(estimate.partsCost)} /> : null}
+                {revealedEstimateTiles >= 2 ? <EstimateTile label="Labor" value={currency.format(estimate.laborCost)} /> : null}
+                {revealedEstimateTiles >= 3 ? <EstimateTile label="Paint" value={currency.format(estimate.paintCost)} /> : null}
+                {revealedEstimateTiles >= 4 ? <EstimateTile label="Total" value={currency.format(estimate.total)} emphasize /> : null}
+                {revealedEstimateTiles >= 5 ? <EstimateTile label="Range" value={`${currency.format(estimate.rangeMin)} - ${currency.format(estimate.rangeMax)}`} /> : null}
+                {revealedEstimateTiles >= 6 ? <EstimateTile label="Confidence" value={`${estimate.confidence}%`} /> : null}
               </div>
               <div style={{ marginTop: '0.75rem', fontSize: '0.84rem', color: '#64748b' }}>
                 Base class: {currency.format(estimate.base)} · Severity multiplier: {estimate.severityMultiplier.toFixed(2)}
               </div>
+              {showAiExplanation ? (
+                <div className="fnol-explain" style={{ marginTop: '0.7rem' }}>
+                  <details>
+                    <summary style={{ cursor: 'pointer', color: '#0f172a', fontWeight: 600 }}>AI Explanation</summary>
+                    <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1rem', color: '#475569', fontSize: '0.86rem' }}>
+                      <li>Vehicle class baseline and severity multiplier define the deterministic parts estimate.</li>
+                      <li>Labor and paint are fixed model factors (60% and 30%) to ensure reproducible outputs.</li>
+                      <li>Confidence combines object detection quality with normalized severity metrics from the selected region.</li>
+                    </ul>
+                  </details>
+                </div>
+              ) : null}
             </Card>
           ) : null}
         </div>
@@ -796,21 +940,29 @@ export default function ClaimsfoxFnolDemoPage() {
               setEstimateApproved(true)
               setActionMessage('Estimate approved and locked.')
             }}
-            disabled={!estimate || estimateApproved}
+            disabled={!estimate || estimateApproved || isScanBusy}
           >
             Approve Estimate
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => window.print()}>
+          <Button size="sm" variant="secondary" onClick={() => window.print()} disabled={isScanBusy}>
             Export PDF (Demo)
           </Button>
-          <Button
-            size="sm"
-            variant="secondary"
+          <button
+            type="button"
             onClick={() => setActionMessage('FNOL package sent to partner network (demo action).')}
-            disabled={!estimate}
+            disabled={!estimate || isScanBusy}
+            style={{
+              border: 'none',
+              background: 'transparent',
+              color: estimate && !isScanBusy ? '#0f172a' : '#94a3b8',
+              fontSize: '0.84rem',
+              textDecoration: 'underline',
+              cursor: estimate && !isScanBusy ? 'pointer' : 'not-allowed',
+              padding: '0 0.3rem'
+            }}
           >
-            Send to Partner (Demo)
-          </Button>
+            Send to Partner (Dummy)
+          </button>
         </div>
         {actionMessage ? (
           <div style={{ marginTop: '0.7rem', color: '#166534', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 10, padding: '0.6rem 0.8rem' }}>

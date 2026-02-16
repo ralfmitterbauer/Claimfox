@@ -1,0 +1,242 @@
+.fnol-scan-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px 220px;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.fnol-scan-canvas-wrap {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #dbe2ea;
+  background: #0b1730;
+}
+
+.fnol-scan-canvas-wrap.is-scanning {
+  animation: pulseOnce 620ms ease-out;
+}
+
+.fnol-scan-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fnol-scan-overlay__glass {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(150deg, rgba(5, 15, 34, 0.45), rgba(8, 24, 38, 0.35));
+  backdrop-filter: blur(1.5px);
+  animation: hudFadeIn 260ms ease-out forwards;
+}
+
+.fnol-scan-overlay__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(2, 132, 199, 0.05), rgba(2, 6, 23, 0.48));
+  animation: calibrationZoom 620ms cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+}
+
+.fnol-scan-overlay__noise {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 23%, rgba(255, 255, 255, 0.04), transparent 48%),
+    repeating-linear-gradient(12deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px);
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  animation: noiseDrift 5.2s linear infinite;
+}
+
+.fnol-scan-overlay__accent {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 10px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.95), transparent);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.fnol-scan-overlay__beam {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  height: 60px;
+  transform: rotate(-3deg);
+  background: linear-gradient(
+    to bottom,
+    rgba(34, 211, 238, 0),
+    rgba(34, 211, 238, 0.24),
+    rgba(125, 211, 252, 0.45),
+    rgba(34, 211, 238, 0.18),
+    rgba(34, 211, 238, 0)
+  );
+  filter: blur(0.2px);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
+}
+
+.fnol-scan-overlay__beam.is-down {
+  animation: beamSweepDown 2.9s cubic-bezier(0.4, 0.02, 0.3, 0.98) forwards;
+}
+
+.fnol-scan-overlay__beam.is-up {
+  animation: beamSweepUp 2.9s cubic-bezier(0.4, 0.02, 0.3, 0.98) forwards;
+}
+
+.fnol-scan-overlay__focus {
+  position: absolute;
+  width: 28%;
+  height: 22%;
+  left: 36%;
+  top: 39%;
+  border: 1px solid rgba(148, 163, 184, 0.55);
+  border-radius: 10px;
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25);
+  animation: pulseOnce 680ms ease-out 1;
+}
+
+.fnol-scan-hud {
+  border: 1px solid #dbe2ea;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+}
+
+.fnol-scan-hud__title {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.fnol-scan-hud__stages {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.fnol-scan-hud__stage {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.fnol-scan-hud__dot {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  border-radius: 50%;
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  color: #0f172a;
+}
+
+.fnol-scan-hud__dot.is-active {
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15);
+  animation: spinDot 700ms linear infinite;
+}
+
+.fnol-scan-hud__dot.is-done {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.fnol-scan-hud__label {
+  font-size: 0.79rem;
+  color: #334155;
+}
+
+.fnol-scan-hud__log {
+  font-size: 0.76rem;
+  color: #64748b;
+  border-top: 1px solid #dbe2ea;
+  padding-top: 0.45rem;
+  min-height: 2.2em;
+}
+
+.fnol-box-pop {
+  animation: boxPop 420ms cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.fnol-cost-grid > * {
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+  animation: boxPop 420ms cubic-bezier(0.22, 0.8, 0.3, 1) forwards;
+}
+
+.fnol-explain details {
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+  background: #f8fafc;
+}
+
+@keyframes beamSweepDown {
+  from { transform: translateY(-20%) rotate(-3deg); opacity: 0.15; }
+  to { transform: translateY(150%) rotate(-1deg); opacity: 0.95; }
+}
+
+@keyframes beamSweepUp {
+  from { transform: translateY(150%) rotate(-2deg); opacity: 0.15; }
+  to { transform: translateY(-20%) rotate(-4deg); opacity: 0.95; }
+}
+
+@keyframes hudFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes boxPop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulseOnce {
+  0% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { opacity: 0.45; transform: translateX(-2%); }
+  50% { opacity: 1; transform: translateX(2%); }
+  100% { opacity: 0.45; transform: translateX(-2%); }
+}
+
+@keyframes noiseDrift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 40px 22px, -32px 18px; }
+}
+
+@keyframes spinDot {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 980px) {
+  .fnol-scan-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .fnol-scan-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes calibrationZoom {
+  0% { transform: scale(1.02); opacity: 0.95; }
+  100% { transform: scale(1); opacity: 1; }
+}
