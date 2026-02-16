@@ -213,7 +213,12 @@ function calculateSeverityFromImageData(data: ImageData | null) {
   return Math.round(clamp(edgeScore * 0.65 + varianceScore * 0.35, 0, 100))
 }
 
-function calculateEstimate(vehicleClass: VehicleClass, severity: number, detections: DetectionResult[]): EstimateBreakdown {
+function calculateEstimate(
+  vehicleClass: VehicleClass,
+  severity: number,
+  detections: DetectionResult[],
+  selection: SelectionRect | null
+): EstimateBreakdown {
   const baseByClass: Record<VehicleClass, number> = {
     heavy: 2500,
     light: 1200,
@@ -221,10 +226,14 @@ function calculateEstimate(vehicleClass: VehicleClass, severity: number, detecti
   }
   const base = baseByClass[vehicleClass]
   const severityMultiplier = Math.max(0.2, severity / 40)
-  const total = 15974
-  const partsCost = total / 1.9
+  const baselineParts = base * severityMultiplier
+  const selectedArea = selection ? clamp(selection.width * selection.height, 0.03, 1) : 1
+  const areaFactor = 0.78 + selectedArea * 0.92
+  const detectionFactor = 0.9 + Math.min(3, detections.length) * 0.08
+  const partsCost = baselineParts * areaFactor * detectionFactor
   const laborCost = partsCost * 0.6
   const paintCost = partsCost * 0.3
+  const total = partsCost + laborCost + paintCost
   const rangeMin = total * 0.85
   const rangeMax = total * 1.15
   const avgDetection = detections.length > 0
@@ -713,7 +722,7 @@ export default function ClaimsfoxFnolDemoPage() {
       const region = buildRegionCanvas(activeImage.bitmap, selection)
       const severity = calculateSeverityFromImageData(region.imageData)
       setSeverityScore(severity)
-      setEstimate(calculateEstimate(vehicle.vehicleClass, severity, filtered))
+      setEstimate(calculateEstimate(vehicle.vehicleClass, severity, filtered, selection))
       setScanStage('done')
       setScanStageKey(null)
       setScanStageIndex(-1)
@@ -846,7 +855,7 @@ export default function ClaimsfoxFnolDemoPage() {
       baseClass: isDe ? 'Basiswert Klasse' : 'Base class',
       severityMultiplier: isDe ? 'Schweregrad-Faktor' : 'Severity multiplier',
       explanationTitle: isDe ? 'AI-Erklärung' : 'AI Explanation',
-      explanation1: isDe ? 'Fahrzeugklasse und Schweregradfaktor bestimmen die deterministische Teilekalkulation.' : 'Vehicle class baseline and severity multiplier define the deterministic parts estimate.',
+      explanation1: isDe ? 'Fahrzeugklasse, Schweregrad und die gewählte Schadenzone bestimmen die deterministische Teilekalkulation.' : 'Vehicle class baseline, severity, and the selected damage region define the deterministic parts estimate.',
       explanation2: isDe ? 'Arbeitszeit und Lackierung folgen festen Modellfaktoren (60% und 30%).' : 'Labor and paint are fixed model factors (60% and 30%) to ensure reproducible outputs.',
       explanation3: isDe ? 'Die Konfidenz kombiniert Objekterkennung mit normalisierten Schweregrad-Metriken.' : 'Confidence combines object detection quality with normalized severity metrics from the selected region.'
     },
