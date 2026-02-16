@@ -1,17 +1,27 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { CSSProperties } from 'react'
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import ClaimsfoxLayout from '@/claimsfox/components/ClaimsfoxLayout'
 import AnimatedNumber from '@/claimsfox/components/AnimatedNumber'
 import ScanHud from '@/claimsfox/components/ScanHud'
 import ScanOverlay from '@/claimsfox/components/ScanOverlay'
+import { useI18n } from '@/i18n/I18nContext'
+import { demoReverseGeocode, getFallbackDemoAddress } from '@/claimsfox/demo/geoDemo'
 import './ClaimsfoxFnolDemoPage.css'
 
 type LocationState = {
   lat: number
   lon: number
 } | null
+
+type AddressState = {
+  street: string
+  postalCode: string
+  city: string
+  country: string
+  isDemo: boolean
+}
 
 type VehicleClass = 'passenger' | 'light' | 'heavy'
 
@@ -90,12 +100,12 @@ type CocoModel = {
 }
 
 const VEHICLE_DEFAULTS: VehicleContext = {
-  licensePlate: 'HH-FX 4821',
-  vin: 'WDB9634061L123456',
-  manufacturer: 'Mercedes-Benz',
-  model: 'Actros 1845',
-  mileage: '184.230 km',
-  vehicleClass: 'heavy'
+  licensePlate: 'B-VW 3500',
+  vin: 'WV1ZZZSY4R9001234',
+  manufacturer: 'Volkswagen',
+  model: 'Crafter 3.5 t',
+  mileage: '84.230 km',
+  vehicleClass: 'light'
 }
 
 const SUPPORTED_MIME = new Set(['image/jpeg', 'image/png'])
@@ -245,9 +255,14 @@ function fallbackDetections(vehicleClass: VehicleClass, bitmap: ImageBitmap): De
 }
 
 export default function ClaimsfoxFnolDemoPage() {
+  const { t, lang } = useI18n()
   const [now, setNow] = useState<Date>(() => new Date())
   const [location, setLocation] = useState<LocationState>(null)
   const [locationStatus, setLocationStatus] = useState<'loading' | 'ready' | 'denied'>('loading')
+  const [address, setAddress] = useState<AddressState>(() => {
+    const fallback = getFallbackDemoAddress()
+    return { ...fallback, isDemo: true }
+  })
   const [deviceInfo, setDeviceInfo] = useState({ browser: '', screen: '' })
   const [vehicle, setVehicle] = useState<VehicleContext>(VEHICLE_DEFAULTS)
 
@@ -302,21 +317,40 @@ export default function ClaimsfoxFnolDemoPage() {
   useEffect(() => {
     if (!navigator.geolocation) {
       setLocationStatus('denied')
+      const fallback = getFallbackDemoAddress()
+      setAddress({ ...fallback, isDemo: true })
       return
     }
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLocation({
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        })
-        setLocationStatus('ready')
-      },
-      () => {
-        setLocationStatus('denied')
-      },
-      { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
-    )
+
+    const requestLocation = () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude
+          const lon = position.coords.longitude
+          setLocation({ lat, lon })
+          setLocationStatus('ready')
+          const resolved = demoReverseGeocode(lat, lon)
+          setAddress({ ...resolved, isDemo: false })
+        },
+        () => {
+          setLocationStatus('denied')
+          const fallback = getFallbackDemoAddress()
+          setAddress({ ...fallback, isDemo: true })
+        },
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+      )
+    }
+
+    if (typeof navigator.permissions?.query === 'function') {
+      navigator.permissions.query({ name: 'geolocation' }).then(() => {
+        requestLocation()
+      }).catch(() => {
+        requestLocation()
+      })
+      return
+    }
+
+    requestLocation()
   }, [])
 
   useEffect(() => {
@@ -470,24 +504,30 @@ export default function ClaimsfoxFnolDemoPage() {
     })
   }
 
-  function toNormalizedPoint(clientX: number, clientY: number) {
+  function toCanvasPoint(clientX: number, clientY: number) {
     const canvas = mainCanvasRef.current
-    const transform = previewTransformsRef.current
-    if (!canvas || !transform) return null
+    if (!canvas) return null
     const bounds = canvas.getBoundingClientRect()
-    const x = clientX - bounds.left
-    const y = clientY - bounds.top
-    if (x < transform.x || y < transform.y || x > transform.x + transform.width || y > transform.y + transform.height) {
-      return null
-    }
+    const x = (clientX - bounds.left) * (canvas.width / bounds.width)
+    const y = (clientY - bounds.top) * (canvas.height / bounds.height)
+    return { x, y }
+  }
+
+  function toNormalizedImagePoint(px: number, py: number) {
+    const transform = previewTransformsRef.current
+    if (!transform) return null
+    const x = clamp((px - transform.x) / transform.width, 0, 1)
+    const y = clamp((py - transform.y) / transform.height, 0, 1)
     return {
-      x: clamp((x - transform.x) / transform.width, 0, 1),
-      y: clamp((y - transform.y) / transform.height, 0, 1)
+      x,
+      y
     }
   }
 
   function startDrawing(clientX: number, clientY: number) {
-    const point = toNormalizedPoint(clientX, clientY)
+    const canvasPoint = toCanvasPoint(clientX, clientY)
+    if (!canvasPoint) return
+    const point = toNormalizedImagePoint(canvasPoint.x, canvasPoint.y)
     if (!point) return
     dragStartRef.current = point
     setDrawRect({ x: point.x, y: point.y, width: 0, height: 0 })
@@ -495,13 +535,20 @@ export default function ClaimsfoxFnolDemoPage() {
 
   function moveDrawing(clientX: number, clientY: number) {
     if (!dragStartRef.current) return
-    const point = toNormalizedPoint(clientX, clientY)
+    const canvasPoint = toCanvasPoint(clientX, clientY)
+    if (!canvasPoint) return
+    const point = toNormalizedImagePoint(canvasPoint.x, canvasPoint.y)
     if (!point) return
-    const x = Math.min(dragStartRef.current.x, point.x)
-    const y = Math.min(dragStartRef.current.y, point.y)
-    const width = Math.abs(dragStartRef.current.x - point.x)
-    const height = Math.abs(dragStartRef.current.y - point.y)
-    setDrawRect({ x, y, width, height })
+    const minX = Math.min(dragStartRef.current.x, point.x)
+    const minY = Math.min(dragStartRef.current.y, point.y)
+    const maxX = Math.max(dragStartRef.current.x, point.x)
+    const maxY = Math.max(dragStartRef.current.y, point.y)
+    setDrawRect({
+      x: clamp(minX, 0, 1),
+      y: clamp(minY, 0, 1),
+      width: clamp(maxX - minX, 0, 1),
+      height: clamp(maxY - minY, 0, 1)
+    })
   }
 
   function endDrawing() {
@@ -510,6 +557,30 @@ export default function ClaimsfoxFnolDemoPage() {
     }
     setDrawRect(null)
     dragStartRef.current = null
+  }
+
+  function handlePointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (isScanBusy) return
+    event.preventDefault()
+    event.currentTarget.setPointerCapture(event.pointerId)
+    startDrawing(event.clientX, event.clientY)
+  }
+
+  function handlePointerMove(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (isScanBusy) return
+    if (!dragStartRef.current) return
+    event.preventDefault()
+    moveDrawing(event.clientX, event.clientY)
+  }
+
+  function handlePointerUp(event: ReactPointerEvent<HTMLCanvasElement>) {
+    if (dragStartRef.current) {
+      event.preventDefault()
+      endDrawing()
+    }
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
   }
 
   function resetScanResultState() {
@@ -659,6 +730,10 @@ export default function ClaimsfoxFnolDemoPage() {
 
   const severityLabel = toSeverityLabel(severityScore)
   const isScanBusy = scanStage === 'loading' || scanStage === 'scanning' || scanStage === 'analyzing'
+  const addressLine1 = address.street
+  const addressLine2 = `${address.postalCode} ${address.city}`
+  const locationBadge = address.isDemo ? ` (${t('claimsfox.fnol.location.demoLabel')})` : ''
+  const locale = lang === 'de' ? 'de-DE' : 'en-US'
 
   return (
     <ClaimsfoxLayout
@@ -666,28 +741,27 @@ export default function ClaimsfoxFnolDemoPage() {
       subtitle="First Notice of Loss · Browser-native capture and deterministic AI estimate"
       topLeft={(
         <div style={{ display: 'grid', gap: '0.35rem', color: '#ffffff', fontSize: '0.84rem' }}>
-          <span>Incident captured at {now.toLocaleString()}</span>
-          <span>
-            Location: {locationStatus === 'ready' && location
-              ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}`
-              : locationStatus === 'loading'
-                ? 'Locating...'
-                : 'Location unavailable'}
-          </span>
+          <span>{t('claimsfox.fnol.location.capturedAt')} {now.toLocaleString(locale)}</span>
+          <span>{t('claimsfox.fnol.location.autoLabel')}{locationBadge}</span>
+          <span>{addressLine1}</span>
+          <span>{addressLine2}</span>
         </div>
       )}
     >
       <Card title="A · Auto Context" subtitle="Real-time incident context captured directly in browser">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.8rem' }}>
-          <div style={infoBoxStyle}><strong>Timestamp</strong><span>{now.toLocaleString()}</span></div>
+          <div style={infoBoxStyle}><strong>Timestamp</strong><span>{now.toLocaleString(locale)}</span></div>
           <div style={infoBoxStyle}>
-            <strong>Geolocation</strong>
+            <strong>{t('claimsfox.fnol.location.autoLabel')}{locationBadge}</strong>
+            <span>{addressLine1}</span>
+            <span>{addressLine2}</span>
+            <span>{address.country}</span>
             <span>
               {locationStatus === 'ready' && location
                 ? `${location.lat.toFixed(5)}, ${location.lon.toFixed(5)}`
                 : locationStatus === 'loading'
-                  ? 'Locating...'
-                  : 'Location unavailable'}
+                  ? t('claimsfox.fnol.location.locating')
+                  : t('claimsfox.fnol.location.unavailable')}
             </span>
           </div>
           <div style={infoBoxStyle}><strong>Browser</strong><span>{deviceInfo.browser}</span></div>
@@ -786,10 +860,10 @@ export default function ClaimsfoxFnolDemoPage() {
                   background: '#0b1730',
                   pointerEvents: isScanBusy ? 'none' : 'auto'
                 }}
-                onMouseDown={(event) => startDrawing(event.clientX, event.clientY)}
-                onMouseMove={(event) => moveDrawing(event.clientX, event.clientY)}
-                onMouseUp={endDrawing}
-                onMouseLeave={endDrawing}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
               />
               <ScanOverlay isScanning={isScanBusy} phaseIndex={scanStageIndex} />
             </div>

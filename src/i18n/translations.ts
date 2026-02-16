@@ -531,6 +531,15 @@ type TranslationTree = {
       storage: string
       payments: string
     }
+    fnol: {
+      location: {
+        capturedAt: string
+        autoLabel: string
+        locating: string
+        unavailable: string
+        demoLabel: string
+      }
+    }
     common: {
       loading: string
     }
@@ -5210,6 +5219,15 @@ export const translations: Record<Lang, TranslationTree> = {
         storage: 'Dokumentenablage',
         payments: 'Payments'
       },
+      fnol: {
+        location: {
+          capturedAt: 'Vorgang erfasst am',
+          autoLabel: 'Standort (automatisch)',
+          locating: 'Standort wird ermittelt ...',
+          unavailable: 'Standort nicht verfuegbar',
+          demoLabel: 'Demo'
+        }
+      },
       common: {
         loading: 'Lade Daten ...'
       }
@@ -8010,6 +8028,15 @@ export const translations: Record<Lang, TranslationTree> = {
         email: 'Email gateway',
         storage: 'Document storage',
         payments: 'Payments'
+      },
+      fnol: {
+        location: {
+          capturedAt: 'Incident captured at',
+          autoLabel: 'Location (automatic)',
+          locating: 'Locating ...',
+          unavailable: 'Location unavailable',
+          demoLabel: 'Demo'
+        }
       },
       common: {
         loading: 'Loading data …'
