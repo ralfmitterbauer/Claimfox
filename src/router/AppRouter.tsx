@@ -81,8 +81,6 @@ import StrategicDeepDivePage from '@/pages/StrategicDeepDivePage'
 import InsurfoxWhitepaperPage from '@/pages/InsurfoxWhitepaperPage'
 import RequirementsCatalogPage from '@/pages/RequirementsCatalogPage'
 import QuestionsQicPage from '@/pages/QuestionsQicPage'
-import CvPage from '@/pages/CvPage'
-import AnschreibenPage from '@/pages/AnschreibenPage'
 import SetupPage from '@/pages/SetupPage'
 import StoryblokTestPage from '@/pages/StoryblokTestPage'
 import LandingSitemapPage from '@/pages/LandingSitemapPage'
@@ -449,8 +447,6 @@ export default function AppRouter() {
         <Route path="/landing/sitemap" element={<LandingSitemapPage />} />
         <Route path="/landing/tools" element={<LandingToolsPage />} />
         <Route path="/internal-docs" element={<InternalDocsOverviewPage />} />
-        <Route path="/cv" element={<CvPage />} />
-        <Route path="/anschreiben" element={<AnschreibenPage />} />
       </Route>
       <Route path="*" element={<NotFoundRedirect />} />
     </Routes>
