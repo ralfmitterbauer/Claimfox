@@ -306,6 +306,7 @@ type TranslationTree = {
       dashboard: string
       claims: string
       intake: string
+      fnolDemo: string
       triage: string
       documents: string
       mailbox: string
@@ -4984,6 +4985,7 @@ export const translations: Record<Lang, TranslationTree> = {
         dashboard: 'Dashboard',
         claims: 'Schäden',
         intake: 'FNOL',
+        fnolDemo: 'FNOL Demo',
         triage: 'Triage',
         documents: 'Dokumente',
         mailbox: 'Postfach',
@@ -7784,6 +7786,7 @@ export const translations: Record<Lang, TranslationTree> = {
         dashboard: 'Dashboard',
         claims: 'Claims',
         intake: 'FNOL',
+        fnolDemo: 'FNOL Demo',
         triage: 'Triage',
         documents: 'Documents',
         mailbox: 'Mailbox',

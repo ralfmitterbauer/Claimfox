@@ -5,6 +5,7 @@ const navItems = [
   { key: 'dashboard', to: '/claimsfox' },
   { key: 'claims', to: '/claimsfox/claims' },
   { key: 'intake', to: '/claimsfox/intake' },
+  { key: 'fnolDemo', to: '/claimsfox/fnol-demo' },
   { key: 'triage', to: '/claimsfox/triage' },
   { key: 'documents', to: '/claimsfox/documents' },
   { key: 'mailbox', to: '/claimsfox/mailbox' },
