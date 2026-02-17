@@ -1,8 +1,11 @@
+import { useMemo, useState } from 'react'
 import {
   Bar,
   BarChart,
   CartesianGrid,
   Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
@@ -23,16 +26,19 @@ type ComparisonRow = {
   insurfox: BiText
 }
 
-const comparisonRows: ComparisonRow[] = [
-  { category: { de: 'Kernangebot', en: 'Core Offering' }, wtw: { de: 'Globales Advisory-, Broking- und Solutions-Modell', en: 'Global advisory, broking, and solutions model' }, insurfox: { de: 'Intelligente Versicherungsinfrastruktur als IaaS-Plattform', en: 'Intelligent insurance infrastructure as an IaaS platform' } },
-  { category: { de: 'Zielkunden', en: 'Target Customers' }, wtw: { de: 'Großunternehmen, Versicherer, internationale Programme', en: 'Large enterprises, insurers, and international programs' }, insurfox: { de: 'Versicherer, Makler, Flotten, Partnernetzwerke', en: 'Insurers, brokers, fleets, and partner networks' } },
-  { category: { de: 'Technology Usage', en: 'Technology Usage' }, wtw: { de: 'Analytics-Plattformen und Beratungstechnologie', en: 'Analytics platforms and advisory technology' }, insurfox: { de: 'AI-native Workflows, FNOL, Vision-Scan, Orchestrierung', en: 'AI-native workflows, FNOL, vision scan, and orchestration' } },
-  { category: { de: 'Data & Analytics', en: 'Data & Analytics' }, wtw: { de: 'Starke aktuarielle und kapitalseitige Modellierung', en: 'Strong actuarial and capital-side modeling' }, insurfox: { de: 'Echtzeit-Prozessdaten über modulare Lifecycle-Pipelines', en: 'Real-time process data across modular lifecycle pipelines' } },
-  { category: { de: 'Underwriting Authority Support', en: 'Underwriting Authority Support' }, wtw: { de: 'Delegated Authority Beratung und Strukturierung', en: 'Delegated authority advisory and structuring' }, insurfox: { de: 'Regel- und Entscheidungsunterstützung in der Plattform', en: 'Rule and decision support within platform workflows' } },
-  { category: { de: 'Distribution Partner Role', en: 'Distribution Partner Role' }, wtw: { de: 'Globaler Broker- und Capacity-Intermediär', en: 'Global broker and capacity intermediary' }, insurfox: { de: 'Digitaler Betriebs-Layer für Broker- und Carrier-Prozesse', en: 'Digital operating layer for broker and carrier processes' } },
-  { category: { de: 'MGA Enablement Capability', en: 'MGA Enablement Capability' }, wtw: { de: 'Hoch: Capacity Access, Strukturierung, Governance', en: 'High: capacity access, structuring, and governance' }, insurfox: { de: 'Mittel-Hoch: technisches Enablement und Workflow Execution', en: 'Medium-high: technical enablement and workflow execution' } },
-  { category: { de: 'Competitive Strengths', en: 'Competitive Strengths' }, wtw: { de: 'Skalierung, Marktzugang, Kapitalbeziehungen', en: 'Scale, market access, and capital relationships' }, insurfox: { de: 'Agilität, UX-Tiefe, schnelle Produktiteration', en: 'Agility, UX depth, and rapid product iteration' } },
-  { category: { de: 'Weaknesses & Risks', en: 'Weaknesses & Risks' }, wtw: { de: 'Legacy-Komplexität und langsameres Innovationstempo', en: 'Legacy complexity and slower innovation pace' }, insurfox: { de: 'Frühe Phase, begrenzte Capacity-Historie', en: 'Early-stage maturity and limited capacity track record' } }
+const businessModelRows: ComparisonRow[] = [
+  { category: { de: 'Regulatory Status', en: 'Regulatory Status' }, wtw: { de: 'Globaler Broker- und Advisory-Status', en: 'Global broker and advisory status' }, insurfox: { de: 'Hybrid: MGA + Broker + IaaS-Plattform', en: 'Hybrid: MGA + broker + IaaS platform' } },
+  { category: { de: 'Underwriting Authority', en: 'Underwriting Authority' }, wtw: { de: 'Beratend/strukturierend für Delegation', en: 'Advisory and structuring support for delegation' }, insurfox: { de: 'Operative Delegation als Zielmodell', en: 'Operational delegated authority as target model' } },
+  { category: { de: 'Capacity Ownership', en: 'Capacity Ownership' }, wtw: { de: 'Kein eigener Carrier, aber starker Capacity-Zugang', en: 'No own carrier, but strong capacity access' }, insurfox: { de: 'Keine eigene Capacity heute, Aufbau über Partner', en: 'No own capacity today, partner-enabled scaling' } },
+  { category: { de: 'Distribution Power', en: 'Distribution Power' }, wtw: { de: 'Sehr stark über globale Brokerbeziehungen', en: 'Very strong through global broker relationships' }, insurfox: { de: 'Wachsend über digitale Broker- und Flottenkanäle', en: 'Growing through digital broker and fleet channels' } },
+  { category: { de: 'Global Broker Network', en: 'Global Broker Network' }, wtw: { de: 'Ausgeprägt und etabliert', en: 'Deep and established' }, insurfox: { de: 'Selektiv und auf Wachstumsregionen fokussiert', en: 'Selective and focused on growth regions' } },
+  { category: { de: 'Digital Infrastructure', en: 'Digital Infrastructure' }, wtw: { de: 'Analytics- und Beratungsplattformen', en: 'Analytics and advisory platforms' }, insurfox: { de: 'End-to-end Versicherungsinfrastruktur (Claims/UW/Fleet/Partner)', en: 'End-to-end insurance infrastructure (claims/UW/fleet/partner)' } },
+  { category: { de: 'Claims Automation', en: 'Claims Automation' }, wtw: { de: 'Indirekt über Beratung und Tooling', en: 'Indirect via advisory and tooling' }, insurfox: { de: 'Direkt in Workflow- und FNOL-Prozessen', en: 'Direct in workflow and FNOL processes' } },
+  { category: { de: 'AI Usage in Core Business', en: 'AI Usage in Core Business' }, wtw: { de: 'Analytics-first mit Modell- und Beratungsfokus', en: 'Analytics-first with model and advisory focus' }, insurfox: { de: 'Operative AI in Underwriting- und Claims-Prozessen', en: 'Operational AI in underwriting and claims execution' } },
+  { category: { de: 'Capital Access', en: 'Capital Access' }, wtw: { de: 'Sehr stark über Markt- und Investorenzugang', en: 'Very strong via market and investor access' }, insurfox: { de: 'Frühe Phase, kapitalabhängig von Partnern und Wachstum', en: 'Early stage, capital-dependent on partners and growth' } },
+  { category: { de: 'Embedded Insurance Capability', en: 'Embedded Insurance Capability' }, wtw: { de: 'Über Broker- und Programmstrukturen möglich', en: 'Enabled through broking and program structures' }, insurfox: { de: 'Direkt in Plattformmodulen und APIs verankerbar', en: 'Directly deployable in platform modules and APIs' } },
+  { category: { de: 'Data Ownership', en: 'Data Ownership' }, wtw: { de: 'Programm- und Kundengetrieben, oft verteilt', en: 'Program and client driven, often distributed' }, insurfox: { de: 'Plattformzentriert mit End-to-end Prozesssicht', en: 'Platform-centric with end-to-end process visibility' } },
+  { category: { de: 'Conflict Potential', en: 'Conflict Potential' }, wtw: { de: 'Mittel: Broker-Interessen vs Plattformstrategie', en: 'Medium: broker incentives vs platform strategy' }, insurfox: { de: 'Mittel-Hoch bei Distribution- und Data-Ownership-Überschneidung', en: 'Medium-high in distribution and data-ownership overlap' } }
 ]
 
 const revenueSplit = [
@@ -47,43 +53,128 @@ const geoSplit = [
   { region: 'Rest of World', value: 8 }
 ]
 
-const fitQuadrant = [
-  { name: 'Capacity & Reinsurance Access', strength: 91, strategicValue: 90 },
-  { name: 'MGA Structure Advisory', strength: 86, strategicValue: 88 },
-  { name: 'Regulatory & Capital Advisory', strength: 92, strategicValue: 79 },
-  { name: 'Technology Integration', strength: 67, strategicValue: 84 },
-  { name: 'Pricing Analytics Support', strength: 81, strategicValue: 86 }
+const relationshipMatrix = [
+  { name: 'Capacity Provider', overlap: 32, value: 92 },
+  { name: 'Distribution Partner', overlap: 58, value: 81 },
+  { name: 'Strategic Investor', overlap: 44, value: 77 },
+  { name: 'Direct Competitor', overlap: 79, value: 41 }
+]
+
+const strategicFit = [
+  { name: 'Capacity & Reinsurance Brokerage', strength: 92, strategicValue: 91 },
+  { name: 'MGA Treaty Structuring', strength: 88, strategicValue: 90 },
+  { name: 'Regulatory & Capital Advisory', strength: 93, strategicValue: 80 },
+  { name: 'Technology Integration Support', strength: 68, strategicValue: 84 },
+  { name: 'Risk Modeling Support', strength: 84, strategicValue: 87 }
+]
+
+const conflictHeatmap = [
+  { label: 'Distribution overlap in transport/logistics', likelihood: 4, impact: 4 },
+  { label: 'Capacity dependency concentration', likelihood: 3, impact: 5 },
+  { label: 'Data ownership tension', likelihood: 4, impact: 5 },
+  { label: 'Commercial steering conflict', likelihood: 3, impact: 4 },
+  { label: 'Regulatory governance misalignment', likelihood: 2, impact: 4 }
+]
+
+const decisionOptions = [
+  { option: 'Option A', labelDe: 'Capacity Partnership Only', labelEn: 'Capacity Partnership Only', risk: 2, control: 2, capital: 2, upside: 3 },
+  { option: 'Option B', labelDe: 'Delegated Authority MGA', labelEn: 'Delegated Authority MGA', risk: 3, control: 4, capital: 3, upside: 5 },
+  { option: 'Option C', labelDe: 'Joint Venture', labelEn: 'Joint Venture', risk: 4, control: 4, capital: 4, upside: 4 },
+  { option: 'Option D', labelDe: 'Independent Capacity Strategy', labelEn: 'Independent Capacity Strategy', risk: 5, control: 5, capital: 5, upside: 5 }
 ]
 
 function getBi(value: BiText, lang: 'de' | 'en') {
   return lang === 'de' ? value.de : value.en
 }
 
+function toHeatColor(score: number) {
+  if (score >= 20) return '#b91c1c'
+  if (score >= 15) return '#dc2626'
+  if (score >= 10) return '#f97316'
+  if (score >= 6) return '#f59e0b'
+  return '#16a34a'
+}
+
 export default function WTWAnalysisPage() {
   const { lang } = useI18n()
   const l = lang === 'de' ? 'de' : 'en'
+
+  const [premiumVolumeM, setPremiumVolumeM] = useState(180)
+  const [lossRatioPct, setLossRatioPct] = useState(64)
+  const [commissionPct, setCommissionPct] = useState(14)
+
+  const premiumVolume = premiumVolumeM * 1_000_000
+  const commissionRate = commissionPct / 100
+  const lossRatio = lossRatioPct / 100
+  const expenseRatio = 0.18
+  const uwMarginRate = Math.max(-0.15, 1 - lossRatio - expenseRatio)
+
+  const segmentMix = {
+    fleet: 0.4,
+    logistics: 0.35,
+    mobility: 0.25
+  }
+
+  const financialModel = useMemo(() => {
+    const fleetGwp = premiumVolume * segmentMix.fleet
+    const logisticsGwp = premiumVolume * segmentMix.logistics
+    const mobilityGwp = premiumVolume * segmentMix.mobility
+    const totalGwp = fleetGwp + logisticsGwp + mobilityGwp
+    const commissionIncome = totalGwp * commissionRate
+    const underwritingMargin = totalGwp * uwMarginRate
+    const totalContribution = commissionIncome + underwritingMargin
+    const fixedCost = 18_000_000
+    const breakEvenGwp = fixedCost / Math.max(0.01, commissionRate + uwMarginRate)
+
+    return {
+      fleetGwp,
+      logisticsGwp,
+      mobilityGwp,
+      totalGwp,
+      commissionIncome,
+      underwritingMargin,
+      totalContribution,
+      breakEvenGwp,
+      fixedCost
+    }
+  }, [premiumVolume, commissionRate, uwMarginRate])
+
+  const sensitivityData = useMemo(() => {
+    const points = [50, 55, 60, 65, 70, 75, 80]
+    return points.map((lr) => {
+      const lrRate = lr / 100
+      const marginRate = 1 - lrRate - expenseRatio
+      const contribution = premiumVolume * (commissionRate + marginRate)
+      return {
+        lossRatio: lr,
+        contributionM: contribution / 1_000_000
+      }
+    })
+  }, [premiumVolume, commissionRate])
 
   const text = {
     title: getBi({ de: 'WTW (Willis Towers Watson) Strategic Analysis & Comparison with Insurfox', en: 'WTW (Willis Towers Watson) Strategic Analysis & Comparison with Insurfox' }, l),
     subtitle: getBi({ de: 'Advisory, Broking & Technology Solutions vs Intelligent Insurance Infrastructure', en: 'Advisory, Broking & Technology Solutions vs Intelligent Insurance Infrastructure' }, l),
     export: getBi({ de: 'Executive Report herunterladen (PDF)', en: 'Download Executive Report (PDF)' }, l),
-    executiveSummary: getBi({ de: 'Executive Summary', en: 'Executive Summary' },
-      l),
+    executiveSummary: getBi({ de: 'Executive Summary', en: 'Executive Summary' }, l),
+    hybridTitle: getBi({ de: 'Strategic Positioning: Platform + MGA + Broker Hybrid Model', en: 'Strategic Positioning: Platform + MGA + Broker Hybrid Model' }, l),
+    relationshipMatrix: getBi({ de: 'Strategic Relationship Matrix', en: 'Strategic Relationship Matrix' }, l),
     companyProfile: getBi({ de: 'Unternehmensprofil', en: 'Company Profile' }, l),
-    comparison: getBi({ de: 'WTW vs Insurfox Vergleich', en: 'WTW vs Insurfox Comparison' }, l),
+    businessComparison: getBi({ de: 'Business Model Comparison (Extended)', en: 'Business Model Comparison (Extended)' }, l),
     deepDive: getBi({ de: 'WTW Deep Dive – Value Propositions', en: 'WTW Deep Dive – Value Propositions' }, l),
-    fit: getBi({ de: 'Strategic Fit für Insurfox', en: 'Strategic Fit for Insurfox' }, l),
-    swot: getBi({ de: 'SWOT Analyse', en: 'SWOT Analysis' }, l),
-    recommendations: getBi({ de: 'Empfehlungen & Decision Path', en: 'Recommendations & Decision Path' }, l),
     segmentRevenue: getBi({ de: 'Umsatzmix nach Segment (%)', en: 'Revenue split by segment (%)' }, l),
     geoRevenue: getBi({ de: 'Geografische Umsatzverteilung (%)', en: 'Geographic revenue distribution (%)' }, l),
-    quadrant: getBi({ de: 'WTW Strength vs Strategic Value to Insurfox', en: 'WTW Strength vs Strategic Value to Insurfox' }, l),
-    category: getBi({ de: 'Kategorie', en: 'Category' }, l)
+    fit: getBi({ de: 'Strategic Fit Analysis for Insurfox', en: 'Strategic Fit Analysis for Insurfox' }, l),
+    synergyConflict: getBi({ de: 'Conflict & Synergy Analysis', en: 'Conflict & Synergy Analysis' }, l),
+    mgaStrategy: getBi({ de: 'MGA Enablement & Capacity Strategy', en: 'MGA Enablement & Capacity Strategy' }, l),
+    financial: getBi({ de: 'Financial Leverage Scenario', en: 'Financial Leverage Scenario' }, l),
+    options: getBi({ de: 'Board-Level Strategic Options', en: 'Board-Level Strategic Options' }, l),
+    swot: getBi({ de: 'SWOT Analyse', en: 'SWOT Analysis' }, l)
   }
 
   function handleExportPdf() {
     const previousTitle = document.title
-    document.title = 'WTW_Strategic_Analysis_Insurfox'
+    document.title = 'WTW_Strategic_MGA_Analysis_Insurfox'
     window.print()
     window.setTimeout(() => {
       document.title = previousTitle
@@ -111,10 +202,24 @@ export default function WTWAnalysisPage() {
 
         <Card title={text.executiveSummary}>
           <div style={{ display: 'grid', gap: '0.7rem', color: '#334155', lineHeight: 1.65 }}>
-            <p style={{ margin: 0 }}>{getBi({ de: 'WTW ist ein globales Advisory-, Broking- und Solutions-Unternehmen mit tief verankerter Versicherungsexpertise und starker Analytics-Orientierung.', en: 'WTW is a global advisory, broking, and solutions firm with deep insurance expertise and strong analytics capabilities.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: 'Das Leistungsportfolio umfasst Risikobroking, Versicherungsberatung, Technologie- und Datenlösungen sowie kapitalnahe Strukturierung.', en: 'Its offering spans risk broking, insurance consulting, technology and data solutions, and capital-oriented structuring.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: 'Für Insurfox ist WTW strategisch relevant als potenzieller MGA-Enabler, Capacity-Partner und Co-Pilot für regulatorisch belastbare Skalierung.', en: 'For Insurfox, WTW is strategically relevant as a potential MGA enabler, capacity partner, and co-pilot for regulatory-grade scaling.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: 'Empfehlung: ein gestuftes Partnerschaftsmodell mit Capacity-Dialog, Delegated-Authority-Blueprint und selektiver Co-Creation starten.', en: 'Recommendation: launch a phased partnership model with capacity dialogue, delegated-authority blueprinting, and selective co-creation.' }, l)}</p>
+            <p style={{ margin: 0 }}>{getBi({ de: 'WTW ist ein globales Advisory-, Broking- und Solutions-Unternehmen mit tiefer Versicherungsexpertise, starker Analytics-Kompetenz und ausgeprägtem Capacity-Zugang.', en: 'WTW is a global advisory, broking, and solutions firm with deep insurance expertise, strong analytics capability, and broad capacity access.' }, l)}</p>
+            <p style={{ margin: 0 }}>{getBi({ de: 'Insurfox agiert als Hybridmodell: Digital MGA, Commercial Broker, Insurance Infrastructure Platform (IaaS) und AI-gesteuerter Underwriting-/Claims-Operator.', en: 'Insurfox operates as a hybrid model: digital MGA, commercial broker, insurance infrastructure platform (IaaS), and AI-driven underwriting/claims operator.' }, l)}</p>
+            <p style={{ margin: 0 }}>{getBi({ de: 'Insurfox-Umsatzhebel: Broker-Kommission, MGA-Underwriting-Marge, Capacity-Placement, Plattformlizenzen, AI-gestützte Prozessautomatisierung.', en: 'Insurfox revenue levers: broker commission, MGA underwriting margin, capacity placement, platform licensing, and AI-enabled process automation.' }, l)}</p>
+            <p style={{ margin: 0 }}>{getBi({ de: 'WTW kann gleichzeitig Capacity Provider, Distribution Partner, Wettbewerber und potenzieller strategischer Investor sein.', en: 'WTW can simultaneously act as a capacity provider, distribution partner, competitor, and potential strategic investor.' }, l)}</p>
+          </div>
+        </Card>
+
+        <Card title={text.relationshipMatrix}>
+          <div style={{ height: 300 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <ScatterChart margin={{ top: 10, right: 12, left: 10, bottom: 12 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis type="number" dataKey="overlap" name={getBi({ de: 'Competitive Overlap', en: 'Competitive Overlap' }, l)} domain={[0, 100]} stroke="#475569" />
+                <YAxis type="number" dataKey="value" name={getBi({ de: 'Strategic Value', en: 'Strategic Value' }, l)} domain={[0, 100]} stroke="#475569" />
+                <Tooltip labelFormatter={(_, payload) => (payload?.[0]?.payload?.name ?? '') as string} />
+                <Scatter data={relationshipMatrix} fill="#d4380d" />
+              </ScatterChart>
+            </ResponsiveContainer>
           </div>
         </Card>
 
@@ -122,37 +227,37 @@ export default function WTWAnalysisPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: '1rem' }}>
             <Card title="WTW Overview">
               <ul style={listStyle}>
-                <li>{getBi({ de: 'Historische Wurzeln seit 1828, globales Operating Model.', en: 'Historic roots dating back to 1828 with a global operating model.' }, l)}</li>
-                <li>{getBi({ de: 'Hauptsitz London (UK), börsennotiert an der NASDAQ.', en: 'Headquartered in London (UK), listed on NASDAQ.' }, l)}</li>
-                <li>{getBi({ de: 'Mitarbeitende: rund 48.900 weltweit.', en: 'Employees: approximately 48,900 globally.' }, l)}</li>
+                <li>{getBi({ de: 'Historische Wurzeln seit 1828 mit globaler Präsenz.', en: 'Historic roots dating back to 1828 with global footprint.' }, l)}</li>
+                <li>{getBi({ de: 'Headquarters: London, UK; gelistet an der NASDAQ.', en: 'Headquarters: London, UK; listed on NASDAQ.' }, l)}</li>
+                <li>{getBi({ de: 'Mitarbeitende: rund 48.900 global.', en: 'Employees: around 48,900 globally.' }, l)}</li>
                 <li>{getBi({ de: 'Umsatz 2024: ca. USD 9,93 Mrd.', en: '2024 revenue: approximately USD 9.93B.' }, l)}</li>
-                <li>{getBi({ de: 'Segmente: Risk & Broking sowie Health, Wealth & Career.', en: 'Segments: Risk & Broking and Health, Wealth & Career.' }, l)}</li>
-                <li>{getBi({ de: 'Kernservices: Brokerage, Risk Management, Analytics, Consulting, Insurance Technology.', en: 'Core services: brokerage, risk management, analytics, consulting, and insurance technology.' }, l)}</li>
+                <li>{getBi({ de: 'Segmente: Risk & Broking sowie Health & Wealth.', en: 'Segments: Risk & Broking and Health & Wealth.' }, l)}</li>
+                <li>{getBi({ de: 'Kernservices: Brokerage, Risk Management, Analytics, Consulting, Insurance Tech.', en: 'Core services: brokerage, risk management, analytics, consulting, and insurance tech.' }, l)}</li>
               </ul>
             </Card>
             <Card title="Insurfox Overview">
               <ul style={listStyle}>
-                <li>{getBi({ de: 'Insurfox entwickelt eine digitale IaaS-Plattform für den gesamten Versicherungslifecycle.', en: 'Insurfox is building a digital IaaS platform across the insurance lifecycle.' }, l)}</li>
-                <li>{getBi({ de: 'Module: Claimsfox, Brokerfox, Fleetfox, Partnerfox und AI Fox.', en: 'Modules: Claimsfox, Brokerfox, Fleetfox, Partnerfox, and AI Fox.' }, l)}</li>
-                <li>{getBi({ de: 'Demo-fähige UX mit AI-gestützten Workflows (FNOL, Fotoscan, Risikoanalysen).', en: 'Demo-ready UX with AI-assisted workflows (FNOL, photo scan, risk analytics).' }, l)}</li>
-                <li>{getBi({ de: 'Positionierung: intelligenter Infrastruktur-Layer zwischen Vertrieb, Underwriting, Claims und Partnernetzwerk.', en: 'Positioning: intelligent infrastructure layer across distribution, underwriting, claims, and partner execution.' }, l)}</li>
+                <li>{getBi({ de: 'Hybrid-Rolle: MGA + Broker + IaaS-Plattform + AI-Operator.', en: 'Hybrid role: MGA + broker + IaaS platform + AI operator.' }, l)}</li>
+                <li>{getBi({ de: 'Module: Claimsfox, Brokerfox, Fleetfox, Partnerfox, AI Fox.', en: 'Modules: Claimsfox, Brokerfox, Fleetfox, Partnerfox, AI Fox.' }, l)}</li>
+                <li>{getBi({ de: 'Demo-fähige UX und AI-Workflows für FNOL, Underwriting, Claims und Reporting.', en: 'Demo-ready UX and AI workflows for FNOL, underwriting, claims, and reporting.' }, l)}</li>
+                <li>{getBi({ de: 'Skalierungsziel: digitales MGA-Betriebsmodell mit orchestrierter Capacity-Anbindung.', en: 'Scaling target: digital MGA operating model with orchestrated capacity connectivity.' }, l)}</li>
               </ul>
             </Card>
           </div>
         </Card>
 
-        <Card title={text.comparison}>
+        <Card title={text.businessComparison}>
           <div style={{ overflowX: 'auto' }}>
             <table style={tableStyle}>
               <thead>
                 <tr style={headRowStyle}>
-                  <th style={thStyle}>{text.category}</th>
+                  <th style={thStyle}>{getBi({ de: 'Kategorie', en: 'Category' }, l)}</th>
                   <th style={thStyle}>WTW</th>
                   <th style={thStyle}>Insurfox</th>
                 </tr>
               </thead>
               <tbody>
-                {comparisonRows.map((row) => (
+                {businessModelRows.map((row) => (
                   <tr key={row.category.en}>
                     <td style={tdStrongStyle}>{getBi(row.category, l)}</td>
                     <td style={tdStyle}>{getBi(row.wtw, l)}</td>
@@ -165,18 +270,18 @@ export default function WTWAnalysisPage() {
         </Card>
 
         <Card title={text.deepDive}>
-          <div style={{ display: 'grid', gap: '0.9rem' }}>
-            <div style={{ display: 'grid', gap: '0.35rem' }}>
+          <div style={{ display: 'grid', gap: '0.85rem' }}>
+            <div>
               <h3 style={subHeadingStyle}>A) {getBi({ de: 'Global Insurance Broking & Risk', en: 'Global Insurance Broking & Risk' }, l)}</h3>
-              <p style={{ margin: 0, color: '#334155' }}>{getBi({ de: 'WTW bietet konsultatives Broking, Specialty-Line-Kompetenz und internationale Risiko-Programmsteuerung mit hoher Marktdurchdringung.', en: 'WTW provides consultative broking, specialty-line depth, and global program execution with broad market penetration.' }, l)}</p>
+              <p style={pStyle}>{getBi({ de: 'WTW kombiniert konsultatives Broking, Specialty-Line-Erfahrung und globales Risk-Programm-Management.', en: 'WTW combines consultative broking, specialty line expertise, and global risk program management.' }, l)}</p>
             </div>
-            <div style={{ display: 'grid', gap: '0.35rem' }}>
+            <div>
               <h3 style={subHeadingStyle}>B) {getBi({ de: 'Insurance Consulting & Technology', en: 'Insurance Consulting & Technology' }, l)}</h3>
-              <p style={{ margin: 0, color: '#334155' }}>{getBi({ de: 'Die Beratung verbindet versicherungsspezifisches Operating-Model-Design mit Analytics- und Technologieplattformen für Carrier und Corporates.', en: 'Its consulting model combines insurance operating-model design with analytics and technology platforms for carriers and corporates.' }, l)}</p>
+              <p style={pStyle}>{getBi({ de: 'Versicherungsnahe Advisory-Leistungen werden mit Analytics- und Technologieplattformen verknüpft.', en: 'Insurance-focused advisory services are linked with analytics and technology platforms.' }, l)}</p>
             </div>
-            <div style={{ display: 'grid', gap: '0.35rem' }}>
+            <div>
               <h3 style={subHeadingStyle}>C) {getBi({ de: 'Analytics & Capital Solutions', en: 'Analytics & Capital Solutions' }, l)}</h3>
-              <p style={{ margin: 0, color: '#334155' }}>{getBi({ de: 'WTW unterstützt Finanzmodellierung, Kapitaloptimierung und regulatorische Reporting-Anforderungen für anspruchsvolle Programme.', en: 'WTW supports financial modeling, capital optimization, and regulatory reporting requirements for complex programs.' }, l)}</p>
+              <p style={pStyle}>{getBi({ de: 'WTW unterstützt Kapitaloptimierung, finanzielle Modellierung und regulatorische Reporting-Pfade.', en: 'WTW supports capital optimization, financial modeling, and regulatory reporting pathways.' }, l)}</p>
             </div>
           </div>
         </Card>
@@ -219,16 +324,125 @@ export default function WTWAnalysisPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis type="number" dataKey="strength" name={getBi({ de: 'WTW Strength', en: 'WTW Strength' }, l)} domain={[40, 100]} stroke="#475569" />
                 <YAxis type="number" dataKey="strategicValue" name={getBi({ de: 'Strategischer Wert für Insurfox', en: 'Strategic Value to Insurfox' }, l)} domain={[40, 100]} stroke="#475569" />
-                <Tooltip
-                  cursor={{ strokeDasharray: '3 3' }}
-                  formatter={(value: number, key: string) => [String(value), key === 'strength' ? getBi({ de: 'WTW Strength', en: 'WTW Strength' }, l) : getBi({ de: 'Strategischer Wert', en: 'Strategic Value' }, l)]}
-                  labelFormatter={(_, payload) => (payload?.[0]?.payload?.name ?? '') as string}
-                />
-                <Scatter data={fitQuadrant} fill="#f97316" />
+                <Tooltip labelFormatter={(_, payload) => (payload?.[0]?.payload?.name ?? '') as string} />
+                <Scatter data={strategicFit} fill="#f97316" />
               </ScatterChart>
             </ResponsiveContainer>
           </div>
-          <div style={{ marginTop: '0.65rem', color: '#334155', fontSize: '0.88rem' }}>{text.quadrant}</div>
+        </Card>
+
+        <Card title={text.synergyConflict}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1rem' }}>
+            <Card title={getBi({ de: 'Synergien', en: 'Synergies' }, l)}>
+              <ul style={listStyle}>
+                <li>{getBi({ de: 'WTW liefert globalen Capacity-Zugang für MGA-Programme.', en: 'WTW provides global capacity access for MGA programs.' }, l)}</li>
+                <li>{getBi({ de: 'WTW unterstützt Reinsurance-Strukturierung und Treaty-Placement.', en: 'WTW supports reinsurance structuring and treaty placement.' }, l)}</li>
+                <li>{getBi({ de: 'WTW kann regulatorische und kapitalbezogene Modellierung beschleunigen.', en: 'WTW can accelerate regulatory and capital modeling.' }, l)}</li>
+                <li>{getBi({ de: 'WTW könnte Insurfox-Infrastruktur in Programmen white-label integrieren.', en: 'WTW could white-label Insurfox infrastructure in selected programs.' }, l)}</li>
+              </ul>
+            </Card>
+            <Card title={getBi({ de: 'Konflikte', en: 'Conflicts' }, l)}>
+              <ul style={listStyle}>
+                <li>{getBi({ de: 'WTW besitzt ein starkes eigenes Brokernetzwerk.', en: 'WTW has a strong incumbent broker network.' }, l)}</li>
+                <li>{getBi({ de: 'Overlap in Transport- und Logistik-Distribution.', en: 'Overlap in transport and logistics distribution.' }, l)}</li>
+                <li>{getBi({ de: 'Abhängigkeitsrisiko bei Capacity-Konzentration auf einen Partner.', en: 'Dependency risk if capacity is concentrated on one partner.' }, l)}</li>
+                <li>{getBi({ de: 'Spannungen bei Datenhoheit, Pipeline-Transparenz und Kundenzugang.', en: 'Tension around data ownership, pipeline transparency, and client access.' }, l)}</li>
+              </ul>
+            </Card>
+          </div>
+
+          <div style={{ marginTop: '1rem' }}>
+            <h3 style={{ ...subHeadingStyle, marginBottom: '0.6rem' }}>{getBi({ de: 'Risk Heatmap', en: 'Risk Heatmap' }, l)}</h3>
+            <div style={{ display: 'grid', gap: '0.45rem' }}>
+              {conflictHeatmap.map((row) => {
+                const score = row.likelihood * row.impact
+                return (
+                  <div key={row.label} style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) 84px 84px 110px', gap: '0.5rem', alignItems: 'center' }}>
+                    <div style={{ fontSize: '0.87rem', color: '#334155' }}>{row.label}</div>
+                    <div style={heatCellStyle}>{getBi({ de: 'Wkt.', en: 'Lik.' }, l)}: {row.likelihood}</div>
+                    <div style={heatCellStyle}>{getBi({ de: 'Imp.', en: 'Imp.' }, l)}: {row.impact}</div>
+                    <div style={{ ...heatCellStyle, background: toHeatColor(score), color: '#fff', borderColor: 'transparent' }}>
+                      {getBi({ de: 'Score', en: 'Score' }, l)}: {score}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </Card>
+
+        <Card title={text.mgaStrategy}>
+          <div style={{ display: 'grid', gap: '0.8rem' }}>
+            <p style={pStyle}>{getBi({ de: 'Für die MGA-Skalierung benötigt Insurfox Binder Authority, Capacity-Treaties, Reinsurance-Support, belastbare Pricing-Modelle und Loss-Ratio-Governance.', en: 'To scale as an MGA, Insurfox needs binder authority, capacity treaties, reinsurance support, robust pricing models, and loss-ratio governance.' }, l)}</p>
+            <p style={pStyle}>{getBi({ de: 'WTW kann Capacity Sourcing, Treaty Placement, Capital Advisory und Risiko-Modellierung als Enabler bereitstellen.', en: 'WTW can support capacity sourcing, treaty placement, capital advisory, and risk modeling as key enablers.' }, l)}</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.7rem' }}>
+              <Milestone title={getBi({ de: 'Phase 1', en: 'Phase 1' }, l)} body={getBi({ de: 'Capacity Sourcing', en: 'Capacity sourcing' }, l)} />
+              <Milestone title={getBi({ de: 'Phase 2', en: 'Phase 2' }, l)} body={getBi({ de: 'Delegated Authority', en: 'Delegated authority' }, l)} />
+              <Milestone title={getBi({ de: 'Phase 3', en: 'Phase 3' }, l)} body={getBi({ de: 'Portfolio Optimization', en: 'Portfolio optimization' }, l)} />
+              <Milestone title={getBi({ de: 'Phase 4', en: 'Phase 4' }, l)} body={getBi({ de: 'Reinsurance Layering', en: 'Reinsurance layering' }, l)} />
+            </div>
+          </div>
+        </Card>
+
+        <Card title={text.financial}>
+          <div className="wtw-print-hide" style={{ display: 'grid', gap: '0.6rem', marginBottom: '0.9rem' }}>
+            <SliderRow label={getBi({ de: 'Premium Volume (EUR Mio.)', en: 'Premium Volume (EUR M)' }, l)} value={premiumVolumeM} min={50} max={500} onChange={setPremiumVolumeM} />
+            <SliderRow label={getBi({ de: 'Loss Ratio (%)', en: 'Loss Ratio (%)' }, l)} value={lossRatioPct} min={45} max={85} onChange={setLossRatioPct} />
+            <SliderRow label={getBi({ de: 'Commission Rate (%)', en: 'Commission Rate (%)' }, l)} value={commissionPct} min={8} max={22} onChange={setCommissionPct} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.65rem' }}>
+            <KpiCard label="GWP" value={formatCurrency(financialModel.totalGwp)} />
+            <KpiCard label={getBi({ de: 'Commission Margin', en: 'Commission Margin' }, l)} value={formatCurrency(financialModel.commissionIncome)} />
+            <KpiCard label={getBi({ de: 'Underwriting Margin', en: 'Underwriting Margin' }, l)} value={formatCurrency(financialModel.underwritingMargin)} />
+            <KpiCard label={getBi({ de: 'Break-even GWP', en: 'Break-even GWP' }, l)} value={formatCurrency(financialModel.breakEvenGwp)} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1rem', marginTop: '0.9rem' }}>
+            <Card title={getBi({ de: 'Segment GWP (Fleet/Logistics/Mobility)', en: 'Segment GWP (Fleet/Logistics/Mobility)' }, l)}>
+              <ul style={listStyle}>
+                <li>{getBi({ de: 'Fleet', en: 'Fleet' }, l)}: {formatCurrency(financialModel.fleetGwp)}</li>
+                <li>{getBi({ de: 'Logistics', en: 'Logistics' }, l)}: {formatCurrency(financialModel.logisticsGwp)}</li>
+                <li>{getBi({ de: 'Mobility', en: 'Mobility' }, l)}: {formatCurrency(financialModel.mobilityGwp)}</li>
+              </ul>
+            </Card>
+            <Card title={getBi({ de: 'Loss Ratio Sensitivity', en: 'Loss Ratio Sensitivity' }, l)}>
+              <div style={{ height: 220 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={sensitivityData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                    <XAxis dataKey="lossRatio" stroke="#475569" />
+                    <YAxis stroke="#475569" />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="contributionM" stroke="#d4380d" strokeWidth={2} dot={{ r: 3 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </div>
+        </Card>
+
+        <Card title={text.options}>
+          <div style={{ height: 320 }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={decisionOptions}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                <XAxis dataKey="option" stroke="#475569" />
+                <YAxis stroke="#475569" domain={[0, 5]} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="risk" name={getBi({ de: 'Risk level', en: 'Risk level' }, l)} fill="#ef4444" />
+                <Bar dataKey="control" name={getBi({ de: 'Control level', en: 'Control level' }, l)} fill="#0ea5e9" />
+                <Bar dataKey="capital" name={getBi({ de: 'Capital intensity', en: 'Capital intensity' }, l)} fill="#f59e0b" />
+                <Bar dataKey="upside" name={getBi({ de: 'Strategic upside', en: 'Strategic upside' }, l)} fill="#10b981" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div style={{ marginTop: '0.7rem', display: 'grid', gap: '0.4rem', color: '#334155' }}>
+            {decisionOptions.map((opt) => (
+              <div key={opt.option}><strong>{opt.option}:</strong> {l === 'de' ? opt.labelDe : opt.labelEn}</div>
+            ))}
+          </div>
         </Card>
 
         <Card title={text.swot}>
@@ -236,33 +450,58 @@ export default function WTWAnalysisPage() {
             <Card title="WTW">
               <ul style={listStyle}>
                 <li><strong>{getBi({ de: 'Stärken:', en: 'Strengths:' }, l)}</strong> {getBi({ de: 'Globales Netzwerk, Analytics-Kompetenz, Zugang zu Kapital und Capacity.', en: 'Global network, analytics depth, access to capital and capacity.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Schwächen:', en: 'Weaknesses:' }, l)}</strong> {getBi({ de: 'Große Legacy-Strukturen, teilweise geringere Innovationsgeschwindigkeit.', en: 'Large legacy structure and potentially slower innovation cycles.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Chancen:', en: 'Opportunities:' }, l)}</strong> {getBi({ de: 'Embedded-Broking-Modelle und digitale Plattformkooperationen.', en: 'Embedded broking models and digital platform partnerships.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Risiken:', en: 'Threats:' }, l)}</strong> {getBi({ de: 'Wettbewerb (Aon, Marsh McLennan) und regulatorische Komplexität.', en: 'Competitive pressure (Aon, Marsh McLennan) and regulatory complexity.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Schwächen:', en: 'Weaknesses:' }, l)}</strong> {getBi({ de: 'Große Legacy-Strukturen, teils langsameres Innovationstempo.', en: 'Large legacy structures and at times slower innovation pace.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Chancen:', en: 'Opportunities:' }, l)}</strong> {getBi({ de: 'Embedded-Broking und digitale Plattformpartnerschaften.', en: 'Embedded broking and digital platform partnerships.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Risiken:', en: 'Threats:' }, l)}</strong> {getBi({ de: 'Wettbewerb durch Aon/Marsh und regulatorische Komplexität.', en: 'Competition from Aon/Marsh and regulatory complexity.' }, l)}</li>
               </ul>
             </Card>
             <Card title="Insurfox">
               <ul style={listStyle}>
-                <li><strong>{getBi({ de: 'Stärken:', en: 'Strengths:' }, l)}</strong> {getBi({ de: 'Plattformagilität, UX-Exzellenz, AI-Fokus.', en: 'Platform agility, UX excellence, and AI focus.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Schwächen:', en: 'Weaknesses:' }, l)}</strong> {getBi({ de: 'Frühe Wachstumsphase, derzeit keine eigene Capacity.', en: 'Early-stage scaling and no proprietary capacity today.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Chancen:', en: 'Opportunities:' }, l)}</strong> {getBi({ de: 'MGA + digitales Underwriting + Claims-Automation als integriertes Modell.', en: 'MGA + digital underwriting + claims automation as an integrated model.' }, l)}</li>
-                <li><strong>{getBi({ de: 'Risiken:', en: 'Threats:' }, l)}</strong> {getBi({ de: 'Incumbent-Druck und Kapital-/Execution-Constraints.', en: 'Incumbent pressure and capital/execution constraints.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Stärken:', en: 'Strengths:' }, l)}</strong> {getBi({ de: 'Plattformagilität, UX-Tiefe, AI-Fokus, Hybridmodell MGA+Broker+IaaS.', en: 'Platform agility, UX depth, AI focus, and MGA+broker+IaaS hybrid model.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Schwächen:', en: 'Weaknesses:' }, l)}</strong> {getBi({ de: 'Frühe Phase, limitierte Capacity-Historie.', en: 'Early stage with limited capacity track record.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Chancen:', en: 'Opportunities:' }, l)}</strong> {getBi({ de: 'MGA-Skalierung mit digitalem Underwriting und Claims-Automation.', en: 'MGA scaling with digital underwriting and claims automation.' }, l)}</li>
+                <li><strong>{getBi({ de: 'Risiken:', en: 'Threats:' }, l)}</strong> {getBi({ de: 'Incumbent-Druck, Kapitalbedarf und Partnerabhängigkeit.', en: 'Incumbent pressure, capital needs, and partner dependency.' }, l)}</li>
               </ul>
             </Card>
-          </div>
-        </Card>
-
-        <Card title={text.recommendations}>
-          <div style={{ display: 'grid', gap: '0.65rem', color: '#334155', lineHeight: 1.6 }}>
-            <p style={{ margin: 0 }}>{getBi({ de: '1) Primärmodell: Capacity-Partnerschaft mit klar definiertem Delegated-Authority-Pilot und governance-fester Datenkette.', en: '1) Primary model: capacity partnership with a clearly defined delegated-authority pilot and governance-ready data chain.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: '2) WTW-Commitment-Metriken: FNOL-throughput, AI-Decision-Quality, Leakage-Reduktion, SLA-Stabilität, Audit-Readiness.', en: '2) WTW commitment metrics: FNOL throughput, AI decision quality, leakage reduction, SLA stability, and audit readiness.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: '3) Timeline (90-180 Tage): Discovery, Blueprint, Sandbox-Integration, Pilot-Go-Live, Capacity Committee.', en: '3) Timeline (90-180 days): discovery, blueprint, sandbox integration, pilot go-live, and capacity committee review.' }, l)}</p>
-            <p style={{ margin: 0 }}>{getBi({ de: '4) Risk Checkpoints: Regulatorik, Daten- und Modellgovernance, Delegation Scope, Kumulkontrolle.', en: '4) Risk checkpoints: regulatory alignment, data/model governance, delegation scope, and accumulation controls.' }, l)}</p>
           </div>
         </Card>
       </div>
     </section>
   )
+}
+
+function Milestone({ title, body }: { title: string; body: string }) {
+  return (
+    <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.65rem' }}>
+      <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.2rem' }}>{title}</div>
+      <div style={{ fontWeight: 700, color: '#0f172a' }}>{body}</div>
+    </div>
+  )
+}
+
+function SliderRow({ label, value, min, max, onChange }: { label: string; value: number; min: number; max: number; onChange: (value: number) => void }) {
+  return (
+    <label style={{ display: 'grid', gap: '0.25rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.84rem', color: '#475569' }}>
+        <span>{label}</span>
+        <strong style={{ color: '#0f172a' }}>{value}</strong>
+      </div>
+      <input type="range" min={min} max={max} value={value} onChange={(event) => onChange(Number(event.target.value))} />
+    </label>
+  )
+}
+
+function KpiCard({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.7rem', background: '#f8fafc' }}>
+      <div style={{ color: '#64748b', fontSize: '0.8rem' }}>{label}</div>
+      <div style={{ color: '#0f172a', fontSize: '1rem', fontWeight: 700 }}>{value}</div>
+    </div>
+  )
+}
+
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value)
 }
 
 const listStyle = {
@@ -278,6 +517,12 @@ const subHeadingStyle = {
   margin: 0,
   fontSize: '1rem',
   color: '#0f172a'
+}
+
+const pStyle = {
+  margin: 0,
+  color: '#334155',
+  lineHeight: 1.6
 }
 
 const tableStyle = {
@@ -310,4 +555,13 @@ const tdStrongStyle = {
   ...tdStyle,
   fontWeight: 700,
   color: '#0f172a'
+}
+
+const heatCellStyle = {
+  border: '1px solid #e2e8f0',
+  borderRadius: 8,
+  padding: '0.35rem 0.45rem',
+  fontSize: '0.8rem',
+  color: '#334155',
+  textAlign: 'center' as const
 }
