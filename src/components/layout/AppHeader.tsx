@@ -41,7 +41,8 @@ export default function AppHeader() {
       { label: 'Corify', route: '/analysis/corify' },
       { label: 'Claimsforce', route: '/analysis/claimsforce' },
       { label: 'Kairos RS', route: '/analysis/kairos' },
-      { label: 'Hypoport SE', route: '/analysis/hypoport' }
+      { label: 'Hypoport SE', route: '/analysis/hypoport' },
+      { label: 'Smart InsurTech', route: '/analysis/smartinsurtech' }
     ]
     : [
       { label: t('header.nav.insurance'), route: '/underwriterfox' },
