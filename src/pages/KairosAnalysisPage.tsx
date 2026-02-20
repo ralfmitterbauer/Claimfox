@@ -29,10 +29,10 @@ const insurfoxFacts: BiText[] = [
 ]
 
 const matrixPoints: MatrixPoint[] = [
-  { name: { de: 'Risk Structuring Partner', en: 'Risk Structuring Partner' }, overlap: 34, value: 90 },
-  { name: { de: 'Parametric Product Co-Builder', en: 'Parametric Product Co-Builder' }, overlap: 48, value: 88 },
-  { name: { de: 'Distribution Competitor (if they broker)', en: 'Distribution Competitor (if they broker)' }, overlap: 78, value: 42 },
-  { name: { de: 'AI/Process Enabler', en: 'AI/Process Enabler' }, overlap: 46, value: 81 }
+  { name: { de: 'Partner für Risikostrukturierung', en: 'Risk Structuring Partner' }, overlap: 34, value: 90 },
+  { name: { de: 'Co-Builder für parametrische Produkte', en: 'Parametric Product Co-Builder' }, overlap: 48, value: 88 },
+  { name: { de: 'Distributionswettbewerber (bei eigener Maklerrolle)', en: 'Distribution Competitor (if they broker)' }, overlap: 78, value: 42 },
+  { name: { de: 'KI-/Prozess-Enabler', en: 'AI/Process Enabler' }, overlap: 46, value: 81 }
 ]
 
 const fitRows: FitRow[] = [
@@ -44,17 +44,17 @@ const fitRows: FitRow[] = [
 ]
 
 const riskRows: RiskRow[] = [
-  { label: { de: 'Basis Risk & Data Quality', en: 'Basis risk & data quality' }, likelihood: 4, impact: 5 },
-  { label: { de: 'Regulatory Cross-Border Constraints (SG/EU)', en: 'Regulatory cross-border constraints (SG/EU)' }, likelihood: 3, impact: 5 },
-  { label: { de: 'Data Ownership & Client Access', en: 'Data ownership & client access' }, likelihood: 4, impact: 4 },
-  { label: { de: 'Vendor Lock-in / Dependency', en: 'Vendor lock-in / dependency' }, likelihood: 3, impact: 4 },
-  { label: { de: 'Model Risk & EU AI Act Governance', en: 'Model risk & EU AI Act governance' }, likelihood: 3, impact: 4 }
+  { label: { de: 'Basisrisiko und Datenqualität', en: 'Basis risk & data quality' }, likelihood: 4, impact: 5 },
+  { label: { de: 'Grenzüberschreitende Regulatorik (SG/EU)', en: 'Regulatory cross-border constraints (SG/EU)' }, likelihood: 3, impact: 5 },
+  { label: { de: 'Datenhoheit und Kundenzugang', en: 'Data ownership & client access' }, likelihood: 4, impact: 4 },
+  { label: { de: 'Vendor-Lock-in und Abhängigkeit', en: 'Vendor lock-in / dependency' }, likelihood: 3, impact: 4 },
+  { label: { de: 'Modellrisiko und EU-AI-Act-Governance', en: 'Model risk & EU AI Act governance' }, likelihood: 3, impact: 4 }
 ]
 
 const optionRows: OptionRow[] = [
   {
     option: 'A',
-    label: { de: 'Commercial partnership (referral + product advisory)', en: 'Commercial partnership (referral + product advisory)' },
+    label: { de: 'Kommerzielle Partnerschaft (Referral + Produktberatung)', en: 'Commercial partnership (referral + product advisory)' },
     risk: 2,
     control: 3,
     capital: 2,
@@ -64,7 +64,7 @@ const optionRows: OptionRow[] = [
   },
   {
     option: 'B',
-    label: { de: 'Co-built parametric program (MGA delegated authority path)', en: 'Co-built parametric program (MGA delegated authority path)' },
+    label: { de: 'Gemeinsam gebautes parametrisches Programm (MGA-Delegated-Authority-Pfad)', en: 'Co-built parametric program (MGA delegated authority path)' },
     risk: 3,
     control: 4,
     capital: 3,
@@ -74,7 +74,7 @@ const optionRows: OptionRow[] = [
   },
   {
     option: 'C',
-    label: { de: 'JV / program partnership with capacity structuring', en: 'JV / program partnership with capacity structuring' },
+    label: { de: 'JV-/Programm-Partnerschaft mit Kapazitätsstrukturierung', en: 'JV / program partnership with capacity structuring' },
     risk: 4,
     control: 4,
     capital: 4,
@@ -84,7 +84,7 @@ const optionRows: OptionRow[] = [
   },
   {
     option: 'D',
-    label: { de: 'Build internally with alternative partners', en: 'Build internally with alternative partners' },
+    label: { de: 'Intern aufbauen mit alternativen Partnern', en: 'Build internally with alternative partners' },
     risk: 4,
     control: 5,
     capital: 5,
@@ -101,9 +101,9 @@ const sources = [
 ]
 
 const contacts = [
-  { name: 'Jeffrey Khoo', role: 'CEO' },
-  { name: 'Richard Price', role: 'Managing Director, Finance & Administration Solutions' },
-  { name: 'Casmond Lim', role: 'Founder' }
+  { name: 'Jeffrey Khoo', role: { de: 'CEO', en: 'CEO' } },
+  { name: 'Richard Price', role: { de: 'Managing Director, Finance & Administration Solutions', en: 'Managing Director, Finance & Administration Solutions' } },
+  { name: 'Casmond Lim', role: { de: 'Gründer', en: 'Founder' } }
 ]
 
 const singaporeAddress = '60 Paya Lebar Road #07-54, Paya Lebar Square, Singapore 409051'
@@ -120,8 +120,8 @@ function colorByScore(score: number) {
   return '#16a34a'
 }
 
-function money(v: number) {
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 }).format(v)
+function money(v: number, lang: 'de' | 'en') {
+  return new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-US', { maximumFractionDigits: 1 }).format(v)
 }
 
 export default function KairosAnalysisPage() {
@@ -276,10 +276,10 @@ export default function KairosAnalysisPage() {
               <SliderRow label={t('analysis.kairos.commissionRate')} value={commissionPct} min={5} max={25} step={1} suffix="%" onChange={setCommissionPct} />
             </div>
             <div style={{ display: 'grid', gap: '0.6rem' }}>
-              <MetricCard label={t('analysis.kairos.commissionIncome')} value={`EUR ${money(commissionIncomeM)}m`} />
-              <MetricCard label={t('analysis.kairos.uwMarginProxy')} value={`EUR ${money(uwMarginProxyM)}m`} />
-              <MetricCard label={t('analysis.kairos.breakEvenGwp')} value={`EUR ${money(breakEvenGwpM)}m`} />
-              <MetricCard label={t('analysis.kairos.sensitivitySeries')} value={`EUR ${money(contributionM)}m`} />
+              <MetricCard label={t('analysis.kairos.commissionIncome')} value={`EUR ${money(commissionIncomeM, l)}m`} />
+              <MetricCard label={t('analysis.kairos.uwMarginProxy')} value={`EUR ${money(uwMarginProxyM, l)}m`} />
+              <MetricCard label={t('analysis.kairos.breakEvenGwp')} value={`EUR ${money(breakEvenGwpM, l)}m`} />
+              <MetricCard label={t('analysis.kairos.sensitivitySeries')} value={`EUR ${money(contributionM, l)}m`} />
               <p style={noteStyle}>{t('analysis.kairos.scenarioDisclaimer')}</p>
             </div>
           </div>
@@ -323,7 +323,7 @@ export default function KairosAnalysisPage() {
                 <tr style={headRowStyle}>
                   <th style={thStyle}>{t('analysis.kairos.option')}</th>
                   <th style={thStyle}>{t('analysis.kairos.strategicOptions')}</th>
-                  <th style={thStyle}>Risk</th>
+                  <th style={thStyle}>{t('analysis.kairos.risk')}</th>
                   <th style={thStyle}>{t('analysis.kairos.control')}</th>
                   <th style={thStyle}>{t('analysis.kairos.capital')}</th>
                   <th style={thStyle}>{t('analysis.kairos.upside')}</th>
@@ -364,9 +364,9 @@ export default function KairosAnalysisPage() {
 
         <Card title={t('analysis.kairos.recommendation')}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '0.8rem' }}>
-            <RecommendationBlock title={t('analysis.kairos.next306090')} body={bi({ de: '30 Tage: Due-Diligence auf Parametric Scope und Trigger-Daten. 60 Tage: Co-Design Pilot in Logistics/Fleet. 90 Tage: Entscheid über Program-Go-live mit Governance-Guardrails.', en: '30 days: due diligence on parametric scope and trigger data. 60 days: co-design pilot in logistics/fleet. 90 days: go-live decision with governance guardrails.' }, l)} />
-            <RecommendationBlock title={t('analysis.kairos.needFromKairos')} body={bi({ de: 'Trigger-Frameworks, Basisrisiko-Methodik, Governance-Dokumentation, Capacity-Partner-Zugang und vertragliche Data-Rights-Klarheit.', en: 'Trigger frameworks, basis-risk methodology, governance documentation, capacity partner access, and contractual clarity on data rights.' }, l)} />
-            <RecommendationBlock title={t('analysis.kairos.offerFromInsurfox')} body={bi({ de: 'Digitales MGA/Broker-Operating-Modell, Workflow-/Claims-Execution, FNOL-Automation, Distribution-Zugang und modulare Plattformintegration.', en: 'Digital MGA/broker operating model, workflow/claims execution, FNOL automation, distribution access, and modular platform integration.' }, l)} />
+            <RecommendationBlock title={t('analysis.kairos.next306090')} body={bi({ de: '30 Tage: Due Diligence für parametrischen Scope und Trigger-Daten. 60 Tage: Co-Design-Pilot in Logistics/Fleet. 90 Tage: Go-live-Entscheidung mit klaren Governance-Guardrails.', en: '30 days: due diligence on parametric scope and trigger data. 60 days: co-design pilot in logistics/fleet. 90 days: go-live decision with governance guardrails.' }, l)} />
+            <RecommendationBlock title={t('analysis.kairos.needFromKairos')} body={bi({ de: 'Trigger-Frameworks, belastbare Basisrisiko-Methodik, Governance-Dokumentation, Zugang zu Capacity-Partnern und vertragliche Klarheit zu Data Rights.', en: 'Trigger frameworks, basis-risk methodology, governance documentation, capacity partner access, and contractual clarity on data rights.' }, l)} />
+            <RecommendationBlock title={t('analysis.kairos.offerFromInsurfox')} body={bi({ de: 'Digitales MGA-/Broker-Betriebsmodell, Workflow- und Claims-Execution, FNOL-Automation, Distributionszugang und modulare Plattformintegration.', en: 'Digital MGA/broker operating model, workflow/claims execution, FNOL automation, distribution access, and modular platform integration.' }, l)} />
           </div>
         </Card>
 
@@ -376,7 +376,7 @@ export default function KairosAnalysisPage() {
             {contacts.map((person) => (
               <div key={person.name} style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.55rem', background: '#f8fafc' }}>
                 <div style={{ fontWeight: 700, color: '#0f172a' }}>{person.name}</div>
-                <div style={{ color: '#334155', fontSize: '0.85rem' }}>{t('analysis.kairos.contactRole')}: {person.role}</div>
+                <div style={{ color: '#334155', fontSize: '0.85rem' }}>{t('analysis.kairos.contactRole')}: {bi(person.role, l)}</div>
                 <div style={{ color: '#64748b', fontSize: '0.8rem' }}>{t('analysis.kairos.contactReachout')}: LinkedIn / Company contact form</div>
               </div>
             ))}

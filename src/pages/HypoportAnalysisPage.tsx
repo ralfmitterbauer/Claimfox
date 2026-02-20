@@ -25,6 +25,14 @@ type RiskRow = {
   impact: number
 }
 
+type ContactPerson = {
+  name: string
+  role: BiText
+  focus: BiText
+  reachout: BiText
+  source: string
+}
+
 const profileKpis = {
   hypoport: [
     { label: 'Employees', value: 'approx. 2,000+' },
@@ -128,6 +136,37 @@ const optionData = [
   { option: 'B', label: { de: 'API / workflow partnership', en: 'API / workflow partnership' }, risk: 3, control: 3, capital: 3, upside: 4, timeToMarket: 4 },
   { option: 'C', label: { de: 'Compete in Fleet/Logistics with full-stack execution', en: 'Compete in Fleet/Logistics with full-stack execution' }, risk: 4, control: 5, capital: 4, upside: 5, timeToMarket: 2 },
   { option: 'D', label: { de: 'Independent capacity strategy (reduce distribution dependency)', en: 'Independent capacity strategy (reduce distribution dependency)' }, risk: 4, control: 5, capital: 5, upside: 4, timeToMarket: 1 }
+]
+
+const contacts: ContactPerson[] = [
+  {
+    name: 'Jan H. Pahl',
+    role: { de: 'Head of Investor Relations // IRO', en: 'Head of Investor Relations // IRO' },
+    focus: { de: 'Kapitalmarktanfragen und Investor-Kommunikation', en: 'Capital markets and investor communication' },
+    reachout: { de: 'ir(at)hypoport.de', en: 'ir(at)hypoport.de' },
+    source: 'https://www.hypoport.de/investor-relations/'
+  },
+  {
+    name: 'Ronald Slabke',
+    role: { de: 'Vorsitzender des Vorstandes', en: 'Chairman of the Management Board' },
+    focus: { de: 'Konzernstrategie und Plattformexpansion', en: 'Group strategy and platform expansion' },
+    reachout: { de: 'via Kontaktformular / info(at)hypoport.de', en: 'via contact form / info(at)hypoport.de' },
+    source: 'https://www.hypoport.de/unternehmensprofil/management/'
+  },
+  {
+    name: 'Stephan Gawarecki',
+    role: { de: 'Mitglied des Vorstandes', en: 'Member of the Management Board' },
+    focus: { de: 'Privatkunden und Versicherungsplattform-Segment', en: 'Private clients and insurance platform segment' },
+    reachout: { de: 'via Kontaktformular / info(at)hypoport.de', en: 'via contact form / info(at)hypoport.de' },
+    source: 'https://www.hypoport.de/unternehmensprofil/management/'
+  },
+  {
+    name: 'Dieter Pfeiffenberger',
+    role: { de: 'Vorsitzender des Aufsichtsrates', en: 'Chairman of the Supervisory Board' },
+    focus: { de: 'Aufsicht und Governance', en: 'Supervision and governance' },
+    reachout: { de: 'via Kontaktformular / info(at)hypoport.de', en: 'via contact form / info(at)hypoport.de' },
+    source: 'https://www.hypoport.de/unternehmensprofil/management/'
+  }
 ]
 
 function bi(value: BiText, lang: 'de' | 'en') {
@@ -441,9 +480,38 @@ export default function HypoportAnalysisPage() {
           <RecommendationCard title={t('hypoport.text.recommendationOffer')} />
         </Card>
 
+        <Card title={bi({ de: 'Ansprechpartner & Stakeholder (öffentliche Quellen)', en: 'Contacts & Stakeholders (public sources)' }, l)}>
+          <p style={noteStyle}>
+            {bi(
+              {
+                de: 'Die folgenden Ansprechpartner wurden aus öffentlich zugänglichen Hypoport-Quellen übernommen. Persönliche E-Mail-Adressen wurden nicht ergänzt, sofern nicht explizit öffentlich genannt.',
+                en: 'The following contacts are taken from publicly available Hypoport sources. Personal email addresses were not added unless explicitly published.'
+              },
+              l
+            )}
+          </p>
+          <div style={{ display: 'grid', gap: '0.55rem', marginTop: '0.7rem' }}>
+            {contacts.map((contact) => (
+              <div key={contact.name} style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.6rem', background: '#f8fafc' }}>
+                <div style={{ fontWeight: 700, color: '#0f172a' }}>{contact.name}</div>
+                <div style={{ color: '#334155', fontSize: '0.86rem' }}><strong>{bi({ de: 'Rolle', en: 'Role' }, l)}:</strong> {bi(contact.role, l)}</div>
+                <div style={{ color: '#334155', fontSize: '0.86rem' }}><strong>{bi({ de: 'Fokus', en: 'Focus' }, l)}:</strong> {bi(contact.focus, l)}</div>
+                <div style={{ color: '#334155', fontSize: '0.86rem' }}><strong>{bi({ de: 'Kontaktweg', en: 'Reachout' }, l)}:</strong> {bi(contact.reachout, l)}</div>
+                <div style={{ color: '#64748b', fontSize: '0.8rem' }}><strong>{bi({ de: 'Quelle', en: 'Source' }, l)}:</strong> {contact.source}</div>
+              </div>
+            ))}
+          </div>
+          <p style={{ ...noteStyle, marginTop: '0.6rem' }}>
+            {bi({ de: 'Öffentliche Quellen erfasst am 20. Februar 2026.', en: 'Public sources captured on February 20, 2026.' }, l)}
+          </p>
+        </Card>
+
         <Card title={t('hypoport.text.sourcesTitle')}>
           <ul style={listStyle}>
             <li>https://www.hypoport.de/</li>
+            <li>https://www.hypoport.de/unternehmensprofil/management/</li>
+            <li>https://www.hypoport.de/investor-relations/</li>
+            <li>https://www.hypoport.de/kontakt/</li>
             <li>Public annual/public market materials (approx. framing)</li>
             <li>Internal Insurfox positioning assumptions</li>
           </ul>
