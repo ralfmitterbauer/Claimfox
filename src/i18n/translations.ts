@@ -22,6 +22,75 @@ type TranslationTree = {
       fleetfox: string
     }
   }
+  analysis: {
+    kairos: {
+      title: string
+      subtitle: string
+      export: string
+      executiveSummary: string
+      summaryP1: string
+      summaryP2: string
+      summaryP3: string
+      summaryP4: string
+      companyProfiles: string
+      kairosSnapshot: string
+      insurfoxSnapshot: string
+      offeringsDeepDive: string
+      offeringsParametricTitle: string
+      offeringsParametricBody: string
+      offeringsSpecialtyTitle: string
+      offeringsSpecialtyBody: string
+      offeringsOpsTitle: string
+      offeringsOpsBody: string
+      offeringsMappingTitle: string
+      offeringsMappingBody: string
+      positionMatrix: string
+      overlapAxis: string
+      valueAxis: string
+      matrixInterpretation: string
+      strategicFit: string
+      fitDimension: string
+      fitScore: string
+      fitProductInnovation: string
+      fitCapacityStructuring: string
+      fitClaimsOpsIntegration: string
+      fitDistributionSynergy: string
+      fitGovernanceReadiness: string
+      financialScenario: string
+      premiumVolume: string
+      attachRate: string
+      lossRatio: string
+      commissionRate: string
+      commissionIncome: string
+      uwMarginProxy: string
+      breakEvenGwp: string
+      scenarioDisclaimer: string
+      sensitivityTitle: string
+      sensitivitySeries: string
+      riskGovernanceHeatmap: string
+      likelihood: string
+      impact: string
+      score: string
+      strategicOptions: string
+      option: string
+      control: string
+      capital: string
+      upside: string
+      timeToMarket: string
+      recommendation: string
+      next306090: string
+      needFromKairos: string
+      offerFromInsurfox: string
+      contacts: string
+      contactsSubline: string
+      contactRole: string
+      contactReachout: string
+      contactAddress: string
+      sources: string
+      publicSourcesCaptured: string
+      disclaimer: string
+    }
+  }
   underwriterfox: {
     nav: {
       title: string
@@ -2426,6 +2495,75 @@ export const translations: Record<Lang, TranslationTree> = {
         aiFox: 'AI Fox',
         partnerfox: 'Partnerfox',
         fleetfox: 'Fleetfox'
+      }
+    },
+    analysis: {
+      kairos: {
+        title: 'Kairos Risk Solutions (Singapore) – Strategic Partner / Competitor Assessment for Insurfox',
+        subtitle: 'Parametric risk solutions + specialty insurance consulting vs Insurfox (MGA/Broker/Platform Hybrid)',
+        export: 'Download Executive Report (PDF)',
+        executiveSummary: 'Executive Summary',
+        summaryP1: 'Kairos Risk Solutions ist ein spezialisierter Risk-Solutions- und Consulting-Player mit Hauptsitz in Singapur, stark in Parametric Insurance und Specialty-Risk-Structuring.',
+        summaryP2: 'Im Vergleich zu Insurfox sitzt Kairos eher auf Advisory-/Structuring-Ebene der Wertkette und nicht als Carrier; damit ist Kairos primär Capacity-/Produktstrukturierungsnah statt operativer Full-stack-Executor.',
+        summaryP3: 'Die strategische Chance für Insurfox liegt in beschleunigter Entwicklung parametrisierter, klima- und ereignisgetriebener Produkte für Logistics-, Fleet- und Mobility-Linien.',
+        summaryP4: 'Das zentrale Risiko entsteht bei Rollenverschiebung Richtung MGA/Broking mit möglicher Überschneidung in Distribution, Client Access und Data Ownership.',
+        companyProfiles: 'Company Profile',
+        kairosSnapshot: 'Kairos RS Snapshot',
+        insurfoxSnapshot: 'Insurfox Snapshot',
+        offeringsDeepDive: 'Offerings & Capabilities Deep Dive',
+        offeringsParametricTitle: 'Parametric Insurance Capability',
+        offeringsParametricBody: 'Fokus auf Trigger-/Index-basierte Produktlogik, Basisrisiko-Management und klimathematische Exponierungsmodelle.',
+        offeringsSpecialtyTitle: 'Specialty Lines Exposure',
+        offeringsSpecialtyBody: 'Öffentlich adressierte Schwerpunkte umfassen Agriculture, Forestry, Credit & Surety sowie Business Risk.',
+        offeringsOpsTitle: 'Ops Enablement',
+        offeringsOpsBody: 'Beratung plus Finance-/Administration-Lösungen mit Kommunikation zu AI-integrierten Lösungen Richtung 2026.',
+        offeringsMappingTitle: 'Vertical Mapping to Insurfox',
+        offeringsMappingBody: 'Höchster Fit in Logistics/Fleet/Mobility bei parametric product design, trigger governance und portfolio-level risk steering.',
+        positionMatrix: 'Competitive / Partnership Position Matrix',
+        overlapAxis: 'Competitive overlap',
+        valueAxis: 'Strategic value',
+        matrixInterpretation: 'Interpretation: Kairos ist besonders wertvoll als Risk-Structuring-/Parametric-Co-Build-Partner. Relevanter Wettbewerbsdruck entsteht primär bei Eintritt in eigene Distribution oder MGA-ähnliche Execution.',
+        strategicFit: 'Strategic Fit',
+        fitDimension: 'Dimension',
+        fitScore: 'Score',
+        fitProductInnovation: 'Produktinnovation',
+        fitCapacityStructuring: 'Capacity Structuring',
+        fitClaimsOpsIntegration: 'Claims/Ops Integration',
+        fitDistributionSynergy: 'Distribution Synergy',
+        fitGovernanceReadiness: 'Regulatory/Governance Readiness',
+        financialScenario: 'Financial / Scenario Model',
+        premiumVolume: 'Premium volume (EUR m)',
+        attachRate: 'Parametric attach rate (%)',
+        lossRatio: 'Expected loss ratio (%)',
+        commissionRate: 'Commission rate (%)',
+        commissionIncome: 'Commission income',
+        uwMarginProxy: 'Underwriting margin proxy',
+        breakEvenGwp: 'Break-even GWP proxy',
+        scenarioDisclaimer: 'Hinweis: Margin-/Break-even-Werte sind Modell-Proxys und setzen delegierte Authority-Annahmen voraus.',
+        sensitivityTitle: 'Sensitivity: Loss ratio vs contribution',
+        sensitivitySeries: 'Contribution (EUR m)',
+        riskGovernanceHeatmap: 'Risk & Governance Heatmap',
+        likelihood: 'Wkt.',
+        impact: 'Imp.',
+        score: 'Score',
+        strategicOptions: 'Strategic Options (Board Level)',
+        option: 'Option',
+        control: 'Control',
+        capital: 'Capital',
+        upside: 'Upside',
+        timeToMarket: 'Time to market',
+        recommendation: 'Recommendation',
+        next306090: 'Recommended next 30/60/90 days',
+        needFromKairos: 'What we need from Kairos',
+        offerFromInsurfox: 'What we offer (Insurfox)',
+        contacts: 'Key People Referenced in Public Sources',
+        contactsSubline: 'Kontaktaufnahme über LinkedIn oder Company Contact Form; keine Email-Adressen in Quellen ausgewiesen.',
+        contactRole: 'Rolle',
+        contactReachout: 'Kontaktweg',
+        contactAddress: 'Address (Singapore)',
+        sources: 'Sources',
+        publicSourcesCaptured: 'Public sources captured on {{date}}.',
+        disclaimer: 'Analysis based on publicly available information.'
       }
     },
     brokerfox: {
@@ -6124,6 +6262,75 @@ export const translations: Record<Lang, TranslationTree> = {
         aiFox: 'AI Fox',
         partnerfox: 'Partnerfox',
         fleetfox: 'Fleetfox'
+      }
+    },
+    analysis: {
+      kairos: {
+        title: 'Kairos Risk Solutions (Singapore) – Strategic Partner / Competitor Assessment for Insurfox',
+        subtitle: 'Parametric risk solutions + specialty insurance consulting vs Insurfox (MGA/Broker/Platform Hybrid)',
+        export: 'Download Executive Report (PDF)',
+        executiveSummary: 'Executive Summary',
+        summaryP1: 'Kairos Risk Solutions is a specialist risk-solutions and consulting player headquartered in Singapore, with visible strength in parametric insurance and specialty risk structuring.',
+        summaryP2: 'Compared with Insurfox, Kairos sits more on advisory and structuring layers of the value chain, rather than acting as a carrier or full-stack operator.',
+        summaryP3: 'The key opportunity for Insurfox is faster launch of climate- and event-driven parametric products for logistics, fleet, and mobility segments.',
+        summaryP4: 'The key risk appears if Kairos shifts into MGA/broking-style distribution, increasing overlap in client access and data ownership.',
+        companyProfiles: 'Company Profile',
+        kairosSnapshot: 'Kairos RS Snapshot',
+        insurfoxSnapshot: 'Insurfox Snapshot',
+        offeringsDeepDive: 'Offerings & Capabilities Deep Dive',
+        offeringsParametricTitle: 'Parametric Insurance Capability',
+        offeringsParametricBody: 'Focus on trigger/index-based product logic, basis-risk management, and climate-linked exposure modeling.',
+        offeringsSpecialtyTitle: 'Specialty Lines Exposure',
+        offeringsSpecialtyBody: 'Publicly highlighted specialties include agriculture, forestry, credit & surety, and business risk insurance.',
+        offeringsOpsTitle: 'Ops Enablement',
+        offeringsOpsBody: 'Consulting plus finance/administration solutions, with public messaging on AI-integrated solutions for 2026.',
+        offeringsMappingTitle: 'Vertical Mapping to Insurfox',
+        offeringsMappingBody: 'Highest fit appears in logistics/fleet/mobility via parametric product design, trigger governance, and portfolio-level risk steering.',
+        positionMatrix: 'Competitive / Partnership Position Matrix',
+        overlapAxis: 'Competitive overlap',
+        valueAxis: 'Strategic value',
+        matrixInterpretation: 'Interpretation: Kairos is most valuable as a risk-structuring and parametric co-build partner. Direct competitive pressure rises mainly if it enters distribution or MGA-like execution.',
+        strategicFit: 'Strategic Fit',
+        fitDimension: 'Dimension',
+        fitScore: 'Score',
+        fitProductInnovation: 'Product innovation',
+        fitCapacityStructuring: 'Capacity structuring',
+        fitClaimsOpsIntegration: 'Claims/ops integration',
+        fitDistributionSynergy: 'Distribution synergy',
+        fitGovernanceReadiness: 'Regulatory/governance readiness',
+        financialScenario: 'Financial / Scenario Model',
+        premiumVolume: 'Premium volume (EUR m)',
+        attachRate: 'Parametric attach rate (%)',
+        lossRatio: 'Expected loss ratio (%)',
+        commissionRate: 'Commission rate (%)',
+        commissionIncome: 'Commission income',
+        uwMarginProxy: 'Underwriting margin proxy',
+        breakEvenGwp: 'Break-even GWP proxy',
+        scenarioDisclaimer: 'Note: Margin and break-even values are model proxies and assume delegated authority conditions.',
+        sensitivityTitle: 'Sensitivity: Loss ratio vs contribution',
+        sensitivitySeries: 'Contribution (EUR m)',
+        riskGovernanceHeatmap: 'Risk & Governance Heatmap',
+        likelihood: 'Lik.',
+        impact: 'Imp.',
+        score: 'Score',
+        strategicOptions: 'Strategic Options (Board Level)',
+        option: 'Option',
+        control: 'Control',
+        capital: 'Capital',
+        upside: 'Upside',
+        timeToMarket: 'Time to market',
+        recommendation: 'Recommendation',
+        next306090: 'Recommended next 30/60/90 days',
+        needFromKairos: 'What we need from Kairos',
+        offerFromInsurfox: 'What we offer (Insurfox)',
+        contacts: 'Key People Referenced in Public Sources',
+        contactsSubline: 'Reach out via LinkedIn or company contact form; no direct emails published in sources.',
+        contactRole: 'Role',
+        contactReachout: 'Reachout',
+        contactAddress: 'Address (Singapore)',
+        sources: 'Sources',
+        publicSourcesCaptured: 'Public sources captured on {{date}}.',
+        disclaimer: 'Analysis based on publicly available information.'
       }
     },
     brokerfox: {

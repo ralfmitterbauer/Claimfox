@@ -39,7 +39,8 @@ export default function AppHeader() {
       { label: 'Nordic MIP', route: '/strategy/nmip-analysis' },
       { label: 'FBSPL', route: '/analysis/fbspl' },
       { label: 'Corify', route: '/analysis/corify' },
-      { label: 'Claimsforce', route: '/analysis/claimsforce' }
+      { label: 'Claimsforce', route: '/analysis/claimsforce' },
+      { label: 'Kairos RS', route: '/analysis/kairos' }
     ]
     : [
       { label: t('header.nav.insurance'), route: '/underwriterfox' },

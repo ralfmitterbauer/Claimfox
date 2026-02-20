@@ -27,6 +27,9 @@ export default function ManagementReportsPage() {
               <Button size="sm" variant="secondary" onClick={() => navigate('/analysis/fbspl')}>
                 FBSPL AI
               </Button>
+              <Button size="sm" variant="secondary" onClick={() => navigate('/analysis/kairos')}>
+                Kairos RS
+              </Button>
             </div>
           </div>
         </Card>
