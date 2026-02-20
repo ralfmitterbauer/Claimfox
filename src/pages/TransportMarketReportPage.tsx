@@ -314,7 +314,7 @@ export default function TransportMarketReportPage() {
     title: isDe
       ? 'Transport- und Flottenversicherungsmarktanalyse - Allianz, Allianz ESA & VHV'
       : 'Transport & Fleet Insurance Market Analysis - Allianz, Allianz ESA & VHV',
-    subtitle: isDe ? 'Strategische Bewertung & Executive Mapping' : 'Strategic Assessment & Executive Mapping',
+    subtitle: isDe ? 'Strategische Bewertung & Executive-Mapping' : 'Strategic Assessment & Executive Mapping',
     export: isDe ? 'Als PDF exportieren' : 'Export as PDF',
     volumeDisclaimer: isDe
       ? 'Schätzungen basieren auf öffentlichen P&C-Quoten und Benchmarks der Transportsegmente.'
@@ -328,10 +328,10 @@ export default function TransportMarketReportPage() {
     sections: {
       breakdown: isDe ? 'Aufschlüsselung der Geschäftssegmente' : 'Business Segment Breakdown',
       financial: isDe ? 'Finanzielle Schätzungen (letzte 3 Jahre, Bandbreiten)' : 'Financial Estimates (Last 3 Years, Estimated Ranges)',
-      contacts: isDe ? 'Executive Contact Mapping' : 'Executive Contact Mapping',
+      contacts: isDe ? 'Executive-Kontakt-Mapping' : 'Executive Contact Mapping',
       chart: isDe ? 'Geschätzter GWP-Mittelwert je Unternehmen' : 'Estimated GWP Midpoint by Company',
       strategic: isDe ? 'Strategische Analyse' : 'Strategic Analysis',
-      summary: isDe ? 'Executive Summary (CEO Version)' : 'Executive Summary (CEO Version)'
+      summary: isDe ? 'Executive Summary (CEO-Version)' : 'Executive Summary (CEO Version)'
     },
     table: {
       company: isDe ? 'Unternehmen' : 'Company',
@@ -354,7 +354,7 @@ export default function TransportMarketReportPage() {
           'Die Allianz Gruppe bleibt der Volumen-Benchmark mit starker Position in Flotte und internationalem Cargo-Geschäft. Allianz ESA zeigt zugleich hohe technische Tiefe in Specialty-Transport und grenzüberschreitenden Programmen.',
           'VHV verfügt über eine belastbare Position im deutschen Flotten- und Logistikhaftpflichtmarkt. Für einen schnellen Markteintritt ist dieses Profil insbesondere im Mid-Market strategisch relevant.',
           'Die höchste Reife bei internationalen Programmstrukturen liegt in den Allianz-Einheiten. Alle drei Zielunternehmen zeigen tragfähige Vertriebsmodelle, jedoch mit unterschiedlicher Balance zwischen zentraler Steuerung und regionaler Broker-Tiefe.',
-          'Die digitale Reife ist in Kernprozessen hoch, während AI-Readiness je Funktionsbereich variiert. Besonders in Claims- und Fleet-Analytics bestehen kurzfristig attraktive Partnerschaftsfenster für KI-gestützte Operating Models.'
+          'Die digitale Reife ist in Kernprozessen hoch, während die KI-Readiness je Funktionsbereich variiert. Besonders in Schaden- und Flottenanalytik bestehen kurzfristig attraktive Partnerschaftsfenster für KI-gestützte Betriebsmodelle.'
         ]
       : [
           'Allianz Group remains the volume benchmark with broad motor and global cargo reach, while Allianz ESA demonstrates technical depth in specialty transport placements and cross-border program structures.',
@@ -415,7 +415,7 @@ export default function TransportMarketReportPage() {
         </Card>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-          <Card title="Allianz Group (Global P&C)">
+          <Card title={isDe ? 'Allianz Gruppe (Global P&C)' : 'Allianz Group (Global P&C)'}>
             <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{copy.cards.allianzSub}</div>
             <div style={{ fontSize: '1.45rem', fontWeight: 700, color: '#0f172a', marginTop: '0.35rem' }}>EUR 3.5B - EUR 5B</div>
             <div style={{ fontSize: '0.86rem', color: '#475569', marginTop: '0.35rem' }}>{copy.cards.gwp}</div>
@@ -534,7 +534,7 @@ export default function TransportMarketReportPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="company" stroke="#475569" />
                 <YAxis stroke="#475569" tickFormatter={(value) => `${value}M`} />
-                <Tooltip formatter={(value: number | string) => [`${value}M EUR`, copy.chartTooltipSeries]} />
+                <Tooltip formatter={(value: number | string) => [isDe ? `${value} Mio. EUR` : `${value}M EUR`, copy.chartTooltipSeries]} />
                 <Bar dataKey="gwp" fill="#d4380d" radius={[8, 8, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
