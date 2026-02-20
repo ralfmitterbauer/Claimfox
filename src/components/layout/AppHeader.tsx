@@ -37,7 +37,8 @@ export default function AppHeader() {
       { label: 'Loadsure', route: '/strategy/loadsure-analysis' },
       { label: 'WTW', route: '/strategy/wtw-analysis' },
       { label: 'Nordic MIP', route: '/strategy/nmip-analysis' },
-      { label: 'FBSPL', route: '/analysis/fbspl' }
+      { label: 'FBSPL', route: '/analysis/fbspl' },
+      { label: 'Corify', route: '/analysis/corify' }
     ]
     : [
       { label: t('header.nav.insurance'), route: '/underwriterfox' },
