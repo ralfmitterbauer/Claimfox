@@ -40,7 +40,8 @@ export default function AppHeader() {
       { label: 'FBSPL', route: '/analysis/fbspl' },
       { label: 'Corify', route: '/analysis/corify' },
       { label: 'Claimsforce', route: '/analysis/claimsforce' },
-      { label: 'Kairos RS', route: '/analysis/kairos' }
+      { label: 'Kairos RS', route: '/analysis/kairos' },
+      { label: 'Hypoport SE', route: '/analysis/hypoport' }
     ]
     : [
       { label: t('header.nav.insurance'), route: '/underwriterfox' },

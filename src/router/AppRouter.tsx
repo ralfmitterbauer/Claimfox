@@ -222,6 +222,7 @@ import FBSPLAnalysisPage from '@/pages/FBSPLAnalysisPage'
 import CorifyAnalysisPage from '@/pages/CorifyAnalysisPage'
 import ClaimsforceAnalysisPage from '@/pages/ClaimsforceAnalysisPage'
 import KairosAnalysisPage from '@/pages/KairosAnalysisPage'
+import HypoportAnalysisPage from '@/pages/HypoportAnalysisPage'
 
 function NotFoundRedirect() {
   const { isAuthenticated } = useAuth()
@@ -304,6 +305,7 @@ export default function AppRouter() {
         <Route path="/analysis/corify" element={<CorifyAnalysisPage />} />
         <Route path="/analysis/claimsforce" element={<ClaimsforceAnalysisPage />} />
         <Route path="/analysis/kairos" element={<KairosAnalysisPage />} />
+        <Route path="/analysis/hypoport" element={<HypoportAnalysisPage />} />
       </Route>
       <Route element={<ProtectedRoute><FullscreenBgLayout showHeader /></ProtectedRoute>}>
         <Route path="/demo" element={<DemoOverviewPage />} />

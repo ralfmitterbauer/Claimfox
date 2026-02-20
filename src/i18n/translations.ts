@@ -91,6 +91,75 @@ type TranslationTree = {
       disclaimer: string
     }
   }
+  hypoport: {
+    title: string
+    subtitle: string
+    exportPdf: string
+    sections: {
+      executiveSummary: string
+      companyProfile: string
+      comparison: string
+      charts: string
+      relationshipMatrix: string
+      deepDive: string
+      risk: string
+      financial: string
+      options: string
+      swot: string
+      recommendation: string
+    }
+    labels: {
+      indicativeScenario: string
+      likelihood: string
+      impact: string
+      score: string
+      category: string
+      hypoport: string
+      insurfox: string
+      strategicValue: string
+      competitiveOverlap: string
+      premiumVolume: string
+      commissionRate: string
+      lossRatio: string
+      platformFeeRate: string
+      commissionIncome: string
+      uwMarginProxy: string
+      platformIncomeProxy: string
+      totalContribution: string
+      breakEvenGwp: string
+      option: string
+      risk: string
+      control: string
+      capital: string
+      upside: string
+      timeToMarket: string
+      strength: string
+      weakness: string
+      opportunity: string
+      threat: string
+    }
+    text: {
+      summaryP1: string
+      summaryP2: string
+      summaryP3: string
+      summaryP4: string
+      summaryP5: string
+      hypoportNarrative: string
+      insurfoxNarrative: string
+      deepDive1Title: string
+      deepDive1Body: string
+      deepDive2Title: string
+      deepDive2Body: string
+      deepDive3Title: string
+      deepDive3Body: string
+      financialNarrative: string
+      recommendation306090: string
+      recommendationNeed: string
+      recommendationOffer: string
+      sourcesTitle: string
+      disclaimer: string
+    }
+  }
   underwriterfox: {
     nav: {
       title: string
@@ -2564,6 +2633,75 @@ export const translations: Record<Lang, TranslationTree> = {
         sources: 'Sources',
         publicSourcesCaptured: 'Public sources captured on {{date}}.',
         disclaimer: 'Analysis based on publicly available information.'
+      }
+    },
+    hypoport: {
+      title: 'Hypoport SE – Strategic Platform Analysis & Positioning vs Insurfox',
+      subtitle: 'Insurance distribution infrastructure vs AI-driven MGA + Broker + Platform',
+      exportPdf: 'Download Executive Report (PDF)',
+      sections: {
+        executiveSummary: 'Executive Summary',
+        companyProfile: 'Company Profile',
+        comparison: 'Business Model Comparison',
+        charts: 'Business & Geographic Mix (Indicative)',
+        relationshipMatrix: 'Strategic Relationship Matrix',
+        deepDive: 'Platform Architecture Deep Dive',
+        risk: 'Conflict & Dependency Analysis',
+        financial: 'Financial Leverage Scenario',
+        options: 'Board-Level Strategic Options',
+        swot: 'SWOT Analysis',
+        recommendation: 'Recommendation'
+      },
+      labels: {
+        indicativeScenario: 'Indicative scenario input (approx.)',
+        likelihood: 'Wkt.',
+        impact: 'Imp.',
+        score: 'Score',
+        category: 'Kategorie',
+        hypoport: 'Hypoport',
+        insurfox: 'Insurfox',
+        strategicValue: 'Strategischer Wert',
+        competitiveOverlap: 'Wettbewerbsüberschneidung',
+        premiumVolume: 'Premium volume (EUR Mio.)',
+        commissionRate: 'Commission rate (%)',
+        lossRatio: 'Loss ratio (%)',
+        platformFeeRate: 'Platform fee rate (%)',
+        commissionIncome: 'Broker commission income',
+        uwMarginProxy: 'MGA underwriting margin proxy',
+        platformIncomeProxy: 'Platform license income proxy',
+        totalContribution: 'Total contribution',
+        breakEvenGwp: 'Break-even GWP',
+        option: 'Option',
+        risk: 'Risk',
+        control: 'Control',
+        capital: 'Capital',
+        upside: 'Upside',
+        timeToMarket: 'Time to market',
+        strength: 'Stärken',
+        weakness: 'Schwächen',
+        opportunity: 'Chancen',
+        threat: 'Risiken'
+      },
+      text: {
+        summaryP1: 'Hypoport ist als börsennotierte Technologie-Holding mit Plattformmarktplätzen positioniert. In der Versicherungswertkette liegt die Stärke in Distribution, Vermittlerintegration und standardisierten Prozessschichten.',
+        summaryP2: 'Im Insurance-Vertical dominiert die Rolle als Infrastruktur- und Marktplatz-Backbone. Die Wertschöpfung ist primär transaktions- und plattformgetrieben, weniger über versicherungstechnische Ergebnisverantwortung.',
+        summaryP3: 'Hypoport ist stark in deutscher Distributionsreichweite, Makleranbindung und Workflow-Standardisierung. Für Insurfox ist das relevant als möglicher Beschleuniger für Marktzugang und Prozessskalierung.',
+        summaryP4: 'Insurfox differenziert sich strukturell als Hybrid aus MGA, Broker, Plattform und operativer AI-Ausführung in Underwriting, Claims, Fleet und Partnersteuerung.',
+        summaryP5: 'Strategisch kann Hypoport je nach Go-to-Market als Partner, Infrastruktur-Layer oder kompetitiver Kanal wirken. Entscheidend sind Governance, Datenhoheit und Kundenzugang.',
+        hypoportNarrative: 'Hypoport kombiniert Plattformlogik mit klarer Distributionstiefe. Approx.-Kennzahlen: Berlin HQ, börsennotiert, >2.000 Mitarbeitende, Umsatzband in den letzten Jahren grob im hohen dreistelligen Mio.-EUR-Bereich (approx.).',
+        insurfoxNarrative: 'Insurfox kombiniert Broker- und MGA-Logik mit modularer IaaS-Plattform. Kernmodule sind Brokerfox, Claimsfox, Fleetfox, Partnerfox und AI Fox mit Fokus auf logistics/fleet/mobility.',
+        deepDive1Title: 'Hypoport platform logic in insurance',
+        deepDive1Body: 'Die Plattformlogik ist stark auf Maklerökosysteme, standardisierte Datenschnittstellen und effiziente Ausschreibungs-/Serviceprozesse ausgerichtet. Dadurch entsteht Skalierung vor allem über Reichweite und Integrationsdichte.',
+        deepDive2Title: 'What Hypoport can do better than Insurfox (today)',
+        deepDive2Body: 'Im heutigen Marktbild besitzt Hypoport Vorteile bei etablierter Distributionsanbindung und standardisierter Prozessharmonisierung. Diese Stärke liegt weniger in Risikoübernahme als in Transaktions- und Netzwerksteuerung.',
+        deepDive3Title: 'What Insurfox can do beyond Hypoport (structurally)',
+        deepDive3Body: 'Insurfox kann strukturell tiefer in operative Versicherungsausführung gehen: MGA-nahe Underwriting-Entscheidungslogik, Claims-Execution, Fleet-Workflows und AI-gestützte End-to-end Orchestrierung über den Lebenszyklus.',
+        financialNarrative: 'Hypoport-nahe Ökonomie ist typischerweise plattform- und transaktionsgebührenzentriert. Insurfox kann zusätzlich Broker- und MGA-Mechanik sowie operative AI-Hebel stapeln.',
+        recommendation306090: '30 Tage: Segment-Fit und Channel-Risiko kalibrieren. 60 Tage: API-/Workflow-Pilot mit klaren Data-Rights. 90 Tage: Board-Entscheid für Partnerschaft, Koexistenz oder Gegenpositionierung.',
+        recommendationNeed: 'Von Hypoport benötigen wir klare Schnittstellenregeln, belastbare Governance-Zusagen und Transparenz über Ownership in Distribution und Datenpfaden.',
+        recommendationOffer: 'Insurfox bietet operative Execution-Tiefe in UW/Claims/Fleet, AI-Workflow-Orchestrierung und ein hybrides MGA/Broker-Modell für differenzierte Wertschöpfung.',
+        sourcesTitle: 'Sources',
+        disclaimer: 'Analysis based on publicly available information. Revenue and mix figures shown as approx./indicative only.'
       }
     },
     brokerfox: {
@@ -6331,6 +6469,75 @@ export const translations: Record<Lang, TranslationTree> = {
         sources: 'Sources',
         publicSourcesCaptured: 'Public sources captured on {{date}}.',
         disclaimer: 'Analysis based on publicly available information.'
+      }
+    },
+    hypoport: {
+      title: 'Hypoport SE – Strategic Platform Analysis & Positioning vs Insurfox',
+      subtitle: 'Insurance distribution infrastructure vs AI-driven MGA + Broker + Platform',
+      exportPdf: 'Download Executive Report (PDF)',
+      sections: {
+        executiveSummary: 'Executive Summary',
+        companyProfile: 'Company Profile',
+        comparison: 'Business Model Comparison',
+        charts: 'Business & Geographic Mix (Indicative)',
+        relationshipMatrix: 'Strategic Relationship Matrix',
+        deepDive: 'Platform Architecture Deep Dive',
+        risk: 'Conflict & Dependency Analysis',
+        financial: 'Financial Leverage Scenario',
+        options: 'Board-Level Strategic Options',
+        swot: 'SWOT Analysis',
+        recommendation: 'Recommendation'
+      },
+      labels: {
+        indicativeScenario: 'Indicative scenario input (approx.)',
+        likelihood: 'Lik.',
+        impact: 'Imp.',
+        score: 'Score',
+        category: 'Category',
+        hypoport: 'Hypoport',
+        insurfox: 'Insurfox',
+        strategicValue: 'Strategic value',
+        competitiveOverlap: 'Competitive overlap',
+        premiumVolume: 'Premium volume (EUR m)',
+        commissionRate: 'Commission rate (%)',
+        lossRatio: 'Loss ratio (%)',
+        platformFeeRate: 'Platform fee rate (%)',
+        commissionIncome: 'Broker commission income',
+        uwMarginProxy: 'MGA underwriting margin proxy',
+        platformIncomeProxy: 'Platform license income proxy',
+        totalContribution: 'Total contribution',
+        breakEvenGwp: 'Break-even GWP',
+        option: 'Option',
+        risk: 'Risk',
+        control: 'Control',
+        capital: 'Capital',
+        upside: 'Upside',
+        timeToMarket: 'Time to market',
+        strength: 'Strengths',
+        weakness: 'Weaknesses',
+        opportunity: 'Opportunities',
+        threat: 'Threats'
+      },
+      text: {
+        summaryP1: 'Hypoport is positioned as a listed technology holding with marketplace platforms. In insurance, its strength sits in distribution infrastructure, intermediary connectivity, and standardized process layers.',
+        summaryP2: 'Within the insurance value chain, Hypoport plays primarily an infrastructure and marketplace role. Value creation is largely transaction and platform-fee driven rather than underwriting-result driven.',
+        summaryP3: 'Hypoport is strong in German distribution reach, broker connectivity, and workflow standardization. For Insurfox, this can accelerate market access and operational scaling.',
+        summaryP4: 'Insurfox differentiates structurally as a hybrid MGA, broker, platform, and operational AI stack across underwriting, claims, fleet, and partner workflows.',
+        summaryP5: 'Strategically, Hypoport can act as partner, infrastructure layer, or competitive channel depending on go-to-market design. Governance, data ownership, and client access are key.',
+        hypoportNarrative: 'Hypoport combines platform logic with deep distribution linkage. Approximate public profile: Berlin HQ, listed status, >2,000 employees, and a recent revenue corridor broadly in the high three-digit EUR million range (approx.).',
+        insurfoxNarrative: 'Insurfox combines broker and MGA logic with modular IaaS infrastructure. Core modules include Brokerfox, Claimsfox, Fleetfox, Partnerfox, and AI Fox with logistics/fleet/mobility focus.',
+        deepDive1Title: 'Hypoport platform logic in insurance',
+        deepDive1Body: 'Its platform logic is centered on broker ecosystems, standardized interfaces, and efficient tender/service processing. Scale comes from network density and process harmonization.',
+        deepDive2Title: 'What Hypoport can do better than Insurfox (today)',
+        deepDive2Body: 'In current market reality, Hypoport has advantages in established distribution connectivity and process standardization depth. The edge is less about risk carrying and more about transaction and ecosystem control.',
+        deepDive3Title: 'What Insurfox can do beyond Hypoport (structurally)',
+        deepDive3Body: 'Insurfox can structurally go deeper into insurance execution: MGA-style underwriting control, claims execution, fleet workflows, and AI-driven lifecycle orchestration.',
+        financialNarrative: 'Hypoport-like economics are generally platform-fee and transaction centric. Insurfox can stack broker + MGA + platform + operational AI value levers.',
+        recommendation306090: '30 days: calibrate segment fit and channel-conflict baseline. 60 days: run API/workflow pilot with clear data-right boundaries. 90 days: board decision on partnership, coexistence, or competitive positioning.',
+        recommendationNeed: 'From Hypoport we need explicit interface governance, enforceable data-right clarity, and transparency on customer/channel ownership mechanics.',
+        recommendationOffer: 'Insurfox offers operational depth across UW/claims/fleet, AI workflow orchestration, and a hybrid MGA/broker model for differentiated execution value.',
+        sourcesTitle: 'Sources',
+        disclaimer: 'Analysis based on publicly available information. Revenue and mix figures shown as approx./indicative only.'
       }
     },
     brokerfox: {

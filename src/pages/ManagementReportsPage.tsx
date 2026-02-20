@@ -30,6 +30,9 @@ export default function ManagementReportsPage() {
               <Button size="sm" variant="secondary" onClick={() => navigate('/analysis/kairos')}>
                 Kairos RS
               </Button>
+              <Button size="sm" variant="secondary" onClick={() => navigate('/analysis/hypoport')}>
+                Hypoport SE
+              </Button>
             </div>
           </div>
         </Card>
