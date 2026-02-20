@@ -21,6 +21,15 @@ type ScoreRow = {
   commentary: BiText
 }
 
+type ContactRow = {
+  name: string
+  role: BiText
+  region: BiText
+  email: string
+  phone: string
+  relevance: BiText
+}
+
 const productRows: ProductRow[] = [
   {
     product: { de: 'Delay Insurance', en: 'Delay Insurance' },
@@ -68,6 +77,75 @@ const scoreChartData = scoreRows.map((row) => ({
   score: row.score
 }))
 
+const nmipContacts: ContactRow[] = [
+  {
+    name: 'Dan Lennhammer',
+    role: { de: 'Managing Director', en: 'Managing Director' },
+    region: { de: 'Stockholm, Schweden', en: 'Stockholm, Sweden' },
+    email: 'dan@nmip.se',
+    phone: '+46 707 498 260',
+    relevance: {
+      de: 'Primärer Entscheider für Management, Underwriting-Fokus und Partnerschaften.',
+      en: 'Primary decision maker for management, underwriting focus, and partnerships.'
+    }
+  },
+  {
+    name: 'Jan Limnell',
+    role: { de: 'Deputy Managing Director & UW Director', en: 'Deputy Managing Director & UW Director' },
+    region: { de: 'Nordics / Europa', en: 'Nordics / Europe' },
+    email: 'jan@nmip.se',
+    phone: '+358 40 589 3398',
+    relevance: {
+      de: 'Zentral für Underwriting-Richtlinien, Risikoselektion und Produktsteuerung.',
+      en: 'Central for underwriting guidelines, risk selection, and product steering.'
+    }
+  },
+  {
+    name: 'Claudio Blancardi',
+    role: { de: 'Marketing Director', en: 'Marketing Director' },
+    region: { de: 'Europa / globales Marine-Netzwerk', en: 'Europe / global marine network' },
+    email: 'claudio@nmip.se',
+    phone: '+46 733 780 110',
+    relevance: {
+      de: 'Wichtiger Ansprechpartner für Distribution, Positionierung und Broker-Zugang.',
+      en: 'Key contact for distribution, positioning, and broker access.'
+    }
+  },
+  {
+    name: 'Magnus Hammarqvist',
+    role: { de: 'Claims Director', en: 'Claims Director' },
+    region: { de: 'Schweden / international', en: 'Sweden / international' },
+    email: 'magnus@nmip.se',
+    phone: '+46 766 279 051',
+    relevance: {
+      de: 'Relevant für Claims-Prozesse, Schadensteuerung und operative Integration.',
+      en: 'Relevant for claims processes, claims steering, and operational integration.'
+    }
+  },
+  {
+    name: 'Charlotte Djerf',
+    role: { de: 'Chief Governance Officer', en: 'Chief Governance Officer' },
+    region: { de: 'Stockholm, Schweden', en: 'Stockholm, Sweden' },
+    email: 'charlotte@nmip.se',
+    phone: '+46 709 582 172',
+    relevance: {
+      de: 'Schlüsselrolle für Governance, Beschwerdeprozesse und regulatorische Themen.',
+      en: 'Key role for governance, complaints process, and regulatory topics.'
+    }
+  },
+  {
+    name: 'Therese Rislund',
+    role: { de: 'Chief Financial Officer', en: 'Chief Financial Officer' },
+    region: { de: 'Stockholm, Schweden', en: 'Stockholm, Sweden' },
+    email: 'therese@nmip.se',
+    phone: '+46 76 847 2395',
+    relevance: {
+      de: 'Wichtig für Finanzmodellierung, Reporting und Kapitalfragen.',
+      en: 'Important for financial modeling, reporting, and capital topics.'
+    }
+  }
+]
+
 function bi(value: BiText, lang: 'de' | 'en') {
   return lang === 'de' ? value.de : value.en
 }
@@ -108,8 +186,8 @@ export default function NMIPAnalysisPage() {
           <div className="nmip-hero-grid">
             <div style={{ display: 'grid', gap: '0.8rem' }}>
               <Header
-                title={bi({ de: 'Nordic Marine Insurance (NMIP) – Strategic Capacity & Marine Niche Analysis', en: 'Nordic Marine Insurance (NMIP) – Strategic Capacity & Marine Niche Analysis' }, l)}
-                subtitle={bi({ de: 'Executive Assessment for Insurfox Platform & MGA Strategy', en: 'Executive Assessment for Insurfox Platform & MGA Strategy' }, l)}
+                title={bi({ de: 'Nordic Marine Insurance (NMIP) – Strategische Capacity- & Marine-Nischenanalyse', en: 'Nordic Marine Insurance (NMIP) – Strategic Capacity & Marine Niche Analysis' }, l)}
+                subtitle={bi({ de: 'Executive-Bewertung für Insurfox Plattform- & MGA-Strategie', en: 'Executive Assessment for Insurfox Platform & MGA Strategy' }, l)}
                 titleColor="#0f172a"
                 subtitleColor="#475569"
               />
@@ -125,9 +203,9 @@ export default function NMIPAnalysisPage() {
             </div>
             <div style={{ display: 'grid', gap: '0.6rem', justifyItems: 'end' }}>
               <Button className="nmip-print-hide" size="sm" onClick={handlePdfExport}>
-                {bi({ de: 'Download Full Executive PDF', en: 'Download Full Executive PDF' }, l)}
+                {bi({ de: 'Executive Report (PDF) herunterladen', en: 'Download Full Executive PDF' }, l)}
               </Button>
-              <Card title={bi({ de: 'Key Facts', en: 'Key Facts' }, l)} style={{ width: '100%' }}>
+              <Card title={bi({ de: 'Kernfakten', en: 'Key Facts' }, l)} style={{ width: '100%' }}>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '0.55rem' }}>
                   <img
                     src={NmiLogoMain}
@@ -136,7 +214,7 @@ export default function NMIPAnalysisPage() {
                   />
                 </div>
                 <ul style={listStyle}>
-                  <li>{bi({ de: 'Fokus: Marine Nischenzeichnung', en: 'Focus: Marine niche underwriting' }, l)}</li>
+                  <li>{bi({ de: 'Fokus: Marine-Nischenzeichnung', en: 'Focus: Marine niche underwriting' }, l)}</li>
                   <li>{bi({ de: 'Produkte: Delay / Loss of Earnings / Hull / Maritime Lien', en: 'Core products: Delay / Loss of Earnings / Hull / Maritime Lien' }, l)}</li>
                   <li>{bi({ de: 'Modell: Direktversicherer + MGA Facilities', en: 'Model: Direct insurer + MGA facilities' }, l)}</li>
                   <li>{bi({ de: 'Geografie: EU und globales Marinegeschäft', en: 'Geography: EU and global marine business' }, l)}</li>
@@ -149,25 +227,25 @@ export default function NMIPAnalysisPage() {
           </div>
         </Card>
 
-        <Card title={bi({ de: 'Business Model Analysis', en: 'Business Model Analysis' }, l)}>
+        <Card title={bi({ de: 'Geschäftsmodellanalyse', en: 'Business Model Analysis' }, l)}>
           <div style={{ display: 'grid', gap: '0.8rem', color: '#334155', lineHeight: 1.65 }}>
-            <p style={{ margin: 0 }}><strong>A) {bi({ de: 'Core Business Model', en: 'Core Business Model' }, l)}:</strong> {bi({ de: 'NMIP agiert als spezialisierter Marine-Versicherer mit Fokus auf nicht-standardisierte Risikolücken wie Delay und Loss of Earnings sowie MGA-orientierten Hull-Facilities.', en: 'NMIP operates as a specialized marine insurer focused on non-standard risk gaps such as delay and loss of earnings, including MGA-oriented hull facilities.' }, l)}</p>
-            <p style={{ margin: 0 }}><strong>B) {bi({ de: 'Revenue Model (Estimated / Structured)', en: 'Revenue Model (Estimated / Structured)' }, l)}:</strong> {bi({ de: 'Strategische Modellierung: GWP-Korridor EUR 180M–260M, Kommissionserlöse aus MGA-Facilities, Risikopartizipation und reinsurance-gestützte Kapitalhebel.', en: 'Strategic estimate model: GWP corridor EUR 180M–260M, commission income from MGA facilities, risk participation income, and reinsurance leverage.' }, l)}</p>
+            <p style={{ margin: 0 }}><strong>A) {bi({ de: 'Kern-Geschäftsmodell', en: 'Core Business Model' }, l)}:</strong> {bi({ de: 'NMIP agiert als spezialisierter Marine-Versicherer mit Fokus auf nicht standardisierte Risikolücken wie Delay und Loss of Earnings sowie MGA-orientierte Hull-Facilities.', en: 'NMIP operates as a specialized marine insurer focused on non-standard risk gaps such as delay and loss of earnings, including MGA-oriented hull facilities.' }, l)}</p>
+            <p style={{ margin: 0 }}><strong>B) {bi({ de: 'Erlösmodell (geschätzt / strukturiert)', en: 'Revenue Model (Estimated / Structured)' }, l)}:</strong> {bi({ de: 'Strategische Modellierung: GWP-Korridor EUR 180 Mio.–260 Mio., Kommissionserlöse aus MGA-Facilities, Risikopartizipation und rückversicherungsgestützte Kapitalhebel.', en: 'Strategic estimate model: GWP corridor EUR 180M–260M, commission income from MGA facilities, risk participation income, and reinsurance leverage.' }, l)}</p>
             <div style={{ fontSize: '0.82rem', color: '#64748b' }}>
-              {bi({ de: 'Strategic estimate based on market positioning', en: 'Strategic estimate based on market positioning' }, l)}
+              {bi({ de: 'Strategische Schätzung auf Basis der Marktpositionierung', en: 'Strategic estimate based on market positioning' }, l)}
             </div>
           </div>
         </Card>
 
-        <Card title={bi({ de: 'Product Analysis – Marine & Transport Context', en: 'Product Analysis – Marine & Transport Context' }, l)}>
+        <Card title={bi({ de: 'Produktanalyse – Marine- & Transportkontext', en: 'Product Analysis – Marine & Transport Context' }, l)}>
           <div style={{ overflowX: 'auto' }}>
             <table style={tableStyle}>
               <thead>
                 <tr style={headRowStyle}>
-                  <th style={thStyle}>{bi({ de: 'Product', en: 'Product' }, l)}</th>
-                  <th style={thStyle}>{bi({ de: 'Strategic Value for Insurfox', en: 'Strategic Value for Insurfox' }, l)}</th>
-                  <th style={thStyle}>{bi({ de: 'Overlap with Insurfox', en: 'Overlap with Insurfox' }, l)}</th>
-                  <th style={thStyle}>{bi({ de: 'Synergy Potential', en: 'Synergy Potential' }, l)}</th>
+                  <th style={thStyle}>{bi({ de: 'Produkt', en: 'Product' }, l)}</th>
+                  <th style={thStyle}>{bi({ de: 'Strategischer Wert für Insurfox', en: 'Strategic Value for Insurfox' }, l)}</th>
+                  <th style={thStyle}>{bi({ de: 'Überschneidung mit Insurfox', en: 'Overlap with Insurfox' }, l)}</th>
+                  <th style={thStyle}>{bi({ de: 'Synergiepotenzial', en: 'Synergy Potential' }, l)}</th>
                 </tr>
               </thead>
               <tbody>
@@ -193,7 +271,7 @@ export default function NMIPAnalysisPage() {
           </p>
         </Card>
 
-        <Card title={bi({ de: 'Strategic Comparison', en: 'Strategic Comparison' }, l)}>
+        <Card title={bi({ de: 'Strategischer Vergleich', en: 'Strategic Comparison' }, l)}>
           <div style={{ display: 'grid', gap: '0.65rem', color: '#334155' }}>
             <ComparisonBlock title={bi({ de: 'NMIP vs Global Multi-Line Insurer', en: 'NMIP vs Global Multi-Line Insurer' }, l)} body={bi({ de: 'NMIP liefert Tiefenexpertise in Marine-Nischen, jedoch ohne Multi-Line-Breite eines globalen Composite-Carriers.', en: 'NMIP provides deep marine niche expertise but lacks the multi-line breadth of global composite carriers.' }, l)} />
             <ComparisonBlock title={bi({ de: 'NMIP vs Broker (WTW/Marsh)', en: 'NMIP vs Broker (WTW/Marsh)' }, l)} body={bi({ de: 'WTW/Marsh dominieren Distribution und Capacity-Placement; NMIP liefert Produkt-/Risikofokus in maritimen Speziallinien.', en: 'WTW/Marsh dominate distribution and capacity placement; NMIP contributes specialized marine risk focus.' }, l)} />
@@ -205,7 +283,7 @@ export default function NMIPAnalysisPage() {
           </p>
         </Card>
 
-        <Card title={bi({ de: 'Strategic Fit for Insurfox', en: 'Strategic Fit for Insurfox' }, l)}>
+        <Card title={bi({ de: 'Strategischer Fit für Insurfox', en: 'Strategic Fit for Insurfox' }, l)}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '0.8rem' }}>
             <ScenarioCard
               title={bi({ de: 'Scenario A – Capacity Partner for Marine', en: 'Scenario A – Capacity Partner for Marine' }, l)}
@@ -226,7 +304,7 @@ export default function NMIPAnalysisPage() {
           </div>
         </Card>
 
-        <Card title={bi({ de: 'SWOT Analysis', en: 'SWOT Analysis' }, l)}>
+        <Card title={bi({ de: 'SWOT-Analyse', en: 'SWOT Analysis' }, l)}>
           <div style={{ display: 'grid', gap: '0.5rem', color: '#334155' }}>
             <div><strong>{bi({ de: 'Strengths:', en: 'Strengths:' }, l)}</strong> {bi({ de: 'Marine Expertise, Nischenfokus, Solvency-II-Regulierung, starker Partnerhintergrund (West P&I).', en: 'Marine expertise, niche specialization, Solvency II regulation, strong partner backing (West P&I).' }, l)}</div>
             <div><strong>{bi({ de: 'Weaknesses:', en: 'Weaknesses:' }, l)}</strong> {bi({ de: 'Begrenzter Scope, keine Multi-Line-Plattform, geringe embedded AI-Infrastruktur.', en: 'Limited scope, no multi-line platform, limited embedded AI infrastructure.' }, l)}</div>
@@ -235,15 +313,15 @@ export default function NMIPAnalysisPage() {
           </div>
         </Card>
 
-        <Card title={bi({ de: 'Executive Decision Matrix', en: 'Executive Decision Matrix' }, l)}>
+        <Card title={bi({ de: 'Executive-Entscheidungsmatrix', en: 'Executive Decision Matrix' }, l)}>
           <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 390px', gap: '1rem' }}>
             <div style={{ overflowX: 'auto' }}>
               <table style={tableStyle}>
                 <thead>
                   <tr style={headRowStyle}>
-                    <th style={thStyle}>{bi({ de: 'Category', en: 'Category' }, l)}</th>
+                    <th style={thStyle}>{bi({ de: 'Kategorie', en: 'Category' }, l)}</th>
                     <th style={thStyle}>{bi({ de: 'Score (1–10)', en: 'Score (1–10)' }, l)}</th>
-                    <th style={thStyle}>{bi({ de: 'Commentary', en: 'Commentary' }, l)}</th>
+                    <th style={thStyle}>{bi({ de: 'Kommentar', en: 'Commentary' }, l)}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -257,10 +335,10 @@ export default function NMIPAnalysisPage() {
                 </tbody>
               </table>
               <div style={{ marginTop: '0.6rem', color: '#0f172a', fontWeight: 700 }}>
-                {bi({ de: 'Weighted Overall Score', en: 'Weighted Overall Score' }, l)}: {weightedScore.toFixed(2)} / 10
+                {bi({ de: 'Gewichteter Gesamtscore', en: 'Weighted Overall Score' }, l)}: {weightedScore.toFixed(2)} / 10
               </div>
             </div>
-            <Card title={bi({ de: 'Score Overview', en: 'Score Overview' }, l)}>
+            <Card title={bi({ de: 'Score-Übersicht', en: 'Score Overview' }, l)}>
               <div style={{ height: 250 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={scoreChartData}>
@@ -277,7 +355,35 @@ export default function NMIPAnalysisPage() {
           </div>
         </Card>
 
-        <Card title={bi({ de: 'Final Management Recommendation', en: 'Final Management Recommendation' }, l)}>
+        <Card title={bi({ de: 'Strategische Ansprechpartner (öffentlich, nmip.se)', en: 'Strategic Contacts (public, nmip.se)' }, l)}>
+          <div style={{ display: 'grid', gap: '0.6rem' }}>
+            {nmipContacts.map((contact) => (
+              <div key={contact.email} style={{ border: '1px solid #e2e8f0', borderRadius: 10, padding: '0.65rem', background: '#f8fafc' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '0.6rem', flexWrap: 'wrap' }}>
+                  <div style={{ color: '#0f172a', fontWeight: 700 }}>{contact.name}</div>
+                  <div style={{ color: '#64748b', fontSize: '0.82rem' }}>{bi(contact.region, l)}</div>
+                </div>
+                <div style={{ color: '#334155', fontSize: '0.86rem' }}>{bi(contact.role, l)}</div>
+                <div style={{ color: '#334155', fontSize: '0.84rem', marginTop: '0.2rem' }}>{bi(contact.relevance, l)}</div>
+                <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap', marginTop: '0.35rem', fontSize: '0.82rem', color: '#334155' }}>
+                  <span><strong>E-Mail:</strong> {contact.email}</span>
+                  <span><strong>Tel:</strong> {contact.phone}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p style={{ margin: '0.7rem 0 0', color: '#64748b', fontSize: '0.82rem' }}>
+            {bi(
+              {
+                de: 'Quelle: https://nmip.se/ (Bereich "The Team"), Stand 20.02.2026. Angaben vor finaler Ansprache verifizieren.',
+                en: 'Source: https://nmip.se/ ("The Team" section), captured on 2026-02-20. Verify details before formal outreach.'
+              },
+              l
+            )}
+          </p>
+        </Card>
+
+        <Card title={bi({ de: 'Finale Management-Empfehlung', en: 'Final Management Recommendation' }, l)}>
           <div style={{ display: 'grid', gap: '0.6rem', color: '#334155', lineHeight: 1.65 }}>
             <p style={{ margin: 0 }}>{bi({ de: 'NMIP ist ein starker marine-nischiger Capacity-Partner für Insurfox.', en: 'NMIP is a strong marine niche capacity partner for Insurfox.' }, l)}</p>
             <p style={{ margin: 0 }}>{bi({ de: 'NMIP ersetzt keine globalen Capacity Provider für breit diversifizierte Programme.', en: 'NMIP does not replace global capacity providers for diversified multi-line programs.' }, l)}</p>
